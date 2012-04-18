@@ -7,7 +7,6 @@ gem 'rails', '3.2.3'
 
 gem 'mysql2'
 gem 'sqlite3'
-gem 'bigdecimal'
 gem 'devise'
 gem 'haml'
 
