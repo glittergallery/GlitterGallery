@@ -44,7 +44,7 @@ input {
 
 .idleField {
   background: #fff8f4;
-  color: #999;
+  color: #777;
   border: solid 1px #ffc8a6;
 }
 
