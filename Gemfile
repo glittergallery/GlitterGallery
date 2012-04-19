@@ -10,9 +10,10 @@ gem 'mysql2'
 gem 'sqlite3'
 gem 'devise'
 gem 'haml'
+gem 'grit'
 
 # ruby 1.9 needs bigdecimal
-#gem 'bigdecimal'
+# gem 'bigdecimal'
 
 # Gems used only for assets and not required
 # in production environments by default.
