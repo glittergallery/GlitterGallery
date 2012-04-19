@@ -6,7 +6,11 @@ class Repo < ActiveRecord::Base
 
   def init
     unless File.exists? @path
-      Grit::Repo.init_bare(@path)
+      begin
+        Grit::Repo.init_bare(@path)
+      rescue
+        logger.error "Unable to init repo at", @path
+      end
     end
   end
   
