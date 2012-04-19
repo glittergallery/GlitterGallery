@@ -10,6 +10,7 @@ class Repo < ActiveRecord::Base
         Grit::Repo.init_bare(@path)
       rescue
         logger.error "Unable to init repo at", @path
+        raise
       end
     end
   end
