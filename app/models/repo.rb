@@ -6,7 +6,7 @@ class Repo < ActiveRecord::Base
 
   def init
     unless File.exists? @path
-      Grit::Repo.init_bare(@@path)
+      Grit::Repo.init_bare(@path)
     end
   end
   

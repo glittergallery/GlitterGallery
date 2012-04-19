@@ -13,7 +13,7 @@ class RegistrationsController < Devise::RegistrationsController
 
     # Send to get repo initialized
     def after_sign_up_path_for(resource)
-      user_repo_init_path
+      users_repo_init_path
     end
 
 end
