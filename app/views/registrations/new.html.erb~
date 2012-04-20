@@ -1,6 +1,6 @@
 <div class='header' id='top'>
   <img alt="Logo" id="logo" src="/assets/logo.png" />
-  </div>
+</div>
 
 <div class='center'>
   <div id='maincolumn'>
@@ -15,14 +15,13 @@
      <div><%= f.submit "Sign up" %></div>
     <% end %>
     <div style="clear: both;"></div>
-    <%= render "links" %>
+<!--    <%= render "links" %> -->
   </div>
   <div id='sidebar'>
     <h2>Sign in</h2>
     <%= link_to 'Already have an account?', new_user_session_path %>
   </div>
 </div>
-
 
 
   
