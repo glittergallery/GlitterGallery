@@ -17,9 +17,8 @@ body {
 body { width: 100%; }
 
 input {
-  width:400px;
-  height:33px;
-  margin-bottom:5px;
+  width: 95%;
+  height: 33px;
   font-size:16px;
   font-weight:normal;
   padding-left:7px;
@@ -31,6 +30,27 @@ input {
   -moz-border-radius: 3px;
   border: 1px solid #ccc;
 } 
+
+input[type="submit"] {
+  margin-top: 10px;
+  width: 31%;
+  background: #ff59cb;
+  color: white;
+  margin-left: 66%;
+  font-weight: bold;
+}
+
+input[type="submit"]:hover {
+  background: #7d737b;
+}
+
+form label {
+  display: none;
+}
+
+form {
+  margin-left: 36%;
+}
 
 .focusField {
   border: 1px solid #ff59cb;
@@ -44,7 +64,11 @@ input {
 
 .idleField {
   background: #fff8f4;
-  color: #777;
+  color: #999;
   border: solid 1px #ffc8a6;
 }
 
+
+body, p, a, div, form {
+  font-family: sans-serif !important;
+}
