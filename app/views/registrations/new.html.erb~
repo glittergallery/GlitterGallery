@@ -18,7 +18,7 @@
 <!--    <%= render "links" %> -->
   </div>
   <div id='sidebar'>
-    <h2>Sign in</h2>
+    <h2>sign in</h2>
     <%= link_to 'Already have an account?', new_user_session_path %>
   </div>
 </div>

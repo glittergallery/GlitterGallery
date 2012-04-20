@@ -6,7 +6,7 @@
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
       <%= devise_error_messages! %>
     <div><%= f.label :email %><br />
-      <%= f.email_field :email, :value => "Your email address" %></div>
+      <%= f.email_field :email, :placeholder => "Your email address" %></div>
      <div><%= f.label :password %><br />
       <%= f.password_field :password, :placeholder => "Your password" %></div>
      <% if devise_mapping.rememberable? -%>
