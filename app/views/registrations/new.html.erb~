@@ -1,6 +1,6 @@
 <div class='header' id='top'>
   <img alt="Logo" id="logo" src="/assets/logo.png" />
-  </div>
+</div>
 
 <div class='center'>
   <div id='maincolumn'>
@@ -9,19 +9,19 @@
     <div><%= f.label :email %><br />
       <%= f.email_field :email, :value => "Your email address" %></div>
      <div><%= f.label :password %><br />
-      <%= f.password_field :password, :value => "Your password" %></div>
+      <%= f.password_field :password, :placeholder => "Your password" %></div>
      <div><%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation, :value => "Repeat your password" %></div>
+      <%= f.password_field :password_confirmation, :placeholder => "Repeat your password" %></div>
      <div><%= f.submit "Sign up" %></div>
     <% end %>
-    <%= render "links" %>
+    <div style="clear: both;"></div>
+<!--    <%= render "links" %> -->
   </div>
   <div id='sidebar'>
     <h2>Sign in</h2>
     <%= link_to 'Already have an account?', new_user_session_path %>
   </div>
 </div>
-
 
 
   
