@@ -4,17 +4,15 @@ $(document).ready(function() {
   $('input[type="email"]').addClass("idleField");  
   $('input[type="password"]').addClass("idleField");
 
-  $('input').focus(function() {  
+  $('input[type="email"], input[type="password"]').focus(function() {  
     console.log('focus');
     $(this).removeClass("idleField").addClass("focusField");  
 
       }); 
 
-      $('input').blur(function() {  
+      $('input[type="email"], input[type="password"]').blur(function() {  
         $(this).removeClass("focusField").addClass("idleField");  
-      }
-        
-
-    });  
+      });
+         
 });  
 

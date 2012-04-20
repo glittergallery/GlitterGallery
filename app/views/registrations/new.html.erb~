@@ -3,7 +3,7 @@
   </div>
 
 <div class='center'>
-  <div id='maincolumn' class='form'>
+  <div id='maincolumn'>
     <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
       <%= devise_error_messages! %>
     <div><%= f.label :email %><br />
@@ -14,6 +14,7 @@
       <%= f.password_field :password_confirmation, :placeholder => "Repeat your password" %></div>
      <div><%= f.submit "Sign up" %></div>
     <% end %>
+    <div style="clear: both;"></div>
     <%= render "links" %>
   </div>
   <div id='sidebar'>
