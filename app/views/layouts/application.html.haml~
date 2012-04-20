@@ -9,8 +9,6 @@
     
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag "application"
-    = javascript_include_tag "less-1.1.3.min" 
-    = javascript_include_tag "jquery.formHighlighter.js" 
     = csrf_meta_tag
 
   %body{ :class => "#{controller.controller_name} #{controller.action_name} #{yield :body_class}" }
