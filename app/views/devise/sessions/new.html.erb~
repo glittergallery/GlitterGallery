@@ -17,7 +17,6 @@
   </div>
   <div id='sidebar'>
     <h2>need an account?</h2>
-    <%= link_to 'Click here to get one.', new_user_registration_path
- %>
+    <%= link_to 'Click here to get one.', new_user_session_path %>
   </div>
 </div>

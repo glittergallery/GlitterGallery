@@ -2,6 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import url(http://fonts.googleapis.com/css?family=Cookie);
+
 /** background gradient **/
 body {
 	background: #f6f4c2 no-repeat; /* Old browsers */
@@ -38,13 +40,19 @@ input[type="submit"] {
   color: white;
   margin-left: 66%;
   font-weight: bold;
+  font-family: Cookie, sans-serif;
+  font-size: x-large;
+  letter-spacing: -0.05em
 }
 
 input[type="submit"]:hover {
-  background: #7d737b;
+  background: #d533de;
+  cursor: pointer;
 }
 
-form label {
+label[for="user_password"],
+label[for="user_email"],
+label[for="user_password_confirmation"] {
   display: none;
 }
 
@@ -68,7 +76,61 @@ form {
   border: solid 1px #ffc8a6;
 }
 
-
 body, p, a, div, form {
   font-family: sans-serif !important;
+}
+
+input[type='checkbox'],
+.login-sublinks {
+  width: 15px;
+  margin-top: 6px;
+  vertical-align: middle;
+  background-color: transparent;
+  line-height: normal !important;
+}
+
+input[type='checkbox'],
+label[for='user_remember_me'] {
+  cursor: pointer;
+}
+
+label[for='user_remember_me']:hover {
+  color: #ff59cb;
+}
+
+label[for='user_remember_me'],
+.login-sublinks {
+  font-size: x-small;
+  color: #777;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.login-sublinks a {
+  text-decoration: none;
+  color: #777;
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.login-sublinks span:before {
+  content: '\2022';
+  margin-left: 5px;
+}
+
+.login-sublinks a:hover {
+  text-decoration: underline;
+  color: #FF59CB;
+}
+
+#sidebar a {
+  color: #ff59cb;
+  font-size: small;  
+}
+
+#sidebar h2 {
+  color: #7d737b;
+  font-weight: bold;
+  font-family: Cookie, sans-serif;
+  font-size: x-large;
+  letter-spacing: -0.05em
 }
