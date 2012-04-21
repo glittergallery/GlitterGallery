@@ -1,8 +1,12 @@
 Glitter::Application.routes.draw do
-  devise_for :users, :controllers => { :registrations => 'registrations' }
-  devise_scope :user do
-    match '/users/repo_init' => 'registrations#repo_init', :as => :users_repo_init
-  end
+  devise_for :users
+  # devise_scope :user do
+  #   match '/users/repo_init' => 'registrations#repo_init', :as => :users_repo_init
+  # end
+
+  resources :projects, :images
+  get 'repo/' => 'repo#index', :as => :dashboard
+    
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
