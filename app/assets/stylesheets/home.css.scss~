@@ -51,7 +51,8 @@ input[type="submit"]:hover {
 }
 
 label[for="user_password"],
-label[for="user_email"] {
+label[for="user_email"],
+label[for="user_password_confirmation" {
   display: none;
 }
 
@@ -132,4 +133,78 @@ label[for='user_remember_me'],
   font-family: Cookie, sans-serif;
   font-size: x-large;
   letter-spacing: -0.05em
+}
+
+
+nav {
+  background: #7d737b;
+  height: 42px;
+  box-shadow: 0 0 10px rgba(125,115,123,1);
+  -webkit-box-shadow: 0 0 10px rgba(125,115,123,1);
+  -moz-box-shadow: 0 0 10px rgba(125,115,123,1);
+}
+
+.welcome {
+  color: white;
+  font-family: Cookie, sans-serif !important;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: -0.05em
+}
+
+nav .logo {
+  color: white;
+  font-family: Cookie, sans-serif !important;
+  font-weight: bold;
+  font-size: 28px;
+  text-align: center;
+  letter-spacing: -0.05em
+}
+
+nav div {
+  margin: 0px !important;
+  padding: 7px;
+}
+
+nav .right {
+  text-align: right;
+}
+
+nav .right a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+nav .right a:hover {
+  text-decoration: underline;
+  color: #FF59CB;
+}
+
+nav div {
+  line-height: 26px;
+}
+
+#upload {
+  position: relative;
+  width: 400px;
+}
+
+.realupload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  -moz-opacity: 0;
+  filter:alpha(opacity:0);
+  z-index: 2;
+  width: 100px;
+}
+
+form .fakeupload {
+  background: url('http://linuxgrrl.com/web/img/logo.png') no-repeat 100% 0%;
+}
+
+form .fakeupload input {
+  width: 200px;
 }

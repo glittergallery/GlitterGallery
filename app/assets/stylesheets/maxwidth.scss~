@@ -40,14 +40,6 @@ div.center {
 	@include column(3);
 }
 
-#logincolumn {
-  @include column(10);
-}
-
-#loginsidebar {
-  @include column(2);
-}
-
 // full page
 #fullpage {
 	@include column(12);
