@@ -5,7 +5,6 @@ $(document).ready(function() {
   $('input[type="password"]').addClass("idleField");
 
   $('input[type="email"], input[type="password"]').focus(function() {  
-    console.log('focus');
     $(this).removeClass("idleField").addClass("focusField");  
 
       }); 
@@ -13,6 +12,23 @@ $(document).ready(function() {
       $('input[type="email"], input[type="password"]').blur(function() {  
         $(this).removeClass("focusField").addClass("idleField");  
       });
-         
+
+  $('#svgfile').focus(function() {
+    $('.fakeupload input').attr('value', this.value);
+  });
+
+/*
+  $('.fakeupload input').focus(function() {
+    console.log('waaaah');
+    console.log($('#svgfile').value);
+    this.value = $('#svgfile').value;
+
+    $('#new_project .fakeupload input').value = 'yo mama';
+    console.log('yomama');
+});*/
+
 });  
+
+
+
 

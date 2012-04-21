@@ -16,19 +16,28 @@
     %header
       %nav#user_nav
         - if user_signed_in?
-          Signed in as
-          = current_user.email
-          = link_to 'Sign out', destroy_user_session_path, :method => :delete
+          .welcome
+            %span.msg
+              welcome,
+            %span.email
+              = current_user.email+'!'
+          .logo
+            Glitter Gallery
+          .right
+            = link_to 'Sign out', destroy_user_session_path, :method => :delete
         - else
           = link_to 'Sign in', new_user_session_path
           or
           = link_to 'Register', new_user_registration_path
-
-
-    %p.notice
-      = notice
-    %p.alert
-      = alert
-
-    = yield
-  
+      #carousel
+        %p.notice
+          = notice
+        %p.alert
+          = alert
+        = yield
+      #maincolumn.createproj
+        = form_tag "/foo", :id => 'new_project' do
+          = text_field_tag :projname, 'Project Name', :placeholder => 'Project Name'
+          .fakeupload
+            %input{:name => "fakeupload", :type => "text"}
+          = file_field_tag :svgfile, :placeholder => 'Add your SVG file', :class => 'realupload'
