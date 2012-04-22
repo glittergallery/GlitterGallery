@@ -36,9 +36,3 @@
           = alert
         = yield
       #maincolumn.createproj
-        = form_tag "/foo", :id => 'new_project' do
-          = text_field_tag :projname, 'Project Name', :placeholder => 'Project Name'
-          #upload
-            .fakeupload
-              %input{:name => "fakeupload", :type => "text"}
-            = file_field_tag :svgfile, :placeholder => 'Add your SVG file', :class => 'realupload'

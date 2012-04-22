@@ -185,24 +185,24 @@ nav div {
   line-height: 26px;
 }
 
-#upload {
+#upload_widget {
   position: relative;
   width: 400px;
+  height: 30px;
 }
 
-.realupload {
+#project_image_file {
   position: absolute;
   top: 0;
-  right: 0;
+  right: -10px;
   opacity: 0;
   -moz-opacity: 0;
-  filter:alpha(opacity:0);
   z-index: 2;
-  width: 100px;
+  width: 100%;
 }
 
 form .fakeupload {
-  background: url('http://linuxgrrl.com/web/img/logo.png') no-repeat 100% 0%;
+  background: url('/assets/button-browse.png') no-repeat 70% 50%;
 }
 
 form .fakeupload input {
