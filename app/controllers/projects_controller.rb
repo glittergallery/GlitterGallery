@@ -28,9 +28,19 @@ class ProjectsController < ApplicationController
           project.images.delete
         end
       end
+      if project_saved
+        redirect_to url_for(project)
+      else
+        redirect_to dashboard_path
+      end
     else
       @project = params[:project]
       flash[:error] = "Didn't save project!"
+      redirect_to dashboard_path
     end
+  end
+  
+  def show
+    @project = Project.find params[:id]
   end
 end
