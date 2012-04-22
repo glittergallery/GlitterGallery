@@ -24,7 +24,7 @@ $(document).ready(function() {
     this.value = $('#svgfile').value;
 
     $('#new_project .fakeupload input').value = 'yo mama';
-    console.log('yomama');
+    console.log('yomama')n;
 });*/
 
 });  
