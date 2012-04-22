@@ -11,8 +11,9 @@ class Repo < ActiveRecord::Base
   private
   def init
     unless File.exists? path
+      gitpath = File.join path , '.git'
       begin
-        Grit::Repo.init_bare(path)
+        Grit::Repo.init_bare(gitpath)
       rescue
         logger.error "Unable to init repo at", path
         raise
