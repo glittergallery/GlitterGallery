@@ -6,14 +6,23 @@
 - content_for :title do
   Dashboard
 
-#repo_link
-  = File.expand_path @user.repo.path
+#carousel
+  %p.notice
+    = notice
+  %p.alert
+    = alert
+#maincolumn
+  %h2 Create a new project
+  #upload
+    = form_for @project do |f|
+      = f.text_field :name, :placeholder => "Name for your project"
+      #upload_widget
+        = f.fields_for :image do |i|
+          .fakeupload
+            %input{:name => 'fakeupload', :type => "text", :placeholder => "Choose an SVG mockup file"}
+          = i.file_field :file
+          
+#sidebar
+  #repo_link
+    = File.expand_path @user.repo.path
 
-#upload
-  = form_for @project do |f|
-    = f.text_field :name, :placeholder => "Name for your project"
-    #upload_widget
-      = f.fields_for :image do |i|
-        .fakeupload
-          %input{:name => "fakeupload", :type => "text", :placeholder => "Choose an SVG mockup file"}
-        = i.file_field :file

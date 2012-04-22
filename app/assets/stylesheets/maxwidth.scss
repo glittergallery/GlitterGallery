@@ -46,13 +46,13 @@ div.center {
 }
 
 nav .welcome {
-  @include column(4);
+  @include column(5);
 }
 
 nav .logo {
-  @include column(4);
+  @include column(2);
 }
 
 nav .right {
-  @include column(4);
+  @include column(5);
 }
