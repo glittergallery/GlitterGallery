@@ -21,18 +21,21 @@
               welcome,
             %span.email
               = current_user.email+'!'
-          .logo
+          %h1.logo
             Glitter Gallery
           .right
             = link_to 'Sign out', destroy_user_session_path, :method => :delete
         - else
           = link_to 'Sign in', new_user_session_path
           or
-          = link_to 'Register', new_user_registration_path
-      #carousel
-        %p.notice
-          = notice
-        %p.alert
-          = alert
-        = yield
-      #maincolumn.createproj
+          = link_to 'Register', new_user_registration_path  
+    
+    = yield
+    #carousel
+      %p.notice
+        = notice
+      %p.alert
+        = alert
+    #content
+      #maincolumn
+

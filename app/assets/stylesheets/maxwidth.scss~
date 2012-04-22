@@ -44,3 +44,15 @@ div.center {
 #fullpage {
 	@include column(12);
 }
+
+nav .welcome {
+  @include column(5);
+}
+
+nav .logo {
+  @include column(4);
+}
+
+nav .right {
+  @include column(3);
+}

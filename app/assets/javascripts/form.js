@@ -1,10 +1,12 @@
 $(document).ready(function() {  
 
   // Set all fields idle
+  $('input[type="text"]').addClass("idleField");  
+  $('input[type="file"]').addClass("idleField");  
   $('input[type="email"]').addClass("idleField");  
   $('input[type="password"]').addClass("idleField");
 
-  $('input[type="email"], input[type="password"]').focus(function() {  
+  $('input[type="email"], input[type="password"], input[type="text"], input[type="file"]').focus(function() {  
     $(this).removeClass("idleField").addClass("focusField");  
 
       }); 
@@ -13,19 +15,11 @@ $(document).ready(function() {
         $(this).removeClass("focusField").addClass("idleField");  
       });
 
-  $('#svgfile').focus(function() {
+  $('#project_image_file').focus(function() {
     $('.fakeupload input').attr('value', this.value);
   });
 
-/*
-  $('.fakeupload input').focus(function() {
-    console.log('waaaah');
-    console.log($('#svgfile').value);
-    this.value = $('#svgfile').value;
-
-    $('#new_project .fakeupload input').value = 'yo mama';
-    console.log('yomama')n;
-});*/
+  $('#project_image_file').attr('size', 60);
 
 });  
 
