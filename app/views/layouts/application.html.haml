@@ -16,19 +16,19 @@
     %header
       %nav#user_nav
         - if user_signed_in?
-          Signed in as
-          = current_user.email
-          = link_to 'Sign out', destroy_user_session_path, :method => :delete
+          .welcome
+            %span.msg
+              welcome,
+            %span.email
+              = current_user.email+'!'
+          %h1.logo
+            Glitter Gallery
+          .right
+            = link_to 'Sign out', destroy_user_session_path, :method => :delete
         - else
           = link_to 'Sign in', new_user_session_path
           or
-          = link_to 'Register', new_user_registration_path
-
-
-    %p.notice
-      = notice
-    %p.alert
-      = alert
-
+          = link_to 'Register', new_user_registration_path  
+    
     = yield
-  
+    

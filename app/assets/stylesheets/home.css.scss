@@ -4,8 +4,14 @@
 
 @import url(http://fonts.googleapis.com/css?family=Cookie);
 
+
+body, p, a, div, form, h1, h2, h3, h4 {
+  font-family: sans-serif !important;
+}
+
 /** background gradient **/
 body {
+  width: 100%;
 	background: #f6f4c2 no-repeat; /* Old browsers */
 	background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #f6f4c2 41%, #f6f4c2 100%) no-repeat; /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(41%,#f6f4c2), color-stop(100%,#f6f4c2)); /* Chrome,Safari4+ */
@@ -16,7 +22,9 @@ body {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f4c2',GradientType=0 ); /* IE6-9 */
 }
 
-body { width: 100%; }
+body.repo {
+  background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #ffffff 60%, #f6f4c2 90%, #f6f4c2 100%) no-repeat; /* FF3.6+ */
+}
 
 input {
   width: 95%;
@@ -31,6 +39,7 @@ input {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border: 1px solid #ccc;
+  margin-bottom: 0.5em;
 } 
 
 input[type="submit"] {
@@ -52,12 +61,17 @@ input[type="submit"]:hover {
 
 label[for="user_password"],
 label[for="user_email"],
-label[for="user_password_confirmation"] {
+label[for="user_password_confirmation" {
   display: none;
 }
 
-form {
-  margin-left: 36% !important;
+body.session form,
+body.new form {
+ margin-left: 36% !important;
+}
+
+#maincolumn > *{
+  margin-left: 36%;
 }
 
 .focusField {
@@ -74,10 +88,6 @@ form {
   background: #fff8f4;
   color: #999;
   border: solid 1px #ffc8a6;
-}
-
-body, p, a, div, form {
-  font-family: sans-serif !important;
 }
 
 input[type='checkbox'],
@@ -132,5 +142,128 @@ label[for='user_remember_me'],
   font-weight: bold;
   font-family: Cookie, sans-serif;
   font-size: x-large;
+  letter-spacing: -0.05em;
+}
+
+nav {
+  background: #7d737b;
+  height: 42px;
+  box-shadow: 0 0 10px rgba(125,115,123,1);
+  -webkit-box-shadow: 0 0 10px rgba(125,115,123,1);
+  -moz-box-shadow: 0 0 10px rgba(125,115,123,1);
+}
+
+.welcome {
+  color: white;
+  font-family: Cookie, sans-serif !important;
+  font-weight: bold;
+  font-size: 18px;
   letter-spacing: -0.05em
+}
+
+nav .logo {
+  color: white;
+  font-family: Cookie, sans-serif !important;
+  font-weight: bold;
+  font-size: 28px;
+  text-align: center;
+  letter-spacing: -0.05em;
+  padding-top: 5px;
+}
+
+nav div {
+  margin: 0px !important;
+  padding: 7px;
+}
+
+nav .right {
+  text-align: right;
+}
+
+nav .right a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+nav .right a:hover {
+  text-decoration: underline;
+  color: #FF59CB;
+}
+
+nav div {
+  line-height: 26px;
+}
+
+#upload_widget {
+  position: relative;
+  height: 30px;
+}
+
+#project_image_file {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  opacity: 0;
+  -moz-opacity: 0;
+  z-index: 2;
+  width: 100%;
+}
+
+form .fakeupload {
+  background: url('/assets/button-browse.png') no-repeat 96% 20%;
+}
+
+form .fakeupload input {
+   width: 77%;
+}
+
+body.index nav {
+  position: absolute;
+  width: 100%;
+  box-shadow: 0 0 10px #7d737b;
+  -webkit-box-shadow: 0 0 10px #7d737b;
+  -moz-box-shadow: 0 0 10px #7d737b;
+}
+
+body.index #carousel {
+  height: 172px;
+  background: url('http://0.0.0.0:3000/assets/tileable_wood_texture-light.png');
+}
+
+#carousel {
+  box-shadow: inset 0 0 10px rgba(125,115,123,1);
+  -webkit-box-shadow: inset 0 0 10px rgba(125,115,123,1);
+  -moz-box-shadow: inset 0px -10px 10px -10px rgba(125,115,123,1);
+  margin-bottom: 1em;
+}
+
+body.sessions nav,
+body.new nav {
+  display: none;
+}
+
+body.sessions,
+body.new {
+  padding-top: 20px;
+}
+
+
+h2 {
+  font-family: Cookie, sans-serif !important;
+  font-size: 24pt !important;
+  font-weight: 700 !important;
+  color: #7D737B;
+  letter-spacing: -0.08em;
+  text-transform: lowercase;
+  text-align: center !important;
+  margin-bottom: .5em !important;
+}
+
+#sidebar h2 {
+  text-align: left !important;
+}
+
+#content {
+  padding-top: 1em;
 }
