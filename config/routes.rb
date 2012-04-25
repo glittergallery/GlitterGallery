@@ -4,7 +4,7 @@ Glitter::Application.routes.draw do
   #   match '/users/repo_init' => 'registrations#repo_init', :as => :users_repo_init
   # end
 
-  resources :projects, :images
+  resources :projects, :glimages
   get 'repo/' => 'repo#index', :as => :dashboard
     
 

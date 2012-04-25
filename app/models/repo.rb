@@ -2,7 +2,7 @@ class Repo < ActiveRecord::Base
   after_create :init
   belongs_to :user
   has_many :projects
-  has_many :images, :through => :projects
+  has_many :glimages, :through => :projects
 
   attr_accessible :path
 

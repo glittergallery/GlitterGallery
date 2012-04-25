@@ -15,11 +15,11 @@ $(document).ready(function() {
         $(this).removeClass("focusField").addClass("idleField");  
       });
 
-  $('#project_image_file').focus(function() {
+  $('#project_glimage_file').focus(function() {
     $('.fakeupload input').attr('value', this.value);
   });
 
-  $('#project_image_file').attr('size', 60);
+  $('#project_glimage_file').attr('size', 60);
 
 });  
 
