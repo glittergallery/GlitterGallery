@@ -1,0 +1,8 @@
+- content_for :title do
+  = @glimage.file.titleize
+
+%h1
+  = @glimage.file.titleize
+
+#show_image
+  = show_image @glimage

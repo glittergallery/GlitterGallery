@@ -11,9 +11,10 @@ gem 'sqlite3'
 gem 'devise'
 gem 'haml'
 gem 'grit'
+gem 'rmagick'
 
 # ruby 1.9 needs bigdecimal
-# gem 'bigdecimal'
+#gem 'bigdecimal'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -25,6 +26,10 @@ group :assets do
   # gem 'therubyracer', :platform => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+end
+
+group :development do
+  gem 'minitest'
 end
 
 gem 'jquery-rails'
