@@ -1,6 +1,6 @@
 $(document).ready(function() {  
   
-  $('#project_image_file').attr('size', 56);
+  $('#project_glimage_file').attr('size', 56);
 
 
   // Set all fields idle
