@@ -1,4 +1,7 @@
 $(document).ready(function() {  
+  
+  $('#project_image_file').attr('size', 56);
+
 
   // Set all fields idle
   $('input[type="text"]').addClass("idleField");  
@@ -11,15 +14,20 @@ $(document).ready(function() {
 
       }); 
 
-      $('input[type="email"], input[type="password"]').blur(function() {  
+      $('input[type="email"], input[type="password"], input[type="text"]').blur(function() {  
         $(this).removeClass("focusField").addClass("idleField");  
       });
+      
+      $('#project_image_file').blur(function() {
+        $('.fakeupload input').removeClass("focusField").addClass("idleField");
+  });  
 
   $('#project_glimage_file').focus(function() {
     $('.fakeupload input').attr('value', this.value);
-  });
+    $('.fakeupload input').removeClass("idleField").addClass("focusField");
+  });  
 
-  $('#project_glimage_file').attr('size', 60);
+
 
 });  
 
