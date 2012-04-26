@@ -226,12 +226,12 @@ body.index nav {
   -moz-box-shadow: 0 0 10px #7d737b;
 }
 
-body.index #carousel {
+body.index #wrap {
   height: 172px;
   background: url('http://0.0.0.0:3000/assets/tileable_wood_texture-light.png');
 }
 
-#carousel {
+#wrap {
   box-shadow: inset 0 0 10px rgba(125,115,123,1);
   -webkit-box-shadow: inset 0 0 10px rgba(125,115,123,1);
   -moz-box-shadow: inset 0px -10px 10px -10px rgba(125,115,123,1);
