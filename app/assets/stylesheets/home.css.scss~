@@ -200,7 +200,7 @@ nav div {
   height: 30px;
 }
 
-#project_image_file {
+#project_glimage_file {
   position: absolute;
   top: 0;
   right: -10px;
@@ -267,3 +267,4 @@ h2 {
 #content {
   padding-top: 1em;
 }
+
