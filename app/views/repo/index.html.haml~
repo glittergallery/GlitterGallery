@@ -6,24 +6,58 @@
 - content_for :title do
   Dashboard
 
-#carousel
-  %p.notice
-    = notice
-  %p.alert
-    = alert
-#content
-  #maincolumn
+#wrap
+  %ul.jcarousel-skin-tango#glittercarousel
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb1.png"}
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb2.png"}
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb3.png"}
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb4.png"}
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb5.png"}
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb6.png"}
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb1.png"}
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb2.png"}
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb3.png"}
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb4.png"}
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb5.png"}
+    %li
+      %a{:href => "#"}
+        %img{:src => "/assets/thumb6.png"}
 
-    %h2 Create a new project
-    #upload
-      = form_for @project do |f|
+#maincolumn
+  %h2 Create a new project
+  #upload
+    = form_for @project do |f|
       = f.text_field :name, :placeholder => "Name for your project"
-    #upload_widget
-      = f.fields_for :image do |i|
-        .fakeupload
-          %input{:name => "fakeupload", :type => "text", :placeholder => "Choose an SVG mockup file"}
-      = i.file_field :file
- #sidebar
-   #repo_link
-     = File.expand_path @user.repo.path
+      #upload_widget
+        = f.fields_for :glimage do |i|
+          .fakeupload
+            %input{:name => 'fakeupload', :type => "text", :placeholder => "Choose an SVG mockup file"}
+          = i.file_field :file
+      = f.submit "Save"
+          
+#sidebar
+  #repo_link
+    = File.expand_path @user.repo.path
 
