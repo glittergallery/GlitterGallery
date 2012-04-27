@@ -1,0 +1,44 @@
+have_func: checking for labs() in stdlib.h... -------------------- yes
+
+"gcc -o conftest -I/usr/include/i386-linux -I/usr/include/ruby/backward -I/usr/include -I.  -D_FILE_OFFSET_BITS=64  -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -march=i686 -mtune=atom -fasynchronous-unwind-tables -m32 -fPIC conftest.c  -L. -L/usr/lib -L. -Wl,-z,relro  -m32 -rdynamic -Wl,-export-dynamic  -m32   -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main() {return 0;}
+/* end */
+
+"gcc -o conftest -I/usr/include/i386-linux -I/usr/include/ruby/backward -I/usr/include -I.  -D_FILE_OFFSET_BITS=64  -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -march=i686 -mtune=atom -fasynchronous-unwind-tables -m32 -fPIC conftest.c  -L. -L/usr/lib -L. -Wl,-z,relro  -m32 -rdynamic -Wl,-export-dynamic  -m32   -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:7:28: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <stdlib.h>
+4: 
+5: /*top*/
+6: int main() {return 0;}
+7: int t() { void ((*volatile p)()); p = (void ((*)()))labs; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for llabs() in stdlib.h... -------------------- yes
+
+"gcc -o conftest -I/usr/include/i386-linux -I/usr/include/ruby/backward -I/usr/include -I.  -D_FILE_OFFSET_BITS=64  -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -march=i686 -mtune=atom -fasynchronous-unwind-tables -m32 -fPIC conftest.c  -L. -L/usr/lib -L. -Wl,-z,relro  -m32 -rdynamic -Wl,-export-dynamic  -m32   -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:7:28: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <stdlib.h>
+4: 
+5: /*top*/
+6: int main() {return 0;}
+7: int t() { void ((*volatile p)()); p = (void ((*)()))llabs; return 0; }
+/* end */
+
+--------------------
+
