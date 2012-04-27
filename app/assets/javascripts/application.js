@@ -14,4 +14,4 @@
 //= require jquery_ujs
 //= require less-1.1.3.min
 //= require form
-//= require_tree .
+//= require jquery.jcarousel.js
