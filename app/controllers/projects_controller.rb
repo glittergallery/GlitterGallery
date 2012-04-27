@@ -61,12 +61,16 @@ class ProjectsController < ApplicationController
       geo += "x#{Rails.application.config.thumbnail_height}"
     end
     # read
-    img = Image.read(image.filepath)[0]
+    #img = Image.read(image.filepath)[0]
     #resize
-    thumb = img.change_geometry(geo) { |cols, rows| img.thumbnail cols, rows }
+    # thumb = img.change_geometry(geo) { |cols, rows| img.thumbnail cols, rows }
     #write
-    thumbfile = image.thumbnail('filepath')
-    thumb.write(thumbfile)
+    # thumbfile = image.thumbnail('filepath')
+    # thumb.write(thumbfile)
+    cmd = "convert #{image.filepath} -resize #{geo} #{image.thumbnail('filepath')}"
+    output = `#{cmd}`
+    logger.debug "output #{output}"
+    logger.debug "result #{$?.success?}"
   end
 
 end
