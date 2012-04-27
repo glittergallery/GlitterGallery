@@ -167,7 +167,7 @@
     width: 32px;
     height: 32px;
     cursor: pointer;
-    background: transparent image-url(/assets/prev-vertical.png) no-repeat 0 0;
+    background: transparent image-url(/assets/prev-vertical) no-repeat 0 0;
 }
 
 .jcarousel-skin-tango .jcarousel-prev-vertical:hover,
