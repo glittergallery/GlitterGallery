@@ -1,7 +1,4 @@
-require 'RMagick'
-
 class ProjectsController < ApplicationController
-  include Magick
 
   before_filter :authenticate_user!, :except => :show
 
