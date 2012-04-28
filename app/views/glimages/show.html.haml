@@ -6,3 +6,10 @@
 
 #show_image
   = show_image @glimage
+
+#comments
+  - @glimage.comments.each do |c|
+    = render 'comments/comment', :comment => c
+
+#new_comment
+  = render 'comments/new', :comment => @comment

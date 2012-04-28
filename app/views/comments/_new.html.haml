@@ -1,0 +1,6 @@
+= form_for comment do |f|
+  = f.hidden_field :glimage_id
+  = f.text_field :author, :placeholder => 'Your name'
+  = f.text_field :email, :placeholder => 'Your email - Optional, for gravatar'
+  = f.text_area :body, :size => "60x12"
+  = f.submit "Post Comment"

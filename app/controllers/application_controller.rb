@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-private
+
+  private
   # Write a file and commit to the repo
   def image_commit(project, imagefile)
     if user_signed_in?
