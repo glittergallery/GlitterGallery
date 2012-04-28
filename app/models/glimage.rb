@@ -1,5 +1,6 @@
 class Glimage < ActiveRecord::Base
   belongs_to :project
+  has_many :comments
 
   attr_accessible :file, :filetype
 
@@ -20,13 +21,13 @@ class Glimage < ActiveRecord::Base
 
   def filepath
     build_parents
-    File.join @repo.path, @project.name, file
+    File.join(@repo.path, @project.name, file)
   end
 
   def imagepath
     build_parents
     reponame = @repo.path.split(File::SEPARATOR).pop
-    File.join 'repos', reponame, @project.name, file
+    File::SEPARATOR + File.join('repos', reponame, @project.name, file)
   end
 
   # Returns thumbnail path
