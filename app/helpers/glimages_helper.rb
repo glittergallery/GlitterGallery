@@ -3,9 +3,9 @@ module GlimagesHelper
   # pass in Glimage object
   def show_image(image)
     if image.is_svg?
-      tag "object", :data => "/assets/#{image.imagepath}"
+      content_tag(:object, :data => "/static/#{image.imagepath}") {}
     else
-      image_tag image.imagepath
+      tag :image, :src => "/static/#{image.imagepath}"
     end
   end
 end
