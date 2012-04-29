@@ -1,6 +1,17 @@
-%ul#glittercarousel.jcarousel-skin-tango
-  - @glimages.each do |i|
-    %li 
-      = link_to url_for(i) do
-        %img{:src => i.thumbnail('imagepath')}
-    
+%h2
+  My Projects
+%ul#projectlist
+  - @projects.each do |p|
+    %li
+      %h3
+        = link_to p.name, url_for(p)
+      .project-thumb
+        = link_to url_for(p) do
+          %img{:src => p.glimages.first.thumbnail('imagepath') }
+      .meta
+        Created on
+        = p.created_at
+        Last updated
+        = p.updated_at
+
+      

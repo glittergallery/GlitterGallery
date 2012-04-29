@@ -2,6 +2,14 @@ class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!, :except => :show
 
+  def new
+    @user = current_user
+    @project = Project.new
+    @project.glimages.build
+    @projects = @user.repo.projects
+    @glimages = @user.repo.glimages
+  end
+
   def create
     logger.debug params.inspect.to_yaml
     repo = current_user.repo
