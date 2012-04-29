@@ -10,6 +10,22 @@
   = render 'projectlist'
 
 #maincolumn
+  %h2 My projects
+  %ul#myprojects
+    %li
+      %h3 Panda World Domination
+      %p Created 1 March 2012
+      %img{:src=>'http://localhost:3000/repos/buddha@lilacs.com/Test/Myfedora-packagedetails-upstreamsvg_thumb.png',:style=>'width: 150px;'}
+    %li
+      %h3 Squirrels Like Nuts
+      %p Created 12 February 2012
+      %img{:src=>'http://localhost:3000/repos/buddha@lilacs.com/Anaconda/02-preinstall_hubsvg_thumb.png',:style=>'width: 150px;'}
+    %li
+      %h3 Bamboo in Space
+      %p Created 6 April 2012
+      %img{:src=>'http://localhost:3000/repos/buddha@lilacs.com/Mailman/listlistsvg_thumb.png',:style=>'width: 150px;'}
+
+
   %h2 Create a new project
   #upload
     = form_for @project do |f|

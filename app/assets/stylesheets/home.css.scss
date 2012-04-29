@@ -22,7 +22,7 @@ body {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f4c2',GradientType=0 ); /* IE6-9 */
 }
 
-body.repo {
+body.repo, body.projects {
   background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #ffffff 60%, #f6f4c2 90%, #f6f4c2 100%) no-repeat; /* FF3.6+ */
 }
 
@@ -258,6 +258,11 @@ h2 {
   text-transform: lowercase;
   text-align: center !important;
   margin-bottom: .5em !important;
+}
+
+body.projects h2 {
+  text-transform: none;
+  text-align:left !important;
 }
 
 #sidebar h2 {
