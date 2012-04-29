@@ -5,6 +5,6 @@ class RepoController < ApplicationController
     @user = current_user
     @project = Project.new
     @project.glimages.build
-    @projects = Project.find_all_by_repo_id(@user.repo.id)
+    @glimages = @user.repo.glimages
   end
 end
