@@ -1,7 +1,9 @@
 # Glitter gallery app config goes here
 
-Glitter::Application.config.thumbnail_width="100"
-Glitter::Application.config.thumbnail_height="100"
+# ImageMagick geometry to use for thumbnail generation
+# defaults to 100 px width
+# http://www.imagemagick.org/script/command-line-processing.php#geometry
+Glitter::Application.config.thumbnail_geometry="150x110!"
 
 # (gr)Avatar options
 ## path to default avatar - should start with slash

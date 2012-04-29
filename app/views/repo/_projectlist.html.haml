@@ -1,0 +1,6 @@
+%ul#glittercarousel.jcarousel-skin-tango
+  - @projects.each do |p|
+    %li 
+      = link_to url_for(p) do
+        %img{:src => p.glimages.first.thumbnail('imagepath')}
+    
