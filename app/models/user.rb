@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   after_create :reposave
   has_one :repo
+  has_many :projects, :through => :repo
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
