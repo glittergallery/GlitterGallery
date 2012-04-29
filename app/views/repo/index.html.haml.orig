@@ -6,34 +6,41 @@
 - content_for :title do
   Dashboard
 
-#carousel
-  %p.notice
-    = notice
-  %p.alert
-    = alert
+= render 'shared/glimageshow', :glimages => @glimages
+
 #maincolumn
+<<<<<<< HEAD
+  %h2 My projects
+  %ul#myprojects
+    %li
+      %h3 Panda World Domination
+      %p Created 1 March 2012
+      %img{:src=>'http://localhost:3000/repos/buddha@lilacs.com/Test/Myfedora-packagedetails-upstreamsvg_thumb.png',:style=>'width: 150px;'}
+    %li
+      %h3 Squirrels Like Nuts
+      %p Created 12 February 2012
+      %img{:src=>'http://localhost:3000/repos/buddha@lilacs.com/Anaconda/02-preinstall_hubsvg_thumb.png',:style=>'width: 150px;'}
+    %li
+      %h3 Bamboo in Space
+      %p Created 6 April 2012
+      %img{:src=>'http://localhost:3000/repos/buddha@lilacs.com/Mailman/listlistsvg_thumb.png',:style=>'width: 150px;'}
+
+
   %h2 Create a new project
   #upload
     = form_for @project do |f|
       = f.text_field :name, :placeholder => "Name for your project"
       #upload_widget
-        = f.fields_for :image do |i|
+        = f.fields_for :glimage do |i|
           .fakeupload
             %input{:name => 'fakeupload', :type => "text", :placeholder => "Choose an SVG mockup file"}
           = i.file_field :file
+      = f.submit "Save"
+=======
+  = render 'projectlist'
+>>>>>>> upstream/master
           
 #sidebar
   #repo_link
     = File.expand_path @user.repo.path
 
-<<<<<<< HEAD
-#upload
-  = form_for @project do |f|
-    = label_tag :name, "Project name"
-    = f.text_field :name
-    = label_tag :image, "Select image to upload"
-    = f.fields_for :image do |i|
-      = i.file_field :file
-    = f.submit "Save"
-=======
->>>>>>> 9ce5d7b625274761f3548d508d9e0cb19f57f352

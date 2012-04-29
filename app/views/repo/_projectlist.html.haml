@@ -1,16 +1,17 @@
 %h2
   My Projects
-%ul#projectlist
+%ul#myprojects
   - @projects.each do |p|
     %li
       %h3
         = link_to p.name, url_for(p)
+      %p
+        Created on
+        = p.created_at
       .project-thumb
         = link_to url_for(p) do
           %img{:src => p.glimages.first.thumbnail('imagepath') }
       .meta
-        Created on
-        = p.created_at
         Last updated
         = p.updated_at
 
