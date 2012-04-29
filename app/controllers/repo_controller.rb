@@ -3,8 +3,7 @@ class RepoController < ApplicationController
 
   def index
     @user = current_user
-    @project = Project.new
-    @project.glimages.build
+    @projects = @user.repo.projects
     @glimages = @user.repo.glimages
   end
 end
