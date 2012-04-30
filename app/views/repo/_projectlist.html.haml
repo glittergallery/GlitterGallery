@@ -1,6 +1,6 @@
 %h2
   My Projects
-%ul#projectlist
+%ul#myprojects
   - @projects.each do |p|
     %li
       %h3
@@ -8,9 +8,16 @@
       .project-thumb
         = link_to url_for(p) do
           %img{:src => p.glimages.first.thumbnail('imagepath') }
-      .updated
+      .meta
+        Created
+        -# um, this evalutes backwards, i'm not sure why
+        - if p.created_at > 1.year.ago
+          = time_tag p.created_at, :format=>'%B %d'
+        - else 
+          = time_tag p.created_at, :format=>'%B %d, %Y'
+        %br
         Last updated
-        = distance_of_time_in_words_to_now p.updated_at
+        =distance_of_time_in_words_to_now p.updated_at
         ago
 
       

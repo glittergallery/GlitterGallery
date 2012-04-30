@@ -36,6 +36,16 @@ div.center {
 #maincolumn {
 	@include column(9);
 }
+
+ul#myprojects {
+  @include column(9);
+}
+
+ul#myprojects li {
+@include column(3,9);
+margin-bottom: 1em;
+}
+
 #sidebar {
 	@include column(3);
 }
@@ -56,3 +66,4 @@ nav .logo {
 nav .right {
   @include column(5);
 }
+
