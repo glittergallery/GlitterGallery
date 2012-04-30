@@ -22,8 +22,12 @@ body {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f4c2',GradientType=0 ); /* IE6-9 */
 }
 
-body.index, body.projects {
+body.index {
   background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #ffffff 200px, #f6f4c2 400px, #f6f4c2 100%) no-repeat; /* FF3.6+ */
+}
+
+body.projects {
+  background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #ffffff 30px, #f6f4c2 200px, #f6f4c2 100%) no-repeat; /* FF3.6+ */
 }
 
 input {
@@ -361,4 +365,12 @@ and you keep this window open. */
 
 body.index h2 {
   text-align: left !important;
+}
+
+body.projects h2 {
+  margin-top: 1em !important;
+}
+
+body.projects ul.images img {
+  margin-bottom: .5em !important;
 }

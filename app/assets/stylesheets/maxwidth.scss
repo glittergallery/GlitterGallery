@@ -41,7 +41,7 @@ ul#myprojects {
   @include column(9);
 }
 
-li {
+ul#myprojects li {
 @include column(3,9);
 margin-bottom: 1em;
 }
