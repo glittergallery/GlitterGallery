@@ -2,7 +2,10 @@
   %ul#glittercarousel.jcarousel-skin-tango
     %li
       #new_project_link
-        = link_to 'New Project', new_project_path
+        %a{:href=>new_project_path}
+          .plus
+            +
+          New Project
     - glimages.each do |i|
       %li 
         = link_to url_for(i) do

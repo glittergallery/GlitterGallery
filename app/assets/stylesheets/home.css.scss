@@ -273,3 +273,88 @@ body.projects h2 {
   padding-top: 1em;
 }
 
+/* Type CSS rules here and they will be applied to
+whatever page is loaded in that tab, as long as the pages
+are from 'localhost:3000'
+and you keep this window open. */
+
+#myprojects li {
+  margin-bottom: 2em;
+}
+
+#myprojects li a {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#myprojects h3 {
+  margin-bottom: 5px !important;
+}
+
+#myprojects p {
+  font-size: x-small;
+  color: #777;
+}
+
+#myprojects img {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-right: 1em;
+  border: 5px solid white;
+
+  box-shadow: 0 0 7px rgba(125,115,123,1);
+  -webkit-box-shadow: 0 0 7px rgba(125,115,123,1);
+  -moz-box-shadow: 0 0 7px rgba(125,115,123,1);
+}
+
+#myprojects .activity {
+  float: right;
+}
+
+#glittercarousel #new_project_link {
+  width: 125px;
+  height: 90px;
+  background: #ff59cb;
+  border: 10px white solid;
+}
+
+#glittercarousel #new_project_link a {
+  font-size: 24px;
+  display: block;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-family: Cookie, sans-serif !important;
+  text-transform: lowercase;
+  letter-spacing: -0.05em;
+  margin-top: 7px;
+}
+
+#glittercarousel #new_project_link a .plus {
+  font-size: 38px !important;
+}
+
+
+.project-thumb img {
+  display: block;
+  min-height: 110px !important;
+  width: 150px;
+  background-color: white;
+}
+
+#myprojects h3 a:link,
+#myprojects h3 a:visited,
+#myprojects h3 a:active {
+  color: #ff59cb;
+}
+
+
+#myprojects .meta {
+  color: #777;
+  font-size: x-small;
+}
+
+#myprojects .meta .updated {
+  margin-left: 5px;
+}
