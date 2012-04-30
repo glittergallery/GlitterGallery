@@ -8,10 +8,16 @@
 
 = render 'shared/glimageshow', :glimages => @glimages
 
-#maincolumn
-  = render 'projectlist'
+.center
+  #dashboard
+    = render 'projectlist'
           
-#sidebar
-  #repo_link
-    = File.expand_path @user.repo.path
+  #sidebar
+    %h2 toolbox
+    %ul
+      %li
+        = link_to 'Add a new project', new_project_path
+      %li#repo_link
+        = File.expand_path @user.repo.path
+        
 

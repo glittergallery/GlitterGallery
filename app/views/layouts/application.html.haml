@@ -23,8 +23,9 @@
               welcome,
             %span.email
               = current_user.email+'!'
-          %h1.logo
-            Glitter Gallery
+          = link_to root_url do
+            %h1.logo
+              Glitter Gallery
           .right
             = link_to 'Sign out', destroy_user_session_path, :method => :delete
         - else
