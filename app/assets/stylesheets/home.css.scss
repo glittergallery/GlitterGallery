@@ -70,7 +70,7 @@ body.new form {
  margin-left: 36% !important;
 }
 
-#maincolumn > *{
+body.new #maincolumn > *{
   margin-left: 36%;
 }
 
@@ -357,4 +357,8 @@ and you keep this window open. */
 
 #myprojects .meta .updated {
   margin-left: 5px;
+}
+
+body.index h2 {
+  text-align: left !important;
 }
