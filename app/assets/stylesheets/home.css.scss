@@ -70,7 +70,7 @@ label[for="user_password_confirmation"] {
 }
 
 body.session form,
-body.new form {
+body.registrations form {
  margin-left: 36% !important;
 }
 
@@ -155,6 +155,14 @@ nav {
   box-shadow: 0 0 10px rgba(125,115,123,1);
   -webkit-box-shadow: 0 0 10px rgba(125,115,123,1);
   -moz-box-shadow: 0 0 10px rgba(125,115,123,1);
+  a {
+    font-family: inherit;
+    color: white;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .welcome {
@@ -222,20 +230,16 @@ form .fakeupload input {
    width: 77%;
 }
 
-body.index nav {
+nav#user_nav {
   position: absolute;
   width: 100%;
   box-shadow: 0 0 10px #7d737b;
   -webkit-box-shadow: 0 0 10px #7d737b;
   -moz-box-shadow: 0 0 10px #7d737b;
 }
-
-body.index #wrap {
+#wrap {
   height: 172px;
   background: url('http://0.0.0.0:3000/assets/tileable_wood_texture-light.png');
-}
-
-#wrap {
   box-shadow: inset 0 0 10px rgba(125,115,123,1);
   -webkit-box-shadow: inset 0 0 10px rgba(125,115,123,1);
   -moz-box-shadow: inset 0px -10px 10px -10px rgba(125,115,123,1);
@@ -243,12 +247,12 @@ body.index #wrap {
 }
 
 body.sessions nav,
-body.new nav {
+body.registrations nav {
   display: none;
 }
 
 body.sessions,
-body.new {
+body.registrations {
   padding-top: 20px;
 }
 

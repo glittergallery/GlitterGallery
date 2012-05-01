@@ -34,7 +34,7 @@ div.center {
 
 // main column & sidebar
 #maincolumn {
-	@include column(9);
+  @include column(9);
 }
 
 ul#myprojects {
