@@ -1,7 +1,7 @@
 $(document).ready(function() {  
-  
-  $('#project_glimage_file').attr('size', 56);
 
+  var fileInput = $('input[type=file]', '#upload_widget');
+  fileInput.attr('size', 56);
 
   // Set all fields idle
   $('input[type="text"]').addClass("idleField");  
@@ -18,11 +18,11 @@ $(document).ready(function() {
         $(this).removeClass("focusField").addClass("idleField");  
       });
       
-      $('#project_image_file').blur(function() {
+      fileInput.blur(function() {
         $('.fakeupload input').removeClass("focusField").addClass("idleField");
   });  
 
-  $('#project_glimage_file').focus(function() {
+  fileInput.focus(function() {
     $('.fakeupload input').attr('value', this.value);
     $('.fakeupload input').removeClass("idleField").addClass("focusField");
   });  

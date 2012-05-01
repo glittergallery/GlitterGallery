@@ -32,4 +32,19 @@ class ApplicationController < ActionController::Base
     index.commit message, parent
   end
 
+  def create_thumbnail(image)
+    geo = Rails.application.config.thumbnail_geometry.nil? ? "100" : Rails.application.config.thumbnail_geometry
+    # read
+    #img = Image.read(image.filepath)[0]
+    #resize
+    # thumb = img.change_geometry(geo) { |cols, rows| img.thumbnail cols, rows }
+    #write
+    # thumbfile = image.thumbnail('filepath')
+    # thumb.write(thumbfile)
+    cmd = "convert #{image.filepath} -thumbnail '#{geo}' #{image.thumbnail('filepath')}"
+    output = `#{cmd}`
+    logger.debug "output #{output}"
+    logger.debug "result #{$?.success?}"
+  end
+
 end
