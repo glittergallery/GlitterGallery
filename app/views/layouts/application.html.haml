@@ -22,7 +22,7 @@
             %span.msg
               welcome,
             %span.email
-              = current_user.email+'!'
+              = link_to current_user.email + '!', dashboard_path
           = link_to root_url do
             %h1.logo
               Glitter Gallery

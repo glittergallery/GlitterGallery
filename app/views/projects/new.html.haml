@@ -20,8 +20,4 @@
             %input{:name => 'fakeupload', :type => "text", :placeholder => "Choose an SVG mockup file"}
           = i.file_field :file
       = f.submit "Save"
-          
-#sidebar
-  #repo_link
-    = File.expand_path @user.repo.path
 
