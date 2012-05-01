@@ -7,7 +7,7 @@ class CommentsController < ApplicationController
     if comment.save
       flash[:notice] = 'Your comment was posted!'
     else
-      flash[:error] = 'Something went wrong, try reposting your comment.'
+      flash[:alert] = 'Something went wrong, try reposting your comment.'
     end
     img = Glimage.find(comment.glimage_id)
     redirect_to url_for(img)

@@ -1,6 +1,9 @@
 <div class='header' id='top'>
   <img alt="Logo" id="logo" src="/assets/logo.png" />
 </div>
+
+= render 'shared/messages'
+
 <div class='center'>
   <div id='maincolumn'>
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>

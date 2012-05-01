@@ -5,9 +5,12 @@
   %h2
     = @project.name.titleize
 
+  = render 'shared/messages'
+
   = render 'images'
 
-  #new_image
+  #upload
+
     %h3 New image
     = form_for @glimage, :class => 'fakeupload' do |f|
       = f.hidden_field :project_id
