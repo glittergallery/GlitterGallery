@@ -1,6 +1,9 @@
 $(document).ready(function() {  
 
-  var fileInput = $('input[type=file]', '#upload_widget');
+  var fileInput, fakeInput, focusCount = 0;
+  fileInput = $('input[type=file]', '#upload_widget');
+  fakeInput = $('.fakeupload input');
+
   fileInput.attr('size', 56);
 
   // Set all fields idle
@@ -20,13 +23,31 @@ $(document).ready(function() {
       
       fileInput.blur(function() {
         $('.fakeupload input').removeClass("focusField").addClass("idleField");
-  });  
+      });  
+
+  
+  fakeInput.focus(function() {
+    if(shouldShowFileSelection()) {
+      fileInput.click();
+    }
+  });
+  $('#upload input').focus(function(e) {
+	  if (!($(e.currentTarget).is(fakeInput))) {
+	    focusCount = 0
+	  }
+  });
 
   fileInput.focus(function() {
-    $('.fakeupload input').attr('value', this.value);
-    $('.fakeupload input').removeClass("idleField").addClass("focusField");
+    fakeInput.attr('value', this.value);
+    fakeInput.removeClass("idleField").addClass("focusField");
   });  
 
+  function shouldShowFileSelection() {
+    if(focusCount == 0) {
+      focusCount++;
+      return true;
+    }
+  }
 
 
 });  
