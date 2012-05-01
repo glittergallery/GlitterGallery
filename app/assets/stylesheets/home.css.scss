@@ -212,7 +212,7 @@ nav div {
   height: 30px;
 }
 
-#project_glimage_file {
+#upload_widget input[type=file] {
   position: absolute;
   top: 0;
   right: -10px;
@@ -230,8 +230,10 @@ form .fakeupload input {
    width: 77%;
 }
 
+// header + #wrap {
+//   position: absolute;
+// }
 nav#user_nav {
-  position: absolute;
   width: 100%;
   box-shadow: 0 0 10px #7d737b;
   -webkit-box-shadow: 0 0 10px #7d737b;

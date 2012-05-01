@@ -12,7 +12,7 @@
 #maincolumn
   %h2 Create a new project
   #upload
-    = form_for @project do |f|
+    = form_for @project, :class => 'fakeupload' do |f|
       = f.text_field :name, :placeholder => "Name for your project"
       #upload_widget
         = f.fields_for :glimage do |i|

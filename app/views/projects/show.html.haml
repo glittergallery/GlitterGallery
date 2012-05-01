@@ -1,9 +1,18 @@
 .center
-  #fullpage
-    - content_for :title do
-      = @project.name.titleize
+  - content_for :title do
+    = @project.name.titleize
 
-    %h2
-      = @project.name.titleize
+  %h2
+    = @project.name.titleize
 
-    = render 'images'
+  = render 'images'
+
+  #new_image
+    %h3 New image
+    = form_for @glimage, :class => 'fakeupload' do |f|
+      = f.hidden_field :project_id
+      #upload_widget
+        .fakeupload
+          %input{:name => 'fakeupload', :type => 'text', :placeholder => 'Choose an SVG mockup file'}
+          = f.file_field :file
+      = f.submit 'Save'
