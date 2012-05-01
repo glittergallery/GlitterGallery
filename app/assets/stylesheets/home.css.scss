@@ -30,6 +30,22 @@ body.projects {
   background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #ffffff 30px, #f6f4c2 200px, #f6f4c2 100%) no-repeat; /* FF3.6+ */
 }
 
+p.notice {
+  font-family: Cookie, sans-serif;
+  color: darken(#ff59cb, 20%); 
+  background: lighten(#ff59cb, 30%);
+  margin: 10px 0;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(255, 59, 203, .4);
+}
+
+p.alert {
+  font-family: Sans-serif;
+  color: #660000;
+  background: #eeffff;
+  border: 1px solid #cc0000;
+}
+
 input {
   width: 95%;
   height: 33px;

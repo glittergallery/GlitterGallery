@@ -24,8 +24,8 @@ class ProjectsController < ApplicationController
         unless File.exists? project_dir
           Dir.mkdir project_dir
         end
-      rescue SystemCallError
-        flash[:error] = "Unable to create project directory in repo, rolling back repo"
+      rescue SystemCallalert
+        flash[:alert] = "Unable to create project directory in repo, rolling back repo"
         project.delete
         project_saved = false
       else
@@ -35,8 +35,8 @@ class ProjectsController < ApplicationController
           imagefile = params[:project][:glimage][:file]
           image_commit project, imagefile
           create_thumbnail project.glimages[0]
-        rescue SystemCallError
-          flash[:error] = "Unable to write image file to repo"
+        rescue SystemCallalert
+          flash[:alert] = "Unable to write image file to repo"
           project.glimages.delete
         end
       end
@@ -47,7 +47,7 @@ class ProjectsController < ApplicationController
       end
     else
       @project = params[:project]
-      flash[:error] = "Didn't save project!"
+      flash[:alert] = "Didn't save project!"
       redirect_to dashboard_path
     end
   end
