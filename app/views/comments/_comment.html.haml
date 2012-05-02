@@ -1,9 +1,12 @@
-.comment-meta
-  = avatar(comment.email)
-  Posted by
-  = comment.author
-  on
-  = comment.created_at
+.comment
+  .comment-meta
+    = avatar(comment.email)
+    %p.author
+      Posted by
+      = comment.author
+    %p.time
+      = distance_of_time_in_words_to_now comment.created_at
+      ago
 
-.comment-body
-  = comment.body
+  .comment-body
+    = comment.body

@@ -17,7 +17,7 @@
           = time_tag p.created_at, :format=>'%B %d, %Y'
         %br
         Last updated
-        =distance_of_time_in_words_to_now p.updated_at
+        = distance_of_time_in_words_to_now p.last_updated
         ago
 
       
