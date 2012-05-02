@@ -5,8 +5,15 @@
 @import url(http://fonts.googleapis.com/css?family=Cookie);
 
 
-body, p, a, div, form, h1, h2, h3, h4 {
-  font-family: sans-serif !important;
+body, p, a, div, form {
+  font-family: sans-serif;
+}
+h1, h2 {
+  font-family: Cookie, sans-serif;
+} 
+h3.title {
+  font-family: Cookie;
+  font-size: large;
 }
 
 /** background gradient **/
@@ -30,19 +37,22 @@ body.projects {
   background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #ffffff 30px, #f6f4c2 200px, #f6f4c2 100%) no-repeat; /* FF3.6+ */
 }
 
+p.message {
+  margin: 10px 0;
+  padding: 10px;
+}
+
 p.notice {
   font-family: Cookie, sans-serif;
   color: darken(#ff59cb, 20%); 
   background: lighten(#ff59cb, 30%);
-  margin: 10px 0;
-  padding: 10px;
   box-shadow: 0 0 5px rgba(255, 59, 203, .4);
 }
 
 p.alert {
   font-family: Sans-serif;
   color: #660000;
-  background: #eeffff;
+  background: #ff9999;
   border: 1px solid #cc0000;
 }
 

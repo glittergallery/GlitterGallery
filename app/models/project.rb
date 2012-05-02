@@ -7,4 +7,11 @@ class Project < ActiveRecord::Base
 
   validates :name, :presence => true
 
+  # get the last update time
+  # of the images in the project
+  def last_updated
+    g = Glimage.find_by_project_id(id, :order => 'updated_at DESC')
+    g.updated_at
+  end
+
 end

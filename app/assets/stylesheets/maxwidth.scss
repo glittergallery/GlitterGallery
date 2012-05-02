@@ -54,6 +54,13 @@ margin-bottom: 1em;
 	@include column(12);
 }
 
+#comments {
+  @include column(6);
+}
+#commentform {
+  @include column(6);
+}
+
 nav .welcome {
   @include column(5);
 }
