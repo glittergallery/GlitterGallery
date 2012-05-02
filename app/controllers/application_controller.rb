@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
     #write
     # thumbfile = image.thumbnail('filepath')
     # thumb.write(thumbfile)
-    cmd = "convert #{image.filepath} -thumbnail '#{geo}' #{image.thumbnail('filepath')}"
+    cmd = "convert '#{image.filepath}' -thumbnail '#{geo}' '#{image.thumbnail('filepath')}'"
     output = `#{cmd}`
     logger.debug "output #{output}"
     logger.debug "result #{$?.success?}"
