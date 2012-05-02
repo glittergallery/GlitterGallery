@@ -11,7 +11,8 @@ gem 'sqlite3'
 gem 'devise'
 gem 'haml'
 gem 'grit'
-# gem 'rmagick'
+gem 'opinio'
+gem 'escape'
 
 # ruby 1.9 needs bigdecimal
 # gem 'bigdecimal'
