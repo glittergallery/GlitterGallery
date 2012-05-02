@@ -1,4 +1,6 @@
+require 'escape'
 class ApplicationController < ActionController::Base
+  include Escape
   protect_from_forgery
 
   private
@@ -34,14 +36,8 @@ class ApplicationController < ActionController::Base
 
   def create_thumbnail(image)
     geo = Rails.application.config.thumbnail_geometry.nil? ? "100" : Rails.application.config.thumbnail_geometry
-    # read
-    #img = Image.read(image.filepath)[0]
-    #resize
-    # thumb = img.change_geometry(geo) { |cols, rows| img.thumbnail cols, rows }
-    #write
-    # thumbfile = image.thumbnail('filepath')
-    # thumb.write(thumbfile)
-    cmd = "convert '#{image.filepath}' -thumbnail '#{geo}' '#{image.thumbnail('filepath')}'"
+    cmd = Escape.shell_command ["convert", image.filepath, '-thumbnail', geo, image.thumbnail('filepath')]
+    logger.debug "Command: #{cmd}"
     output = `#{cmd}`
     logger.debug "output #{output}"
     logger.debug "result #{$?.success?}"
