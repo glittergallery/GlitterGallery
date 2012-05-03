@@ -1,0 +1,24 @@
+// Place all the styles related to the projects controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body.projects {
+
+  &.show {
+    #upload {
+      width: 64%;
+      margin-top: 30px;
+
+      h3 {
+        font-family: Cookie, sans-serif;
+        color: #7D737B;
+      }
+    }
+  }
+
+  ul.images li {
+    display: inline-block;
+    margin: 10px;
+    margin-left: 0;
+  }
+}

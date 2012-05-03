@@ -1,0 +1,16 @@
+== Glitter Gallery
+
+Glitter Gallery _will be_ an amazing way to collaborate on design! 
+
+The goals are to allow designers to easily share their work, gather and parse feedback in a useful way, and version their work just as developers are able to. 
+
+Glitter Gallery will be somewhat biased to support SVGs from Inkscape, and to work with the magicmockup rapid prototyping program. That doesn't mean it won't work with other filetypes, though!
+
+=== Get involved
+
+Email us and let us know you're interested, and what you can do, and we'll figure out something you can help with. Or just fork it and hack on it! Up to you!
+
+=== Authors
+
+Maírín Duffy (duffy@fedoraproject.org)
+Emily Dirsh (emily@redhat.com)

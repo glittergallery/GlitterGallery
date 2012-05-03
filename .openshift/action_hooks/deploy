@@ -8,3 +8,8 @@
 #pushd ${OPENSHIFT_REPO_DIR} > /dev/null
 #bundle exec rake db:migrate RAILS_ENV="production"
 #popd > /dev/null
+
+pushd ${OPENSHIFT_REPO_DIR} > /dev/null
+bundle exec rake assets:precompile
+bundle exec rake db:migrate RAILS_ENV="production"
+popd > /dev/null

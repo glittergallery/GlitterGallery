@@ -1,0 +1,18 @@
+- content_for :title do
+  = @glimage.file.titleize
+
+%h1
+  = @glimage.file.titleize
+
+= render 'shared/messages'
+
+#show_image
+  = show_image @glimage
+
+#comments
+  - @glimage.comments.each do |c|
+    = render 'comments/comment', :comment => c
+
+#commentform
+  %h3.title Add a comment
+  = render 'comments/new', :comment => @comment
