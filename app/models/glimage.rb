@@ -7,7 +7,7 @@ class Glimage < ActiveRecord::Base
   validates :file, :presence => true
 
   def is_svg?
-    filetype == 'image/svg+xml'
+    filetype == 'image/svg+xml' || file.split('.').pop == 'svg'
   end
 
   def build_parents
