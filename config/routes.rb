@@ -6,8 +6,7 @@ Glitter::Application.routes.draw do
 
   resources :projects, :glimages, :comments
 
-  get 'repo/' => 'repo#index', :as => :dashboard
-    
+  get 'dashboard/' => 'dashboard#index', :as => :dashboard
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

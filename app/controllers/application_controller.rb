@@ -2,22 +2,21 @@ require 'escape'
 class ApplicationController < ActionController::Base
   include Escape
   protect_from_forgery
-
+  
   private
   # Write a file and commit to the repo
   def image_commit(project, imagefile)
     if user_signed_in?
-      destfile = File.join project.name, imagefile.original_filename
-      commit current_user.repo.path, destfile, imagefile.read, "new file #{project.name}/#{imagefile.original_filename}" 
+      commit project.path, imagefile.original_filename, imagefile.read, "new file #{imagefile.original_filename}" 
     end
   end
 
-  # Add magicmockup to user's repo
-  def add_the_magic
-    if user_signed_in? and not File.exists? File.join(current_user.repo.path, "magicmockup.js")
+  # Add magicmockup to project repo
+  def add_the_magic(project)
+    if user_signed_in? and not File.exists? File.join(project.path, "magicmockup.js")
       magicfile = File.join 'app', 'assets', 'javascripts', 'magicmockup.js'
       magic = File.open(magicfile).read
-      commit current_user.repo.path, "magicmockup.js", magic, "Add magickmockup.js"
+      commit project.path, "magicmockup.js", magic, "Add magicmockup.js"
     end
   end
 

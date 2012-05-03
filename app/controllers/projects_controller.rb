@@ -6,39 +6,26 @@ class ProjectsController < ApplicationController
     @user = current_user
     @project = Project.new
     @project.glimages.build
-    @projects = @user.repo.projects
-    @glimages = @user.repo.glimages
+    @projects = @user.projects
+    @glimages = @user.glimages
   end
 
   def create
-    logger.debug params.inspect.to_yaml
-    repo = current_user.repo
-    project = repo.projects.new :name => params[:project][:name]
+    project = Project.new :name => params[:project][:name]
+    project.user_id = current_user.id
     project.glimages.new :file => params[:project][:glimage][:file].original_filename, :filetype => params[:project][:glimage][:file].content_type
     if project.save
-      add_the_magic # add magicmockup.js if needed
+      add_the_magic project # add magicmockup.js if needed
       project_saved = true
-      # make directory in repo
-      project_dir = File.join repo.path, project.name
+      #write imagefile
       begin
-        unless File.exists? project_dir
-          Dir.mkdir project_dir
-        end
+        #write file and commit to repo
+        imagefile = params[:project][:glimage][:file]
+        image_commit project, imagefile
+        create_thumbnail project.glimages.first
       rescue SystemCallalert
-        flash[:alert] = "Unable to create project directory in repo, rolling back repo"
-        project.delete
-        project_saved = false
-      else
-        #write imagefile
-        begin
-          #write file and commit to repo
-          imagefile = params[:project][:glimage][:file]
-          image_commit project, imagefile
-          create_thumbnail project.glimages[0]
-        rescue SystemCallalert
-          flash[:alert] = "Unable to write image file to repo"
-          project.glimages.delete
-        end
+        flash[:alert] = "Unable to write image file to repo"
+        project.glimages.delete
       end
       if project_saved
         redirect_to url_for(project)

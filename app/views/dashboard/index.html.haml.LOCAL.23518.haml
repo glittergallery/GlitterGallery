@@ -1,0 +1,19 @@
+-#
+  Show the user's dashboard.
+  Currently only has the upload image form
+  and the path to the user's repo
+
+- content_for :title do
+  Dashboard
+
+#repo_link
+  = File.expand_path @user.repo.path
+
+#upload
+  = form_for @project do |f|
+    = label_tag :name, "Project name"
+    = f.text_field :name
+    = label_tag :image, "Select image to upload"
+    = f.fields_for :image do |i|
+      = i.file_field :file
+    = f.submit "Save"

@@ -14,20 +14,19 @@ class Glimage < ActiveRecord::Base
     if @project.nil?
       @project = Project.find(project_id)
     end
-    if @repo.nil?
-      @repo = Repo.find(@project.repo_id)
+    if @user.nil?
+      @user= User.find(@project.user_id)
     end
   end
 
   def filepath
     build_parents
-    File.join(@repo.path, @project.name, file)
+    File.join(@project.path, file)
   end
 
   def imagepath
     build_parents
-    reponame = @repo.path.split(File::SEPARATOR).pop
-    File::SEPARATOR + File.join('repos', reponame, @project.name, file)
+    File::SEPARATOR + File.join('repos', @user.email, @project.name, file)
   end
 
   # Returns thumbnail path
@@ -37,6 +36,5 @@ class Glimage < ActiveRecord::Base
     path = File.dirname(send(pathtype))
     File.join path, "#{filename}_thumb.png"
   end
-
   
 end
