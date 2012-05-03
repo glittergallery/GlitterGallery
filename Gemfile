@@ -1,5 +1,5 @@
-# source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
-source 'https://rubygems.org'
+source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
+# source 'https://rubygems.org'
 
 gem 'rails', '3.2.3'
 
@@ -14,7 +14,7 @@ gem 'grit'
 gem 'escape'
 
 # ruby 1.9 needs bigdecimal
-gem 'bigdecimal'
+# gem 'bigdecimal'
 
 # Gems used only for assets and not required
 # in production environments by default.
