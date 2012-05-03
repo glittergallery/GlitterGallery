@@ -8,7 +8,5 @@ module ApplicationHelper
       gravatar_size = Rails.application.config.gravatar_size
       tag :image, :src => "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(root_url + default)}"
     end
-    
-
   end
 end
