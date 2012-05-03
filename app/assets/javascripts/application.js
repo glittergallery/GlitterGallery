@@ -15,3 +15,6 @@
 //= require less-1.1.3.min
 //= require form
 //= require jquery.jcarousel.js
+//= require jquery.annotate
+//= require jquery-ui
+//= require glimages
