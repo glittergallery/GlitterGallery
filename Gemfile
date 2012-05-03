@@ -1,5 +1,5 @@
 source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
-source 'https://rubygems.org'
+# source 'https://rubygems.org'
 
 gem 'rails', '3.2.3'
 
@@ -11,7 +11,6 @@ gem 'sqlite3'
 gem 'devise'
 gem 'haml'
 gem 'grit'
-gem 'opinio'
 gem 'escape'
 
 # ruby 1.9 needs bigdecimal
