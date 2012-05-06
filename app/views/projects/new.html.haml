@@ -16,10 +16,5 @@
   #upload
     = form_for @project, :class => 'fakeupload' do |f|
       = f.text_field :name, :placeholder => "Name for your project"
-      #upload_widget
         = f.fields_for :glimage do |i|
-          .fakeupload
-            %input{:name => 'fakeupload', :type => "text", :placeholder => "Choose an SVG mockup file"}
-          = i.file_field :file
-      = f.submit "Save"
-
+          = render 'glimages/form', :form => i
