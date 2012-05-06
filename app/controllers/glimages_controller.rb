@@ -4,7 +4,7 @@ class GlimagesController < ApplicationController
   def create
     project = Project.find(params[:glimage][:project_id])
     if params[:glimage][:file]
-      img = Glimage.new :file => params[:glimage][:file].original_filename
+      img = Glimage.new :file => params[:glimage][:file].original_filename, :private => params[:glimage][:private]
       img.project_id = project.id
       if img.save
         image_commit project, params[:glimage][:file]
@@ -21,11 +21,19 @@ class GlimagesController < ApplicationController
 
   def update
     glimage = Glimage.find params[:id]
-    project = Project.find glimage.project_id
-    imagefile = params[:glimage][:file]
-    message = "Updated #{glimage.file}"
-    commit project.path, glimage.file, imagefile.read, message
-    create_thumbnail glimage
+    glimage.private = params[:glimage][:private]
+    if glimage.save
+      if params[:glimage][:file]
+        project = Project.find glimage.project_id
+        imagefile = params[:glimage][:file]
+        message = "Updated #{glimage.file}"
+        commit project.path, glimage.file, imagefile.read, message
+        create_thumbnail glimage
+      end
+      flash[:notice] = "#{glimage.file} has been updated! Shiny!"
+    else
+      flash[:alert] = "Unable to update #{glimage.file}. The server ponies are sad."
+    end
     redirect_to url_for(glimage)
   end
 

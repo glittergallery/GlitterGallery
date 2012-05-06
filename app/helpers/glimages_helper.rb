@@ -14,4 +14,16 @@ module GlimagesHelper
       render 'glimages/glimage_tools'
     end
   end
+
+  def private_msg(glimage)
+    if glimage.private?
+      content_tag :p, :class => 'private' do
+        'This image is private. That means it will not be included in the public gallery.'
+      end
+    else
+      content_tag :p, :class => 'public' do
+        'This image is public. That means it will be included in the public gallery.'
+      end
+    end
+  end
 end

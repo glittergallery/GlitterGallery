@@ -13,7 +13,9 @@ class ProjectsController < ApplicationController
   def create
     project = Project.new :name => params[:project][:name]
     project.user_id = current_user.id
-    project.glimages.new :file => params[:project][:glimage][:file].original_filename, :filetype => params[:project][:glimage][:file].content_type
+    project.glimages.new :file => params[:project][:glimage][:file].original_filename, 
+                         :filetype => params[:project][:glimage][:file].content_type,
+                         :private => params[:project][:glimage][:private]
     if project.save
       add_the_magic project # add magicmockup.js if needed
       project_saved = true

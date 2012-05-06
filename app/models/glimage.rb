@@ -2,7 +2,7 @@ class Glimage < ActiveRecord::Base
   belongs_to :project
   has_many :comments
 
-  attr_accessible :file, :filetype
+  attr_accessible :file, :filetype, :private
 
   validates :file, :presence => true
 
