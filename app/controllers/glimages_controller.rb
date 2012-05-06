@@ -1,4 +1,5 @@
 class GlimagesController < ApplicationController
+  before_filter :authenticate_user!, :except => :show
   
   def create
     project = Project.find(params[:glimage][:project_id])
@@ -18,10 +19,28 @@ class GlimagesController < ApplicationController
     redirect_to url_for(project)
   end
 
+  def update
+    glimage = Glimage.find params[:id]
+    project = Project.find glimage.project_id
+    imagefile = params[:glimage][:file]
+    message = "Updated #{glimage.file}"
+    commit project.path, glimage.file, imagefile.read, message
+    create_thumbnail glimage
+    redirect_to url_for(glimage)
+  end
+
   def show
     @glimage = Glimage.find params[:id]
     @comment = Comment.new
     @comment.glimage_id = params[:id]
   end
+
+  def edit
+    @glimage = Glimage.find params[:id]
+    unless @glimage.belongs_to? current_user
+      redirect_to root_url
+    end
+  end
+
 
 end

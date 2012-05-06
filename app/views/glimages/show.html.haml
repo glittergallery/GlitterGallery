@@ -9,6 +9,8 @@
 #show_image
   = show_image @glimage
 
+= glimage_tools @glimage
+
 #comments
   - @glimage.comments.each do |c|
     = render 'comments/comment', :comment => c
