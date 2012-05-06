@@ -36,5 +36,9 @@ class Glimage < ActiveRecord::Base
     path = File.dirname(send(pathtype))
     File.join path, "#{filename}_thumb.png"
   end
+
+  def belongs_to?(user)
+    user.projects.include?(Project.find(project_id))
+  end
   
 end

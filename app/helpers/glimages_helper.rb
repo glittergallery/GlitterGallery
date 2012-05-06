@@ -8,4 +8,10 @@ module GlimagesHelper
       tag :image, :src => "#{image.imagepath}"
     end
   end
+
+  def glimage_tools(glimage)
+    if user_signed_in? and glimage.belongs_to? current_user
+      render 'glimages/glimage_tools'
+    end
+  end
 end
