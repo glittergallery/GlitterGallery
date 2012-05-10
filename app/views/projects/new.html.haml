@@ -1,8 +1,3 @@
--#
-  Show the user's dashboard.
-  Currently only has the upload image form
-  and the path to the user's repo
-
 - content_for :title do
   Create New Project
   
@@ -16,5 +11,5 @@
   #upload
     = form_for @project, :class => 'fakeupload' do |f|
       = f.text_field :name, :placeholder => "Name for your project"
-        = f.fields_for :glimage do |i|
-          = render 'glimages/form', :form => i
+      = f.fields_for :glimage do |i|
+        = render 'glimages/form', :form => i
