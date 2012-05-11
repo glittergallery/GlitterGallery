@@ -139,10 +139,15 @@ label[for='user_remember_me']:hover {
 }
 
 label[for='user_remember_me'],
-.login-sublinks {
+.login-sublinks,
+label[for='private'] {
   font-size: x-small;
   color: #777;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+label[for='private'] {
+  vertical-align: middle;
 }
 
 .login-sublinks a {
@@ -236,6 +241,7 @@ nav div {
 #upload_widget {
   position: relative;
   height: 30px;
+  margin-bottom: .5em;
 }
 
 #upload_widget input[type=file] {
@@ -421,7 +427,8 @@ body.projects ul.images img {
   padding: 7px;
 }
 
-.glimages p.message {
+.glimages p.message,
+.projects .message {
   width: 95% !important;
   margin-left: auto;
   margin-right: auto;
