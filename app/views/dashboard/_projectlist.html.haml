@@ -3,11 +3,11 @@
 %ul#myprojects
   - @projects.each do |p|
     %li
-      %h3
-        = link_to p.name, url_for(p)
       .project-thumb
         = link_to url_for(p) do
           %img{:src => p.glimages.first.thumbnail('imagepath') }
+      %h3
+        = link_to p.name, url_for(p)
       .meta
         Created
         -# um, this evalutes backwards, i'm not sure why
