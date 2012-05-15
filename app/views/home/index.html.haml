@@ -1,3 +1,7 @@
+- content_for :header do
+  %h1
+    = image_tag 'logo.png', :alt => 'Glitter Gallery'
+
 .center
   %ul#glimages
     - @glimages.each do |glimage|

@@ -19,4 +19,19 @@ module ApplicationHelper
     end
   end
 
+  def user_for(obj, link = true)
+    if obj.class == Glimage
+      p = Project.find(obj.project_id)
+    elsif obj.class == Project
+      p = obj
+    else
+      return false
+    end
+    
+    User.find(p.user_id).email
+
+    #TODO - implement link when public user profiles have landed
+
+  end
+
 end

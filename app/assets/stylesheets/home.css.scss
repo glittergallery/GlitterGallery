@@ -19,6 +19,10 @@ h3.title {
   font-size: large;
 }
 
+body > header > h1 {
+  text-align: center;
+}
+
 /** background gradient **/
 body {
   width: 100%;
@@ -223,6 +227,7 @@ nav div {
 }
 
 nav .right {
+  float: right;
   text-align: right;
 }
 
@@ -230,6 +235,7 @@ nav .right a {
   color: white;
   text-decoration: none;
   font-size: 14px;
+  margin-right: 10px;
 }
 
 nav .right a:hover {
@@ -497,6 +503,18 @@ body.projects ul.images img {
     margin: 10px auto;
     color: $pink;
     text-align: center;
+  }
+
+  &.not_signed_in #user_nav {
+    background: transparent;
+    box-shadow: none;
+    color: $lightbrown;
+    font-family: Cookie, sans-serif;
+    text-align: right;
+    a {
+      color: $lightbrown;
+    }
+      
   }
 
 }  
