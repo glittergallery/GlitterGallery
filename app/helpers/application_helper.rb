@@ -9,4 +9,14 @@ module ApplicationHelper
       tag :image, :src => "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(root_url + default)}"
     end
   end
+
+  def project_for(glimage, link = true)
+    p = Project.find(glimage.project_id)
+    if link
+      content_tag :a, p.name, :href => url_for(p)
+    else
+      p.name
+    end
+  end
+
 end

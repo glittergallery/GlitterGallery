@@ -1,0 +1,12 @@
+%li
+  %img{:src => glimage.thumbnail('imagepath')}
+  .meta
+    %p
+      From 
+      = project_for glimage
+    %p
+      Last updated
+      = distance_of_time_in_words_to_now glimage.updated_at
+      ago
+    
+
