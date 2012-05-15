@@ -73,3 +73,11 @@ nav .right {
   @include column(5);
 }
 
+.home #glimages {
+  @include column(10);
+  @include push(1);
+  
+  li {
+    @include column(4);
+  }
+}

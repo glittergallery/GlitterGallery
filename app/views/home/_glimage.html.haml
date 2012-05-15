@@ -1,5 +1,6 @@
 %li
-  %img{:src => glimage.thumbnail('imagepath')}
+  = link_to url_for(glimage) do
+    %img{:src => glimage.thumbnail('imagepath')}
   .meta
     %p
       From 
