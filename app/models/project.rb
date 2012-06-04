@@ -19,6 +19,7 @@ class Project < ActiveRecord::Base
 
   private
   def set_path
+    #TODO - let basedir for repos be set in app config
     logger.debug "setting path - path: #{path}"
     user = User.find(user_id)
     self.path = File.join '..', 'data', 'repos', user.email, name
@@ -28,12 +29,7 @@ class Project < ActiveRecord::Base
     logger.debug "Initing repo path: #{path}"
     unless File.exists? path
       gitpath = File.join path , '.git'
-      begin
-        Grit::Repo.init_bare(gitpath)
-      rescue
-        logger.error "Unable to init repo at", path
-        raise
-      end
+      Grit::Repo.init_bare(gitpath)
     end
   end
 
