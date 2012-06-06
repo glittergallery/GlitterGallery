@@ -12,6 +12,7 @@ gem 'devise'
 gem 'haml'
 gem 'grit'
 gem 'escape'
+gem 'jquery-rails'
 
 # ruby 1.9 needs bigdecimal
 # gem 'bigdecimal'
@@ -28,11 +29,18 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-group :development do
+group :development, :test do
   gem 'minitest'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
 end
 
-gem 'jquery-rails'
+group :test do
+  gem 'faker'
+  gem 'capybara'
+  gem 'guard-rspec'
+  gem 'launchy'
+end
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
