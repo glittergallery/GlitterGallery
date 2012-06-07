@@ -32,22 +32,31 @@ describe Project do
     project.path.should == path
   end
 
-  it 'initializes a repo at its path' do
-    path = File.join dirpath, 'inittest'
-    project = project_with_custom_path path
-    gitpath = File.join project.path, '.git'
-    File.exists?(gitpath).should be_true
-  end
+  describe 'initialize a repo at its path' do
 
-  it 'fails to initialize a repo at an existing path' do
-    path = File.join dirpath, 'existtest'
-    unless File.exists? path
-      Dir.mkdir(path)
+    context 'path does not exist' do
+      it 'initializes a repo' do
+        path = File.join dirpath, 'inittest'
+        project = project_with_custom_path path
+        gitpath = File.join project.path, '.git'
+        File.exists?(gitpath).should be_true
+      end
     end
-    File.exists?(path).should be_true
-    project = project_with_custom_path path
-    gitpath = File.join path, '.git'
-    File.exists?(gitpath).should be_false
-    Dir.delete path
+
+    context 'path does exist' do
+      it 'does not initialize a repo at an existing path' do
+        path = File.join dirpath, 'existtest'
+        unless File.exists? path
+          Dir.mkdir(path)
+        end
+        # just a quick check to make sure this
+        # spec works as expected
+        File.exists?(path).should be_true
+        project = project_with_custom_path path
+        gitpath = File.join path, '.git'
+        File.exists?(gitpath).should be_false
+        Dir.delete path
+      end
+    end
   end
 end
