@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => :show
+  before_filter :authenticate_user!, :except => [:show, :invite]
 
   def new
     @user = current_user
@@ -40,8 +40,18 @@ class ProjectsController < ApplicationController
       redirect_to dashboard_path
     end
   end
-  
+
+  def invite
+    @project = Project.find params[:id]
+    mime_type = Mime::Type.lookup_by_extension('xml')
+    content_type = mime_type.to_s unless mime_type.nil?
+
+    @git_dir = "/#{@project.user.email}/#{@project.name}"
+    render :layout => false, :content_type => content_type
+  end
+
   def show
+    @invite_uri = "sparkleshare://#{ENV['OPENSHIFT_APP_DNS'].downcase}/projects/#{params[:id]}/invite.xml"
     @project = Project.find params[:id]
     @glimage = Glimage.new
     @glimage.project_id = params[:id]
