@@ -7,6 +7,7 @@ Glitter::Application.routes.draw do
   resources :projects, :glimages, :comments
 
   get 'dashboard/' => 'dashboard#index', :as => :dashboard
+  get 'projects/:id/invite.xml' => 'projects#invite'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
