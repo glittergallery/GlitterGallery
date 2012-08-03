@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
     fullpath = File.join repopath, file
     File.open(fullpath, 'wb') {|f| f.write contents}
     # commit file
-    index.add fullpath, contents
+    index.add file, contents
     parent = repo.commits.count > 0 ? [repo.commits.first] : nil
     index.commit message, parent
   end
