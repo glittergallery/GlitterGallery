@@ -3,6 +3,6 @@
     %li
       -# displaying the image out of apache public, not the file itself
       = link_to url_for(image) do
-        %img{:src => image.thumbnail('imagepath')}
+        %img{:src => image.thumbnail('imagepath'), :title => image.file}
     
     
