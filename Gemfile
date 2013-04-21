@@ -1,5 +1,4 @@
-source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
-# source 'https://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'rails', '3.2.3'
 
@@ -7,7 +6,6 @@ gem 'rails', '3.2.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
-gem 'sqlite3'
 gem 'devise'
 gem 'haml'
 gem 'grit'
@@ -24,6 +22,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+  #(Mac OSX and Windows often include their own JavaScript runtimes, but Linux does not.)
   # gem 'therubyracer', :platform => :ruby
 
   gem 'uglifier', '>= 1.0.3'
