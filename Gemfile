@@ -12,6 +12,15 @@ gem 'grit'
 gem 'escape'
 gem 'jquery-rails'
 
+#gems to integrate with:
+
+#gem 'devise_openid_authenticatable'
+#Used for enabling authentication through OpenID
+
+#gem 'sketchily'
+#for integration with SVG-edit
+
+
 # ruby 1.9 needs bigdecimal
 # gem 'bigdecimal'
 
