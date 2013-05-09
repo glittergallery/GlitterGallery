@@ -4,13 +4,23 @@ gem 'rails', '3.2.3'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
+gem 'sqlite3'
 gem 'mysql2'
 gem 'devise'
 gem 'haml'
 gem 'grit'
 gem 'escape'
 gem 'jquery-rails'
+gem 'rake', '0.9.2'
+
+#gems to integrate with:
+
+#gem 'devise_openid_authenticatable'
+#Used for enabling authentication through OpenID
+
+#gem 'sketchily'
+#for integration with SVG-edit
+
 
 # ruby 1.9 needs bigdecimal
 # gem 'bigdecimal'
@@ -23,7 +33,7 @@ group :assets do
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   #(Mac OSX and Windows often include their own JavaScript runtimes, but Linux does not.)
-  # gem 'therubyracer', :platform => :ruby
+  gem 'therubyracer', :platform => :ruby
 
   gem 'uglifier', '>= 1.0.3'
 end
