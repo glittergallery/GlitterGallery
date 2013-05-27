@@ -4,7 +4,10 @@ gem 'rails', '3.2.3'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
+<<<<<<< HEAD
+=======
 
+>>>>>>> a6f29d1b9a4088ea0f8ab6e0cc54e6d88614839c
 gem 'sqlite3'
 gem 'mysql2'
 gem 'devise'
@@ -12,6 +15,7 @@ gem 'haml'
 gem 'grit'
 gem 'escape'
 gem 'jquery-rails'
+gem 'rake', '0.9.2'
 
 #gems to integrate with:
 
