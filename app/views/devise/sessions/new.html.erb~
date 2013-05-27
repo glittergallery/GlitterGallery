@@ -1,0 +1,23 @@
+<div class='header' id='top'>
+  <img alt="Logo" id="logo" src="/assets/logo.png" />
+</div>
+<div class='center'>
+  <div id='maincolumn'>
+    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
+    <div><%= f.label :email %><br />
+      <%= f.email_field :email, :value => "Your email address" %></div>
+     <div><%= f.label :password %><br />
+      <%= f.password_field :password, :placeholder => "Your password" %></div>
+     <% if devise_mapping.rememberable? -%>
+    <div><%= f.check_box :remember_me %> <%= f.label :remember_me %><span class="login-sublinks"><%= render "links" %></span></div>
+  <% end -%>
+  <div><%= f.submit "Sign in" %></div>
+  <% end -%>
+  </div>
+  <div id='sidebar'>
+    <h2>need an account?</h2>
+    <%= link_to 'Click here to get one.', new_user_registration_path
+ %>
+  </div>
+</div>

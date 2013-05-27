@@ -1,0 +1,452 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import url(http://fonts.googleapis.com/css?family=Cookie);
+
+
+body, p, a, div, form {
+  font-family: sans-serif;
+}
+h1, h2 {
+  font-family: Cookie, sans-serif;
+} 
+h3.title {
+  font-family: Cookie;
+  font-size: large;
+}
+
+/** background gradient **/
+body {
+  width: 100%;
+	background: #f6f4c2 no-repeat; /* Old browsers */
+	background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #f6f4c2 41%, #f6f4c2 100%) no-repeat; /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(41%,#f6f4c2), color-stop(100%,#f6f4c2)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #ffffff 0%,#f6f4c2 41%,#f6f4c2 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #ffffff 0%,#f6f4c2 41%,#f6f4c2 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #ffffff 0%,#f6f4c2 41%,#f6f4c2 100%); /* IE10+ */
+	background: linear-gradient(top, #ffffff 0%,#f6f4c2 41%,#f6f4c2 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f4c2',GradientType=0 ); /* IE6-9 */
+}
+
+body.index {
+  background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #ffffff 200px, #f6f4c2 400px, #f6f4c2 100%) no-repeat; /* FF3.6+ */
+}
+
+body.projects {
+  background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #ffffff 30px, #f6f4c2 200px, #f6f4c2 100%) no-repeat; /* FF3.6+ */
+}
+
+p.message {
+  margin: 10px 0;
+  padding: 10px;
+}
+
+p.notice {
+  font-family: Cookie, sans-serif;
+  color: darken(#ff59cb, 20%); 
+  background: lighten(#ff59cb, 30%);
+  box-shadow: 0 0 5px rgba(255, 59, 203, .4);
+}
+
+p.alert {
+  font-family: Sans-serif;
+  color: #660000;
+  background: #ff9999;
+  border: 1px solid #cc0000;
+}
+
+input {
+  width: 95%;
+  height: 33px;
+  font-size:16px;
+  font-weight:normal;
+  padding-left:7px;
+  transition: all 0.25s ease-in-out;
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border: 1px solid #ccc;
+  margin-bottom: 0.5em;
+} 
+
+input[type="submit"] {
+  margin-top: 10px;
+  width: 31%;
+  background: #ff59cb;
+  color: white;
+  margin-left: 66%;
+  font-weight: bold;
+  font-family: Cookie, sans-serif;
+  font-size: x-large;
+  letter-spacing: -0.05em
+}
+
+input[type="submit"]:hover {
+  background: #d533de;
+  cursor: pointer;
+}
+
+label[for="user_password"],
+label[for="user_email"],
+label[for="user_password_confirmation"] {
+  display: none;
+}
+
+body.session form,
+body.registrations form {
+ margin-left: 36% !important;
+}
+
+body.new #maincolumn > *{
+  margin-left: 36%;
+}
+
+.focusField {
+  border: 1px solid #ff59cb;
+  background: white;
+  color: black;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255,89,203,1);
+  -webkit-box-shadow: 0 0 5px rgba(255,89,203,1);
+  -moz-box-shadow: 0 0 5px rgba(255,89,203,1);
+}
+
+.idleField {
+  background: #fff8f4;
+  color: #999;
+  border: solid 1px #ffc8a6;
+}
+
+input[type='checkbox'],
+.login-sublinks {
+  width: 15px;
+  margin-top: 6px;
+  vertical-align: middle;
+  background-color: transparent;
+  line-height: normal !important;
+}
+
+input[type='checkbox'],
+label[for='user_remember_me'] {
+  cursor: pointer;
+}
+
+label[for='user_remember_me']:hover {
+  color: #ff59cb;
+}
+
+label[for='user_remember_me'],
+.login-sublinks,
+label[for='private'] {
+  font-size: x-small;
+  color: #777;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+label[for='private'] {
+  vertical-align: middle;
+}
+
+.login-sublinks a {
+  text-decoration: none;
+  color: #777;
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.login-sublinks span:before {
+  content: '\2022';
+  margin-left: 5px;
+}
+
+.login-sublinks a:hover {
+  text-decoration: underline;
+  color: #FF59CB;
+}
+
+#sidebar a {
+  color: #ff59cb;
+  font-size: small;  
+}
+
+#sidebar h2 {
+  color: #7d737b;
+  font-weight: bold;
+  font-family: Cookie, sans-serif;
+  font-size: x-large;
+  letter-spacing: -0.05em;
+}
+
+nav {
+  background: #7d737b;
+  height: 42px;
+  box-shadow: 0 0 10px rgba(125,115,123,1);
+  -webkit-box-shadow: 0 0 10px rgba(125,115,123,1);
+  -moz-box-shadow: 0 0 10px rgba(125,115,123,1);
+  a {
+    font-family: inherit;
+    color: white;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.welcome {
+  color: white;
+  font-family: Cookie, sans-serif !important;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: -0.05em
+}
+
+nav .logo {
+  color: white;
+  font-family: Cookie, sans-serif !important;
+  font-weight: bold;
+  font-size: 28px;
+  text-align: center;
+  letter-spacing: -0.05em;
+  padding-top: 5px;
+}
+
+nav div {
+  margin: 0px !important;
+  padding: 7px;
+}
+
+nav .right {
+  text-align: right;
+}
+
+nav .right a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+nav .right a:hover {
+  text-decoration: underline;
+  color: #FF59CB;
+}
+
+nav div {
+  line-height: 26px;
+}
+
+#upload_widget {
+  position: relative;
+  height: 30px;
+  margin-bottom: .5em;
+}
+
+#upload_widget input[type=file] {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  opacity: 0;
+  -moz-opacity: 0;
+  z-index: 2;
+  width: 100%;
+}
+
+form .fakeupload {
+  background: url('/assets/button-browse.png') no-repeat 96% 20%;
+}
+
+form .fakeupload input {
+   width: 77%;
+}
+
+// header + #wrap {
+//   position: absolute;
+// }
+nav#user_nav {
+  width: 100%;
+  box-shadow: 0 0 10px #7d737b;
+  -webkit-box-shadow: 0 0 10px #7d737b;
+  -moz-box-shadow: 0 0 10px #7d737b;
+}
+#wrap {
+  height: 172px;
+  background: url('http://0.0.0.0:3000/assets/tileable_wood_texture-light.png');
+  box-shadow: inset 0 0 10px rgba(125,115,123,1);
+  -webkit-box-shadow: inset 0 0 10px rgba(125,115,123,1);
+  -moz-box-shadow: inset 0px -10px 10px -10px rgba(125,115,123,1);
+  margin-bottom: 1em;
+}
+
+body.sessions nav,
+body.registrations nav {
+  display: none;
+}
+
+body.sessions,
+body.registrations {
+  padding-top: 20px;
+}
+
+
+h2 {
+  font-family: Cookie, sans-serif !important;
+  font-size: 24pt !important;
+  font-weight: 700 !important;
+  color: #7D737B;
+  letter-spacing: -0.08em;
+  text-transform: lowercase;
+  text-align: center !important;
+  margin-bottom: .5em !important;
+}
+
+body.projects h2 {
+  text-transform: none;
+  text-align:left !important;
+}
+
+#sidebar h2 {
+  text-align: left !important;
+}
+
+#content {
+  padding-top: 1em;
+}
+
+/* Type CSS rules here and they will be applied to
+whatever page is loaded in that tab, as long as the pages
+are from 'localhost:3000'
+and you keep this window open. */
+
+#myprojects li {
+  margin-bottom: 2em;
+}
+
+#myprojects li a {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#myprojects h3 {
+  font-size: 10pt;
+  width: 80%;
+  margin-bottom: 5px !important;
+}
+
+#myprojects p {
+  font-size: x-small;
+  color: #777;
+}
+
+#myprojects img {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-right: 1em;
+  border: 5px solid white;
+
+  box-shadow: 0 0 7px rgba(125,115,123,1);
+  -webkit-box-shadow: 0 0 7px rgba(125,115,123,1);
+  -moz-box-shadow: 0 0 7px rgba(125,115,123,1);
+}
+
+#myprojects .activity {
+  float: right;
+}
+
+#glittercarousel #new_project_link {
+  width: 125px;
+  height: 90px;
+  background: #ff59cb;
+  border: 10px white solid;
+}
+
+#glittercarousel #new_project_link a {
+  font-size: 24px;
+  display: block;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-family: Cookie, sans-serif !important;
+  text-transform: lowercase;
+  letter-spacing: -0.05em;
+  margin-top: 7px;
+}
+
+#glittercarousel #new_project_link a .plus {
+  font-size: 38px !important;
+}
+
+
+.project-thumb img {
+  display: block;
+  min-height: 110px !important;
+  width: 150px;
+  background-color: white;
+}
+
+#myprojects h3 a:link,
+#myprojects h3 a:visited,
+#myprojects h3 a:active {
+  color: #ff59cb;
+}
+
+
+#myprojects .meta {
+  color: #777;
+  font-size: x-small;
+}
+
+#myprojects .meta .updated {
+  margin-left: 5px;
+}
+
+body.index h2 {
+  text-align: left !important;
+}
+
+body.projects h2 {
+  margin-top: 1em !important;
+}
+
+body.projects ul.images img {
+  margin-bottom: .5em !important;
+}
+
+.glimages #show_image {
+  text-align: center;
+}
+
+
+#new_comment textarea {
+  padding: 7px;
+}
+
+
+#new_comment textarea {
+  padding: 7px;
+}
+
+.glimages p.message,
+.projects .message {
+  width: 95% !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+#comments .comment-meta .author {
+  margin-bottom: 5px !important;
+ 
+}
+
+#comments .comment-meta img {
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+#comments .comment {
+  margin-bottom: 1em;
+}

@@ -1,0 +1,42 @@
+!!! 5
+%html
+  %head
+    %title
+      GlitterGallery! 
+      - if content_for?(:title)
+        |
+        = yield :title
+    
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tag
+    %script
+      $(function() { alert(jQuery.prototype.jcarousel) });
+      $(function() { jQuery('#glittercarousel').jcarousel({ wrap: 'circular'  }); });
+
+  %body{ :class => "#{controller.controller_name} #{controller.action_name} #{yield :body_class}" }
+
+    %header
+      %nav#user_nav
+        - if user_signed_in?
+          .welcome
+            %span.msg
+              welcome,
+            %span.email
+              = current_user.email+'!'
+          %h1.logo
+            Glitter Gallery
+          .right
+            = link_to 'Sign out', destroy_user_session_path, :method => :delete
+        - else
+          = link_to 'Sign in', new_user_session_path
+          or
+          = link_to 'Register', new_user_registration_path  
+
+    %p.notice
+      = notice
+    %p.alert
+      = alert
+    
+    = yield
+    

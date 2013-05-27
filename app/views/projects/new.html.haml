@@ -1,0 +1,15 @@
+- content_for :title do
+  Create New Project
+  
+
+= render 'shared/glimageshow', :glimages => @glimages
+
+= render 'shared/messages'
+
+#maincolumn
+  %h2 Create a new project
+  #upload
+    = form_for @project, :class => 'fakeupload' do |f|
+      = f.text_field :name, :placeholder => "Name for your project"
+      = f.fields_for :glimage do |i|
+        = render 'glimages/form', :form => i

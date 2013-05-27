@@ -1,0 +1,20 @@
+.center
+  - content_for :title do
+    = @project.name.titleize
+
+  %h2
+    = @project.name.titleize
+
+  = render 'shared/messages'
+
+  = render 'images'
+
+  #connect to sparkle share
+  %a{:href => "#{@invite_uri}"} Click here to add this project to SparkleSharegit
+
+  #upload
+
+    %h3.title New image
+    = form_for @glimage, :class => 'fakeupload' do |f|
+      = f.hidden_field :project_id
+      = render 'glimages/form', :form => f
