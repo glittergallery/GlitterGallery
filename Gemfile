@@ -11,6 +11,7 @@ gem 'haml'
 gem 'grit'
 gem 'escape'
 gem 'jquery-rails'
+gem 'rake', '0.9.2'
 
 #gems to integrate with:
 
