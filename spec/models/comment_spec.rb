@@ -1,16 +1,19 @@
-# Comment spec
 require 'spec_helper'
 
 describe Comment do
   it 'has a valid factory' do
-    FactoryGirl.create(:comment).should be_valid
+    expect(create(:comment)).to be_valid
   end
 
-  it 'is invalid without an author' do
-    FactoryGirl.build(:comment, author: nil).should_not be_valid
+  it 'is invalid without a user_id' do
+    expect(build(:comment, user_id: nil)).to have(1).errors_on(:user_id)
   end
 
   it 'is invalid without a body' do
-    FactoryGirl.build(:comment, body: nil).should_not be_valid
+    expect(build(:comment, body: nil)).to have(1).errors_on(:body)
   end
-end
+  
+  it 'is invalid without a issue check' do
+    expect(build(:comment, issue?: nil)).to have(1).errors_on(:issue?)
+  end
+  end
