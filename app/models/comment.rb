@@ -1,5 +1,5 @@
 class Comment < ActiveRecord::Base
-  belongs_to :glimage
+  belongs_to :polycomment, :polymorphic => true
   
   attr_accessible :author, :email, :body
 
