@@ -51,7 +51,11 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @invite_uri = "sparkleshare://#{ENV['OPENSHIFT_APP_DNS'].downcase}/projects/#{params[:id]}/invite.xml"
+    if Rails.env.production?
+      @invite_uri = "sparkleshare://#{ENV['OPENSHIFT_APP_DNS'].downcase}/projects/#{params[:id]}/invite.xml" # If it's in production.
+    else
+      @invite_uri = "#{Rails.root}/uploads/#{Rails.env}/projects/#{params[:id]}/invite.xml" # If not in production.
+    end
     @project = Project.find params[:id]
     @glimage = Glimage.new
     @glimage.project_id = params[:id]

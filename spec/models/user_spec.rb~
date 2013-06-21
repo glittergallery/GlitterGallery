@@ -46,7 +46,7 @@ describe User do
 			let!(:newer_project) { create(:project, user: @generated_user, created_at: 1.hour.ago) }
     end
     
-		it "should have the projects in the right order" do
+		it "should have the projects in the right order" 
 			expect(@generated_user.projects).to eq [newer_project, older_project]
 		end
 
