@@ -37,8 +37,7 @@ describe User do
   it "is invalid without a username" do
     expect(build(:user, username: nil)).to have(1).errors_on(:username)
   end
-  
-  
+
   describe "project associations" do
     before :each do
       @generated_user = create(:user)
