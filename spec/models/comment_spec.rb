@@ -17,3 +17,4 @@ describe Comment do
     expect(build(:comment, issue?: nil)).to have(1).errors_on(:issue?)
   end
   end
+

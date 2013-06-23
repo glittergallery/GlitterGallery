@@ -1,0 +1,33 @@
+<div class='header' id='top'>
+  <img alt="Logo" id="logo" src="/assets/logo.png" />
+</div>
+
+<div class='center'>
+  <div id='maincolumn'>
+    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
+    <div><%= f.label :email %><br />
+      <%= f.email_field :email, :placeholder => "Your email address" %></div>
+     <div><%= f.label :password %><br />
+      <%= f.password_field :password, :placeholder => "Your password" %></div>
+     <div><%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation, :placeholder => "Repeat your password" %></div>
+     <div><%= f.submit "Sign up" %></div>
+    <% end %>
+    <div style="clear: both;"></div>
+  </div>
+  <div id='sidebar'>
+    <h2>sign in</h2>
+    <%= link_to 'Already have an account?', new_user_session_path %>
+  </div>
+</div>
+
+
+  
+
+
+
+ 
+
+ 
+

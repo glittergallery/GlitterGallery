@@ -21,7 +21,6 @@ gem 'rake', '0.9.2'
 #gem 'sketchily'
 #for integration with SVG-edit
 
-
 # ruby 1.9 needs bigdecimal
 # gem 'bigdecimal'
 
@@ -32,6 +31,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+
   #(Mac OSX and Windows often include their own JavaScript runtimes, but Linux does not.)
   gem 'therubyracer', :platform => :ruby
 

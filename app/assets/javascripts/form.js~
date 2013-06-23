@@ -1,32 +1,74 @@
 $(document).ready(function() {  
 
+<<<<<<< HEAD
   // Set all fields idle
+  $('input[type="text"]').addClass("idleField");  
+  $('input[type="file"]').addClass("idleField");  
   $('input[type="email"]').addClass("idleField");  
   $('input[type="password"]').addClass("idleField");
 
-  $('input[type="email"], input[type="password"]').focus(function() {  
+  $('input[type="email"], input[type="password"], input[type="text"], input[type="file"]').focus(function() {  
+=======
+  var inputs, fileInput, fakeInput, focusCount = 0;
+  inputs = $('input[type!=submit], textarea');
+  fileInput = $('input[type=file]', '#upload_widget');
+  fakeInput = $('.fakeupload input');
+
+  fileInput.attr('size', 56);
+
+  // Set all fields idle
+  inputs.addClass('idleField');
+
+  inputs.focus(function() {  
+>>>>>>> 4f26c0d464fc4b37b1710fb0d14d9489a05a937e
     $(this).removeClass("idleField").addClass("focusField");  
 
       }); 
 
+<<<<<<< HEAD
       $('input[type="email"], input[type="password"]').blur(function() {  
         $(this).removeClass("focusField").addClass("idleField");  
       });
 
-  $('#svgfile').focus(function() {
-    console.log('focused the real input');
+  $('#project_glimage_file').focus(function() {
     $('.fakeupload input').attr('value', this.value);
   });
 
-/*
-  $('.fakeupload input').focus(function() {
-    console.log('waaaah');
-    console.log($('#svgfile').value);
-    this.value = $('#svgfile').value;
+  $('#project_glimage_file').attr('size', 60);
+=======
+	inputs.blur(function() {  
+		$(this).removeClass("focusField").addClass("idleField");  
+	});
+      
+      fileInput.blur(function() {
+        $('.fakeupload input').removeClass("focusField").addClass("idleField");
+      });  
 
-    $('#new_project .fakeupload input').value = 'yo mama';
-    console.log('yomama');
-});*/
+  
+  fakeInput.focus(function() {
+    if(shouldShowFileSelection()) {
+      fileInput.click();
+    }
+  });
+  $('#upload input').focus(function(e) {
+	  if (!($(e.currentTarget).is(fakeInput))) {
+	    focusCount = 0
+	  }
+  });
+
+  fileInput.focus(function() {
+    fakeInput.attr('value', this.value);
+    fakeInput.removeClass("idleField").addClass("focusField");
+  });  
+
+  function shouldShowFileSelection() {
+    if(focusCount == 0) {
+      focusCount++;
+      return true;
+    }
+  }
+
+>>>>>>> 4f26c0d464fc4b37b1710fb0d14d9489a05a937e
 
 });  
 

@@ -2,11 +2,22 @@
   .comment-meta
     = avatar(comment.email)
     %p.author
+<<<<<<< HEAD
       = comment.author
   .comment-body
     = comment.body
   .comment-time
-    = distance_of_time_in_words_to_now comment.created_at
+=======
+      Posted by
+      = comment.author
+>>>>>>> 4f26c0d464fc4b37b1710fb0d14d9489a05a937e
+    %p.time
+      = distance_of_time_in_words_to_now comment.created_at
       ago
 
+<<<<<<< HEAD
   
+=======
+  .comment-body
+    = comment.body
+>>>>>>> 4f26c0d464fc4b37b1710fb0d14d9489a05a937e

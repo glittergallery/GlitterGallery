@@ -3,6 +3,7 @@
 require './lib/rack/git_http'
 
 require ::File.expand_path('../config/environment', __FILE__)
+
 run Glitter::Application
 
 map '/health' do
