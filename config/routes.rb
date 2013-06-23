@@ -1,12 +1,4 @@
 Glitter::Application.routes.draw do
-  get "gblogs/new"
-
-  get "gblogs/create"
-
-  get "gblogs/update"
-
-  get "gblogs/destroy"
-
   devise_for :users
   # devise_scope :user do
   #   match '/users/repo_init' => 'registrations#repo_init', :as => :users_repo_init
