@@ -6,17 +6,12 @@ gem 'rails', '3.2.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'sqlite3'
 gem 'mysql2'
-gem 'devise'
 gem 'haml'
 gem 'grit'
 gem 'escape'
 gem 'jquery-rails'
 gem 'rake', '0.9.2'
-
-#gems to integrate with:
-
-#gem 'devise_openid_authenticatable'
-#Used for enabling authentication through OpenID
+gem 'ruby-openid'
 
 #gem 'sketchily'
 #for integration with SVG-edit

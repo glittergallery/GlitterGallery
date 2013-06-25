@@ -41,5 +41,7 @@ class ApplicationController < ActionController::Base
     logger.debug "output #{output}"
     logger.debug "result #{$?.success?}"
   end
-
+  def user_signed_in?
+    true
+  end
 end

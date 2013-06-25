@@ -1,9 +1,9 @@
 class ProjectsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:show, :invite]
+  #before_filter :authenticate_user!, :except => [:show, :invite]
 
   def new
-    @user = current_user
+    @user = User.find(1)
     @project = Project.new
     @project.glimages.build
     @projects = @user.projects

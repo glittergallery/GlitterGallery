@@ -1,9 +1,7 @@
-require 'faker'
+# Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :user do |f|
-    f.email { Faker::Internet.email }
-    f.username { Faker::Name.name }
-    f.identity_url { Faker::Internet.url }
+  factory :user do
+    email "MyString"
   end
 end

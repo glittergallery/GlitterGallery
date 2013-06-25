@@ -1,8 +1,5 @@
 Glitter::Application.routes.draw do
-  devise_for :users
-  # devise_scope :user do
-  #   match '/users/repo_init' => 'registrations#repo_init', :as => :users_repo_init
-  # end
+
 
   resources :projects, :glimages, :comments
 

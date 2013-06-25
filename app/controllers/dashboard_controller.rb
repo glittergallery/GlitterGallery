@@ -1,8 +1,8 @@
 class DashboardController < ApplicationController
-  before_filter :authenticate_user!, :except => :show
+#  before_filter :authenticate_user!, :except => :show
 
   def index
-    @user = current_user
+    @user = User.find(1)
     @projects = @user.projects
     if @projects.count > 0
       @glimages = @user.glimages
