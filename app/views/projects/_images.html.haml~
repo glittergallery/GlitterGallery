@@ -1,0 +1,12 @@
+%ul.images
+  - @project.glimages.each do |image|
+    %li
+      -# displaying the image out of apache public, not the file itself
+      = link_to url_for(image) do
+        %img{:src => image.thumbnail('imagepath'), :title => image.file}
+<<<<<<< HEAD
+
+=======
+>>>>>>> 16875e2a51373bfdf1358a2ccf6780e4c64435ed
+    
+    

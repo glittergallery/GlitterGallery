@@ -1,0 +1,13 @@
+#!/bin/bash
+<<<<<<< HEAD
+# This is a simple script and will be executed on your CI system if
+# available.  Otherwise it will execute while your application is stopped
+# before the build step.  This script gets executed directly, so it
+# could be python, php, ruby, etc.
+
+=======
+# This is a simple script and will be executed on your CI system if 
+# available.  Otherwise it will execute while your application is stopped
+# before the build step.  This script gets executed directly, so it
+# could be python, php, ruby, etc.
+>>>>>>> 16875e2a51373bfdf1358a2ccf6780e4c64435ed
