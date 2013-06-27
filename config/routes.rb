@@ -1,5 +1,13 @@
 Glitter::Application.routes.draw do
 
+#  match '/openid/complete', :controller => :openid, :action => :complete, :as => :openid_complete
+#  match '/login', :controller => :openid, :action => :new, :as => :login
+ resource :openid do
+    member do
+      get 'complete'
+      get 'start'
+    end
+ end
 
   resources :projects, :glimages, :comments
 
