@@ -12,6 +12,7 @@ gem 'escape'
 gem 'jquery-rails'
 gem 'rake', '0.9.2'
 gem 'ruby-openid'
+gem 'open_id_authentication'
 
 #gem 'sketchily'
 #for integration with SVG-edit

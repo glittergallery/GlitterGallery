@@ -10,6 +10,9 @@ Glitter::Application.routes.draw do
  end
 
   resources :projects, :glimages, :comments
+  resource :session, only: [:new, :create, :destroy]
+
+  get 'login' => 'sessions#new'
 
   get 'dashboard/' => 'dashboard#index', :as => :dashboard
   get 'projects/:id/invite.xml' => 'projects#invite'
