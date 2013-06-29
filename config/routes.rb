@@ -6,7 +6,7 @@ Glitter::Application.routes.draw do
   resource :session, only: [:new, :create, :destroy]
 
   get 'login' => 'sessions#new'
-  get 'logout' => 'sessions#destroy'
+  get 'logout' => 'sessions#destroy', :via => :delete
 
   get 'dashboard/' => 'dashboard#index', :as => :dashboard
   get 'projects/:id/invite.xml' => 'projects#invite'

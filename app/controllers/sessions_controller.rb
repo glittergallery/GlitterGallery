@@ -8,10 +8,10 @@ class SessionsController < ApplicationController
     authenticate_with_open_id do |result, identity_url|
       if result.successful?
         #FIXME - needs normalizing before checking for the identity_url
-        unless @current_user = User.find_by_identity_url(identity_url)
-          @current_user = User.create(identity_url: identity_url)
+        unless user = User.find_by_identity_url(identity_url)
+          user = User.create(identity_url: identity_url)
         end
-        successful_login @current_user
+        sign_in user
       else
         failed_login result.message
       end
@@ -19,15 +19,15 @@ class SessionsController < ApplicationController
   end
 
 
-  private
-  def successful_login(user)
-    #session[:user_id] = @current_user.id
-    cookies[:user_id] = user.id
-    redirect_to(dashboard_url)
+  def destroy
+    logout
+    redirect_to root_url
   end
+
+private
 
   def failed_login(message)
     flash[:error] = message
-    redirect_to(new_session_url)
+    redirect_to(login_url)
   end
 end
