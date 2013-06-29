@@ -5,5 +5,5 @@ class User < ActiveRecord::Base
   
 
   attr_accessible :email, :identity_url
-  validates_presence_of :email, :identity_url
+  validates_presence_of :identity_url
 end

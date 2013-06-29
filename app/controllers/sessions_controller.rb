@@ -1,18 +1,17 @@
 class SessionsController < ApplicationController
 
   def new
-  #spits out the form
+  #spits out the user signin form
   end
   
   def create
     authenticate_with_open_id do |result, identity_url|
       if result.successful?
-        #@current_user = User.find_by_identity_url.OpenIdAuthentication.normalize_url(identity_url)
-        #if @current_user
-          successful_login(identity_url)
-        #else
-        #  failed_login "Sorry, no user by that identity URL exists (#{identity_url})"
-        #end
+        #FIXME - needs normalizing before checking for the identity_url
+        unless @current_user = User.find_by_identity_url(identity_url)
+          @current_user = User.create(identity_url: identity_url)
+        end
+        successful_login @current_user
       else
         failed_login result.message
       end
@@ -21,11 +20,10 @@ class SessionsController < ApplicationController
 
 
   private
-  def successful_login(identity_url)
+  def successful_login(user)
     #session[:user_id] = @current_user.id
-    @logged_in_user = User.create
-    cookies[:user_id] = @logged_in_user.id
-    redirect_to(root_url)
+    cookies[:user_id] = user.id
+    redirect_to(dashboard_url)
   end
 
   def failed_login(message)
