@@ -1,12 +1,10 @@
 Glitter::Application.routes.draw do
 
-  get "users/show"
-
-  resources :projects, :glimages, :comments, :usera
+  resources :users, :projects, :glimages, :comments
   resource :session, only: [:new, :create, :destroy]
 
-  get 'login' => 'sessions#new'
-  get 'logout' => 'sessions#destroy', :via => :delete
+  match '/login', to: 'sessions#new'
+  match '/logout', to: 'sessions#destroy', via: :delete
 
   get 'dashboard/' => 'dashboard#index', :as => :dashboard
   get 'projects/:id/invite.xml' => 'projects#invite'
