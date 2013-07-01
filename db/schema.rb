@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130624233256) do
+ActiveRecord::Schema.define(:version => 20130701145510) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20130624233256) do
     t.integer  "polycomment_id"
     t.string   "polycomment_type"
     t.integer  "user_id"
+    t.boolean  "issue"
   end
 
   create_table "glimages", :force => true do |t|
