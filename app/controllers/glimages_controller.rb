@@ -46,7 +46,7 @@ class GlimagesController < ApplicationController
   def edit
     @glimage = Glimage.find params[:id]
     unless @glimage.belongs_to? current_user
-      redirect_to root_url
+      redirect_to dashboard_path
     end
   end
 
