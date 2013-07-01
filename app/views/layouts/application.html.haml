@@ -27,9 +27,9 @@
             %h1.logo
               Glitter Gallery
           .right
-            = link_to 'Sign out', logout_path, :method => :delete
+            = link_to 'Logout', logout_path, :method => :delete
         - else
-          = link_to 'Sign in', login_path
+          = link_to 'Login', login_path
       
     = yield
     
