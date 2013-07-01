@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   has_many :glimages, :through => :projects
    
   before_save :create_remember_token
-  before_save :normalize_identity_url
+  # before_save :normalize_identity_url
 
   attr_accessible :email, :identity_url
   validates_presence_of :identity_url
