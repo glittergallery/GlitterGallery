@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
 
   def new
-  #spits out the user signin form
+    #spits out the user login form
   end
   
   def create
@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
         unless user = User.find_by_identity_url(identity_url)
           user = User.create(identity_url: identity_url)
         end
-        sign_in user
+        login user
       else
         failed_login result.message
       end
