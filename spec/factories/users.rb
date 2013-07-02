@@ -2,6 +2,7 @@
 
 FactoryGirl.define do
   factory :user do
-    email "MyString"
+    email "sbanskota08@gmail.com"
+    identity_url "sarupbanskota.id.fedoraproject.org"
   end
 end
