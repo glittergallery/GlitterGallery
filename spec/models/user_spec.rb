@@ -15,7 +15,7 @@ describe User do
   end
 
   it "is invalid without an email address" do
-    expect(build(:user, email: nil)).to have(1).errors_on(:email)
+    expect(build(:user, email: nil)).to have(2).errors_on(:email)
   end
   
   it "is invalid without a correct email address" do
@@ -30,7 +30,7 @@ describe User do
   end
 
   it "is invalid with a duplicate identity_url" do
-    user = create(:contact, identity_url:"duplicate.id.fedoraproject.org")
+    user = create(:user, identity_url:"duplicate.id.fedoraproject.org")
     expect(build(:user, identity_url: "duplicate.id.fedoraproject.org")).to have(1).errors_on(:identity_url)
   end
 

@@ -4,7 +4,7 @@ class AddColumsToUsers < ActiveRecord::Migration
     add_column :users, :username, :string
     add_column :users, :remember_token, :string
 
-    add_index :users, :remember_token
-    add_index :users, :identity_url
+    add_index :users, :identity_url, unique: true
+    add_index :users, :remember_token, unique: true
   end
 end
