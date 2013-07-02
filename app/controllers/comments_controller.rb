@@ -1,8 +1,8 @@
 class CommentsController < ApplicationController
   def create
     comment = Comment.new :user_id => current_user.id, 
-                          :body => params[:comment][:body]
-                          :mark_as_issue => :false
+                          :body => params[:comment][:body],
+                          :issue => false
     # FIXME - comments could be part of anything.
     #comment.glimage_id = params[:comment][:glimage_id]
     if comment.save
