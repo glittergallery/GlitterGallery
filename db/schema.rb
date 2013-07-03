@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130702050308) do
+ActiveRecord::Schema.define(:version => 20130702190946) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -40,6 +40,8 @@ ActiveRecord::Schema.define(:version => 20130702050308) do
     t.datetime "updated_at", :null => false
     t.integer  "user_id"
   end
+
+  add_index "glitterposts", ["user_id", "created_at"], :name => "index_glitterposts_on_user_id_and_created_at"
 
   create_table "projects", :force => true do |t|
     t.string   "name"

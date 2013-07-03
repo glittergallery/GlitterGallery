@@ -34,7 +34,6 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'minitest'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
 end

@@ -5,11 +5,11 @@ class SessionsController < ApplicationController
   end
   
   def create
-    authenticate_with_open_id do |result, identity_url|
+    authenticate_with_open_id(params[:openid_identifier], required: [:email, :nickname]) do |result, identity_url, registration|
       if result.successful?
         #FIXME - needs normalizing before checking for the identity_url
         unless user = User.find_by_identity_url(identity_url)
-          user = User.create(identity_url: identity_url)
+          user = User.create(identity_url: identity_url, email: registration['email'], username: registration['nickname'])
         end
         login user
       else

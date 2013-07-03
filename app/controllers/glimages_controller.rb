@@ -1,5 +1,5 @@
 class GlimagesController < ApplicationController
-  before_filter :authenticate_user!, :except => :show
+  #before_filter :authenticate_user!, :except => :show
   
   def create
     project = Project.find(params[:glimage][:project_id])

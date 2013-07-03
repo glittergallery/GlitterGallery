@@ -95,7 +95,6 @@ GEM
     method_source (0.8.1)
     mime-types (1.23)
     mini_portile (0.5.0)
-    minitest (5.0.6)
     multi_json (1.7.7)
     mysql2 (0.3.11)
     nokogiri (1.6.0)
@@ -199,7 +198,6 @@ DEPENDENCIES
   haml
   jquery-rails
   launchy
-  minitest
   mysql2
   open_id_authentication
   rails (= 3.2.13)
