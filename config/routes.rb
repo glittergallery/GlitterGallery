@@ -10,6 +10,7 @@ Glitter::Application.routes.draw do
   get 'dashboard/' => 'dashboard#index', :as => :dashboard
   get 'projects/:id/invite.xml' => 'projects#invite'
 
+
   root :to => 'sessions#new'
 
 end
