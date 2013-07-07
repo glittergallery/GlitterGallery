@@ -1,7 +1,8 @@
-<h1>All Glitterposts! %></h1>
+<h1>All Glitterposts!</h1>
  
 <table>
   <tr>
+    <th>Author</th>
     <th>Title</th>
     <th>Content</th>
   </tr>
@@ -13,6 +14,8 @@
       <td><%= post.content %></td>
       <td><%= link_to_if(logged_in? && (post.user_id == current_user.id), "Edit", 
               edit_glitterpost_url(post)) %> </td>
+      <td><%= link_to_if(logged_in? && (post.user_id == current_user.id),"Destroy", glitterpost_path(post),
+                    method: :delete, data: { confirm: 'Are you sure?' })%></td>
     </tr>
   <% end %>
 </table>

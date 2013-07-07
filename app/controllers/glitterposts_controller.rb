@@ -35,6 +35,9 @@ class GlitterpostsController < ApplicationController
   end
 
   def destroy
+  	@glitterpost = Glitterpost.find(params[:id])
+  	@glitterpost.destroy
+  	redirect_to glitterposts_path
   end
 
 end
