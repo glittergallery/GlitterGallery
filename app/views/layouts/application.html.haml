@@ -14,24 +14,22 @@
       $(function() { jQuery('#glittercarousel').jcarousel({ wrap: 'circular'  }); });
 
   %body{ :class => "#{controller.controller_name} #{controller.action_name} #{yield :body_class}" }
-
+  
     %header
       %nav#user_nav
-        - if user_signed_in?
+        - if logged_in?
           .welcome
             %span.msg
               welcome,
             %span.email
-              = link_to current_user.email + '!', dashboard_path
-          = link_to root_url do
+              = link_to current_user.identity_url + '!', dashboard_path
+          = link_to dashboard_path do
             %h1.logo
               Glitter Gallery
           .right
-            = link_to 'Sign out', destroy_user_session_path, :method => :delete
+            = link_to 'Logout', logout_path, :method => :delete
         - else
-          = link_to 'Sign in', new_user_session_path
-          or
-          = link_to 'Register', new_user_registration_path  
-
+          = link_to 'Login', login_path
+      
     = yield
     

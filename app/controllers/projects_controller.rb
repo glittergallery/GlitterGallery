@@ -1,19 +1,18 @@
 class ProjectsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:show, :invite]
+  #before_filter :authenticate_user!, :except => [:show, :invite]
 
   def new
-    @user = current_user
     @project = Project.new
     @project.glimages.build
-    @projects = @user.projects
-    @glimages = @user.glimages
+    @projects = current_user.projects
+    @glimages = current_user.glimages
   end
 
   def create
     project = Project.new :name => params[:project][:name]
     project.user_id = current_user.id
-    project.glimages.new :file => params[:project][:glimage][:file].original_filename, 
+    project.glimages.new :file => params[:project][:glimage][:file].original_filename,
                          :filetype => params[:project][:glimage][:file].content_type,
                          :private => params[:project][:glimage][:private]
     if project.save
@@ -45,13 +44,18 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     mime_type = Mime::Type.lookup_by_extension('xml')
     content_type = mime_type.to_s unless mime_type.nil?
-
+    # FIXME - email is no longer guaranteed,
+    # we may need an alt attribue for path
     @git_dir = "/#{@project.user.email}/#{@project.name}"
     render :layout => false, :content_type => content_type
   end
 
   def show
-    @invite_uri = "sparkleshare://#{ENV['OPENSHIFT_APP_DNS'].downcase}/projects/#{params[:id]}/invite.xml"
+    if Rails.env.production?
+      @invite_uri = "sparkleshare://#{ENV['OPENSHIFT_APP_DNS'].downcase}/projects/#{params[:id]}/invite.xml" # If it's in production.
+    else
+      @invite_uri = "#{Rails.root}/uploads/#{Rails.env}/projects/#{params[:id]}/invite.xml" # If not in production.
+    end
     @project = Project.find params[:id]
     @glimage = Glimage.new
     @glimage.project_id = params[:id]

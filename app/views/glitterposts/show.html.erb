@@ -1,0 +1,13 @@
+#FIXME -styling
+<h1>
+  <strong><%= @glitterpost.title %></strong>
+</h1>
+ 
+<p>
+  Posted by <%= User.find(@glitterpost.user_id).username %>
+  <br>
+  <strong><%= @glitterpost.content %></strong>
+</p>
+
+<%= link_to 'Back', glitterposts_path %>
+<%= link_to_if(logged_in? && (@glitterpost.user_id == current_user.id), "Edit", edit_glitterpost_path) %>

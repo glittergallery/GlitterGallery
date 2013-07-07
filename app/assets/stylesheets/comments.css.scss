@@ -1,38 +1,60 @@
 // Place all the styles related to the comments controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+// Problems to fix:
+//Fixed-- 1. The comment wraps around the photo. Fix that.
+// 2. Make the add new comment box appear to the right.
+// 3. Add a small comment line for signed in users under the thread.
+// 4. Make the comment area expand as the user enters another line. Shrink original box - it's ugly.
+// 5. Not a CSS fix, but put a limit to length of comment and username.
+// 6. When people don't have a Gravatar ID, the formatting is screwed up. Fix that.
+
+@import url(http://fonts.googleapis.com/css?family=Titillium+Web);
 
 #comments {
-  margin: 20px;
+  margin: 20px 0px 0px 25px;
+  display: inline;
+  float: left;
 
   .comment {
-    padding: 10px 0  0 10px;
+    padding: 2px 2px 0.5px 2px;
     border: 1px solid white;
-    background-color: rgba(255, 255, 255, 0.25);
+    background-color: #fef6c5;
+    margin-top: -11.5px;
   }
 
   .comment-meta {
-    color: #999;
+    color: #44342e;
     font-size: x-small;
-    margin: 2px 0;
     img {
       float: left;
-      margin-right: 3px;
-      margin-top: -3px;
+      //margin-right: 3px;
+      //margin-top: -3px;
     }
     p.author {
-      font-size: small;
-      margin-top: 6px;
+      font-size: 15px;
+      font-weight: bold;
+      font-family: Verdana;
+      margin-top: 2px;
+      overflow: hidden;
     }
   }
 
   .comment-body {
-    clear: left;
-    margin: 10px 0;
-    padding: 10px;
+    overflow: hidden;
+    font-size: 14px;
+    font-family: 'Titillium Web', sans-serif;
+    clear: right;
+    line-height: 110%;
+  }
+  .comment-time {
+    overflow: hidden;
+    font-size: 12px;
+    font-family: Verdana;
+    color: #94999c
   }
 }
 
 #commentform {
-  padding-left: 20px;
+  float: left;
 }

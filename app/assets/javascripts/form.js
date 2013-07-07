@@ -1,52 +1,25 @@
 $(document).ready(function() {  
 
-  var inputs, fileInput, fakeInput, focusCount = 0;
-  inputs = $('input[type!=submit], textarea');
-  fileInput = $('input[type=file]', '#upload_widget');
-  fakeInput = $('.fakeupload input');
-
-  fileInput.attr('size', 56);
-
   // Set all fields idle
-  inputs.addClass('idleField');
+  $('input[type="text"]').addClass("idleField");  
+  $('input[type="file"]').addClass("idleField");  
+  $('input[type="email"]').addClass("idleField");  
+  $('input[type="password"]').addClass("idleField");
 
-  inputs.focus(function() {  
+  $('input[type="email"], input[type="password"], input[type="text"], input[type="file"]').focus(function() {  
     $(this).removeClass("idleField").addClass("focusField");  
 
       }); 
 
-	inputs.blur(function() {  
-		$(this).removeClass("focusField").addClass("idleField");  
-	});
-      
-      fileInput.blur(function() {
-        $('.fakeupload input').removeClass("focusField").addClass("idleField");
-      });  
+      $('input[type="email"], input[type="password"]').blur(function() {  
+        $(this).removeClass("focusField").addClass("idleField");  
+      });
 
-  
-  fakeInput.focus(function() {
-    if(shouldShowFileSelection()) {
-      fileInput.click();
-    }
-  });
-  $('#upload input').focus(function(e) {
-	  if (!($(e.currentTarget).is(fakeInput))) {
-	    focusCount = 0
-	  }
+  $('#project_glimage_file').focus(function() {
+    $('.fakeupload input').attr('value', this.value);
   });
 
-  fileInput.focus(function() {
-    fakeInput.attr('value', this.value);
-    fakeInput.removeClass("idleField").addClass("focusField");
-  });  
-
-  function shouldShowFileSelection() {
-    if(focusCount == 0) {
-      focusCount++;
-      return true;
-    }
-  }
-
+  $('#project_glimage_file').attr('size', 60);
 
 });  
 

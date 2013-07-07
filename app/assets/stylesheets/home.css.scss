@@ -12,29 +12,22 @@ h1, h2 {
   font-family: Cookie, sans-serif;
 } 
 h3.title {
-  font-family: Cookie;
+  font-family: Cookie, sans-serif;
   font-size: large;
 }
 
 /** background gradient **/
 body {
   width: 100%;
-	background: #f6f4c2 no-repeat; /* Old browsers */
-	background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #f6f4c2 41%, #f6f4c2 100%) no-repeat; /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(41%,#f6f4c2), color-stop(100%,#f6f4c2)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #ffffff 0%,#f6f4c2 41%,#f6f4c2 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #ffffff 0%,#f6f4c2 41%,#f6f4c2 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #ffffff 0%,#f6f4c2 41%,#f6f4c2 100%); /* IE10+ */
-	background: linear-gradient(top, #ffffff 0%,#f6f4c2 41%,#f6f4c2 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f4c2',GradientType=0 ); /* IE6-9 */
+  background: #fce451;
 }
 
 body.index {
-  background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #ffffff 200px, #f6f4c2 400px, #f6f4c2 100%) no-repeat; /* FF3.6+ */
+  background: #fce451;
 }
 
 body.projects {
-  background: #f6f4c2 -moz-linear-gradient(top, #ffffff 0%, #ffffff 30px, #f6f4c2 200px, #f6f4c2 100%) no-repeat; /* FF3.6+ */
+  background: #fce451;
 }
 
 p.message {
@@ -44,8 +37,8 @@ p.message {
 
 p.notice {
   font-family: Cookie, sans-serif;
-  color: darken(#ff59cb, 20%); 
-  background: lighten(#ff59cb, 30%);
+  color: darken(#35b6c2, 20%); 
+  background: lighten(#35b6c2, 30%);
   box-shadow: 0 0 5px rgba(255, 59, 203, .4);
 }
 
@@ -75,7 +68,7 @@ input {
 input[type="submit"] {
   margin-top: 10px;
   width: 31%;
-  background: #ff59cb;
+  background: #35b6c2;
   color: white;
   margin-left: 66%;
   font-weight: bold;
@@ -105,7 +98,7 @@ body.new #maincolumn > *{
 }
 
 .focusField {
-  border: 1px solid #ff59cb;
+  border: 1px solid #35b6c2;
   background: white;
   color: black;
   outline: none;
@@ -135,7 +128,7 @@ label[for='user_remember_me'] {
 }
 
 label[for='user_remember_me']:hover {
-  color: #ff59cb;
+  color: #35b6c2;
 }
 
 label[for='user_remember_me'],
@@ -164,16 +157,16 @@ label[for='private'] {
 
 .login-sublinks a:hover {
   text-decoration: underline;
-  color: #FF59CB;
+  color: #35b6c2;
 }
 
 #sidebar a {
-  color: #ff59cb;
+  color: #35b6c2;
   font-size: small;  
 }
 
 #sidebar h2 {
-  color: #7d737b;
+  color: #44342e;
   font-weight: bold;
   font-family: Cookie, sans-serif;
   font-size: x-large;
@@ -181,7 +174,7 @@ label[for='private'] {
 }
 
 nav {
-  background: #7d737b;
+  background: #44342e;
   height: 42px;
   box-shadow: 0 0 10px rgba(125,115,123,1);
   -webkit-box-shadow: 0 0 10px rgba(125,115,123,1);
@@ -205,7 +198,7 @@ nav {
 }
 
 nav .logo {
-  color: white;
+  color: #35b6c2;
   font-family: Cookie, sans-serif !important;
   font-weight: bold;
   font-size: 28px;
@@ -231,7 +224,7 @@ nav .right a {
 
 nav .right a:hover {
   text-decoration: underline;
-  color: #FF59CB;
+  color: #35b6c2;
 }
 
 nav div {
@@ -267,13 +260,13 @@ form .fakeupload input {
 // }
 nav#user_nav {
   width: 100%;
-  box-shadow: 0 0 10px #7d737b;
-  -webkit-box-shadow: 0 0 10px #7d737b;
-  -moz-box-shadow: 0 0 10px #7d737b;
+  box-shadow: 0 0 10px #44342e;
+  -webkit-box-shadow: 0 0 10px #44342e;
+  -moz-box-shadow: 0 0 10px #44342e;
 }
 #wrap {
   height: 172px;
-  background: url('http://0.0.0.0:3000/assets/tileable_wood_texture-light.png');
+  background: #caedf1;
   box-shadow: inset 0 0 10px rgba(125,115,123,1);
   -webkit-box-shadow: inset 0 0 10px rgba(125,115,123,1);
   -moz-box-shadow: inset 0px -10px 10px -10px rgba(125,115,123,1);
@@ -295,7 +288,7 @@ h2 {
   font-family: Cookie, sans-serif !important;
   font-size: 24pt !important;
   font-weight: 700 !important;
-  color: #7D737B;
+  color: #44342e;
   letter-spacing: -0.08em;
   text-transform: lowercase;
   text-align: center !important;
@@ -358,7 +351,7 @@ and you keep this window open. */
 #glittercarousel #new_project_link {
   width: 125px;
   height: 90px;
-  background: #ff59cb;
+  background: #35b6c2;
   border: 10px white solid;
 }
 
@@ -390,7 +383,7 @@ and you keep this window open. */
 #myprojects h3 a:link,
 #myprojects h3 a:visited,
 #myprojects h3 a:active {
-  color: #ff59cb;
+  color: #35b6c2;
 }
 
 

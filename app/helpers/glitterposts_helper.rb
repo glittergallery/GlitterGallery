@@ -1,0 +1,2 @@
+module GlitterpostsHelper
+end

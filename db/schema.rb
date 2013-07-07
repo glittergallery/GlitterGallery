@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,16 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120506194333) do
+ActiveRecord::Schema.define(:version => 20130702190946) do
 
   create_table "comments", :force => true do |t|
-    t.string   "author"
     t.text     "body"
     t.integer  "responding_to"
-    t.integer  "glimage_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-    t.string   "email"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "polycomment_id"
+    t.string   "polycomment_type"
+    t.integer  "user_id"
+    t.boolean  "issue"
   end
 
   create_table "glimages", :force => true do |t|
@@ -31,6 +33,16 @@ ActiveRecord::Schema.define(:version => 20120506194333) do
     t.boolean  "private"
   end
 
+  create_table "glitterposts", :force => true do |t|
+    t.string   "title"
+    t.text     "content"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "user_id"
+  end
+
+  add_index "glitterposts", ["user_id", "created_at"], :name => "index_glitterposts_on_user_id_and_created_at"
+
   create_table "projects", :force => true do |t|
     t.string   "name"
     t.integer  "repo_id"
@@ -41,21 +53,16 @@ ActiveRecord::Schema.define(:version => 20120506194333) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.string   "email"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.string   "identity_url"
+    t.string   "username"
+    t.string   "remember_token"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["identity_url"], :name => "index_users_on_identity_url", :unique => true
+  add_index "users", ["remember_token"], :name => "index_users_on_remember_token", :unique => true
 
 end

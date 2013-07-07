@@ -1,9 +1,8 @@
 require 'faker'
 
-FactoryGirl.define do
-  factory :comment do |f|
-    f.author { Faker::Name.name }
-    f.email { Faker::Internet.email }
+  FactoryGirl.define do
+    factory :comment do |f|
     f.body { Faker::Lorem.paragraph }
+    f.association :user
   end
 end

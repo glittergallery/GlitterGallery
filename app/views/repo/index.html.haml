@@ -6,18 +6,15 @@
 - content_for :title do
   Dashboard
 
-= render 'shared/glimageshow', :glimages => @glimages
+#repo_link
+  = File.expand_path @user.repo.path
 
-.center
-  #dashboard
-    = render 'projectlist'
-          
-  #sidebar
-    %h2 toolbox
-    %ul
-      %li
-        = link_to 'Add a new project', new_project_path
-      -# %li#repo_link
-        = File.expand_path @user.repo.path
-        
+#upload
+  = form_for @project do |f|
+    = label_tag :name, "Project name"
+    = f.text_field :name
+    = label_tag :image, "Select image to upload"
+    = f.fields_for :image do |i|
+      = i.file_field :file
+    = f.submit "Save"
 

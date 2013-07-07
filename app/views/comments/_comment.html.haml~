@@ -1,0 +1,21 @@
+-# Move the user.find etc actions to the controller. bad mvc usage
+.comment
+  .comment-meta
+    = avatar(User.find(comment.user_id))
+    %p.author
+<<<<<<< HEAD
+      = User.find(comment.user_name)
+=======
+      = comment.author
+>>>>>>> 16875e2a51373bfdf1358a2ccf6780e4c64435ed
+  .comment-body
+    = comment.body
+  .comment-time
+    %p.time
+      = distance_of_time_in_words_to_now comment.created_at
+      ago
+
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 16875e2a51373bfdf1358a2ccf6780e4c64435ed

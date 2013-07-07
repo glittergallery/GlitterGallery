@@ -1,18 +1,21 @@
-source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
-# source 'https://rubygems.org'
+source 'https://rubygems.org'
 
-gem 'rails', '3.2.3'
+gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'mysql2'
 gem 'sqlite3'
-gem 'devise'
+gem 'mysql2'
 gem 'haml'
 gem 'grit'
 gem 'escape'
 gem 'jquery-rails'
+gem 'rake', '0.9.2'
+gem 'ruby-openid'
+gem 'open_id_authentication'
+
+#gem 'sketchily'
+#for integration with SVG-edit
 
 # ruby 1.9 needs bigdecimal
 # gem 'bigdecimal'
@@ -24,13 +27,13 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platform => :ruby
+  #(Mac OSX and Windows often include their own JavaScript runtimes, but Linux does not.)
+  gem 'therubyracer', :platform => :ruby
 
   gem 'uglifier', '>= 1.0.3'
 end
 
 group :development, :test do
-  gem 'minitest'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
 end
