@@ -1,0 +1,18 @@
+<h1>All Glitterposts! %></h1>
+ 
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Content</th>
+  </tr>
+ 
+  <% @glitterposts.each do |post| %>
+    <tr>
+      <td><%= User.find(post.user_id).username %></td>
+      <td><%= post.title %></td>
+      <td><%= post.content %></td>
+      <td><%= link_to_if(logged_in? && (post.user_id == current_user.id), "Edit", 
+              edit_glitterpost_url(post)) %> </td>
+    </tr>
+  <% end %>
+</table>
