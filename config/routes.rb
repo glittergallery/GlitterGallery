@@ -1,6 +1,7 @@
 Glitter::Application.routes.draw do
 
-  resources :users, :projects, :glimages, :comments
+
+  resources :users, :projects, :glimages, :comments, :glitterposts
   resource :session, only: [:new, :create, :destroy]
 
   match '/login', to: 'sessions#new'
