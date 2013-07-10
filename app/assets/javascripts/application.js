@@ -17,4 +17,5 @@
 //= require jquery.jcarousel.js
 //= require jquery.annotate
 //= require jquery-ui
+//= require jquery.infinitescroll.min
 //= require glimages

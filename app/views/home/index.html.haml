@@ -1,6 +1,10 @@
-%h1 Welcome to GlitterGallery
-%h2 so-called for now
-%h3 better name needed!
+- content_for :header do
+  %h1
+    = image_tag 'logo.png', :alt => 'Glitter Gallery'
 
-%p
-  Sign up to try it out!
+.center
+  %ul#glimages
+    - @glimages.each do |glimage|
+      = render 'glimage', :glimage => glimage
+
+  = will_paginate @glimages
