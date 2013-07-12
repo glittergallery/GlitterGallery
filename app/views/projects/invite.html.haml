@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+%sparkleshare
+  %invite
+    %address https://#{ENV['OPENSHIFT_APP_DNS'].downcase}/git
+    %remote_path #{@git_dir}

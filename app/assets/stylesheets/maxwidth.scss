@@ -1,0 +1,83 @@
+@import 'reset.css';
+@import 'grid.scss';
+
+
+//////////
+// GRID //
+//////////
+
+// Specify the number of columns and set column and gutter widths
+$columns: 12;
+$column-width: 60;
+$gutter-width: 20;
+
+// Remove the definition below for a pixel-based layout
+$total-width: 100%;
+
+
+////////////
+// LAYOUT //
+////////////
+
+// center the contents
+div.center {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+// header
+.header#top {
+	margin-bottom: 1em;
+  text-align: center;
+}
+
+// main column & sidebar
+#maincolumn {
+  @include column(9);
+}
+
+ul#myprojects {
+  @include column(9);
+}
+
+ul#myprojects li {
+@include column(3,9);
+margin-bottom: 1em;
+}
+
+#sidebar {
+	@include column(3);
+}
+
+// full page
+#fullpage {
+	@include column(12);
+}
+
+#comments {
+  @include column(6);
+}
+#commentform {
+  @include column(6);
+}
+
+nav .welcome {
+  @include column(5);
+}
+
+nav .logo {
+  @include column(2);
+}
+
+nav .right {
+  @include column(5);
+}
+
+.home #glimages {
+  @include column(10);
+  @include push(1);
+  
+  li {
+    @include column(4);
+  }
+}
