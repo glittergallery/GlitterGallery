@@ -1,14 +1,27 @@
 class User < ActiveRecord::Base
-  has_many :projects 
+  has_many :projects
   has_many :glimages, :through => :projects
 
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+   
+  before_save :create_remember_token
+  before_save { |user| user.email = email.downcase 
+                       user.identity_url = identity_url.downcase }
+  # before_save :normalize_identity_url
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-  # attr_accessible :title, :body
+  attr_accessible :email, :identity_url, :username
 
+  validates :username, presence: true
+  validates :identity_url, presence: true, uniqueness: { case_sensitive: false }
+  validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, 
+             uniqueness: { case_sensitive: false}
+
+private
+    def create_remember_token
+      self.remember_token = SecureRandom.urlsafe_base64
+    end
+
+    def normalize_identity_url
+      self.identity_url = URI.parse(self.identity_url)
+    end
 end
