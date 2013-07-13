@@ -20,9 +20,9 @@
         - if logged_in?
           .welcome
             %span.msg
-              welcome,
+              >,
             %span.email
-              = link_to current_user.identity_url + '!', dashboard_path
+              = link_to current_user.username + "'s dashboard", dashboard_path
           = link_to dashboard_path do
             %h1.logo
               Glitter Gallery

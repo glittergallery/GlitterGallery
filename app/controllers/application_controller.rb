@@ -1,6 +1,7 @@
 require 'escape'
 class ApplicationController < ActionController::Base
   include Escape
+  include SessionsHelper
   protect_from_forgery
   
   private
