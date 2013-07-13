@@ -7,6 +7,10 @@ Glitter::Application.routes.draw do
     resources :comments
   end
 
+  resources :glitterposts do
+    resources :comments
+  end
+
   match '/login', to: 'sessions#new'
   match '/logout', to: 'sessions#destroy', via: :delete
 
