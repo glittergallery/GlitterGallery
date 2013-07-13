@@ -3,10 +3,11 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 @import url(http://fonts.googleapis.com/css?family=Cookie);
+$yellow: #fce451;
+$brown: #44342e;
+$blue: #35b6c2;
 
-$lightyellow: #f6f4c2;
-$lightbrown: #7d737b;
-$pink: #ff59cb;
+
 
 body, p, a, div, form {
   font-family: sans-serif;
@@ -15,33 +16,22 @@ h1, h2 {
   font-family: Cookie, sans-serif;
 } 
 h3.title {
-  font-family: Cookie;
+  font-family: Cookie, sans-serif;
   font-size: large;
-}
-
-body > header > h1 {
-  text-align: center;
 }
 
 /** background gradient **/
 body {
   width: 100%;
-	background: $lightyellow no-repeat; /* Old browsers */
-	background: $lightyellow -moz-linear-gradient(top, #ffffff 0%, $lightyellow 41%, $lightyellow 100%) no-repeat; /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(41%,$lightyellow), color-stop(100%,$lightyellow)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #ffffff 0%,$lightyellow 41%,$lightyellow 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #ffffff 0%,$lightyellow 41%,$lightyellow 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #ffffff 0%,$lightyellow 41%,$lightyellow 100%); /* IE10+ */
-	background: linear-gradient(top, #ffffff 0%,$lightyellow 41%,$lightyellow 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='$lightyellow',GradientType=0 ); /* IE6-9 */
+  background: $yellow;
 }
 
 body.index {
-  background: $lightyellow -moz-linear-gradient(top, #ffffff 0%, #ffffff 200px, $lightyellow 400px, $lightyellow 100%) no-repeat; /* FF3.6+ */
+  background: $yellow;
 }
 
 body.projects {
-  background: $lightyellow -moz-linear-gradient(top, #ffffff 0%, #ffffff 30px, $lightyellow 200px, $lightyellow 100%) no-repeat; /* FF3.6+ */
+  background: $yellow;
 }
 
 p.message {
@@ -51,8 +41,8 @@ p.message {
 
 p.notice {
   font-family: Cookie, sans-serif;
-  color: darken(#ff59cb, 20%); 
-  background: lighten(#ff59cb, 30%);
+  color: darken($blue, 20%); 
+  background: lighten($blue, 30%);
   box-shadow: 0 0 5px rgba(255, 59, 203, .4);
 }
 
@@ -82,7 +72,7 @@ input {
 input[type="submit"] {
   margin-top: 10px;
   width: 31%;
-  background: #ff59cb;
+  background: $blue;
   color: white;
   margin-left: 66%;
   font-weight: bold;
@@ -112,7 +102,7 @@ body.new #maincolumn > *{
 }
 
 .focusField {
-  border: 1px solid #ff59cb;
+  border: 1px solid $blue;
   background: white;
   color: black;
   outline: none;
@@ -142,7 +132,7 @@ label[for='user_remember_me'] {
 }
 
 label[for='user_remember_me']:hover {
-  color: #ff59cb;
+  color: $blue;
 }
 
 label[for='user_remember_me'],
@@ -171,16 +161,16 @@ label[for='private'] {
 
 .login-sublinks a:hover {
   text-decoration: underline;
-  color: #FF59CB;
+  color: $blue;
 }
 
 #sidebar a {
-  color: #ff59cb;
+  color: $blue;
   font-size: small;  
 }
 
 #sidebar h2 {
-  color: $lightbrown;
+  color: $brown;
   font-weight: bold;
   font-family: Cookie, sans-serif;
   font-size: x-large;
@@ -188,7 +178,7 @@ label[for='private'] {
 }
 
 nav {
-  background: $lightbrown;
+  background: $brown;
   height: 42px;
   box-shadow: 0 0 10px rgba(125,115,123,1);
   -webkit-box-shadow: 0 0 10px rgba(125,115,123,1);
@@ -212,7 +202,7 @@ nav {
 }
 
 nav .logo {
-  color: white;
+  color: $blue;
   font-family: Cookie, sans-serif !important;
   font-weight: bold;
   font-size: 28px;
@@ -227,7 +217,6 @@ nav div {
 }
 
 nav .right {
-  float: right;
   text-align: right;
 }
 
@@ -235,12 +224,11 @@ nav .right a {
   color: white;
   text-decoration: none;
   font-size: 14px;
-  margin-right: 10px;
 }
 
 nav .right a:hover {
   text-decoration: underline;
-  color: #FF59CB;
+  color: $blue;
 }
 
 nav div {
@@ -276,13 +264,13 @@ form .fakeupload input {
 // }
 nav#user_nav {
   width: 100%;
-  box-shadow: 0 0 10px $lightbrown;
-  -webkit-box-shadow: 0 0 10px $lightbrown;
-  -moz-box-shadow: 0 0 10px $lightbrown;
+  box-shadow: 0 0 10px $brown;
+  -webkit-box-shadow: 0 0 10px $brown;
+  -moz-box-shadow: 0 0 10px $brown;
 }
 #wrap {
   height: 172px;
-  background: url('http://0.0.0.0:3000/assets/tileable_wood_texture-light.png');
+  background: #caedf1;
   box-shadow: inset 0 0 10px rgba(125,115,123,1);
   -webkit-box-shadow: inset 0 0 10px rgba(125,115,123,1);
   -moz-box-shadow: inset 0px -10px 10px -10px rgba(125,115,123,1);
@@ -304,7 +292,7 @@ h2 {
   font-family: Cookie, sans-serif !important;
   font-size: 24pt !important;
   font-weight: 700 !important;
-  color: $lightbrown;
+  color: $brown;
   letter-spacing: -0.08em;
   text-transform: lowercase;
   text-align: center !important;
@@ -367,7 +355,7 @@ and you keep this window open. */
 #glittercarousel #new_project_link {
   width: 125px;
   height: 90px;
-  background: #ff59cb;
+  background: $blue;
   border: 10px white solid;
 }
 
@@ -399,7 +387,7 @@ and you keep this window open. */
 #myprojects h3 a:link,
 #myprojects h3 a:visited,
 #myprojects h3 a:active {
-  color: #ff59cb;
+  color: $blue;
 }
 
 
@@ -459,63 +447,3 @@ body.projects ul.images img {
 #comments .comment {
   margin-bottom: 1em;
 }
-
-.home {
-  #glimages {
-    li {
-      margin-top: 40px;
-      
-      img {
-        display: block;
-        margin: 0 auto;
-        border-width: 25px;
-        -moz-border-image: url('glitterborder.png') 94 116 120 171; 
-        -webkit-border-image: url('glitterborder.png') 94 116 120 171; 
-        -o-border-image: url('glitterborder.png') 94 116 120 171; 
-        border-image: url('glitterborder.png') 94 116 120 171;
-      }
-
-      .meta {
-        font-size: 12px;
-        text-align: center;
-        margin: 10px;
-        color: $lightbrown;
-        line-height: 15px;
-      }
-    }
-  }
-
-  .pagination {
-    clear: both;
-    text-align: center;
-    padding: 60px 0 20px;
-    font-family: Cookie, sans-serif;
-    color: $lightbrown;
-    font-size: large;
-    a {
-      font-family: Cookie, sans-serif;
-      color: $pink;
-    }
-  }
-
-  #infscr-loading {
-    clear: both;
-    margin: 10px auto;
-    color: $pink;
-    text-align: center;
-  }
-
-  &.not_signed_in #user_nav {
-    background: transparent;
-    box-shadow: none;
-    color: $lightbrown;
-    font-family: Cookie, sans-serif;
-    text-align: right;
-    a {
-      color: $lightbrown;
-    }
-      
-  }
-
-}  
-
