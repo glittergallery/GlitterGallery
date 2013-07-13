@@ -11,7 +11,7 @@ Glitter Gallery will be somewhat biased to support SVGs from Inkscape, and to wo
 Glitter Gallery runs on OpenShift, so it's really easy to run your own version.
 
 1. [Sign up for OpenShift](http://openshift.redhat.com) if you don't already have an account
-1. Create a new ruby-1.8 application and add MySQL
+1. Create a new ruby-1.9 application and add MySQL
 1. Clone the application repo: `git clone <OpenShift git URL>`
 1. Change into the cloned directory
 1. Add the Glitter Gallery repo: `git remote add glitter -m master http://github.com/EmilyDirsh/GlitterGallery.git`
@@ -20,10 +20,13 @@ Glitter Gallery runs on OpenShift, so it's really easy to run your own version.
 
 ### Get involved
 
-Email us and let us know you're interested, and what you can do, and we'll figure out something you can help with. Or just fork it and hack on it! Up to you!
+Email us and let us know you're interested, and what you can do, and we'll figure out something you can help with. Or just fork it and hack on it! Up to you! More contribution points on the [wiki](http://github.com/sarupbanskota/GlitterGallery/wiki/Contributing)!
 
 ### Authors
 
 Maírín Duffy (duffy@fedoraproject.org)
 
 Emily Dirsh (emily@redhat.com)
+
+![Homestrip 1/2](http://thirstyforcola.files.wordpress.com/2013/05/front.jpg)
+![Homestrip - 2/2](http://thirstyforcola.files.wordpress.com/2013/05/back.jpg)
