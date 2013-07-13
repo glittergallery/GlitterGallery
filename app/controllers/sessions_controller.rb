@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       if result.successful?
         #FIXME - needs normalizing before checking for the identity_url
         unless @user = User.find_by_identity_url(identity_url) or
-                      User.find_by_email(registration[:email])
+                      User.find_by_email(registration['email'])
           # creates new user if there was none registered
           # with the provided url, or fetched email            
           @user = User.create(identity_url: identity_url, 
@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
         # indicates that login failed
         # something went wrong with the auth 
         # process, prompt for a retry
-        flash[:error] = message
+        flash[:alert] = "Something went wrong. Please try logging in again."
         redirect_to(login_url)
       end
     end
