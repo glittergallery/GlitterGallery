@@ -447,3 +447,61 @@ body.projects ul.images img {
 #comments .comment {
   margin-bottom: 1em;
 }
+.home {
+  #glimages {
+    li {
+      margin-top: 40px;
+      
+      img {
+        display: block;
+        margin: 0 auto;
+        border-width: 25px;
+        -moz-border-image: url('glitterborder.png') 94 116 120 171;
+        -webkit-border-image: url('glitterborder.png') 94 116 120 171;
+        -o-border-image: url('glitterborder.png') 94 116 120 171;
+        border-image: url('glitterborder.png') 94 116 120 171;
+      }
+
+      .meta {
+        font-size: 12px;
+        text-align: center;
+        margin: 10px;
+        color: $brown;
+        line-height: 15px;
+      }
+    }
+  }
+
+  .pagination {
+    clear: both;
+    text-align: center;
+    padding: 60px 0 20px;
+    font-family: Cookie, sans-serif;
+    color: $brown;
+    font-size: large;
+    a {
+      font-family: Cookie, sans-serif;
+      color: $blue;
+    }
+  }
+
+  #infscr-loading {
+    clear: both;
+    margin: 10px auto;
+    color: $blue;
+    text-align: center;
+  }
+
+  &.not_signed_in #user_nav {
+    background: transparent;
+    box-shadow: none;
+    color: $brown;
+    font-family: Cookie, sans-serif;
+    text-align: right;
+    a {
+      color: $brown;
+    }
+      
+  }
+
+} 
