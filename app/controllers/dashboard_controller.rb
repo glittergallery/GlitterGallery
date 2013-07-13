@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
 #  before_filter :authenticate_user!, :except => :show
-#  CHECK - if there is any substitue necessary.
+#  CHECK - if there is any substitute necessary.
 
   def index
     @projects = current_user.projects

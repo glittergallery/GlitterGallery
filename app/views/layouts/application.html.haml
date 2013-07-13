@@ -20,7 +20,7 @@
         - if logged_in?
           .welcome
             %span.msg
-              >,
+              >
             %span.email
               = link_to current_user.username + "'s dashboard", dashboard_path
           = link_to dashboard_path do
