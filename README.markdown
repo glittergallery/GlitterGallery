@@ -1,3 +1,6 @@
+![Homestrip 1/2](http://thirstyforcola.files.wordpress.com/2013/05/front.jpg)
+![Homestrip - 2/2](http://thirstyforcola.files.wordpress.com/2013/05/back.jpg)
+
 ## Glitter Gallery
 
 Glitter Gallery _will be_ an amazing way to collaborate on design! 
@@ -28,5 +31,4 @@ Maírín Duffy (duffy@fedoraproject.org)
 
 Emily Dirsh (emily@redhat.com)
 
-![Homestrip 1/2](http://thirstyforcola.files.wordpress.com/2013/05/front.jpg)
-![Homestrip - 2/2](http://thirstyforcola.files.wordpress.com/2013/05/back.jpg)
+
