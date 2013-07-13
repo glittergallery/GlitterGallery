@@ -11,16 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130713175918) do
+ActiveRecord::Schema.define(:version => 20130713185810) do
 
   create_table "comments", :force => true do |t|
-    t.string   "author"
     t.text     "body"
     t.integer  "responding_to"
-    t.integer  "glimage_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-    t.string   "email"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "polycomment_id"
+    t.string   "polycomment_type"
+    t.integer  "user_id"
   end
 
   create_table "glimages", :force => true do |t|

@@ -7,14 +7,14 @@ class ApplicationController < ActionController::Base
   private
   # Write a file and commit to the repo
   def image_commit(project, imagefile)
-    if user_signed_in?
+    if logged_in?
       commit project.path, imagefile.original_filename, imagefile.read, "new file #{imagefile.original_filename}" 
     end
   end
 
   # Add magicmockup to project repo
   def add_the_magic(project)
-    if user_signed_in? and not File.exists? File.join(project.path, "magicmockup.js")
+    if logged_in? and not File.exists? File.join(project.path, "magicmockup.js")
       magicfile = File.join 'app', 'assets', 'javascripts', 'magicmockup.js'
       magic = File.open(magicfile).read
       commit project.path, "magicmockup.js", magic, "Add magicmockup.js"
