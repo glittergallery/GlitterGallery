@@ -41,8 +41,9 @@ class GlimagesController < ApplicationController
 
   def show
     @glimage = Glimage.find params[:id]
+    @polycomment = @glimage
+    @comments = @polycomment.comments
     @comment = Comment.new
-    @comment.glimage_id = params[:id]
   end
 
   def edit
@@ -51,6 +52,5 @@ class GlimagesController < ApplicationController
       redirect_to dashboard_path
     end
   end
-
 
 end
