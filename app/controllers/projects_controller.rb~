@@ -44,6 +44,8 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     mime_type = Mime::Type.lookup_by_extension('xml')
     content_type = mime_type.to_s unless mime_type.nil?
+    # FIXME - email is no longer guaranteed,
+    # we may need an alt attribue for path
     @git_dir = "/#{@project.user.email}/#{@project.name}"
     render :layout => false, :content_type => content_type
   end
