@@ -53,4 +53,7 @@ class GlimagesController < ApplicationController
     end
   end
 
+  def commits
+  end
+
 end

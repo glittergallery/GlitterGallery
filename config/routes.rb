@@ -7,6 +7,8 @@ Glitter::Application.routes.draw do
     resources :comments
   end
 
+  get '/projects/:id/commits' => 'projects#commits'
+
   resources :glitterposts do
     resources :comments
   end

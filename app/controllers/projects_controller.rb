@@ -1,4 +1,6 @@
+require 'grit'
 class ProjectsController < ApplicationController
+
 
   #before_filter :authenticate_user!, :except => [:show, :invite]
 
@@ -57,6 +59,12 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     @glimage = Glimage.new
     @glimage.project_id = params[:id]
+  end
+
+  def commits
+    # problem - how do we get the repo object?
+    repo = Grit::Repo.init_bare_or_open (File.join (Project.find(params[:id]).path) , '.git')
+    @commits = repo.commits
   end
 
 end
