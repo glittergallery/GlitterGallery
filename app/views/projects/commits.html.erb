@@ -6,7 +6,7 @@
 <ul>
 	<% @commits.each do |commit| %>
 		<li> <%= avatar(commit.author.email)%> 
-		     <%= link_to commit.message, File.join('commit', commit.id) %> </li>
+		     <%= link_to commit.message, File.join('commit', commit.tree.id) %> </li>
 		<li> <%= commit.authored_date %> </li>
 		<li> <%= commit.id %> </li>
 		<br>

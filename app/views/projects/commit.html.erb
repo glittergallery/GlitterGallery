@@ -1,1 +1,5 @@
-<h1>hello world</h1>
+<% @contents.each do |blob| %>
+  <%= blob.name %>
+  <% # Render as SVG - something wrong%>
+  <svg> <%= blob.data %> </svg>
+<% end %>

@@ -68,7 +68,11 @@ class ProjectsController < ApplicationController
   end
 
   def commit
-    
+    @project = Project.find params[:id]
+    repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
+    @tree = repo.tree(params[:tree_id])
+    @contents = @tree.contents
+  
   end
 
 end
