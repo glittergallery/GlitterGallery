@@ -62,7 +62,6 @@ class ProjectsController < ApplicationController
   end
 
   def commits
-    # problem - how do we get the repo object?
     repo = Grit::Repo.init_bare_or_open (File.join (Project.find(params[:id]).path) , '.git')
     @commits = repo.commits
   end

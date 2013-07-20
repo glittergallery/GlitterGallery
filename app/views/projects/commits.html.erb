@@ -1,3 +1,11 @@
 <h1>
-hello world!
+Commits on this project
 </h1>
+<ul>
+	<% @commits.each do |commit| %>
+		<li> <%= commit.author %> </li>
+		<li> <%= commit.authored_date %> </li>
+		<li> <%= commit.id %> </li>
+		<br>
+	<% end %>
+</ul>
