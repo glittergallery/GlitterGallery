@@ -1,9 +1,10 @@
+<%#FIXME - add css to commits page %>
 <h1>
 Commits on this project
 </h1>
 <ul>
 	<% @commits.each do |commit| %>
-		<li> <%= commit.author %> </li>
+		<li> <%= avatar(commit.author.email)%> <%= commit.message %> </li>
 		<li> <%= commit.authored_date %> </li>
 		<li> <%= commit.id %> </li>
 		<br>
