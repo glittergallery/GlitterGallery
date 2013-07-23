@@ -42,6 +42,7 @@ class ProjectsController < ApplicationController
     end
   end
 
+
   def invite
     @project = Project.find params[:id]
     mime_type = Mime::Type.lookup_by_extension('xml')
@@ -67,7 +68,7 @@ class ProjectsController < ApplicationController
     @commits = repo.commits
   end
 
-  def commit
+  def projectcommit
     @project = Project.find params[:id]
     repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
     @tree = repo.tree(params[:tree_id])
