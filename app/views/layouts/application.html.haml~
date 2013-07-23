@@ -18,7 +18,7 @@
 
     %header
       %nav#user_nav
-        - if user_signed_in?
+        - if logged_in?
           .welcome
             %span.msg
               welcome,

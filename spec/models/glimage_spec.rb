@@ -2,17 +2,21 @@ require 'spec_helper'
 
 describe Glimage do
   it 'has a valid factory' do
-    FactoryGirl.create(:glimage).should be_valid
+    expect(create(:glimage)).to  be_valid
   end
 
   it 'is invalid without a file' do
-    FactoryGirl.build(:glimage, file: nil).should_not be_valid
+    expect(build(:glimage, file: nil)).to have(1).errors_on(:file)
   end
 
+####################################################################################
+# why is this required?
+
   it 'returns whether or not it belongs to a user' do
-    proj = FactoryGirl.create(:project_with_glimages)
+    proj = create(:project_with_glimages)
     proj.glimages.first.belongs_to?(proj.user).should be_true
   end
+#####################################################################################
 
   describe 'return paths for various uses' do
     before :each do

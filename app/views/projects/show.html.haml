@@ -12,6 +12,9 @@
   #connect to sparkle share
   %a{:href => "#{@invite_uri}"} Click here to add this project to SparkleSharegit
 
+  %p
+    =link_to 'View commit history', File.join(@project.id.to_s, 'commits')
+
   #upload
 
     %h3.title New image
