@@ -1,0 +1,18 @@
+#FIXME -styling
+<h1>Create a new Glitterpost!</h1>
+<%= form_for :glitterpost, url: glitterposts_path do |f| %>
+  <p>
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </p>
+ 
+  <p>
+    <%= f.label :content %><br>
+    <%= f.text_area :content %>
+  </p>
+ 
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+<%= link_to 'Back', glitterposts_path %>

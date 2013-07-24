@@ -1,0 +1,19 @@
+- #FIXME -styling
+%h1
+  %strong= @glitterpost.title
+%p
+  Posted by #{User.find(@glitterpost.user_id).username}
+  %br/
+  %strong= @glitterpost.content
+
+#comments
+  - @glitterpost.comments.each do |c|
+    = render 'comments/comment', :comment => c
+
+- if logged_in?
+  #commentform
+    %h3.title Add a comment
+    = render 'comments/new', :comment => @comment
+
+= link_to 'Back', glitterposts_path
+= link_to_if(logged_in? && (@glitterpost.user_id == current_user.id), "Edit", edit_glitterpost_path)

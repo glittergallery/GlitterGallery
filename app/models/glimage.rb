@@ -1,6 +1,6 @@
 class Glimage < ActiveRecord::Base
   belongs_to :project
-  has_many :comments
+  has_many :comments, :as => :polycomment 
 
   attr_accessible :file, :filetype, :private
 
