@@ -9,6 +9,7 @@ class GlimagesController < ApplicationController
       img.project_id = project.id
       if img.save
         image_commit project, params[:glimage][:file]
+        # add a commit message saying a new glimage was created.
         create_thumbnail img
         flash[:notice] = 'Your image was saved! How sparkly!'
       else
