@@ -73,7 +73,6 @@ class ProjectsController < ApplicationController
     repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
     @tree = repo.tree(params[:tree_id])
     @contents = @tree.contents
-  
   end
 
 end

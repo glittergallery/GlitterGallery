@@ -53,7 +53,19 @@ class GlimagesController < ApplicationController
     end
   end
 
-  def commits
+  def history
+  #retrive stuff from all the blobs in all the commits
+    @bloblist = Array.new
+    @glimage = Glimage.find params[:id]
+    @project = Project.find(@glimage.project_id)
+    repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
+    repo.commits.each do |commit|
+      commit.tree.contents.each do |blob|
+        if blob.name == @glimage.file
+          @bloblist << blob
+        end
+      end
+    end
   end
 
 end

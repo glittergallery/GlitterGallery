@@ -9,6 +9,9 @@
 #show_image
   = show_image @glimage
 
+%p 
+  = link_to 'View file history', File.join(@glimage.id.to_s, 'history')
+
 = glimage_tools @glimage
 
 #comments

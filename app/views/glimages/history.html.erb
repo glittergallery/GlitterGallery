@@ -1,0 +1,6 @@
+
+<% @bloblist.each do |blob| %>
+  <svg><%= raw blob.data %></svg>
+  <%= blob.name %>
+  <hr>
+<% end %>
