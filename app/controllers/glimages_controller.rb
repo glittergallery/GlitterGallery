@@ -63,7 +63,7 @@ class GlimagesController < ApplicationController
     repo.commits.each do |commit|
       commit.tree.contents.each do |blob|
         if blob.name == @glimage.file
-          @bloblist << blob
+          @bloblist << [blob, commit]
         end
       end
     end
