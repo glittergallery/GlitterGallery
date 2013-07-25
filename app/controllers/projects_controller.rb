@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
                          :filetype => params[:project][:glimage][:file].content_type,
                          :private => params[:project][:glimage][:private]
     if project.save
-      add_the_magic project # add magicmockup.js if needed
+      #add_the_magic project # add magicmockup.js if needed
       project_saved = true
       #write imagefile
       begin
