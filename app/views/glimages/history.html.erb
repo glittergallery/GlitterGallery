@@ -1,7 +1,9 @@
 
 <% @bloblist.each do |blob, commit| %>
-  <svg><%= raw blob.data %></svg>
-  <%= blob.name %>
+
+  <img src="data:image/svg+xml;base64,<%=Base64.encode64(raw blob.data) %>">
+  <%= commit.author %>
+  <%= commit.message %>
   <%= distance_of_time_in_words_to_now commit.date %> ago
   <hr>
 <% end %>

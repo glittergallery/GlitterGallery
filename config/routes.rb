@@ -10,6 +10,8 @@ Glitter::Application.routes.draw do
   get '/projects/:id/commits' => 'projects#commits'
   get 'projects/:id/commit/:tree_id' => 'projects#projectcommit'
   get 'glimages/:id/history' => 'glimages#history'
+  get 'glimages/:id/blob/:blob_id' => 'glimages#blob'
+
   resources :glitterposts do
     resources :comments
   end
