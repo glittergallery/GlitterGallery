@@ -4,7 +4,7 @@ class Glimage < ActiveRecord::Base
 
   attr_accessible :file, :filetype, :private
 
-  validates :file, :presence => true
+  validates :file, :presence => true, :uniqueness => true
 
   def is_svg?
     filetype == 'image/svg+xml' || file.split('.').pop == 'svg'
