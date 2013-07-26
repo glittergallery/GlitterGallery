@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130713190648) do
+ActiveRecord::Schema.define(:version => 20130724124318) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(:version => 20130713190648) do
     t.string   "filetype"
     t.boolean  "private"
   end
+
+  add_index "glimages", ["file"], :name => "index_glimages_on_file", :unique => true
 
   create_table "glitterposts", :force => true do |t|
     t.string   "title"

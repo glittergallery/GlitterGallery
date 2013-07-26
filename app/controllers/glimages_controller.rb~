@@ -58,22 +58,15 @@ class GlimagesController < ApplicationController
   #retrive stuff from all the blobs in all the commits
     @bloblist = Array.new
     @glimage = Glimage.find params[:id]
-    @project = Project.find @glimage.project_id
+    @project = Project.find(@glimage.project_id)
     repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
     repo.commits.each do |commit|
       commit.tree.contents.each do |blob|
         if blob.name == @glimage.file
-          @bloblist << [blob, commit]
+          @bloblist << blob
         end
       end
     end
-  end
-
-  def blob
-    @glimage = Glimage.find params[:id]
-    @project = Project.find @glimage.project_id
-    @repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
-    @blob = @repo.blob(params[:blob_id])
   end
 
 end

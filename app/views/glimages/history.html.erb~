@@ -1,0 +1,7 @@
+
+<% @bloblist.each do |blob, commit| %>
+  <svg><%= raw blob.data %></svg>
+  <%= blob.name %>
+  <%= distance_of_time_in_words_to_now commit.date %> ago
+  <hr>
+<% end %>
