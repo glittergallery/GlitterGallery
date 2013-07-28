@@ -1,13 +1,40 @@
 -# Move the user.find etc actions to the controller. bad mvc usage
-.comment
-  .comment-meta
-    = avatar(User.find(comment.user_id).email)
-    %p.author
-      = User.find(comment.user_id).username
-  .comment-body
-    = comment.body
-  .comment-time
-    %p.time
-      = distance_of_time_in_words_to_now comment.created_at
-      ago
+- if comment.user_id == @glitterpost.user_id
+  .comment#author
+    .comment-meta
+      = avatar(User.find(comment.user_id).email)
+      %p.author
+        = User.find(comment.user_id).username
+    .comment-body
+      = comment.body
+    .comment-time
+      %p.time
+        = distance_of_time_in_words_to_now comment.created_at
+        ago
+
+- elsif logged_in? and comment.user_id == current_user.id
+  .comment#currentuser
+    .comment-meta
+      = avatar(User.find(comment.user_id).email)
+      %p.author
+        = User.find(comment.user_id).username
+    .comment-body
+      = comment.body
+    .comment-time
+      %p.time
+        = distance_of_time_in_words_to_now comment.created_at
+        ago
+
+- else 
+  .comment
+    .comment-meta
+      = avatar(User.find(comment.user_id).email)
+      %p.author
+        = User.find(comment.user_id).username
+    .comment-body
+      = comment.body
+    .comment-time
+      %p.time
+        = distance_of_time_in_words_to_now comment.created_at
+        ago
 

@@ -12,7 +12,7 @@
 @import url(http://fonts.googleapis.com/css?family=Titillium+Web);
 
 #comments {
-  margin: 20px 0px 0px 25px;
+  margin: 60px 0px 0px 25px;
   display: inline;
   float: left;
 
@@ -21,6 +21,13 @@
     border: 1px solid white;
     background-color: #fef6c5;
     margin-top: -11.5px;
+  }
+  #author{
+    background-color: orange;
+  }
+
+  #currentuser{
+    background-color: yellow;
   }
 
   .comment-meta {
