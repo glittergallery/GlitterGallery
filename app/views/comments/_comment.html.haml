@@ -5,12 +5,13 @@
       = avatar(User.find(comment.user_id).email)
       %p.author
         = User.find(comment.user_id).username
-    .comment-body
-      = comment.body
     .comment-time
       %p.time
         = distance_of_time_in_words_to_now comment.created_at
         ago
+    .comment-body
+      = comment.body
+
 
 - elsif logged_in? and comment.user_id == current_user.id
   .comment#currentuser
@@ -18,12 +19,12 @@
       = avatar(User.find(comment.user_id).email)
       %p.author
         = User.find(comment.user_id).username
-    .comment-body
-      = comment.body
     .comment-time
       %p.time
         = distance_of_time_in_words_to_now comment.created_at
         ago
+    .comment-body
+      = comment.body
 
 - else 
   .comment
@@ -31,10 +32,10 @@
       = avatar(User.find(comment.user_id).email)
       %p.author
         = User.find(comment.user_id).username
-    .comment-body
-      = comment.body
     .comment-time
       %p.time
         = distance_of_time_in_words_to_now comment.created_at
         ago
+    .comment-body
+      = comment.body
 
