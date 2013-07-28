@@ -1,5 +1,5 @@
 = form_for [@polycomment, Comment.new] do |f|
-  .text_area
-    = f.text_area :body, :placeholder => 'Add your comment...'
+  .comment_field
+    = f.text_field :body, :placeholder => 'Add your comment...'
   .submit
     = f.submit "Post Comment"
