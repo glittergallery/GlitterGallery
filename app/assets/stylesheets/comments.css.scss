@@ -63,5 +63,21 @@
 }
 
 #commentform {
+  margin-top: 40px;
+
+  // #FIXME
+  // floated left for now. fixed position is making
+  // the form disappear. no idea why.
+
   float: left;
+  width: 550px;
+
+  .text_area{
+    width: 550px;
+    border-top: 0.5px dashed #bf8730;
+    border-bottom: 0.5px dashed #bf8730;
+  }
+  .submit{
+    width: 550px;
+  }
 }
