@@ -1,4 +1,5 @@
-#glitterpost{
+#glitterposts{
+
   width: 960px;
   margin: 60px 0px 0px 60px;
   display: inline;
@@ -7,41 +8,56 @@
   border-top: 0.5px dashed #bf8730;
   border-bottom: 0.5px dashed #bf8730;
 
-  .glitterpost-meta {
-    color: #a66400;
-    img {
-      float: left;
-    }
-    p{
-      margin-top: 2px;
-      overflow: hidden;
-    }
-    p.title {
-      font-size: 30px;
-      font-weight: bold;
-      font-family: Verdana;      
-    }
-    p.author {
-      font-size: 15px;
-      font-family: Arial;
-    }
+  .glitterpost{
 
-    .padded{
-      padding-left: 5px;
-    }
-  }
-
-  .glitterpost-body{
-    padding: 60px 60px 60px 60px;
-	font-family: Arial;
-	line-height: 150%;
-	font-size: 15px;
+    clear: both;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: block;
     border-top: 0.5px dashed #bf8730;
-    float: left;
-    background-color: #ffdb73;
-  }
-  .glitterpost-body:hover{
-    background-color: #ffb440;
+    border-bottom: 0.5px dashed #bf8730;
+    background-color: #ffc873;
+
+    .glitterpost-meta {
+      color: #a66400;
+      img {
+        float: left;
+      }
+      p{
+        margin-top: 2px;
+        overflow: hidden;
+      }
+      p.title {
+        font-size: 30px;
+        font-weight: bold;
+        font-family: Verdana; 
+        a{
+          text-decoration: none;
+          color: #a66400;
+          font-family: Verdana; 
+        }     
+      }
+      p.author {
+        font-size: 15px;
+        font-family: Arial;
+      }
+
+      .padded{
+        padding-left: 5px;
+      }
+    }
+
+    .glitterpost-body{
+      padding: 60px 60px 60px 60px;
+    	font-family: Arial;
+    	line-height: 150%;
+    	font-size: 15px;
+      float: left;
+      background-color: #ffdb73;
+    }
+    .glitterpost-body:hover{
+      background-color: #ffb440;
+    }
   }
 }
 
@@ -61,9 +77,9 @@
 
   a{
     color: black;
-	font-size: 15px;
-	font-family: Arial;
-	text-decoration: none;
+  	font-size: 15px;
+  	font-family: Arial;
+  	text-decoration: none;
   }
 
   .operation:hover{
