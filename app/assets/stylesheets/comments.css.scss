@@ -12,12 +12,16 @@
 @import url(http://fonts.googleapis.com/css?family=Titillium+Web);
 
 #comments {
+
   width: 560px;
   margin: 10px 60px 0px 60px;
   display: inline;
   float: left;
+  clear: left;
 
   .comment {
+    clear: both;
+    display: block;
     border-top: 0.5px dashed #bf8730;
     border-bottom: 0.5px dashed #bf8730;
     background-color: #ffc873;
@@ -35,8 +39,6 @@
     color: #a66400;
     img {
       float: left;
-      //margin-right: 3px;
-      //margin-top: -3px;
     }
     p.author {
       font-size: 15px;
@@ -59,22 +61,10 @@
     font-family: Verdana;
     color: #a66400;
   }
-}
 
-#commentform {
-  position: fixed;
-
-  // #FIXME
-  // floated left for now. fixed position is making
-  // the form disappear. no idea why.
-
-  float: left;
-
-  .comment_field{
-    border-top: 0.5px dashed #bf8730;
-    border-bottom: 0.5px dashed #bf8730;
-  }
   .submit{
-    width: 550px;
+    visibility: hidden;
   }
 }
+
+

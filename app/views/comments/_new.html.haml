@@ -1,5 +1,14 @@
-= form_for [@polycomment, Comment.new] do |f|
-  .comment_field
-    = f.text_field :body, :placeholder => 'Add your comment...'
-  .submit
-    = f.submit "Post Comment"
+.comment#author
+  .comment-meta
+    = avatar(User.find(current_user.id).email)
+    %p.author
+      = User.find(current_user.id).username
+  .comment-time
+    %p.time Add a comment now
+
+.comment-body
+  = form_for [@polycomment, Comment.new] do |f|
+    .comment_field
+      = f.text_field :body, :placeholder => 'Add your comment...'
+    .submit
+      = f.submit 

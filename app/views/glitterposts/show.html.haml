@@ -10,18 +10,20 @@
   .glitterpost-body
     = @glitterpost.content
     
-.operations
-  - if logged_in? && (@glitterpost.user_id == current_user.id)
-    = link_to 'Edit', edit_glitterpost_path
-  = link_to 'Back', glitterposts_path
-
+#operations
+  .operation
+    - if logged_in? && (@glitterpost.user_id == current_user.id)
+      = link_to 'Edit', edit_glitterpost_path
+  .operation
+    = link_to 'Back', glitterposts_path
 
 #comments
   - @glitterpost.comments.each do |c|
     = render 'comments/comment', :comment => c
 
-- if logged_in?
-  #commentform
-    %h3.title Add a comment
+#comments
+  - if logged_in?
     = render 'comments/new', :comment => @comment
+
+
 

@@ -12,18 +12,18 @@
     img {
       float: left;
     }
+    p{
+      margin-top: 2px;
+      overflow: hidden;
+    }
     p.title {
       font-size: 30px;
       font-weight: bold;
-      font-family: Verdana;
-      margin-top: 2px;
-      overflow: hidden;
+      font-family: Verdana;      
     }
     p.author {
       font-size: 15px;
       font-family: Arial;
-      margin-top: 2px;
-      overflow: hidden;
     }
 
     .padded{
@@ -36,14 +36,39 @@
 	font-family: Arial;
 	line-height: 150%;
 	font-size: 15px;
-    background-color: #ffb440;
     border-top: 0.5px dashed #bf8730;
     float: left;
+    background-color: #ffdb73;
+  }
+  .glitterpost-body:hover{
+    background-color: #ffb440;
   }
 }
 
-.operations{
-  float:left;
-  display: block;
-  background-color: green;
+#operations{
+  clear: left;
+  float: left;
+  margin-left: 60px;
+
+
+  .operation{
+    margin-right: 3px;
+    float: left;
+    padding: 5px;
+    background-color: #a66400;
+    border: 2px solid #ffdb73;
+  }
+
+  a{
+    color: black;
+	font-size: 15px;
+	font-family: Arial;
+	text-decoration: none;
+  }
+
+  .operation:hover{
+    background-color: #ffdb73;
+    border: 2px solid #a66400;
+  }
+
 }
