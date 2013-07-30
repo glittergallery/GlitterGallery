@@ -14,11 +14,11 @@
 #operations
   .operation
     = link_to 'Back', glitterposts_path
-  .operation
     - if logged_in? && (@glitterpost.user_id == current_user.id)
-      = link_to 'Edit', edit_glitterpost_path
-  .operation
-    = link_to 'Destroy', glitterpost_path, method: :delete, data: { confirm: 'Are you sure?' }
+      .operation
+        = link_to 'Edit', edit_glitterpost_path
+      .operation
+        = link_to 'Destroy', glitterpost_path, method: :delete, data: { confirm: 'Are you sure?' }
 
 #comments
   - @glitterpost.comments.each do |c|
