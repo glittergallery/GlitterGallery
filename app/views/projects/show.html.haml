@@ -3,7 +3,11 @@
     = @project.name.titleize
 
   %h2
+    = avatar(User.find(@project.user_id).email)
     = @project.name.titleize
+
+  - if logged_in? && (@project.user_id != current_user.id)
+    = link_to 'Fork this repo!', File.join(@project.id.to_s, 'fork')
 
   = render 'shared/messages'
 

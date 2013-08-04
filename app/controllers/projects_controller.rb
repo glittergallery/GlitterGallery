@@ -75,4 +75,24 @@ class ProjectsController < ApplicationController
     @contents = @tree.contents
   end
 
+  def fork
+    @project = Project.find params[:id]
+    @forked_project = Project.new :name => @project.name
+    @forked_project.user_id = current_user.id
+
+    if @forked_project.save
+      @forked_project_saved = true
+      if @forked_project_saved
+        repo = Grit::Git.init_bare_or_open (File.join (@forked_project.path) , '.git')
+        repo.fork_bare_from((File.join (@project.path) , '.git'), :bare=> false)
+        redirect_to url_for(@forked_project)
+      else
+        redirect_to dashboard_path
+      end
+    else
+      flash[:alert] = "Didn't save project!"
+      redirect_to dashboard_path
+    end
+  end
+
 end
