@@ -1,9 +1,6 @@
 require 'grit'
 class ProjectsController < ApplicationController
 
-
-  #before_filter :authenticate_user!, :except => [:show, :invite]
-
   def new
     @project = Project.new
     @project.glimages.build
@@ -83,8 +80,14 @@ class ProjectsController < ApplicationController
     if @forked_project.save
       @forked_project_saved = true
       if @forked_project_saved
-        repo = Grit::Git.init_bare_or_open (File.join (@forked_project.path) , '.git')
-        repo.fork_bare_from((File.join (@project.path) , '.git'), :bare=> false)
+        repo = Grit::Repo.init_bare_or_open (File.join (@forked_project.path) , '.git')
+
+        # I'm misunderstanding something here. 
+        # I guess what I'm doing is create just a bare repo, while
+        # I actually need the source code as well.
+        # {:bare=> false } doesn't seem to help much as well.
+
+        repo.fork_bare_from((File.join (@project.path) , '.git'), {:bare=> false})
         redirect_to url_for(@forked_project)
       else
         redirect_to dashboard_path
