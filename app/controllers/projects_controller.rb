@@ -80,15 +80,17 @@ class ProjectsController < ApplicationController
     if @forked_project.save
       @forked_project_saved = true
       if @forked_project_saved
-        repo = Grit::Repo.init_bare_or_open (File.join (@forked_project.path) , '.git')
+        repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
 
         # I'm misunderstanding something here. 
         # I guess what I'm doing is create just a bare repo, while
         # I actually need the source code as well.
         # {:bare=> false } doesn't seem to help much as well.
 
-        repo.fork_bare_from((File.join (@project.path) , '.git'), {:bare=> false})
+        repo.fork_bare((File.join (@forked_project.path) , '.git'), {:bare=> false})
+        repo.git.clone({:bare => false, :shared => true},(File.join (@project.path) , '.git'),(File.join (@forked_project.path) , '.git'))
         redirect_to url_for(@forked_project)
+
       else
         redirect_to dashboard_path
       end
