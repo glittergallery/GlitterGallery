@@ -80,15 +80,9 @@ class ProjectsController < ApplicationController
     if @forked_project.save
       @forked_project_saved = true
       if @forked_project_saved
-        repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
 
-        # I'm misunderstanding something here. 
-        # I guess what I'm doing is create just a bare repo, while
-        # I actually need the source code as well.
-        # {:bare=> false } doesn't seem to help much as well.
-
-        repo.fork_bare((File.join (@forked_project.path) , '.git'), {:bare=> false})
-        repo.git.clone({:bare => false, :shared => true},(File.join (@project.path) , '.git'),(File.join (@forked_project.path) , '.git'))
+        repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path), '.git')
+        repo.git.clone({} , File.join(@forked_project.path, 'test'), @project.path)
         redirect_to url_for(@forked_project)
 
       else
@@ -98,6 +92,30 @@ class ProjectsController < ApplicationController
       flash[:alert] = "Didn't save project!"
       redirect_to dashboard_path
     end
+  end
+
+  def forkyou
+
+    @project = Project.find params[:id]
+    @forked_project = Project.new :name => @project.name
+    @forked_project.user_id = current_user.id
+
+    if @forked_project.save
+      @forked_project_saved = true
+      if @forked_project_saved
+
+        FileUtils.rm_r(@forked_project.path)
+        FileUtils.cp_r(@project.path,@forked_project.path)
+        redirect_to url_for(@forked_project)
+
+      else
+        redirect_to dashboard_path
+      end
+    else
+      flash[:alert] = "Didn't save project!"
+      redirect_to dashboard_path
+    end
+
   end
 
 end

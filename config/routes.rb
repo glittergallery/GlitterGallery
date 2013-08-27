@@ -22,6 +22,7 @@ Glitter::Application.routes.draw do
   get 'dashboard/' => 'dashboard#index', :as => :dashboard
   get 'projects/:id/invite.xml' => 'projects#invite'
   get 'projects/:id/fork' => 'projects#fork'
+  get 'projects/:id/forkyou' => 'projects#forkyou'
 
   root :to => 'sessions#new'
 
