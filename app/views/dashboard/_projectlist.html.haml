@@ -4,8 +4,11 @@
   - @projects.each do |p|
     %li
       .project-thumb
-        = link_to url_for(p) do
-          %img{:src => p.glimages.first.thumbnail('imagepath') }
+        =  # link_to url_for(p) do
+        - # FIXME
+        - # Once the Glimage model drop isn't causing any ugly consequences,
+        - # fix this so it works normally. 
+
       %h3
         = link_to p.name, url_for(p)
       .meta
@@ -17,7 +20,7 @@
           = time_tag p.created_at, :format=>'%B %d, %Y'
         %br
         Last updated
-        = distance_of_time_in_words_to_now p.last_updated
+        = distance_of_time_in_words_to_now p.updated_at
         ago
 
       
