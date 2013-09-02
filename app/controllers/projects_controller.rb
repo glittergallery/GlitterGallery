@@ -61,13 +61,13 @@ class ProjectsController < ApplicationController
 
   def commits
     @project = Project.find params[:id]
-    repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
+    repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
     @commits = repo.commits
   end
 
   def projectcommit
     @project = Project.find params[:id]
-    repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
+    repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
     @tree = repo.tree(params[:tree_id])
     @contents = @tree.contents
   end
@@ -99,6 +99,7 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     @forked_project = Project.new :name => @project.name
     @forked_project.user_id = current_user.id
+    @forked_project = @project.clone
 
     if @forked_project.save
       @forked_project_saved = true
@@ -106,6 +107,7 @@ class ProjectsController < ApplicationController
 
         FileUtils.rm_r(@forked_project.path)
         FileUtils.cp_r(@project.path,@forked_project.path)
+
         redirect_to url_for(@forked_project)
 
       else
