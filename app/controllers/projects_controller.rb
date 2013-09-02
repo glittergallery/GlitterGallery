@@ -3,40 +3,20 @@ class ProjectsController < ApplicationController
 
   def new
     @project = Project.new
-    @project.glimages.build
     @projects = current_user.projects
-    @glimages = current_user.glimages
   end
 
   def create
     project = Project.new :name => params[:project][:name]
     project.user_id = current_user.id
-    project.glimages.new :file => params[:project][:glimage][:file].original_filename,
-                         :filetype => params[:project][:glimage][:file].content_type,
-                         :private => params[:project][:glimage][:private]
+
     if project.save
-      #add_the_magic project # add magicmockup.js if needed
-      project_saved = true
-      #write imagefile
-      begin
-        #write file and commit to repo
-        imagefile = params[:project][:glimage][:file]
-        image_commit project, imagefile
-        create_thumbnail project.glimages.first
-      rescue SystemCallalert
-        flash[:alert] = "Unable to write image file to repo"
-        project.glimages.delete
-      end
-      if project_saved
-        redirect_to url_for(project)
-      else
-        redirect_to dashboard_path
-      end
+      redirect_to url_for(project)
     else
-      @project = params[:project]
-      flash[:alert] = "Didn't save project!"
+      flash[:alert] = "Didn't save project!"      
       redirect_to dashboard_path
     end
+
   end
 
 

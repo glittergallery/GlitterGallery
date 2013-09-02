@@ -1,8 +1,14 @@
 - content_for :title do
-  Create New Project
+  Create new project!
   
+- # Renders the carousel on the top of the new_project page.
+- # We'll have to change the way this partial behaves, since
+- # we do not have Glimages anymore.
 
 = render 'shared/glimageshow', :glimages => @glimages
+
+- # Displays any error messages that may turn up during an 
+- # action that didn't undergo a behavior as expected.
 
 = render 'shared/messages'
 
@@ -11,5 +17,9 @@
   #upload
     = form_for @project, :class => 'fakeupload' do |f|
       = f.text_field :name, :placeholder => "Name for your project"
-      = f.fields_for :glimage do |i|
-        = render 'glimages/form', :form => i
+
+
+      - #Uncomment the submit button if it doesn's show up
+      - #by itself
+
+      = # f.submit
