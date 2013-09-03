@@ -17,9 +17,4 @@
   #upload
     = form_for @project, :class => 'fakeupload' do |f|
       = f.text_field :name, :placeholder => "Name for your project"
-
-
-      - #Uncomment the submit button if it doesn's show up
-      - #by itself
-
-      = # f.submit
+      = f.submit

@@ -34,9 +34,10 @@ class ProjectsController < ApplicationController
     else
       @invite_uri = "#{Rails.root}/uploads/#{Rails.env}/projects/#{params[:id]}/invite.xml" # If not in production.
     end
+
     @project = Project.find params[:id]
-    @glimage = Glimage.new
-    @glimage.project_id = params[:id]
+    repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
+    @contents = repo.commits.first.tree.contents
   end
 
   def commits
