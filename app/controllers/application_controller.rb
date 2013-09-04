@@ -35,6 +35,8 @@ class ApplicationController < ActionController::Base
   end
 
   def create_thumbnail(image)
+    #FIXME - make the path consistent with working tree files.
+    # the current proess relies on Glimage paths which we don't have.
     geo = Rails.application.config.thumbnail_geometry.nil? ? "100" : Rails.application.config.thumbnail_geometry
     cmd = Escape.shell_command ["convert", image.filepath, '-thumbnail', geo, image.thumbnail('filepath')]
     logger.debug "Command: #{cmd}"
