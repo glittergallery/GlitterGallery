@@ -1,9 +1,7 @@
 %ul.images
-  - @contents.each do |blob|
+  - @images.each do |image|
     %li
-      -# displaying the image out of apache public, not the file itself
-      = blob.name
-      %svg 
-        = raw blob.data
+      - #%img{:src => image.thumbnail('imagepath')}
+      = image_tag image
     
     

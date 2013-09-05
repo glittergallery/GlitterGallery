@@ -36,8 +36,9 @@ class ProjectsController < ApplicationController
     end
 
     @project = Project.find params[:id]
-    repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
-    @contents = repo.commits.first.tree.contents
+    @images = Dir.glob(File.join @project.path, '*')
+    #repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
+    #@contents = repo.commits.first.tree.contents
   end
 
   def commits

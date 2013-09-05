@@ -45,4 +45,13 @@ class ApplicationController < ActionController::Base
     logger.debug "result #{$?.success?}"
   end
 
+  # Returns thumbnail path
+  # path type is file or image
+
+  def thumbnail(pathtype)
+    filename = File.basename(pathtype).delete "."
+    path = File.dirname(send(pathtype))
+    File.join path, "#{filename}_thumb.png"
+  end
+
 end
