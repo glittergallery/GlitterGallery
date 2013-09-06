@@ -99,7 +99,11 @@ class ProjectsController < ApplicationController
       flash[:alert] = "Didn't save project!"
       redirect_to dashboard_path
     end
+  end
 
+  def masterbranch
+    @project = Project.find params[:id]
+    @imageurl = File.join @project.path, params[:image_name]
   end
 
 end

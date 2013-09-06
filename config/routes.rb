@@ -23,6 +23,7 @@ Glitter::Application.routes.draw do
   get 'projects/:id/invite.xml' => 'projects#invite'
   get 'projects/:id/fork' => 'projects#fork'
   get 'projects/:id/forkyou' => 'projects#forkyou'
+  get 'projects/:id/masterbranch/:image_name' => 'projects#masterbranch'
 
   root :to => 'sessions#new'
 
