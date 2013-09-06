@@ -21,6 +21,9 @@
     =link_to 'View commit history', File.join(@project.id.to_s, 'commits')
 
   %br
-  %p
-    \#FIXME Add an upload image form here!
+  %br
 
+  %p
+  = form_tag file_upload_project_path(@project), multipart: true do
+    = file_field_tag "file" 
+    = submit_tag 

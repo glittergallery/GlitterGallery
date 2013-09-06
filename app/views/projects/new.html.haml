@@ -13,8 +13,11 @@
 = render 'shared/messages'
 
 #maincolumn
-  %h2 Create a new project
+  %h2 Show the world some design love!
   #upload
-    = form_for @project, :class => 'fakeupload' do |f|
-      = f.text_field :name, :placeholder => "Name for your project"
+    = form_for @project do |f|
+      = f.label "I wanna create a new project called: "
+      - # Just an idea -> throw some randomly generated meaningful projectnames 
+      - # in the placeholder.
+      = f.text_field :name, :placeholder => "My awesome project's nickname"
       = f.submit

@@ -16,7 +16,20 @@ class ProjectsController < ApplicationController
       flash[:alert] = "Didn't save project!"      
       redirect_to dashboard_path
     end
+  end
 
+  def file_upload  
+    @project = Project.find params[:id]
+    tmp = params[:file].tempfile
+    file = File.join @project.path, params[:file].original_filename
+    FileUtils.cp tmp.path, file
+    if params[:file]
+      image_commit @project, params[:file]
+      flash[:notice] = "Your new image was added successfully! How sparkly!"
+    else
+      flash[:alert]  = "Your new image didn't get saved! How sad :("
+    end
+    redirect_to url_for(@project)
   end
 
 

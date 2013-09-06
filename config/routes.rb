@@ -16,14 +16,20 @@ Glitter::Application.routes.draw do
     resources :comments
   end
 
+  resources :projects do
+    member do
+        get 'projects/:id/invite.xml' => 'projects#invite'
+        get 'projects/:id/fork' => 'projects#fork'
+        get 'projects/:id/forkyou' => 'projects#forkyou'
+        get 'projects/:id/masterbranch/:image_name' => 'projects#masterbranch'
+        post :file_upload
+    end
+  end
+
   match '/login', to: 'sessions#new'
   match '/logout', to: 'sessions#destroy', via: :delete
 
   get 'dashboard/' => 'dashboard#index', :as => :dashboard
-  get 'projects/:id/invite.xml' => 'projects#invite'
-  get 'projects/:id/fork' => 'projects#fork'
-  get 'projects/:id/forkyou' => 'projects#forkyou'
-  get 'projects/:id/masterbranch/:image_name' => 'projects#masterbranch'
 
   root :to => 'sessions#new'
 

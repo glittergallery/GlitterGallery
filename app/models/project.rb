@@ -21,7 +21,7 @@ class Project < ActiveRecord::Base
     #TODO - let basedir for repos be set in app config
     logger.debug "setting path - path: #{path}"
     user = User.find(user_id)
-    self.path = File.join '/', 'data', 'repos', user.email, name
+    self.path = File.join 'public', 'data', 'repos', user.email, name
   end
 
   def init
@@ -29,8 +29,8 @@ class Project < ActiveRecord::Base
     unless File.exists? path
       gitpath = File.join path , '.git'
       Grit::Repo.init_bare(gitpath)
-      bare_repo = Grit::Git.new (File.join (path +'_bare'), '.git')
-      bare_repo.clone({}, gitpath, (File.join (path +'_bare'), '.git'))
+      bare_repo = Grit::Git.new (File.join (path + "_bare"), '.git')
+      bare_repo.clone({}, gitpath, (File.join (path.to_s + "_bare"), '.git'))
     end
   end
 
