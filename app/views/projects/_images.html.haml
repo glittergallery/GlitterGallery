@@ -2,6 +2,8 @@
   - @images.each do |image|
     %li
       - #%img{:src => image.thumbnail('imagepath')}
-      = image_tag image
+      - # current problem - the file isn't showing.
+      - # inspect source, fix, check in.
+      = link_to (image_tag image.gsub("public","")), (File.join @project.id.to_s, 'file')
     
     
