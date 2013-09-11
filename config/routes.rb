@@ -23,6 +23,7 @@ Glitter::Application.routes.draw do
         get 'projects/:id/fork' => 'projects#fork'
         get 'projects/:id/forkyou' => 'projects#forkyou'
         post :file_upload
+        post :file_update
     end
   end
 

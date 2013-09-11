@@ -19,6 +19,9 @@ class ProjectsController < ApplicationController
   end
 
   def file_upload  
+    #FIXME - current process allows any kinda files to be uploaded.
+    # restrict to only image formats.
+
     @project = Project.find params[:id]
     tmp = params[:file].tempfile
     file = File.join @project.path, params[:file].original_filename
@@ -28,6 +31,25 @@ class ProjectsController < ApplicationController
       flash[:notice] = "Your new image was added successfully! How sparkly!"
     else
       flash[:alert]  = "Your new image didn't get saved! How sad :("
+    end
+    redirect_to url_for(@project)
+  end
+
+  def file_update
+    #FIXME - current process allows any kinda files to be uploaded.
+    # restrict to only image formats.
+    
+    @project = Project.find params[:id]
+    tmp = params[:file].tempfile
+    file = File.join @project.path, params[:image_name]
+    FileUtils.cp tmp.path, file
+    if params[:file]
+        imagefile = params[:file]
+        message = "Updated #{params[:image_name]}"
+        commit @project.path, params[:image_name], imagefile.read, message
+        flash[:notice] = "#{params[:image_name]} has been updated! Shiny!"
+    else
+      flash[:alert] = "Unable to update #{params[:image_name]}. The server ponies are sad."
     end
     redirect_to url_for(@project)
   end

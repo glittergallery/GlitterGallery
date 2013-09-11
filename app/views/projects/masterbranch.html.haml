@@ -6,3 +6,10 @@
     = avatar(User.find(@project.user_id).email)
     = @project.name.titleize.to_s + " /  " + File.basename(@imageurl).to_s
   = image_tag @imageurl.gsub("public","")
+
+  %p
+  Make changes to this file!
+  = form_tag file_update_project_path(@project), multipart: true do
+    = file_field_tag "file"
+    = hidden_field_tag 'image_name', File.basename(@imageurl)
+    = submit_tag 
