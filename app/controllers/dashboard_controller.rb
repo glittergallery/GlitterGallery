@@ -5,7 +5,7 @@ class DashboardController < ApplicationController
   def index
     @projects = current_user.projects
     unless @projects.count == 0
-      @glimages = current_user.glimages
+      #@glimages = current_user.glimages
     else
       redirect_to new_project_path
     end
