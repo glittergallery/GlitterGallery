@@ -8,6 +8,10 @@
   = image_tag @imageurl.gsub("public","")
 
   %p
+    = link_to "View file history", File.join(File.basename(@imageurl).to_s, 'history')
+  %br
+
+  %p
   Make changes to this file!
   = form_tag file_update_project_path(@project), multipart: true do
     = file_field_tag "file"

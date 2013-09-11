@@ -141,4 +141,17 @@ class ProjectsController < ApplicationController
     @imageurl = File.join @project.path, params[:image_name]
   end
 
+  def file_history
+    @bloblist = Array.new
+    @project = Project.find params[:id]
+    repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
+    repo.commits.each do |commit|
+      commit.tree.contents.each do |blob|
+        if blob.name == params[:image_name]
+          @bloblist << [blob, commit]
+        end
+      end
+    end
+  end
+
 end
