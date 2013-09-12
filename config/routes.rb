@@ -2,6 +2,7 @@ Glitter::Application.routes.draw do
 
   resources :users, :projects
   resource :session, only: [:new, :create, :destroy]
+  resource :comments
 
 
   get 'projects/:id/commits' => 'projects#commits'
