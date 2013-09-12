@@ -34,9 +34,8 @@ class GlitterpostsController < ApplicationController
 
   def show
   	@glitterpost = Glitterpost.find(params[:id])
-    @polycomment = @glitterpost
-    @comments = @polycomment.comments
-    @comment = Comment.new
+    @comments = Comment.where(polycomment_type: "glitterpost", polycomment_id: @glitterpost.id)
+    
   end
 
   def destroy

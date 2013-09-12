@@ -71,23 +71,23 @@
           .comment-body
             = comment.body
   %br
+  #comments
+    .comment#author
+      .comment-meta
+        = avatar(User.find(current_user.id).email)
+        %p.author
+          = User.find(current_user.id).username
+      .comment-time
+        %p.time Add a comment now
 
-  .comment#author
-    .comment-meta
-      = avatar(User.find(current_user.id).email)
-      %p.author
-        = User.find(current_user.id).username
-    .comment-time
-      %p.time Add a comment now
-
-  .comment-body
-    = form_for Comment.new do |f|
-      = hidden_field_tag 'polycomment_type', 'project'
-      = hidden_field_tag 'polycomment_id',  @project.id.to_s
-      .comment_field
-        = f.text_field :body, :placeholder => 'Add your comment...'
-      .submit
-        = f.submit 
+    .comment-body
+      = form_for Comment.new do |f|
+        = hidden_field_tag 'polycomment_type', 'project'
+        = hidden_field_tag 'polycomment_id',  @project.id.to_s
+        .comment_field
+          = f.text_field :body, :placeholder => 'Add your comment...'
+        .submit
+          = f.submit 
 
 
 

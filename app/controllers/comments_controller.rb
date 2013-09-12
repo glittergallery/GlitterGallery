@@ -13,6 +13,7 @@ class CommentsController < ApplicationController
     @comment.user_id = current_user.id                      
     if @comment.save
       flash[:notice] = 'Your comment was posted!'
+      redirect_to :back
     else
       flash[:alert] = 'Something went wrong, try reposting your comment.'
     end
