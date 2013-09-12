@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130908113252) do
+ActiveRecord::Schema.define(:version => 20130912124846) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(:version => 20130908113252) do
     t.datetime "updated_at",       :null => false
   end
 
-  add_index "comments", ["polycomment_id"], :name => "index_comments_on_polycomment_id"
+  add_index "comments", ["polycomment_type", "polycomment_id"], :name => "index_comments_on_polycomment_type_and_polycomment_id"
 
   create_table "glitterposts", :force => true do |t|
     t.string   "title"

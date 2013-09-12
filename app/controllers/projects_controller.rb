@@ -72,8 +72,8 @@ class ProjectsController < ApplicationController
 
     @project = Project.find params[:id]
     @images = Dir.glob(File.join @project.path, '*')
-    #repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
-    #@contents = repo.commits.first.tree.contents
+    @comments = []
+    @comments = Comment.where(polycomment_type: "project", polycomment_id: @project.id)
   end
 
   def commits

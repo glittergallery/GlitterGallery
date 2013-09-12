@@ -3,9 +3,6 @@ Glitter::Application.routes.draw do
   resources :users, :projects
   resource :session, only: [:new, :create, :destroy]
 
-  resources :glimages do
-    resources :comments
-  end
 
   get 'projects/:id/commits' => 'projects#commits'
   get 'projects/:id/commit/:tree_id' => 'projects#projectcommit'
@@ -14,9 +11,7 @@ Glitter::Application.routes.draw do
   get 'glimages/:id/history' => 'glimages#history'
   get 'glimages/:id/blob/:blob_id' => 'glimages#blob'
 
-  resources :glitterposts do
-    resources :comments
-  end
+  resources :glitterposts 
 
   resources :projects do
     member do
