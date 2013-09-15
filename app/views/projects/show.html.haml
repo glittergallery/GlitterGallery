@@ -23,62 +23,20 @@
   %br
   %br
   %p
-  Add more awesomeness!
+  Upload or #{link_to 'create', File.join(@project.id.to_s, 'createsvg')} more awesomeness! 
   = form_tag file_upload_project_path(@project), multipart: true do
     = file_field_tag "file" 
     = submit_tag 
 
-
-
   #comments
     - @comments.each do |comment|
       - if comment.user_id == @project.user_id
-        .comment#author
-          .comment-meta
-            = avatar(User.find(comment.user_id).email)
-            %p.author
-              = User.find(comment.user_id).username
-          .comment-time
-            %p.time
-              = distance_of_time_in_words_to_now comment.created_at
-              ago
-          .comment-body
-            = comment.body
-            
+        = render 'comments/comment_author', :comment => comment            
       - elsif logged_in? and comment.user_id == current_user.id
-        .comment#currentuser
-          .comment-meta
-            = avatar(User.find(comment.user_id).email)
-            %p.author
-              = User.find(comment.user_id).username
-          .comment-time
-            %p.time
-              = distance_of_time_in_words_to_now comment.created_at
-              ago
-          .comment-body
-            = comment.body
-
+        = render 'comments/comment_current', :comment => comment
       - else 
-        .comment
-          .comment-meta
-            = avatar(User.find(comment.user_id).email)
-            %p.author
-              = User.find(comment.user_id).username
-          .comment-time
-            %p.time
-              = distance_of_time_in_words_to_now comment.created_at
-              ago
-          .comment-body
-            = comment.body
-  %br
-  #comments
-    .comment#author
-      .comment-meta
-        = avatar(User.find(current_user.id).email)
-        %p.author
-          = User.find(current_user.id).username
-      .comment-time
-        %p.time Add a comment now
+        = render 'comments/comment_normal'
+    = render 'comments/new'
 
     .comment-body
       = form_for Comment.new do |f|
@@ -88,7 +46,3 @@
           = f.text_field :body, :placeholder => 'Add your comment...'
         .submit
           = f.submit 
-
-
-
-  

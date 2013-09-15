@@ -7,10 +7,9 @@ Glitter::Application.routes.draw do
 
   get 'projects/:id/commits' => 'projects#commits'
   get 'projects/:id/commit/:tree_id' => 'projects#projectcommit'
+  match 'projects/:id/createsvg', to: 'projects#create_svg'
   get 'projects/:id/masterbranch/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
   get 'projects/:id/masterbranch/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
-  get 'glimages/:id/history' => 'glimages#history'
-  get 'glimages/:id/blob/:blob_id' => 'glimages#blob'
 
   resources :glitterposts 
 

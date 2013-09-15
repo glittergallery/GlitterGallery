@@ -72,7 +72,6 @@ class ProjectsController < ApplicationController
 
     @project = Project.find params[:id]
     @images = Dir.glob(File.join @project.path, '*')
-    @comments = []
     @comments = Comment.where(polycomment_type: "project", polycomment_id: @project.id)
   end
 
@@ -154,6 +153,19 @@ class ProjectsController < ApplicationController
         end
       end
     end
+  end
+
+  def create_svg
+    @project = Project.find params[:id]
+    filename = params[:filename]
+    file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
+    if file
+      commit (File.join @project.path, '.git'), filename, params[:sketch], "new file created"
+      flash[:notice] = "Your new image was added successfully! How sparkly!"
+    else
+      flash[:alert]  = "Your new image didn't get saved! How sad :("
+    end
+    redirect_to url_for(@project)
   end
 
 end
