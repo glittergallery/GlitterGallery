@@ -1,10 +1,26 @@
 require 'grit'
+
+# User interacts with projects through the methods defined 
+# in this controller. 
+# User may create multiple unique projects, and they in 
+# turn contain multiple files. We expect these files to be 
+# image format files, but right now there is no provision to verify that.
+
 class ProjectsController < ApplicationController
+
+  # New projects can be named in the projects#new page.
+  # The list of current projects is required so we can display
+  # them as a carousel in the projects#new page. 
 
   def new
     @project = Project.new
     @projects = current_user.projects
   end
+
+  # Project creation is defined in the method below. We're allowing 
+  # them to name a project, and we're then adding them to the project list
+  # of the person who's currently logged in.
+
 
   def create
     project = Project.new :name => params[:project][:name]
@@ -18,50 +34,11 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def file_upload  
-    #FIXME - current process allows any kinda files to be uploaded.
-    # restrict to only image formats.
-
-    @project = Project.find params[:id]
-    tmp = params[:file].tempfile
-    file = File.join @project.path, params[:file].original_filename
-    FileUtils.cp tmp.path, file
-    if params[:file]
-      image_commit @project, params[:file]
-      flash[:notice] = "Your new image was added successfully! How sparkly!"
-    else
-      flash[:alert]  = "Your new image didn't get saved! How sad :("
-    end
-    redirect_to url_for(@project)
-  end
-
-  def file_update
-    #FIXME - current process allows any kinda files to be uploaded.
-    # restrict to only image formats.
-    
-    @project = Project.find params[:id]
-    tmp = params[:file].tempfile
-    file = File.join @project.path, params[:image_name]
-    FileUtils.cp tmp.path, file
-    if params[:file]
-        imagefile = params[:file]
-        message = "Updated #{params[:image_name]}"
-        commit @project.path, params[:image_name], imagefile.read, message
-        flash[:notice] = "#{params[:image_name]} has been updated! Shiny!"
-    else
-      flash[:alert] = "Unable to update #{params[:image_name]}. The server ponies are sad."
-    end
-    redirect_to url_for(@project)
-  end
-
-
-  def invite
-    @project = Project.find params[:id]
-    mime_type = Mime::Type.lookup_by_extension('xml')
-    content_type = mime_type.to_s unless mime_type.nil?
-    @git_dir = "/#{@project.user.email}/#{@project.name}"
-    render :layout => false, :content_type => content_type
-  end
+  # Projects with thumbnails of their files can be viewed on projects/:id
+  # We're currently not displaying thumbnails though, we're fetching the 
+  # images off the current working tree of the repo where they're stored.
+  # FIXME - instead of showing the images themselves, it would be nice to 
+  # be able to view thumbnails instead. 
 
   def show
     if Rails.env.production?
@@ -75,11 +52,17 @@ class ProjectsController < ApplicationController
     @comments = Comment.where(polycomment_type: "project", polycomment_id: @project.id)
   end
 
+  # Displays the git commits for a given project. We're making use of
+  # inbuilt functions available from the grit gem. 
+
   def commits
     @project = Project.find params[:id]
     repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
     @commits = repo.commits
   end
+
+  # View the state of a project for any given commit. Every commit has 
+  # a list of comments associated with it. 
 
   def projectcommit
     @project = Project.find params[:id]
@@ -87,6 +70,84 @@ class ProjectsController < ApplicationController
     @tree = repo.tree(params[:tree_id])
     @contents = @tree.contents
     @comments = Comment.where(polycomment_type: "commit", polycomment_id: params[:tree_id])
+  end
+
+  # Given a filename, view the state of the file in master.
+  # Since we aren't doing much branch hopping on the app itself, this
+  # is useful for fetching the current state of a file in a project.
+
+  def masterbranch
+    @project = Project.find params[:id]
+    @imageurl = File.join @project.path, params[:image_name]
+    @comments = Comment.where(polycomment_type: "file", polycomment_id: params[:image_name])
+  end
+
+  # Given a filename, view it's entire commit history, including author
+  # information, etc. Only one file's history may be viewed at a time, so
+  # please not that this is different from the project's commit history.
+
+  def file_history
+    @bloblist = Array.new
+    @project = Project.find params[:id]
+    repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
+    repo.commits.each do |commit|
+      commit.tree.contents.each do |blob|
+        if blob.name == params[:image_name]
+          @bloblist << [blob, commit]
+        end
+      end
+    end
+  end
+
+  # Sparkleshare integration.
+
+  def invite
+    @project = Project.find params[:id]
+    mime_type = Mime::Type.lookup_by_extension('xml')
+    content_type = mime_type.to_s unless mime_type.nil?
+    @git_dir = "/#{@project.user.email}/#{@project.name}"
+    render :layout => false, :content_type => content_type
+  end
+
+  # Let's users upload new files to the project. The new files are
+  # also commited to the backend git repository. They're added to the non_bare 
+  # repo, and pushed to the bare_repo.
+  # FIXME - work on the push from non_bare to bare repo method.
+  # FIXME - allow uploads of only supported images.
+
+  def file_upload 
+    @project = Project.find params[:id]
+    tmp = params[:file].tempfile
+    file = File.join @project.path, params[:file].original_filename
+    FileUtils.cp tmp.path, file
+    if params[:file]
+      image_commit @project, params[:file]
+      flash[:notice] = "Your new image was added successfully! How sparkly!"
+    else
+      flash[:alert]  = "Your new image didn't get saved! How sad :("
+    end
+    redirect_to url_for(@project)
+  end
+
+  # Update files using this function. Updated files get commited to the non_bare repo
+  # and then pushed to the bare repo.
+  # FIXME - work on the push from non_bare to bare repo method.
+  # FIXME - allow uploads of only supported images.
+
+  def file_update  
+    @project = Project.find params[:id]
+    tmp = params[:file].tempfile
+    file = File.join @project.path, params[:image_name]
+    FileUtils.cp tmp.path, file
+    if params[:file]
+        imagefile = params[:file]
+        message = "Updated #{params[:image_name]}"
+        commit @project.path, params[:image_name], imagefile.read, message
+        flash[:notice] = "#{params[:image_name]} has been updated! Shiny!"
+    else
+      flash[:alert] = "Unable to update #{params[:image_name]}. The server ponies are sad."
+    end
+    redirect_to url_for(@project)
   end
 
   def fork
@@ -136,24 +197,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def masterbranch
-    @project = Project.find params[:id]
-    @imageurl = File.join @project.path, params[:image_name]
-    @comments = Comment.where(polycomment_type: "file", polycomment_id: params[:image_name])
-  end
-
-  def file_history
-    @bloblist = Array.new
-    @project = Project.find params[:id]
-    repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
-    repo.commits.each do |commit|
-      commit.tree.contents.each do |blob|
-        if blob.name == params[:image_name]
-          @bloblist << [blob, commit]
-        end
-      end
-    end
-  end
 
   def create_svg
     @project = Project.find params[:id]
