@@ -1,5 +1,7 @@
+# This controller is dropped and is no longer used.
+# However, we're not checking this out as we could use it for reference.
+
 class GlimagesController < ApplicationController
-  #before_filter :authenticate_user!, :except => :show
   
   def create
     project = Project.find(params[:glimage][:project_id])

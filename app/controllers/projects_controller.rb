@@ -150,6 +150,9 @@ class ProjectsController < ApplicationController
     redirect_to url_for(@project)
   end
 
+  # WIP - Supposed to help in forking a repo that belongs to another user.
+  # Fork works but creates only bare repos.
+
   def fork
     @project = Project.find params[:id]
     @forked_project = Project.new :name => @project.name
@@ -171,6 +174,8 @@ class ProjectsController < ApplicationController
       redirect_to dashboard_path
     end
   end
+
+  # This function will be removed soon, just being used to test fork.
 
   def forkyou
 
@@ -197,6 +202,7 @@ class ProjectsController < ApplicationController
     end
   end
 
+  # WIP - helps create SVGs.
 
   def create_svg
     @project = Project.find params[:id]

@@ -3,23 +3,22 @@ Glitter::Application.routes.draw do
   resources :users, :projects
   resource :session, only: [:new, :create, :destroy]
   resource :comments
+  resources :glitterposts 
 
 
   get 'projects/:id/commits' => 'projects#commits'
   get 'projects/:id/commit/:tree_id' => 'projects#projectcommit'
-  match 'projects/:id/createsvg', to: 'projects#create_svg'
   get 'projects/:id/masterbranch/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
   get 'projects/:id/masterbranch/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
-
-  resources :glitterposts 
+  match 'projects/:id/createsvg', to: 'projects#create_svg'
 
   resources :projects do
     member do
-        get 'projects/:id/invite.xml' => 'projects#invite'
-        get 'projects/:id/fork' => 'projects#fork'
-        get 'projects/:id/forkyou' => 'projects#forkyou'
-        post :file_upload
-        post :file_update
+      get 'projects/:id/invite.xml' => 'projects#invite'
+      get 'projects/:id/fork' => 'projects#fork'
+      get 'projects/:id/forkyou' => 'projects#forkyou'
+      post :file_upload
+      post :file_update
     end
   end
 

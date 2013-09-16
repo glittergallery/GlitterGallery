@@ -1,6 +1,8 @@
+# This controller defines interactions with the user's dashboard.
+# New methods should be added to this controller as the application
+# becomes more powerful.
+
 class DashboardController < ApplicationController
-#  before_filter :authenticate_user!, :except => :show
-#  CHECK - if there is any substitute necessary.
 
   def index
     @projects = current_user.projects
