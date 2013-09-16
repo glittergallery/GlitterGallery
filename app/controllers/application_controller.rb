@@ -1,11 +1,22 @@
 require 'escape'
+
+# Methods here are accessibe by all controllers.
+
 class ApplicationController < ActionController::Base
   include Escape
   include SessionsHelper
   protect_from_forgery
   
   private
-  # Write a file and commit to the repo
+  
+  # When new files are added to project, check them into its non bare git repo.
+  # FIXME - we might want to do the push to bare repos here during the commit itself,
+  #         alternatively we could assign a separate method to do that.
+  # FIXME - thanks to the imagefile.orginal_filename concept, this idea currently works
+  #         good just for uploaded files. See if there's a way to do it without using
+  #         properties that just belong to only uploaded files. Hint - probably just use
+  #         the commit function and drop this idea for non uploaded files.
+
   def image_commit(project, imagefile)
     if logged_in?
       commit project.path, imagefile.original_filename, imagefile.read, "new file #{imagefile.original_filename}" 
@@ -13,6 +24,9 @@ class ApplicationController < ActionController::Base
   end
 
   # Add magicmockup to project repo
+  # FIXME - we aren't using this right now anywhere, because it shows up as an ugly commit
+  #         in the log. Look for a workaround. 
+
   def add_the_magic(project)
     if logged_in? and not File.exists? File.join(project.path, "magicmockup.js")
       magicfile = File.join 'app', 'assets', 'javascripts', 'magicmockup.js'
@@ -20,6 +34,8 @@ class ApplicationController < ActionController::Base
       commit project.path, "magicmockup.js", magic, "Add magicmockup.js"
     end
   end
+
+  # Useful for commiting changes to the non bare repo of a project.
 
   def commit(repopath, file, contents, message)
     # set up repo and index
@@ -33,6 +49,9 @@ class ApplicationController < ActionController::Base
     parent = repo.commits.count > 0 ? [repo.commits.first] : nil
     index.commit message, parent
   end
+
+  # Intended to generate thumbnails for Glimages (a previously used model).
+  # FIXME - redo this to work without the glimage idea for all kinds of image files.
 
   def create_thumbnail(image)
     #FIXME - make the path consistent with working tree files.
