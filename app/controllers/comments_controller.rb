@@ -1,31 +1,27 @@
-class CommentsController < ApplicationController
-  before_filter :load_polycomment
+# User interacts with comments throughout the application through 
+# the methods defined in this controller. 
 
-  def index
-    @comments = @polycomment.comments
-  end
+class CommentsController < ApplicationController
 
   def new
-    @comment = @polycomment.comments.new
+    @comment = Comment.new
   end
 
+  # Helps create new comments. They have polycomment attributes (type, id)
+  # that helps distinguish the nature of what these comments are for.
+
   def create
-    @comment = @polycomment.comments.new(body: params[:comment][:body], 
-                                         issue: false)
-    @comment.user_id = current_user.id
+    @comment = Comment.new :body  => params[:comment][:body],
+                           :issue => false
+    @comment.polycomment_type = params[:polycomment_type]
+    @comment.polycomment_id = params[:polycomment_id]
+    @comment.user_id = current_user.id                      
     if @comment.save
-      flash[:notice] = 'Your comment was posted!'
-      redirect_to @polycomment
+      #flash[:notice] = 'Your comment was posted!'
+      redirect_to :back
     else
       flash[:alert] = 'Something went wrong, try reposting your comment.'
     end
   end
 
-
-  private
-
-    def load_polycomment
-      resource, id = request.path.split('/')[1, 2]
-      @polycomment = resource.singularize.classify.constantize.find(id)
-    end
 end

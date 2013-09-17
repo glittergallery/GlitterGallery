@@ -1,7 +1,0 @@
-<% @contents.each do |blob| %>
-  <%= blob.name %>
-  <svg xmlns="http://www.w3.org/2000/svg"> <%= raw blob.data %> </svg>
-  <div id="show_image">
-    <% show_image @project.glimages.find_by_file(blob.name) %>
-  </div>
-<% end %>

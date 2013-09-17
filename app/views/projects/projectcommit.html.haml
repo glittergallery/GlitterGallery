@@ -1,0 +1,25 @@
+.center
+  - @contents.each do |blob|
+    = blob.name
+    %svg{:xmlns => "http://www.w3.org/2000/svg"}
+      = raw blob.data
+
+  #comments
+    - @comments.each do |comment|
+      - if comment.user_id == @project.user_id
+        = render 'comments/comment_author', :comment => comment
+      - elsif logged_in? and comment.user_id == current_user.id
+        = render 'comments/comment_current', :comment => comment
+      - else 
+        = render 'comments/comment_normal'
+    = render 'comments/new'
+
+
+    .comment-body
+      = form_for Comment.new do |f|
+        = hidden_field_tag 'polycomment_type', 'commit'
+        = hidden_field_tag 'polycomment_id',  @tree.id.to_s
+        .comment_field
+          = f.text_field :body, :placeholder => 'Add your comment...'
+        .submit
+          = f.submit 

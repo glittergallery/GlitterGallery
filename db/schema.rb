@@ -11,29 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130724124318) do
+ActiveRecord::Schema.define(:version => 20130912124846) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
-    t.integer  "responding_to"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.integer  "polycomment_id"
+    t.string   "polycomment_id"
     t.string   "polycomment_type"
     t.integer  "user_id"
     t.boolean  "issue"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
-  create_table "glimages", :force => true do |t|
-    t.string   "file"
-    t.integer  "project_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "filetype"
-    t.boolean  "private"
-  end
-
-  add_index "glimages", ["file"], :name => "index_glimages_on_file", :unique => true
+  add_index "comments", ["polycomment_type", "polycomment_id"], :name => "index_comments_on_polycomment_type_and_polycomment_id"
 
   create_table "glitterposts", :force => true do |t|
     t.string   "title"
@@ -51,6 +41,8 @@ ActiveRecord::Schema.define(:version => 20130724124318) do
     t.integer  "user_id"
     t.string   "path"
   end
+
+  add_index "projects", ["name", "user_id"], :name => "index_projects_on_name_and_user_id", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email"

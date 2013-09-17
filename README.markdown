@@ -1,17 +1,17 @@
 ![Homestrip 1/2](http://thirstyforcola.files.wordpress.com/2013/05/front.jpg)
 ![Homestrip - 2/2](http://thirstyforcola.files.wordpress.com/2013/05/back.jpg)
 
-## Glitter Gallery
+## GlitterGallery
 
-Glitter Gallery _will be_ an amazing way to collaborate on design! 
+GlitterGallery _will be_ an amazing way to collaborate on design! 
 
 The goals are to allow designers to easily share their work, gather and parse feedback in a useful way, and version their work just as developers are able to. 
 
-Glitter Gallery will be somewhat biased to support SVGs from Inkscape, and to work with the magicmockup rapid prototyping program. That doesn't mean it won't work with other filetypes, though!
+GlitterGallery will be somewhat biased to support SVGs from Inkscape, and to work with the magicmockup rapid prototyping program. That doesn't mean it won't work with other filetypes, though!
 
-### Run Glitter Gallery
+### Run GlitterGallery
 
-Glitter Gallery runs on OpenShift, so it's really easy to run your own version.
+GlitterGallery runs on OpenShift, so it's really easy to run your own version.
 
 1. [Sign up for OpenShift](http://openshift.redhat.com) if you don't already have an account
 1. Create a new ruby-1.9 application and add MySQL

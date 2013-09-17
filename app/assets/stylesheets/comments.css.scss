@@ -12,24 +12,33 @@
 @import url(http://fonts.googleapis.com/css?family=Titillium+Web);
 
 #comments {
-  margin: 20px 0px 0px 25px;
+
+  width: 560px;
+  margin: 10px 60px 0px 60px;
   display: inline;
   float: left;
+  clear: left;
 
   .comment {
-    padding: 2px 2px 0.5px 2px;
-    border: 1px solid white;
-    background-color: #fef6c5;
-    margin-top: -11.5px;
+    clear: both;
+    display: block;
+    border-top: 0.5px dashed #bf8730;
+    border-bottom: 0.5px dashed #bf8730;
+    background-color: #ffc873;
+  }
+
+  #author{
+    background-color: #ffb440;
+  }
+
+  #currentuser{
+    background-color: #ffdb73;
   }
 
   .comment-meta {
-    color: #44342e;
-    font-size: x-small;
+    color: #a66400;
     img {
       float: left;
-      //margin-right: 3px;
-      //margin-top: -3px;
     }
     p.author {
       font-size: 15px;
@@ -43,18 +52,19 @@
   .comment-body {
     overflow: hidden;
     font-size: 14px;
-    font-family: 'Titillium Web', sans-serif;
-    clear: right;
+    font-family: Arial;
     line-height: 110%;
   }
   .comment-time {
     overflow: hidden;
     font-size: 12px;
     font-family: Verdana;
-    color: #94999c
+    color: #a66400;
+  }
+
+  .submit{
+    visibility: hidden;
   }
 }
 
-#commentform {
-  float: left;
-}
+

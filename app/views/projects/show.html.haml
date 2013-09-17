@@ -3,7 +3,12 @@
     = @project.name.titleize
 
   %h2
+    = avatar(User.find(@project.user_id).email)
     = @project.name.titleize
+
+  - if logged_in? && (@project.user_id != current_user.id)
+    = link_to 'Fork this repo!', File.join(@project.id.to_s, 'fork')
+    = link_to 'Fork you (tests fork)' , File.join(@project.id.to_s, 'forkyou')
 
   = render 'shared/messages'
 
@@ -15,9 +20,29 @@
   %p
     =link_to 'View commit history', File.join(@project.id.to_s, 'commits')
 
-  #upload
+  %br
+  %br
+  %p
+  Upload or #{link_to 'create', File.join(@project.id.to_s, 'createsvg')} more awesomeness! 
+  = form_tag file_upload_project_path(@project), multipart: true do
+    = file_field_tag "file" 
+    = submit_tag 
 
-    %h3.title New image
-    = form_for @glimage, :class => 'fakeupload' do |f|
-      = f.hidden_field :project_id
-      = render 'glimages/form', :form => f
+  #comments
+    - @comments.each do |comment|
+      - if comment.user_id == @project.user_id
+        = render 'comments/comment_author', :comment => comment            
+      - elsif logged_in? and comment.user_id == current_user.id
+        = render 'comments/comment_current', :comment => comment
+      - else 
+        = render 'comments/comment_normal'
+    = render 'comments/new'
+
+    .comment-body
+      = form_for Comment.new do |f|
+        = hidden_field_tag 'polycomment_type', 'project'
+        = hidden_field_tag 'polycomment_id',  @project.id.to_s
+        .comment_field
+          = f.text_field :body, :placeholder => 'Add your comment...'
+        .submit
+          = f.submit 

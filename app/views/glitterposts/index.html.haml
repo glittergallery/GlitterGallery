@@ -1,0 +1,7 @@
+#glitterposts
+  - @glitterposts.each do |post| 
+    .glitterpost
+      .glitterpost-meta
+        = avatar(User.find(post.user_id).email)
+      %p.title.padded
+        = link_to post.title, post
