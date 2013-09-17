@@ -38,7 +38,7 @@ class ProjectsController < ApplicationController
   # We're currently not displaying thumbnails though, we're fetching the 
   # images off the current working tree of the repo where they're stored.
   # FIXME - instead of showing the images themselves, it would be nice to 
-  # be able to view thumbnails instead. 
+  #         be able to view thumbnails instead. 
 
   def show
     if Rails.env.production?
