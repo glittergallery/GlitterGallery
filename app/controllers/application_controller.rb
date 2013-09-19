@@ -66,6 +66,7 @@ class ApplicationController < ActionController::Base
 
   # Returns thumbnail path
   # path type is file or image
+  
 
   def thumbnail(pathtype)
     filename = File.basename(pathtype).delete "."

@@ -204,12 +204,16 @@ class ProjectsController < ApplicationController
 
   # WIP - helps create SVGs.
 
+  def new_svg
+    @project = Project.find params[:id]
+  end
+
   def create_svg
     @project = Project.find params[:id]
     filename = params[:filename]
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
     if file
-      commit (File.join @project.path, '.git'), filename, params[:sketch], "new file created"
+      commit @project.path, filename, '<svg>' + params[:sketch] + '</svg>' , "new file created"
       flash[:notice] = "Your new image was added successfully! How sparkly!"
     else
       flash[:alert]  = "Your new image didn't get saved! How sad :("

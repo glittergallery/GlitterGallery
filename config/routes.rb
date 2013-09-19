@@ -10,7 +10,7 @@ Glitter::Application.routes.draw do
   get 'projects/:id/commit/:tree_id' => 'projects#projectcommit'
   get 'projects/:id/masterbranch/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
   get 'projects/:id/masterbranch/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
-  match 'projects/:id/createsvg', to: 'projects#create_svg'
+  get 'projects/:id/createsvg' => 'projects#new_svg'
 
   resources :projects do
     member do
@@ -19,6 +19,7 @@ Glitter::Application.routes.draw do
       get 'projects/:id/forkyou' => 'projects#forkyou'
       post :file_upload
       post :file_update
+      post :create_svg, :as => :create_svg
     end
   end
 
