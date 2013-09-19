@@ -220,12 +220,15 @@ class ProjectsController < ApplicationController
     filename = params[:filename] + '.svg'
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
     if file
-      commit @project.path, filename, '<svg>' + params[:sketch] + '</svg>' , "new file created"
+      commit @project.path, filename, Base64.decode64(params[:sketch]), "new file created"
       flash[:notice] = "Your new image was added successfully! How sparkly!"
     else
       flash[:alert]  = "Your new image didn't get saved! How sad :("
     end
     redirect_to url_for(@project)
+  end
+
+  def update_svg
   end
 
 end
