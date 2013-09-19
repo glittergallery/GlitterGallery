@@ -202,15 +202,22 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # WIP - helps create SVGs.
+  # Renders the SVG-edit form. Helps you specify a filename for the SVG,
+  # and 
 
   def new_svg
     @project = Project.find params[:id]
   end
 
+  # Saves a new SVG file generated through SVG-edit. The image data is passed through to params, 
+  # we might want to change that at a later stage, though, lest the file is too big.
+  # FIXME - We're using a base64 encoded version of the original SVG data. 
+  #         We should look at converting it back to native XML mark so the browser
+  #         can auto-render it.
+
   def create_svg
     @project = Project.find params[:id]
-    filename = params[:filename]
+    filename = params[:filename] + '.svg'
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
     if file
       commit @project.path, filename, '<svg>' + params[:sketch] + '</svg>' , "new file created"
