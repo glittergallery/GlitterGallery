@@ -23,4 +23,5 @@ map '/git' do
   }
 
   run GitHttp::App.new(config)
+
 end

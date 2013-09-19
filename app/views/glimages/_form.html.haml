@@ -1,8 +1,0 @@
-#upload_widget
-  .fakeupload
-    %input{:name => 'fakeupload', :type => 'text', :placeholder => 'Choose an SVG mockup file'}
-    = form.file_field :file
-= form.label 'Private?', :for => :private
-= form.check_box :private
-= form.submit 'Save'
-
