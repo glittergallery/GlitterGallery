@@ -1,0 +1,9 @@
+.center
+  %p
+    edit awesomeness on canvas!
+  %br
+  %br
+
+  = form_tag create_svg_project_path do
+    = sketchily_tag :sketch, :value => @filedata
+    = submit_tag

@@ -1,0 +1,18 @@
+.center
+  - content_for :title do
+    = @project.name.titleize
+
+  %h2
+    = avatar(User.find(@project.user_id).email)
+    = @project.name.titleize 
+
+  %ul
+    - @commits.each do |commit|
+      %li
+        = avatar(commit.author.email)
+      %li
+        = link_to(commit.message, File.join('commit', commit.tree.id))
+      %li
+        = commit.authored_date
+      %li
+        = commit.id 

@@ -1,0 +1,123 @@
+#glitterposts{
+
+  width: 960px;
+  margin: 60px 0px 0px 60px;
+  display: inline;
+  float: left;
+
+  border-top: 0.5px dashed #bf8730;
+  border-bottom: 0.5px dashed #bf8730;
+
+  .glitterpost{
+
+    clear: both;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: block;
+    border-top: 0.5px dashed #bf8730;
+    border-bottom: 0.5px dashed #bf8730;
+    background-color: #ffc873;
+
+    .glitterpost-meta {
+      color: #a66400;
+      img {
+        float: left;
+      }
+      p{
+        margin-top: 2px;
+        overflow: hidden;
+      }
+      p.title {
+        font-size: 30px;
+        font-weight: bold;
+        font-family: Verdana; 
+        a{
+          text-decoration: none;
+          color: #a66400;
+          font-family: Verdana; 
+        }     
+      }
+      p.author {
+        font-size: 15px;
+        font-family: Arial;
+      }
+
+      .padded{
+        padding-left: 5px;
+      }
+    }
+
+    .glitterpost-body{
+      padding: 60px 60px 60px 60px;
+    	font-family: Arial;
+    	line-height: 150%;
+    	font-size: 15px;
+      float: left;
+      background-color: #ffdb73;
+    }
+  }
+}
+
+#operations{
+  clear: left;
+  float: left;
+  margin-left: 60px;
+
+
+  .operation{
+    margin-right: 3px;
+    float: left;
+    padding: 5px;
+    background-color: #a66400;
+    border: 2px solid #ffdb73;
+  }
+
+  a{
+    color: black;
+  	font-size: 15px;
+  	font-family: Arial;
+  	text-decoration: none;
+  }
+
+  .operation:hover{
+    background-color: #ffdb73;
+    border: 2px solid #a66400;
+  }
+}
+
+.title{
+  margin: 30px 0px 0px 60px;
+  color: #a66400;
+  font-size: 20px;
+  font-family: Arial;
+  font-weight: bold;
+  a{
+    text-decoration: none;
+    color: #a66400;
+    font-weight: normal;
+    font-size: 15px;
+    font-famiy: Verdana;
+  }
+  a:hover{
+    font-size: 17px;
+  }
+}
+
+p.input{
+  margin-left: 60px;
+  padding: 10px;
+  width: 550px;
+  font-size: 15px;
+  font-family: Arial;
+}
+
+p.input:hover{
+  background-color: #a66400;
+  color: white;
+}
+
+p.submit{
+  width: 600px;
+  float: left;
+  clear: right;
+}

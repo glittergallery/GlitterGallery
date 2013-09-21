@@ -1,3 +1,4 @@
+
 # This file is used by Rack-based servers to start the application.
 
 require './lib/rack/git_http'
@@ -12,6 +13,7 @@ map '/health' do
   run health
 end
 
+
 map '/git' do
   use Rack::ShowExceptions
 
@@ -23,4 +25,5 @@ map '/git' do
   }
 
   run GitHttp::App.new(config)
+
 end
