@@ -1,3 +1,4 @@
+
 # This file is used by Rack-based servers to start the application.
 
 require './lib/rack/git_http'
@@ -11,6 +12,7 @@ map '/health' do
   end
   run health
 end
+
 
 map '/git' do
   use Rack::ShowExceptions
