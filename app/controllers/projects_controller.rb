@@ -141,7 +141,7 @@ class ProjectsController < ApplicationController
     FileUtils.cp tmp.path, file
     if params[:file]
         imagefile = params[:file]
-        message = "Updated #{params[:image_name]}"
+        message = "updated #{params[:image_name]}"
         commit @project.path, params[:image_name], imagefile.read, message
         flash[:notice] = "#{params[:image_name]} has been updated! Shiny!"
     else
@@ -220,7 +220,7 @@ class ProjectsController < ApplicationController
     filename = params[:filename] + '.svg'
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
     if file
-      commit @project.path, filename, Base64.decode64(params[:sketch]), "new file created"
+      commit @project.path, filename, Base64.decode64(params[:sketch]), "created #{filename}"
       flash[:notice] = "Your new image was added successfully! How sparkly!"
     else
       flash[:alert]  = "Your new image didn't get saved! How sad :("
@@ -228,7 +228,15 @@ class ProjectsController < ApplicationController
     redirect_to url_for(@project)
   end
 
-  def update_svg
+  # WIP - lets you edit svg images created on SVG-edit, or manually uploaded ones too.
+
+  def edit_svg
+    @project = Project.find params[:id]
+    filename = params[:image_name]
+    file = File.open( File.join(@project.path, filename), 'rb')
+    @filedata = Base64.encode64(file.read)
+    file.close
+
   end
 
 end

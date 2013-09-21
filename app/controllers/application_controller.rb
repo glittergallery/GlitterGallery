@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
 
   def image_commit(project, imagefile)
     if logged_in?
-      commit project.path, imagefile.original_filename, imagefile.read, "new file #{imagefile.original_filename}" 
+      commit project.path, imagefile.original_filename, imagefile.read, "created new file #{imagefile.original_filename}" 
     end
   end
 
