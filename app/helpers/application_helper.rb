@@ -1,4 +1,9 @@
 module ApplicationHelper
+
+  # Returns gravatar for a user based on his/her email id.
+  # We're currently using it for commits, glitterposts, projects
+  # and everywhere we need to indicate some activity from a given user.
+
   def avatar(email = nil)
     default = Rails.application.config.default_avatar
     if email.nil?
@@ -9,6 +14,8 @@ module ApplicationHelper
       tag :image, :src => "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(root_url + default)}"
     end
   end
+
+  # No longer needed. 
 
   def project_for(glimage, link = true)
     p = Project.find(glimage.project_id)

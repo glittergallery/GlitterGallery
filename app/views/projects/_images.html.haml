@@ -1,10 +1,8 @@
 %ul.images
-  - @project.glimages.each do |image|
+  - @images.each do |image|
     %li
-      -# displaying the image out of apache public, not the file itself
-      = link_to url_for(image) do
-        %img{:src => image.thumbnail('imagepath')}
-      %h3
-        = image.file
+      = link_to (image_tag image.gsub("public","")), (File.join @project.id.to_s, 'masterbranch', File.basename(image))
+
+
     
     

@@ -3,18 +3,17 @@ class Project < ActiveRecord::Base
   after_create :init
 
   belongs_to :user
-  has_many :glimages
-  accepts_nested_attributes_for :glimages
+  #accepts_nested_attributes_for :glimages
 
-  attr_accessible :name, :path, :images_attributes
+  attr_accessible :name, :path
 
   validates :name, :presence => true
 
   # get the last update time
   # of the images in the project
   def last_updated
-    g = Glimage.find_by_project_id(id, :order => 'updated_at DESC')
-    g.updated_at
+    repo = Grit::Repo.init_bare_or_open(File.join(path , '.git'))
+    repo.commits.first.commited_date
   end
 
   private
@@ -22,7 +21,7 @@ class Project < ActiveRecord::Base
     #TODO - let basedir for repos be set in app config
     logger.debug "setting path - path: #{path}"
     user = User.find(user_id)
-    self.path = File.join '..', 'data', 'repos', user.email, name
+    self.path = File.join 'public', 'data', 'repos', user.email, name
   end
 
   def init
@@ -30,6 +29,8 @@ class Project < ActiveRecord::Base
     unless File.exists? path
       gitpath = File.join path , '.git'
       Grit::Repo.init_bare(gitpath)
+      bare_repo = Grit::Git.new (File.join (path + "_bare"), '.git')
+      bare_repo.clone({}, gitpath, (File.join (path.to_s + "_bare"), '.git'))
     end
   end
 

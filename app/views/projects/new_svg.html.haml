@@ -1,0 +1,11 @@
+.center
+  %p
+    create awesomeness on canvas!
+  %br
+  %br
+
+  = form_tag create_svg_project_path do
+    What are you calling your sketch?
+    = text_field_tag :filename
+    = sketchily_tag :sketch
+    = submit_tag

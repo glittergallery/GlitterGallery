@@ -1,0 +1,38 @@
+.center
+  - content_for :title do
+    = @project.name.titleize
+
+  %h2
+    = avatar(User.find(@project.user_id).email)
+    = @project.name.titleize.to_s + " /  " + File.basename(@imageurl).to_s
+  = image_tag @imageurl.gsub("public","")
+
+  %p
+    = link_to "View file history", File.join(File.basename(@imageurl).to_s, 'history')
+  %br
+
+  %p
+  Make changes to this file!
+  = form_tag file_update_project_path(@project), multipart: true do
+    = file_field_tag "file"
+    = hidden_field_tag 'image_name', File.basename(@imageurl)
+    = submit_tag 
+
+  #comments
+    - @comments.each do |comment|
+      - if comment.user_id == @project.user_id
+        = render 'comments/comment_author', :comment => comment
+      - elsif logged_in? and comment.user_id == current_user.id
+        = render 'comments/comment_current', :comment => comment
+      - else 
+        = render 'comments/comment_normal'
+    = render 'comments/new'
+
+    .comment-body
+      = form_for Comment.new do |f|
+        = hidden_field_tag 'polycomment_type', 'file'
+        = hidden_field_tag 'polycomment_id',  File.basename(@imageurl).to_s
+        .comment_field
+          = f.text_field :body, :placeholder => 'Add your comment...'
+        .submit
+          = f.submit 
