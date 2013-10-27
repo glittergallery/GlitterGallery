@@ -12,12 +12,13 @@ Glitter::Application.routes.draw do
   get 'projects/:id/masterbranch/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
   get 'projects/:id/createsvg' => 'projects#new_svg'
   get 'projects/:id/masterbranch/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
-
+  get 'projects/:id/fork' => 'projects#fork'
+  get 'projects/:id/forkyou' => 'projects#forkyou'
+  
   resources :projects do
     member do
       get 'projects/:id/invite.xml' => 'projects#invite'
-      get 'projects/:id/fork' => 'projects#fork'
-      get 'projects/:id/forkyou' => 'projects#forkyou'
+
       post :file_upload
       post :file_update
       post :create_svg, :as => :create_svg

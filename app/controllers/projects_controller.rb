@@ -182,7 +182,7 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     @forked_project = Project.new :name => @project.name
     @forked_project.user_id = current_user.id
-    @forked_project = @project.clone
+    #@forked_project = @project.clone
 
     if @forked_project.save
       @forked_project_saved = true
