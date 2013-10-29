@@ -243,7 +243,7 @@ class ProjectsController < ApplicationController
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
 
     if file
-        message = "#{current_user.username} updated #{filename}"
+        message = "updated #{filename}"
         commit @project.path, filename, Base64.decode64(params[:sketch]), message
         flash[:notice] = "#{filename} has been updated! Shiny!"
     else
