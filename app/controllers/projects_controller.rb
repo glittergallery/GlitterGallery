@@ -162,8 +162,9 @@ class ProjectsController < ApplicationController
       @forked_project_saved = true
       if @forked_project_saved
 
-        repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path), '.git')
-        repo.git.clone({} , File.join(@forked_project.path, 'test'), @project.path)
+        git = Grit::Git.new @forked_project.path
+        #repo.git.clone({} , File.join(@forked_project.path, 'test'), @project.path)
+        git.native(clone,{}, File.join(@project.path, '.git'),@forked_project.path)
         redirect_to url_for(@forked_project)
 
       else
@@ -231,12 +232,24 @@ class ProjectsController < ApplicationController
   # WIP - lets you edit svg images created on SVG-edit, or manually uploaded ones too.
 
   def edit_svg
-    @project = Project.find params[:id]
-    filename = params[:image_name]
-    file = File.open( File.join(@project.path, filename), 'rb')
-    @filedata = Base64.encode64(file.read)
-    file.close
-
+    project = Project.find params[:id]
+    @filename = params[:image_name]
+    @path= (File.join project.path, @filename).gsub("public","")
   end
 
+  def update_svg
+    @project = Project.find params[:id]
+    filename = params[:filename]
+    file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
+
+    if file
+        message = "#{current_user.username} updated #{filename}"
+        commit @project.path, filename, Base64.decode64(params[:sketch]), message
+        flash[:notice] = "#{filename} has been updated! Shiny!"
+    else
+      flash[:alert] = "Unable to update #{filename}. The server ponies are sad."
+    end
+    redirect_to url_for(@project)
+
+  end
 end

@@ -7,8 +7,8 @@
     = @project.name.titleize
 
   - if logged_in? && (@project.user_id != current_user.id)
-    =   link_to 'Fork this repo!', File.join(@project.id.to_s, 'fork')
-    =   link_to 'Fork you (tests fork)' , File.join(@project.id.to_s, 'forkyou')
+    =#   link_to 'Fork this repo!', File.join(@project.id.to_s, 'fork')
+    =   link_to 'Fork this repo!' , File.join(@project.id.to_s, 'forkyou')
 
   = render 'shared/messages'
 

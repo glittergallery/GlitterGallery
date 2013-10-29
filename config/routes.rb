@@ -22,6 +22,8 @@ Glitter::Application.routes.draw do
       post :file_upload
       post :file_update
       post :create_svg, :as => :create_svg
+      post :edit_svg, :as => :edit_svg
+      post :update_svg, :as => :update_svg
     end
   end
 
