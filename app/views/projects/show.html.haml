@@ -6,6 +6,10 @@
     = avatar(User.find(@project.user_id).email)
     = @project.name.titleize
 
+  - if (@project.parent != @project.id)
+    - parent = Project.find @project.parent
+    = 'Forked from ' + User.find(parent.user_id).username.to_s + '/' + parent.name.to_s
+
   - if logged_in? && (@project.user_id != current_user.id)
     =#   link_to 'Fork this repo!', File.join(@project.id.to_s, 'fork')
     =   link_to 'Fork this repo!' , File.join(@project.id.to_s, 'forkyou')

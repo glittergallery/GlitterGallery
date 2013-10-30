@@ -25,8 +25,9 @@ class ProjectsController < ApplicationController
   def create
     project = Project.new :name => params[:project][:name]
     project.user_id = current_user.id
-
     if project.save
+      project.parent = project.id
+      project.save
       redirect_to url_for(project)
     else
       flash[:alert] = "Didn't save project!"      
@@ -155,7 +156,8 @@ class ProjectsController < ApplicationController
 
   def fork
     @project = Project.find params[:id]
-    @forked_project = Project.new :name => @project.name
+    @forked_project = Project.new :name => @project.name, 
+                                  :parent => @project.id
     @forked_project.user_id = current_user.id
 
     if @forked_project.save
@@ -165,6 +167,7 @@ class ProjectsController < ApplicationController
         git = Grit::Git.new @forked_project.path
         #repo.git.clone({} , File.join(@forked_project.path, 'test'), @project.path)
         git.native(clone,{}, File.join(@project.path, '.git'),@forked_project.path)
+
         redirect_to url_for(@forked_project)
 
       else
@@ -179,9 +182,10 @@ class ProjectsController < ApplicationController
   # This function will be removed soon, just being used to test fork.
 
   def forkyou
-
     @project = Project.find params[:id]
-    @forked_project = Project.new :name => @project.name
+    # what if X is trying to fork a project that was forked by Y from X? 
+    @forked_project = Project.new :name => @project.name,
+                                  :parent => @project.id
     @forked_project.user_id = current_user.id
     #@forked_project = @project.clone
 
