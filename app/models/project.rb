@@ -5,7 +5,7 @@ class Project < ActiveRecord::Base
   belongs_to :user
   #accepts_nested_attributes_for :glimages
 
-  attr_accessible :name, :path
+  attr_accessible :name, :path, :parent
 
   validates :name, :presence => true
 

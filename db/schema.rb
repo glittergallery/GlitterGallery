@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130912124846) do
+ActiveRecord::Schema.define(:version => 20131030132834) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20130912124846) do
     t.datetime "updated_at", :null => false
     t.integer  "user_id"
     t.string   "path"
+    t.integer  "parent"
   end
 
   add_index "projects", ["name", "user_id"], :name => "index_projects_on_name_and_user_id", :unique => true
