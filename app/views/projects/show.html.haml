@@ -8,7 +8,10 @@
 
   - if (@project.parent != @project.id)
     - parent = Project.find @project.parent
-    = 'Forked from ' + User.find(parent.user_id).username.to_s + '/' + parent.name.to_s
+    = 'Forked from ' 
+    = User.find(parent.user_id).username
+    = '/'
+    = parent.name
 
   - if logged_in? && (@project.user_id != current_user.id)
     =#   link_to 'Fork this repo!', File.join(@project.id.to_s, 'fork')
@@ -40,7 +43,7 @@
         = render 'comments/comment_current', :comment => comment
       - else 
         = render 'comments/comment_normal'
-    = render 'comments/new'
+    = #render 'comments/new'
 
     .comment-body
       = form_for Comment.new do |f|
