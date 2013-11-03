@@ -1,3 +1,4 @@
+- parent = Project.find @project.parent
 .center
   - content_for :title do
     = @project.name.titleize
@@ -7,14 +8,13 @@
     = @project.name.titleize
 
   - if (@project.parent != @project.id)
-    - parent = Project.find @project.parent
     = 'Forked from ' 
     = User.find(parent.user_id).username
     = '/'
     = parent.name
 
-  - if logged_in? && (@project.user_id != current_user.id)
-    =#   link_to 'Fork this repo!', File.join(@project.id.to_s, 'fork')
+  - if logged_in? && (@project.user_id != current_user.id && parent.user_id != current_user.id)
+    =#  link_to 'Fork this repo!', File.join(@project.id.to_s, 'fork')
     =   link_to 'Fork this repo!' , File.join(@project.id.to_s, 'forkyou')
 
   = render 'shared/messages'
