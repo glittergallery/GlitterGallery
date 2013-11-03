@@ -210,7 +210,16 @@ class ProjectsController < ApplicationController
   #Pull request - WIP
 
   def pull_request
-    
+    @forked_project = Project.find params[:id]
+    @parent_project = Project.find @forked_project.parent
+
+    if true #add conditions to allow pull request
+      FileUtils.rm_r(@parent_project.path)
+      FileUtils.cp_r(@forked_project.path,@parent_project.path)
+      redirect_to url_for(@parent_project)
+    else
+      redirect_to dashboard_path
+    end
   end
 
   # Renders the SVG-edit form. Helps you specify a filename for the SVG,

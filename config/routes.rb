@@ -14,6 +14,7 @@ Glitter::Application.routes.draw do
   get 'projects/:id/masterbranch/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
   get 'projects/:id/fork' => 'projects#fork'
   get 'projects/:id/forkyou' => 'projects#forkyou'
+  get 'projects/:id/pull' => 'projects#pull_request'
   
   resources :projects do
     member do
