@@ -207,6 +207,14 @@ class ProjectsController < ApplicationController
     end
   end
 
+  #def pull_request
+  # this one will make an entry into the pull request table
+  # ID, project info, desc, upto_commitID, status <merge, close, open>
+  # when a new request is opened, it will issue it as open
+  # upon merge, it will make it as merge and make them nonclickable again
+  # upon close, it will make it as closed but it may be re-opemed and merged
+  #end
+
   #Pull request - WIP
 
   def pull_request
@@ -220,6 +228,7 @@ class ProjectsController < ApplicationController
     else
       redirect_to dashboard_path
     end
+
   end
 
   # Renders the SVG-edit form. Helps you specify a filename for the SVG,
