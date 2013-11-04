@@ -235,7 +235,7 @@ class ProjectsController < ApplicationController
   def pulls
     @project = Project.find params[:id]
     #spit a list of all pulls from the table which have @project.id as parent
-    
+    @pulls = PullRequest.where("parent=?",@project.id)
   end
 
   # Shows details about a specific pull request on a project

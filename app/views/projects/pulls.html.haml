@@ -1,1 +1,5 @@
-# spit all pulls that have @project.id as parent, and have status open, closed or merged.
+- @pulls.each do |pull|
+  = @pull.desc
+  = @pull.status
+  = 'Merge'
+
