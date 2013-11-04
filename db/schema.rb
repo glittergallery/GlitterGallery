@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131104164413) do
+ActiveRecord::Schema.define(:version => 20131104181756) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -44,6 +44,16 @@ ActiveRecord::Schema.define(:version => 20131104164413) do
   end
 
   add_index "projects", ["name", "user_id"], :name => "index_projects_on_name_and_user_id", :unique => true
+
+  create_table "pull_requests", :force => true do |t|
+    t.string   "desc"
+    t.string   "lastcommit"
+    t.string   "status"
+    t.integer  "parent"
+    t.integer  "fork"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "pulltable", :force => true do |t|
     t.string   "desc"

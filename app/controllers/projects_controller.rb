@@ -235,11 +235,13 @@ class ProjectsController < ApplicationController
   def pulls
     @project = Project.find params[:id]
     #spit a list of all pulls from the table which have @project.id as parent
+    
   end
 
   # Shows details about a specific pull request on a project
   def pull
     @project = Project.find params[:id]
+
   end
 
   # Renders the SVG-edit form. Helps you specify a filename for the SVG,
