@@ -221,9 +221,14 @@ class ProjectsController < ApplicationController
     @forked_project = Project.find params[:id]
     @parent_project = Project.find @forked_project.parent
 
-    if true #add conditions to allow pull request
-      FileUtils.rm_r(@parent_project.path)
-      FileUtils.cp_r(@forked_project.path,@parent_project.path)
+    request = PullRequest.new :desc => 'change made',
+                              :fork => @forked_project.id,
+                              :parent => @parent_project.id
+
+
+    if request.save 
+      #FileUtils.rm_r(@parent_project.path)
+      #FileUtils.cp_r(@forked_project.path,@parent_project.path)
       redirect_to url_for(@parent_project)
     else
       redirect_to dashboard_path
