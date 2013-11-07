@@ -280,16 +280,20 @@ class ProjectsController < ApplicationController
 
   # Helps to re-open requests that have been closed
   def open
+    @project = Project.find params[:id]
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'open'
     @pull.save
+    redirect_to url_for @project
   end
 
   # Helps to close requests that shouldn't be open
   def close
+    @project = Project.find params[:id]
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'closed'
     @pull.save
+    redirect_to url_for @project
   end
 
 
