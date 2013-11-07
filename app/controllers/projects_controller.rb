@@ -220,17 +220,24 @@ class ProjectsController < ApplicationController
   def pull_request
     @forked_project = Project.find params[:id]
     @parent_project = Project.find @forked_project.parent
-
-    request = PullRequest.new :desc => 'Pull request description - have to allow user to add these',
-                              :fork => @forked_project.id,
-                              :parent => @parent_project.id,
-                              :status => 'open'
-    if request.save
-      # we want the directory containing all of the stuff in this request to be copied over.
-      FileUtils.cp_r(@forked_project.path, @forked_project.path + request.id.to_s)
-      redirect_to File.join(url_for(@parent_project), 'pulls')
+    @parent_repo = Grit::Repo.init_bare_or_open(File.join (@parent_project.path) , '.git')
+    @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
+    # test if the last commit in the parent and in this for is the same. if yes, then
+    # dont allow pull requests, its up to date
+    if @parent_repo.commits.first == @forked_repo.commits.first
+      flash[:notice] = "Nothing to pull, the parent project is up to date! :)"
     else
-      redirect_to dashboard_path
+      request = PullRequest.new :desc => 'Pull request description - have to allow user to add these',
+                                :fork => @forked_project.id,
+                                :parent => @parent_project.id,
+                                :status => 'open'
+      if request.save
+        # we want the directory containing all of the stuff in this request to be copied over.
+        FileUtils.cp_r(@forked_project.path, @forked_project.path + request.id.to_s)
+        redirect_to File.join(url_for(@parent_project), 'pulls')
+      else
+        redirect_to dashboard_path
+      end
     end
   end
 
