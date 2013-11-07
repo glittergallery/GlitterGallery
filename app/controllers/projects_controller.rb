@@ -221,19 +221,17 @@ class ProjectsController < ApplicationController
     @forked_project = Project.find params[:id]
     @parent_project = Project.find @forked_project.parent
 
-    request = PullRequest.new :desc => 'change made',
+    request = PullRequest.new :desc => 'Pull request description - have to allow user to add these',
                               :fork => @forked_project.id,
-                              :parent => @parent_project.id
-
-
-    if request.save 
-      #FileUtils.rm_r(@parent_project.path)
-      #FileUtils.cp_r(@forked_project.path,@parent_project.path)
-      redirect_to url_for(@parent_project)
+                              :parent => @parent_project.id,
+                              :status => 'open'
+    if request.save
+      # we want the directory containing all of the stuff in this request to be copied over.
+      FileUtils.cp_r(@forked_project.path, @forked_project.path + request.id.to_s)
+      redirect_to File.join(url_for(@parent_project), 'pulls')
     else
       redirect_to dashboard_path
     end
-
   end
 
   # Renders pull requests page for specific projects
@@ -246,7 +244,18 @@ class ProjectsController < ApplicationController
   # Shows details about a specific pull request on a project
   def pull
     @project = Project.find params[:id]
+    @pull = PullRequest.find params[:pull_id]
+  end
 
+  # allow merging a pull request
+  def merge
+    @project = Project.find params[:id]
+    @pull = PullRequest.find params[:pull_id]
+    @forked_project = Project.find @pull.fork
+    FileUtils.rm_r(@project.path)
+    FileUtils.cp_r(@forked_project.path + @pull.id.to_s, @project.path)
+    redirect_to url_for @project
+    flash[:notice] = "Pull request #{pull.id} has successfully been merged."
   end
 
   # Renders the SVG-edit form. Helps you specify a filename for the SVG,

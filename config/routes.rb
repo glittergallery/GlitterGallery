@@ -15,6 +15,8 @@ Glitter::Application.routes.draw do
   get 'projects/:id/fork' => 'projects#fork'
   get 'projects/:id/forkyou' => 'projects#forkyou'
   get 'projects/:id/pull' => 'projects#pull_request'
+  get 'projects/:id/pull/:pull_id' => 'projects#pull'
+  get 'projects/:id/pull/:pull_id/merge' => 'projects#merge'
   get 'projects/:id/pulls' => 'projects#pulls'
   
   resources :projects do

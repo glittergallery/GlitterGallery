@@ -1,6 +1,15 @@
+%br
 .center
-	- @pulls.each do |pull|
-	  = pull.desc
-	  = pull.status
-	  = 'Merge'
+  - @pulls.each do |pull|
+    = link_to pull.id, File.join('pull',pull.id.to_s)
+    = pull.desc
+    First opened 
+    = distance_of_time_in_words_to_now pull.created_at
+    ago
+    %br
+    The pull request is now
+    = pull.status
+    %br
+    %br
+
 
