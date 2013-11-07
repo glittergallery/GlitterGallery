@@ -273,8 +273,18 @@ class ProjectsController < ApplicationController
 
   # Helps to re-open requests that have been closed
   def open
-    
+    @pull = PullRequest.find params[:pull_id]
+    @pull.status = 'open'
+    @pull.save
   end
+
+  # Helps to close requests that shouldn't be open
+  def close
+    @pull = PullRequest.find params[:pull_id]
+    @pull.status = 'closed'
+    @pull.save
+  end
+
 
   # Renders the SVG-edit form. Helps you specify a filename for the SVG,
   # and 
