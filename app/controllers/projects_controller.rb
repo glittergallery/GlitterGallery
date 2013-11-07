@@ -259,18 +259,21 @@ class ProjectsController < ApplicationController
 
     @pull.status = 'merged'
     @pull.save
-    #also close other requests that affect the same files automatically
-    #for every pull for the same project in the db, if the fork is the same as this one,
-    # and the id < pull.id, then close it.
+
     @pulls = PullRequest.where("parent=?",@project.id)
     @pulls.each do |pull|
-      if pull.id < @pull.id and pull.fork == @pull.fork
-        pull.status = 'closed'
+      if pull.id < @pull.id and pull.fork == @pull.fork and pull.status == 'open'
+        pull.status = 'automatically merged'
         pull.save
       end
     end
     redirect_to url_for @project
     flash[:notice] = "Pull request #{pull.id} has successfully been merged."
+  end
+
+  # Helps to re-open requests that have been closed
+  def open
+    
   end
 
   # Renders the SVG-edit form. Helps you specify a filename for the SVG,
