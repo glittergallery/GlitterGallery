@@ -224,8 +224,9 @@ class ProjectsController < ApplicationController
     @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
     # test if the last commit in the parent and in this for is the same. if yes, then
     # dont allow pull requests, its up to date
-    if @parent_repo.commits.first == @forked_repo.commits.first
+    if @parent_repo.commits.first.id == @forked_repo.commits.first.id
       flash[:notice] = "Nothing to pull, the parent project is up to date! :)"
+      redirect_to url_for @forked_project
     else
       request = PullRequest.new :desc => 'Pull request description - have to allow user to add these',
                                 :fork => @forked_project.id,
