@@ -1,4 +1,6 @@
 This page corresponds to pull # 
 = @pull.id
+,which is currently
+= @pull.status
 - if current_user.id == @project.user_id
   = link_to 'Merge', File.join(@pull.id.to_s,'merge')

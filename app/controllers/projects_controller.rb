@@ -252,8 +252,23 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     @pull = PullRequest.find params[:pull_id]
     @forked_project = Project.find @pull.fork
+
     FileUtils.rm_r(@project.path)
     FileUtils.cp_r(@forked_project.path + @pull.id.to_s, @project.path)
+    FileUtils.rm_r(@forked_project.path + @pull.id.to_s)
+
+    @pull.status = 'merged'
+    @pull.save
+    #also close other requests that affect the same files automatically
+    #for every pull for the same project in the db, if the fork is the same as this one,
+    # and the id < pull.id, then close it.
+    @pulls = PullRequest.where("parent=?",@project.id)
+    @pulls.each do |pull|
+      if pull.id < @pull.id and pull.fork == @pull.fork
+        pull.status = 'closed'
+        pull.save
+      end
+    end
     redirect_to url_for @project
     flash[:notice] = "Pull request #{pull.id} has successfully been merged."
   end
