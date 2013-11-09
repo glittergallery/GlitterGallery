@@ -1,4 +1,4 @@
-# Glitter gallery app config goes here
+# GlitterGallery app config goes here
 
 # ImageMagick geometry to use for thumbnail generation
 # defaults to 100 px width

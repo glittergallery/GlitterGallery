@@ -1,10 +1,10 @@
-== Glitter Gallery
+== GlitterGallery
 
-Glitter Gallery _will be_ an amazing way to collaborate on design! 
+GlitterGallery _will be_ an amazing way to collaborate on design! 
 
 The goals are to allow designers to easily share their work, gather and parse feedback in a useful way, and version their work just as developers are able to. 
 
-Glitter Gallery will be somewhat biased to support SVGs from Inkscape, and to work with the magicmockup rapid prototyping program. That doesn't mean it won't work with other filetypes, though!
+GlitterGallery will be somewhat biased to support SVGs from Inkscape, and to work with the magicmockup rapid prototyping program. That doesn't mean it won't work with other filetypes, though!
 
 === Get involved
 
