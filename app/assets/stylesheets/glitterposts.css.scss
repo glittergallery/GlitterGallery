@@ -1,6 +1,12 @@
+body {
+  width: 80%;
+  margin: auto;
+}
+
 #glitterposts{
 
   width: 960px;
+  margin:auto;
   margin: 60px 0px 0px 60px;
   display: inline;
   float: left;
@@ -14,9 +20,6 @@
     margin-top: 15px;
     margin-bottom: 15px;
     display: block;
-    border-top: 0.5px dashed #bf8730;
-    border-bottom: 0.5px dashed #bf8730;
-    background-color: #ffc873;
 
     .glitterpost-meta {
       color: #a66400;
@@ -30,7 +33,7 @@
       p.title {
         font-size: 30px;
         font-weight: bold;
-        font-family: Verdana; 
+        font-family: 'Roboto', sans-serif; 
         a{
           text-decoration: none;
           color: #a66400;
@@ -48,12 +51,15 @@
     }
 
     .glitterpost-body{
-      padding: 60px 60px 60px 60px;
+      overflow: hidden;
+      width: 500px;
+      position: relative;
+      padding: 30px 30px 30px 30px;
     	font-family: Arial;
     	line-height: 150%;
     	font-size: 15px;
       float: left;
-      background-color: #ffdb73;
+      margin-right: 100px;
     }
   }
 }
@@ -86,10 +92,10 @@
 }
 
 .title{
-  margin: 30px 0px 0px 60px;
+  margin: 30px 0px 0px 200px;
   color: #a66400;
   font-size: 20px;
-  font-family: Arial;
+  font-family: Roboto;
   font-weight: bold;
   a{
     text-decoration: none;
@@ -99,22 +105,21 @@
     font-famiy: Verdana;
   }
   a:hover{
-    font-size: 17px;
+    color: black;
   }
+  padding-bottom: 10px;
 }
 
 p.input{
-  margin-left: 60px;
+  margin-left: 200px;
+  margin-right: 200px;
   padding: 10px;
   width: 550px;
-  font-size: 15px;
+  font-size: 18px;
+  overflow: hidden;
   font-family: Arial;
 }
 
-p.input:hover{
-  background-color: #a66400;
-  color: white;
-}
 
 p.submit{
   width: 600px;
