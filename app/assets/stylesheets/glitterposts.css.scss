@@ -31,6 +31,7 @@ body {
         overflow: hidden;
       }
       p.title {
+        color: white;
         font-size: 30px;
         font-weight: bold;
         font-family: 'Roboto', sans-serif; 
@@ -93,19 +94,19 @@ body {
 
 .title{
   margin: 30px 0px 0px 200px;
-  color: #a66400;
+  color: white;
   font-size: 20px;
   font-family: Roboto;
   font-weight: bold;
   a{
     text-decoration: none;
-    color: #a66400;
+    color: white;
     font-weight: normal;
     font-size: 15px;
     font-famiy: Verdana;
   }
   a:hover{
-    color: black;
+    color: #e3e3e3;
   }
   padding-bottom: 10px;
 }
@@ -118,6 +119,7 @@ p.input{
   font-size: 18px;
   overflow: hidden;
   font-family: Arial;
+  color: white;
 }
 
 
