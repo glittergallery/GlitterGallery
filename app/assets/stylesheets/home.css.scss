@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import url(http://fonts.googleapis.com/css?family=Cookie);
+@import url(http://fonts.googleapis.com/css?family=Roboto); 
 $yellow: #fce451;
 $brown: #44342e;
 $blue: #35b6c2;
@@ -13,16 +13,18 @@ body, p, a, div, form {
   font-family: sans-serif;
 }
 h1, h2 {
-  font-family: Cookie, sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
 } 
 h3.title {
-  font-family: Cookie, sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: large;
 }
 
 /** background gradient **/
 body {
   width: 100%;
+  margin: auto;
   background: $yellow;
 }
 
@@ -40,7 +42,7 @@ p.message {
 }
 
 p.notice {
-  font-family: Cookie, sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: darken($blue, 20%); 
   background: lighten($blue, 30%);
   box-shadow: 0 0 5px rgba(255, 59, 203, .4);
@@ -76,7 +78,7 @@ input[type="submit"] {
   color: white;
   margin-left: 66%;
   font-weight: bold;
-  font-family: Cookie, sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: x-large;
   letter-spacing: -0.05em
 }
@@ -172,7 +174,7 @@ label[for='private'] {
 #sidebar h2 {
   color: $brown;
   font-weight: bold;
-  font-family: Cookie, sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: x-large;
   letter-spacing: -0.05em;
 }
@@ -195,7 +197,7 @@ nav {
 
 .welcome {
   color: white;
-  font-family: Cookie, sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   font-weight: bold;
   font-size: 18px;
   letter-spacing: -0.05em
@@ -203,12 +205,13 @@ nav {
 
 nav .logo {
   color: $blue;
-  font-family: Cookie, sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   font-weight: bold;
   font-size: 28px;
   text-align: center;
   letter-spacing: -0.05em;
-  padding-top: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 nav div {
@@ -224,6 +227,10 @@ nav .right a {
   color: white;
   text-decoration: none;
   font-size: 14px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-weight: bold;
+
 }
 
 nav .right a:hover {
@@ -289,7 +296,7 @@ body.registrations {
 
 
 h2 {
-  font-family: Cookie, sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   font-size: 24pt !important;
   font-weight: 700 !important;
   color: $brown;
@@ -366,7 +373,7 @@ and you keep this window open. */
   color: white;
   font-weight: bold;
   text-align: center;
-  font-family: Cookie, sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   text-transform: lowercase;
   letter-spacing: -0.05em;
   margin-top: 7px;
@@ -476,11 +483,11 @@ body.projects ul.images img {
     clear: both;
     text-align: center;
     padding: 60px 0 20px;
-    font-family: Cookie, sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: $brown;
     font-size: large;
     a {
-      font-family: Cookie, sans-serif;
+      font-family: 'Roboto', sans-serif;
       color: $blue;
     }
   }
@@ -496,7 +503,7 @@ body.projects ul.images img {
     background: transparent;
     box-shadow: none;
     color: $brown;
-    font-family: Cookie, sans-serif;
+    font-family: 'Roboto', sans-serif;
     text-align: right;
     a {
       color: $brown;
@@ -505,3 +512,41 @@ body.projects ul.images img {
   }
 
 } 
+
+html { font-size: 100%; }
+body .logo { font-size: 1.5em;}
+
+@media (max-width: 300px) {
+    html { font-size: 50%; }
+}
+
+@media (min-width: 500px) {
+    html { font-size: 70%; }
+}
+
+@media (min-width: 700px) {
+    html { font-size: 85%; }
+}
+
+@media (min-width: 1200px) {
+    html { font-size: 120%; }
+}
+
+html { font-size: 100%; }
+body input[type="submit"] { font-size: 1.25em;}
+
+@media (max-width: 300px) {
+    html { font-size: 50%; }
+}
+
+@media (min-width: 500px) {
+    html { font-size: 70%; }
+}
+
+@media (min-width: 700px) {
+    html { font-size: 85%; }
+}
+
+@media (min-width: 1200px) {
+    html { font-size: 120%; }
+}
