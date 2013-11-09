@@ -8,8 +8,10 @@
   = image_tag @imageurl.gsub("public","")
 
   %p
-    = link_to "View file history", File.join(File.basename(@imageurl).to_s, 'history')
-    = link_to "Edit", File.join(File.basename(@imageurl).to_s, 'edit')
+    .button
+      = link_to "View file history", File.join(File.basename(@imageurl).to_s, 'history')
+    .button
+      = link_to "Edit", File.join(File.basename(@imageurl).to_s, 'edit')
   %br
 
   %p

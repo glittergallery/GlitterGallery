@@ -15,9 +15,11 @@
 
   - if logged_in? && (@project.user_id != current_user.id && parent.user_id != current_user.id)
     =#  link_to 'Fork this repo!', File.join(@project.id.to_s, 'fork')
-    =   link_to 'Fork this repo!' , File.join(@project.id.to_s, 'forkyou')
+    .button
+      = link_to 'Fork this repo!' , File.join(@project.id.to_s, 'forkyou')
   - if logged_in? && (@project.user_id == current_user.id && parent.user_id != current_user.id)
-    = link_to 'Send a pull request?', File.join(@project.id.to_s, 'pull')
+    .button
+      = link_to 'Send a pull request?', File.join(@project.id.to_s, 'pull')
 
   = render 'shared/messages'
 
@@ -30,12 +32,17 @@
     =link_to 'View commit history', File.join(@project.id.to_s, 'commits')
 
   %br
+
+  .button
+    #{link_to 'create', File.join(@project.id.to_s, 'createsvg')} more awesomeness! 
   %br
   %p
-  Upload or #{link_to 'create', File.join(@project.id.to_s, 'createsvg')} more awesomeness! 
+  Upload new files 
   = form_tag file_upload_project_path(@project), multipart: true do
     = file_field_tag "file" 
     = submit_tag 
+
+  %hr
 
   #comments
     - @comments.each do |comment|
