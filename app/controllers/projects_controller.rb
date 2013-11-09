@@ -314,7 +314,7 @@ class ProjectsController < ApplicationController
 
   def create_svg
     @project = Project.find params[:id]
-    filename = params[:filename] + '.svg'
+    filename = params[:filename].squish.downcase.tr(" ","_") + '.svg'
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
     if file
       commit @project.path, filename, Base64.decode64(params[:sketch]), "created #{filename}"
