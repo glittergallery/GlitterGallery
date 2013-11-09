@@ -21,4 +21,11 @@ module SessionsHelper
     self.current_user= nil
     cookies.delete(:remember_token)
   end
+
+  def authenticate_user!
+    if !current_user
+      flash[:error] = 'You need to login before accessing this page!'
+      redirect_to login_path
+    end
+  end 
 end
