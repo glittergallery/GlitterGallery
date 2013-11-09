@@ -2,10 +2,10 @@
   Create a new glitterpost! #{link_to '(or go back to the Glitterposts)', glitterposts_path }
 = form_for :glitterpost, url: glitterposts_path do |f|
   %p.input
-    Title
+    Title: <br /><br />
     = f.text_field :title
   %p.input
-    Content
+    Content: <br /><br />
     = f.text_area :content 
   %p.submit
     = f.submit  
