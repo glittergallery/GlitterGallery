@@ -1,0 +1,10 @@
+- content_for :title do
+  = @username.titleize
+%br
+
+.center
+  = avatar(@email)
+  %br
+  = @username
+  %br
+  = @email
