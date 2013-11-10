@@ -32,13 +32,14 @@
 
   = render 'shared/messages'
 
-  .button
-    #{link_to 'Draw', File.join(@project.id.to_s, 'createsvg')}
+  -if @project.user_id == current_user.id
+    .button
+      #{link_to 'Draw', File.join(@project.id.to_s, 'createsvg')}
 
-  or add new files:
-  = form_tag file_upload_project_path(@project), multipart: true do
-    = file_field_tag "file" 
-    = submit_tag 
+    or add new files:
+    = form_tag file_upload_project_path(@project), multipart: true do
+      = file_field_tag "file" 
+      = submit_tag 
 
   = render 'images'
 

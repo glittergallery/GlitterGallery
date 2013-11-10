@@ -12,14 +12,16 @@
   %hr
   %br
 
-  .button
-    = link_to "Edit", File.join(File.basename(@imageurl).to_s, 'edit')
 
-  or upload updates:
-  = form_tag file_update_project_path(@project), multipart: true do
-    = file_field_tag "file"
-    = hidden_field_tag 'image_name', File.basename(@imageurl)
-    = submit_tag 
+
+  -if @project.user_id == current_user.id
+    .button
+      = link_to "Edit", File.join(File.basename(@imageurl).to_s, 'edit')
+    or upload updates:
+    = form_tag file_update_project_path(@project), multipart: true do
+      = file_field_tag "file"
+      = hidden_field_tag 'image_name', File.basename(@imageurl)
+      = submit_tag 
 
   = image_tag @imageurl.gsub("public","")
   %hr
