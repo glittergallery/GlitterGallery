@@ -1,4 +1,11 @@
 .center
+  - content_for :title do
+    = @project.name.titleize
+  .meta
+    %h2
+      = avatar(User.find(@project.user_id).email)
+      = @project.name.titleize.to_s 
+
   - @contents.each do |blob|
     = blob.name
     %svg{:xmlns => "http://www.w3.org/2000/svg"}
