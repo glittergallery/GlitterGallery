@@ -5,6 +5,7 @@
     %h2
       = avatar(User.find(@project.user_id).email)
       = @project.name.titleize.to_s 
+  %hr
 
   - @contents.each do |blob|
     = blob.name

@@ -14,17 +14,16 @@
       = '/'
       = parent.name
 
-      - if logged_in? && (@project.user_id != current_user.id && parent.user_id != current_user.id)
-        =#  link_to 'Fork this repo!', File.join(@project.id.to_s, 'fork')
-        .button
-          = link_to 'Fork' , File.join(@project.id.to_s, 'forkyou')
-      - if logged_in? && (@project.user_id == current_user.id && parent.user_id != current_user.id)
-        .button
-          = link_to 'Send Pull Request', File.join(@project.id.to_s, 'pull')
+    - if logged_in? && (@project.user_id != current_user.id && parent.user_id != current_user.id)
       .button
-        %a{:href => "#{@invite_uri}"} SparkleShare
+        = link_to 'Fork' , File.join(@project.id.to_s, 'forkyou')
+    - if logged_in? && (@project.user_id == current_user.id && parent.user_id != current_user.id)
       .button
-        =link_to 'History', File.join(@project.id.to_s, 'commits')
+        = link_to 'Send Pull Request', File.join(@project.id.to_s, 'pull')
+    .button
+      %a{:href => "#{@invite_uri}"} SparkleShare
+    .button
+      =link_to 'History', File.join(@project.id.to_s, 'commits')
 
     %br
     %br
@@ -42,7 +41,7 @@
     = submit_tag 
 
   = render 'images'
-  
+
   %br
   %br
   %hr
