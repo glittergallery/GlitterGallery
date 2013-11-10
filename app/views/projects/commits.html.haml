@@ -8,11 +8,12 @@
 
   %ul
     - @commits.each do |commit|
-      %li
+      .button
         = avatar(commit.author.email)
-      %li
+        = commit.author
+        authored
+        = distance_of_time_in_words_to_now commit.authored_date
+        ago
         = link_to(commit.message, File.join('commit', commit.tree.id))
-      %li
-        = commit.authored_date
-      %li
-        = commit.id 
+      %br
+      %br
