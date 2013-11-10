@@ -1,25 +1,29 @@
 .center
   - content_for :title do
     = @project.name.titleize
-
-  %h2
-    = avatar(User.find(@project.user_id).email)
-    = @project.name.titleize.to_s + " /  " + File.basename(@imageurl).to_s
-  = image_tag @imageurl.gsub("public","")
-
-  %p
+  .meta
+    %h2
+      = avatar(User.find(@project.user_id).email)
+      = @project.name.titleize.to_s + " /  " + File.basename(@imageurl).to_s
     .button
-      = link_to "View file history", File.join(File.basename(@imageurl).to_s, 'history')
-    .button
-      = link_to "Edit", File.join(File.basename(@imageurl).to_s, 'edit')
+      = link_to "History", File.join(File.basename(@imageurl).to_s, 'history')
+
+  %br
+  %hr
   %br
 
-  %p
-  Make changes to this file!
+  .button
+    = link_to "Edit", File.join(File.basename(@imageurl).to_s, 'edit')
+
+  or upload updates:
   = form_tag file_update_project_path(@project), multipart: true do
     = file_field_tag "file"
     = hidden_field_tag 'image_name', File.basename(@imageurl)
     = submit_tag 
+
+  = image_tag @imageurl.gsub("public","")
+  %hr
+  %br
 
   #comments
     - @comments.each do |comment|
