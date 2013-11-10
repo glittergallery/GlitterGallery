@@ -2,13 +2,7 @@
   My Projects
 %ul#myprojects
   - @projects.each do |p|
-    %li
-      .project-thumb
-        =  # link_to url_for(p) do
-        - # FIXME
-        - # Once the Glimage model drop isn't causing any ugly consequences,
-        - # fix this so it works normally. 
-
+    %li.button
       %h3
         = link_to p.name, url_for(p)
       .meta

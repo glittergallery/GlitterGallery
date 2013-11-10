@@ -13,15 +13,10 @@
     = render 'projectlist'
           
   #sidebar
-    %h2 toolbox
-    %ul
-      .button
-        %li
-          = link_to 'Add a new project', new_project_path
-      -# %li#repo_link
-        = File.expand_path @user.repo.path
-      .button
-        %li
-          = link_to 'Write a glitterpost!', new_glitterpost_path
+    %h2 Toolbox
+    .button
+      = link_to 'New Project', new_project_path
+    .button
+      = link_to 'New Glitterpost', new_glitterpost_path
         
 
