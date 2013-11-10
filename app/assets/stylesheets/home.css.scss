@@ -553,15 +553,26 @@ body input[type="submit"] { font-size: 1.25em;}
     html { font-size: 120%; }
 }
 
+.meta{
+  display: block;
+}
 
 .button {
   background: #1c1c1c;
   color: #0099ff;
   display: block;
-  margin: 30px;
-  padding: 20px;
+  margin: 5px;
+  padding: 10px;
   text-align: center;
-  width: 150px;
+  display: inline;
+  text-decoration: none;
+  font-size: 15px;
+  a {
+    text-decoration: none;
+    color: white;
+
+  }
+
 
   /*Transition*/
   -webkit-transition: -webkit-box-shadow 0.5s ease-out;;
