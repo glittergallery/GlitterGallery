@@ -16,3 +16,9 @@ vendor
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+#Ignore swapfiles created by vim
+*~
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~

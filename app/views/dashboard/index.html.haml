@@ -6,17 +6,16 @@
 - content_for :title do
   Dashboard
 
-= render 'shared/glimageshow'
+- content_for :pagetitle do
+  My Projects
 
-.center
-  #dashboard
-    = render 'projectlist'
-          
-  #sidebar
-    %h2 Toolbox
-    .button
-      = link_to 'New Project', new_project_path
-    .button
-      = link_to 'New Glitterpost', new_glitterpost_path
-        
+- content_for :toolbar do
+  %ul
+    %li
+      = link_to 'New Project', new_project_path, :class => 'new-project'
+    %li
+      = link_to 'New Glitterpost', new_glitterpost_path, :class => 'new-post'
+
+= render 'projectlist'
+
 

@@ -1,24 +1,56 @@
-// Place all the styles related to the projects controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'functions';
+@import 'icons';
+@import 'grid';
 
-body.projects {
-
-  &.show {
-    #upload {
-      width: 64%;
-      margin-top: 30px;
-
-      h3 {
-        font-family: Cookie, sans-serif;
-        color: #7D737B;
-      }
+.projects {
+  .toolbar {
+    .draw {
+      @include icon-pen;
+    }
+    .files {
+      @include icon-plus;
+    }
+    .fork {
+      @include icon-fork;
+    }
+    .pull-request {
+      @include icon-arrow-down;
+    }
+    .history {
+      @include icon-history;
+    }
+    .sparkleshare {
+      @include icon-share;
     }
   }
 
-  ul.images li {
-    display: inline-block;
-    margin: 10px;
-    margin-left: 0;
+  .meta {
+    color: #999;
+    font-size: 80%;
+
+    p {
+      margin: 5px 0 2px 58px;
+    }
+
+    img {
+      float: left;
+      box-shadow: 0px 1px 1px transparent-black(0.1);
+    }
+  }
+
+  .images {
+    @include row;
+    @include clearfix;
+    margin: 30px 0 30px;
+
+    li {
+      @include column(4);
+
+      img {
+        box-shadow: 0px 1px 1px transparent-black(0.3);
+        width: 100%;
+        background: #ddd;
+      }
+    }
   }
 }
