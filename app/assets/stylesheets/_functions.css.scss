@@ -1,0 +1,12 @@
+/**
+ * Functions and mixins for use in other stylesheets
+ **/
+
+@function transparent-black($transparency:0.5) {
+  @return rgba(0, 0, 0, $transparency);
+}
+  
+@function transparent-white($transparency:0.5) {
+  @return rgba(255, 255, 255, $transparency);
+}
+

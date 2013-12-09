@@ -1,8 +1,5 @@
-#comments
-  .comment#author
-    .comment-meta
-      = avatar(User.find(current_user.id).email)
-      %p.author
-        = User.find(current_user.id).username
-    .comment-time
-      %p.time Add a comment now
+= form_for Comment.new do |f|
+  = hidden_field_tag 'polycomment_type', type
+  = hidden_field_tag 'polycomment_id', id 
+  = f.text_area :body, :placeholder => 'Add your comment...'
+  = f.submit 

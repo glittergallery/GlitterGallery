@@ -1,0 +1,11 @@
+%h1.page-title Login
+
+= form_tag(session_url) do
+  %label(for="openid_identifier")
+    OpenID
+    = text_field_tag "openid_identifier", nil, :class=>"openid"
+
+  = submit_tag 'Sign in', :disable_with => 'Signing in'
+
+
+
