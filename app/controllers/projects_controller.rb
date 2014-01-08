@@ -111,6 +111,14 @@ class ProjectsController < ApplicationController
     render :layout => false, :content_type => content_type
   end
 
+  # Let's users upload a new file to the project through a 
+  # different page. Original functionality used to exist in the
+  # project show page, moved to a separate page now.
+  
+  def newfile
+    @project = Project.find params[:id]
+  end
+
   # Let's users upload new files to the project. The new files are
   # also commited to the backend git repository. They're added to the non_bare 
   # repo, and pushed to the bare_repo.
