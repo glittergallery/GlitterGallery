@@ -114,7 +114,7 @@ class ProjectsController < ApplicationController
   # Let's users upload a new file to the project through a 
   # different page. Original functionality used to exist in the
   # project show page, moved to a separate page now.
-  
+
   def newfile
     @project = Project.find params[:id]
   end
@@ -151,7 +151,7 @@ class ProjectsController < ApplicationController
     FileUtils.cp tmp.path, file
     if params[:file]
         imagefile = params[:file]
-        message = "updated #{params[:image_name]}"
+        message = params[:message]
         commit @project.path, params[:image_name], imagefile.read, message
         flash[:notice] = "#{params[:image_name]} has been updated! Shiny!"
     else
@@ -325,7 +325,7 @@ class ProjectsController < ApplicationController
     filename = params[:filename].squish.downcase.tr(" ","_") + '.svg'
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
     if file
-      commit @project.path, filename, Base64.decode64(params[:sketch]), "created #{filename}"
+      commit @project.path, filename, Base64.decode64(params[:sketch]), "Create #{filename}"
       flash[:notice] = "Your new image was added successfully! How sparkly!"
     else
       flash[:alert]  = "Your new image didn't get saved! How sad :("
@@ -347,7 +347,7 @@ class ProjectsController < ApplicationController
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
 
     if file
-        message = "updated #{filename}"
+        message = params[:message]
         commit @project.path, filename, Base64.decode64(params[:sketch]), message
         flash[:notice] = "#{filename} has been updated! Shiny!"
     else

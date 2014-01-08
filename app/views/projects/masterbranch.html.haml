@@ -20,6 +20,8 @@
     or upload updates:
     = form_tag file_update_project_path(@project), multipart: true do
       = file_field_tag "file"
+      = label_tag "commit message"
+      = text_field_tag "message", "Update #{File.basename(@imageurl)}"
       = hidden_field_tag 'image_name', File.basename(@imageurl)
       = submit_tag 
 
