@@ -1,6 +1,8 @@
 ![Homestrip 1/2](http://thirstyforcola.files.wordpress.com/2013/05/front.jpg)
 ![Homestrip - 2/2](http://thirstyforcola.files.wordpress.com/2013/05/back.jpg)
 
+Image courtesy Anirudh Menon. 
+
 ## GlitterGallery
 
 GlitterGallery _will be_ an amazing way to collaborate on design! 
