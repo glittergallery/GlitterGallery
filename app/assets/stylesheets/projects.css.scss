@@ -1,0 +1,56 @@
+@import 'functions';
+@import 'icons';
+@import 'grid';
+
+.projects {
+  .toolbar {
+    .draw {
+      @include icon-pen;
+    }
+    .files {
+      @include icon-plus;
+    }
+    .fork {
+      @include icon-fork;
+    }
+    .pull-request {
+      @include icon-arrow-down;
+    }
+    .history {
+      @include icon-history;
+    }
+    .sparkleshare {
+      @include icon-share;
+    }
+  }
+
+  .meta {
+    color: #999;
+    font-size: 80%;
+
+    p {
+      margin: 5px 0 2px 58px;
+    }
+
+    img {
+      float: left;
+      box-shadow: 0px 1px 1px transparent-black(0.1);
+    }
+  }
+
+  .images {
+    @include row;
+    @include clearfix;
+    margin: 30px 0 30px;
+
+    li {
+      @include column(4);
+
+      img {
+        box-shadow: 0px 1px 1px transparent-black(0.3);
+        width: 100%;
+        background: #ddd;
+      }
+    }
+  }
+}

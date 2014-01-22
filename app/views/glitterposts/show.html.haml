@@ -1,0 +1,42 @@
+- content_for :title do
+  = @glitterpost.title.titleize
+#glitterposts
+  .glitterpost
+    .glitterpost-meta
+      = avatar(User.find(@glitterpost.user_id).email)
+      %p.author.padded
+        Posted by #{User.find(@glitterpost.user_id).username} #{distance_of_time_in_words_to_now @glitterpost.created_at} ago
+      %p.title.padded
+        = @glitterpost.title
+    .glitterpost-body
+      = @glitterpost.content
+    
+#operations
+  .operation
+    = link_to 'Back', glitterposts_path
+  - if logged_in? && (@glitterpost.user_id == current_user.id)
+    .operation
+      = link_to 'Edit', edit_glitterpost_path
+    .operation
+      = link_to 'Destroy', glitterpost_path, method: :delete, data: { confirm: 'Are you sure?' }
+
+.center
+  #comments
+    - @comments.each do |comment|
+      - if comment.user_id == @glitterpost.user_id
+        = render 'comments/comment_author', :comment => comment
+      - elsif logged_in? and comment.user_id == current_user.id
+        = render 'comments/comment_current', :comment => comment
+      - else 
+        = render 'comments/comment_normal'
+    = render 'comments/new'
+
+
+    .comment-body
+      = form_for Comment.new do |f|
+        = hidden_field_tag 'polycomment_type', 'glitterpost'
+        = hidden_field_tag 'polycomment_id',  @glitterpost.id.to_s
+        .comment_field
+          = f.text_field :body, :placeholder => 'Add your comment...'
+        .submit
+          = f.submit 

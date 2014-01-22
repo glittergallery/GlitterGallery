@@ -1,0 +1,21 @@
+-#
+  Show the user's dashboard.
+  Currently only has the upload image form
+  and the path to the user's repo
+
+- content_for :title do
+  Dashboard
+
+- content_for :pagetitle do
+  My Projects
+
+- content_for :toolbar do
+  %ul
+    %li
+      = link_to 'New Project', new_project_path, :class => 'new-project'
+    %li
+      = link_to 'New Glitterpost', new_glitterpost_path, :class => 'new-post'
+
+= render 'projectlist'
+
+
