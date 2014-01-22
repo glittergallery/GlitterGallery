@@ -1,4 +1,8 @@
-%h1.page-title Login
+- content_for :title do
+  Log in
+
+- content_for :pagetitle do
+  Log in 
 
 = form_tag(session_url) do
   %label(for="openid_identifier")
