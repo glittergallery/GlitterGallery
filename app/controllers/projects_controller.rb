@@ -119,6 +119,11 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
   end
 
+  def update
+    @project = Project.find params[:id]
+  end
+
+
   # Let's users upload new files to the project. The new files are
   # also commited to the backend git repository. They're added to the non_bare 
   # repo, and pushed to the bare_repo.
