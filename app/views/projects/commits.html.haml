@@ -1,19 +1,21 @@
-.center
-  - content_for :title do
-    = @project.name.titleize
+- content_for :title do
+  = @project.name.titleize
+  history
 
-  %h2
-    = avatar(User.find(@project.user_id).email)
-    = @project.name.titleize 
+- content_for :pagetitle do
+  = link_to @project.name.titleize, @project
+  \/
+  History
 
-  %ul
-    - @commits.each do |commit|
-      .button
+%ul.history
+  - @commits.each do |commit|
+    %li
+      = link_to commit.message, File.join('commit', commit.tree.id), :class => 'commit'
+      .meta
         = avatar(commit.author.email)
-        = commit.author
-        authored
-        = distance_of_time_in_words_to_now commit.authored_date
-        ago
-        = link_to(commit.message, File.join('commit', commit.tree.id))
-      %br
-      %br
+        %p
+          = commit.author
+        %p
+          = distance_of_time_in_words_to_now commit.authored_date
+          ago
+

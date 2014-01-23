@@ -35,7 +35,9 @@
 
     %section.content
       %header
-        = yield :prev_link
+        -# - if content_for? :prev_link
+        -#   .prev
+        -#     = yield :prev_link
 
         %h1.page-title
           = yield :pagetitle
