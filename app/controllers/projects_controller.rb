@@ -269,6 +269,7 @@ class ProjectsController < ApplicationController
   def pull
     @project = Project.find params[:id]
     @pull = PullRequest.find params[:pull_id]
+    @comments = Comment.where(polycomment_type: "pull", polycomment_id: @pull.id)
   end
 
   # allow merging a pull request

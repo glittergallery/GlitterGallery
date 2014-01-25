@@ -13,3 +13,9 @@
   - if current_user.id == @project.user_id and @pull.status == 'closed'
     .button
       = link_to 'Re-open', File.join(@pull.id.to_s,'open')
+
+  .comment_form
+    = render partial: "comments/new", locals: {type: 'pull', id: @pull.id.to_s}
+
+  %ul.comments
+    = render partial: "comments/comment", collection: @comments
