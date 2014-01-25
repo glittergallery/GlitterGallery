@@ -86,7 +86,7 @@ class ProjectsController < ApplicationController
 
   # Given a filename, view it's entire commit history, including author
   # information, etc. Only one file's history may be viewed at a time, so
-  # please not that this is different from the project's commit history.
+  # please note that this is different from the project's commit history.
 
   def file_history
     @bloblist = Array.new
@@ -238,11 +238,12 @@ class ProjectsController < ApplicationController
     @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
     # test if the last commit in the parent and in this for is the same. if yes, then
     # dont allow pull requests, its up to date
+
     if @parent_repo.commits.first.id == @forked_repo.commits.first.id
       flash[:notice] = "Nothing to pull, the parent project is up to date! :)"
       redirect_to url_for @forked_project
     else
-      request = PullRequest.new :desc => 'Pull request description - have to allow user to add these',
+      request = PullRequest.znew :desc => params[:description],
                                 :fork => @forked_project.id,
                                 :parent => @parent_project.id,
                                 :status => 'open'
@@ -251,6 +252,7 @@ class ProjectsController < ApplicationController
         FileUtils.cp_r(@forked_project.path, @forked_project.path + request.id.to_s)
         redirect_to File.join(url_for(@parent_project), 'pulls')
       else
+        flash[:error] = "Damn, something went wrong. Please try again!"
         redirect_to dashboard_path
       end
     end
@@ -281,10 +283,15 @@ class ProjectsController < ApplicationController
 
     @pull.status = 'merged'
     @pull.save
+    
+    flash[:notice] = "Pull request #{@pull.id} has successfully been merged!"
 
     @pulls = PullRequest.where("parent=?",@project.id)
     @pulls.each do |pull|
       if pull.id < @pull.id and pull.fork == @pull.fork and pull.status == 'open'
+
+        FileUtils.rm_r(@forked_project.path + pull.id.to_s)
+        
         pull.status = 'automatically merged'
         pull.save
       end

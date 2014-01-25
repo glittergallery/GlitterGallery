@@ -10,7 +10,6 @@
 %ul.history
   - @commits.each do |commit|
     %li
-      = link_to commit.message, File.join('commit', commit.tree.id), :class => 'commit'
       .meta
         = avatar(commit.author.email)
         %p
@@ -18,4 +17,6 @@
         %p
           = distance_of_time_in_words_to_now commit.authored_date
           ago
+
+      = link_to commit.message, File.join('commit', commit.tree.id), :class => 'commit'
 

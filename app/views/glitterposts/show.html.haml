@@ -20,23 +20,9 @@
     .operation
       = link_to 'Destroy', glitterpost_path, method: :delete, data: { confirm: 'Are you sure?' }
 
-.center
-  #comments
-    - @comments.each do |comment|
-      - if comment.user_id == @glitterpost.user_id
-        = render 'comments/comment_author', :comment => comment
-      - elsif logged_in? and comment.user_id == current_user.id
-        = render 'comments/comment_current', :comment => comment
-      - else 
-        = render 'comments/comment_normal'
-    = render 'comments/new'
 
+  .comment_form
+    = render partial: "comments/new", locals: {type: 'glitterpost', id: @glitterpost.id.to_s}
 
-    .comment-body
-      = form_for Comment.new do |f|
-        = hidden_field_tag 'polycomment_type', 'glitterpost'
-        = hidden_field_tag 'polycomment_id',  @glitterpost.id.to_s
-        .comment_field
-          = f.text_field :body, :placeholder => 'Add your comment...'
-        .submit
-          = f.submit 
+  %ul.comments
+    = render partial: "comments/comment", collection: @comments
