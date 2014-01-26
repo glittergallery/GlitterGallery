@@ -1,0 +1,51 @@
+@import 'functions';
+
+.comments {
+  li {
+    clear: both;
+    padding: 10px;
+    margin: 10px 0;
+
+    .meta {
+      p {
+        display: inline;
+        margin: 10px 0;
+      }
+
+      img {
+        margin-right: 10px;
+        box-shadow: none;
+      }
+    }
+
+    .body {
+      background: white;
+      box-shadow: 0 1px 1px transparent-black(.1);
+      padding: 10px 10px 10px 58px;
+      margin: 5px 0 0;
+      white-space: pre-line;
+    }
+
+  }
+}
+
+.new_comment {
+  overflow: hidden;
+  margin: 10px;
+  padding: 10px 10px 0;
+  background: #eaeaea;
+  border: 1px solid white;
+
+  textarea {
+    float: left;
+    width: 50%;
+    height: 30px;
+    padding: 5px;
+    resize: vertical;
+  }
+
+  input[type=submit] {
+    float: left;
+    margin: 2px 5px;
+  }
+}

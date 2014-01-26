@@ -1,0 +1,8 @@
+%ul.images
+  - @images.each do |image|
+    %li
+      = link_to (image_tag image.gsub("public","")), (File.join @project.id.to_s, 'masterbranch', File.basename(image))
+
+
+    
+    
