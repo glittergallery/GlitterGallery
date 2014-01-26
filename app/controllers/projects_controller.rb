@@ -239,11 +239,11 @@ class ProjectsController < ApplicationController
     # test if the last commit in the parent and in this for is the same. if yes, then
     # dont allow pull requests, its up to date
 
-    if @parent_repo.commits.first.id == @forked_repo.commits.first.id
+    if @parent_repo.commits.first == @forked_repo.commits.first
       flash[:notice] = "Nothing to pull, the parent project is up to date! :)"
       redirect_to url_for @forked_project
     else
-      request = PullRequest.znew :desc => params[:description],
+      request = PullRequest.new :desc => params[:description],
                                 :fork => @forked_project.id,
                                 :parent => @parent_project.id,
                                 :status => 'open'
@@ -298,7 +298,6 @@ class ProjectsController < ApplicationController
       end
     end
     redirect_to url_for @project
-    flash[:notice] = "Pull request #{pull.id} has successfully been merged."
   end
 
   # Helps to re-open requests that have been closed
