@@ -17,6 +17,7 @@ test:
 
 production:
   adapter: mysql2
+  port: <%=ENV['OPENSHIFT_MYSQL_DB_PORT']%>
   encoding: utf8
   database: <%=ENV['OPENSHIFT_APP_NAME']%>
   pool: 5
