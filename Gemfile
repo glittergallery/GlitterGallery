@@ -1,7 +1,6 @@
 #source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
 source 'https://rubygems.org'
 
-ruby "1.9.3"
 
 gem 'rails', '3.2.13'
 
