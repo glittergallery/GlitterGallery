@@ -232,6 +232,10 @@ class ProjectsController < ApplicationController
   #Pull request - WIP
 
   def pull_request
+    @project = Project.find params[:id]
+  end
+
+  def handle_pull_request
     @forked_project = Project.find params[:id]
     @parent_project = Project.find @forked_project.parent
     @parent_repo = Grit::Repo.init_bare_or_open(File.join (@parent_project.path) , '.git')

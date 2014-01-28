@@ -35,7 +35,7 @@
   %p
     Created by
     = User.find(@project.user_id).username
-    at
+    on
     = time_tag @project.created_at, :format => '%B %d, %Y'
 
   - if (@project.parent != @project.id)
