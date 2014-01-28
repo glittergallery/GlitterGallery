@@ -1,10 +1,9 @@
 .center
+  %br 
+  Pull request #{@pull.id}. [#{@pull.status}]
   %br
-  This page corresponds to pull # 
-  = @pull.id
-  ,which is
-  = @pull.status
-  now.
+  = @pull.desc
+  %br
   - if current_user.id == @project.user_id and @pull.status == 'open'
     .button
       = link_to 'Merge', File.join(@pull.id.to_s,'merge')
@@ -14,8 +13,7 @@
     .button
       = link_to 'Re-open', File.join(@pull.id.to_s,'open')
 
-  .comment_form
-    = render partial: "comments/new", locals: {type: 'pull', id: @pull.id.to_s}
-
   %ul.comments
     = render partial: "comments/comment", collection: @comments
+  .comment_form
+    = render partial: "comments/new", locals: {type: 'pull', id: @pull.id.to_s}
