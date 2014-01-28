@@ -5,7 +5,7 @@
   New Pull Request
 
 
-= form_tag handle_pull_request_project_path(@project), multipart: true do
+= form_tag handle_pull_request_project_path(@forked_project), multipart: true do
   = text_field_tag "description", "short description" 
   = hidden_field_tag "image_name", params[:image_name]
   = submit_tag 

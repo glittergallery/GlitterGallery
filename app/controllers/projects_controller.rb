@@ -232,7 +232,15 @@ class ProjectsController < ApplicationController
   #Pull request - WIP
 
   def pull_request
-    @project = Project.find params[:id]
+    @forked_project = Project.find params[:id]
+    @parent_project = Project.find @forked_project.parent
+    @parent_repo = Grit::Repo.init_bare_or_open(File.join (@parent_project.path) , '.git')
+    @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
+
+    if @parent_repo.commits.first == @forked_repo.commits.first
+      redirect_to url_for @forked_project
+      flash[:notice] = "Nothing to pull, the parent project is up to date! :)"
+    end
   end
 
   def handle_pull_request
@@ -240,13 +248,13 @@ class ProjectsController < ApplicationController
     @parent_project = Project.find @forked_project.parent
     @parent_repo = Grit::Repo.init_bare_or_open(File.join (@parent_project.path) , '.git')
     @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
-    # test if the last commit in the parent and in this for is the same. if yes, then
-    # dont allow pull requests, its up to date
 
-    if @parent_repo.commits.first == @forked_repo.commits.first
-      flash[:notice] = "Nothing to pull, the parent project is up to date! :)"
-      redirect_to url_for @forked_project
-    else
+    @fork_commits = []
+    @forked_repo.commits.each do |c|
+      @fork_commits << c.id
+    end
+
+    if @fork_commits.include? @parent_repo.commits.first.id
       request = PullRequest.new :desc => params[:description],
                                 :fork => @forked_project.id,
                                 :parent => @parent_project.id,
@@ -259,6 +267,9 @@ class ProjectsController < ApplicationController
         flash[:error] = "Damn, something went wrong. Please try again!"
         redirect_to dashboard_path
       end
+    else
+      redirect_to url_for @forked_project
+      flash[:error] = "Hm, looks like you're left behind and we cannot do an auto merge :-("
     end
   end
 
