@@ -237,10 +237,21 @@ class ProjectsController < ApplicationController
     @parent_repo = Grit::Repo.init_bare_or_open(File.join (@parent_project.path) , '.git')
     @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
 
+    @fork_commits = []
+    @forked_repo.commits.each do |c|
+      @fork_commits << c.id
+    end
+
     if @parent_repo.commits.first == @forked_repo.commits.first
       redirect_to url_for @forked_project
       flash[:notice] = "Nothing to pull, the parent project is up to date! :)"
     end
+
+    unless @parent_repo.commits.first != nil and @fork_commits.include? @parent_repo.commits.first.id
+      redirect_to url_for @forked_project
+      flash[:alert] = "Hm, looks like you're left behind and we cannot do an auto merge :-("
+    end
+
   end
 
   def handle_pull_request
@@ -254,7 +265,7 @@ class ProjectsController < ApplicationController
       @fork_commits << c.id
     end
 
-    if @fork_commits.include? @parent_repo.commits.first.id
+    if @parent_repo.commits.first == nil or @fork_commits.include? @parent_repo.commits.first.id
       request = PullRequest.new :desc => params[:description],
                                 :fork => @forked_project.id,
                                 :parent => @parent_project.id,
@@ -267,9 +278,6 @@ class ProjectsController < ApplicationController
         flash[:error] = "Damn, something went wrong. Please try again!"
         redirect_to dashboard_path
       end
-    else
-      redirect_to url_for @forked_project
-      flash[:error] = "Hm, looks like you're left behind and we cannot do an auto merge :-("
     end
   end
 
