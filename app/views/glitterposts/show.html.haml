@@ -1,3 +1,4 @@
+- markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
 - content_for :title do
   = @glitterpost.title.titleize
 #glitterposts
@@ -9,7 +10,7 @@
       %p.title.padded
         = @glitterpost.title
     .glitterpost-body
-      = @glitterpost.content
+      = raw markdown.render @glitterpost.content
     
 #operations
   .operation

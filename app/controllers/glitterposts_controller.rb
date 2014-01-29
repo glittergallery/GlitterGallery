@@ -8,6 +8,7 @@
 class GlitterpostsController < ApplicationController
   before_filter :authenticate_user!
 
+
   # New glitterposts can be created  in the glitterposts#new page. 
   # We're currently asking just for the title and content.
 

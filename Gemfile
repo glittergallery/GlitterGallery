@@ -17,6 +17,7 @@ gem 'rake', '0.9.2.2'
 gem 'ruby-openid'
 gem 'open_id_authentication'
 gem 'sketchily'
+gem 'redcarpet'
 
 # Gems used only for assets and not required
 # in production environments by default.

@@ -1,3 +1,4 @@
+- markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
 %li
   .meta
     = avatar(User.find(comment.user_id).email)
@@ -8,4 +9,4 @@
       ago
 
   .body><
-    = comment.body
+    = raw markdown.render comment.body
