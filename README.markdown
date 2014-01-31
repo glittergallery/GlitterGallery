@@ -27,6 +27,8 @@ GlitterGallery runs on OpenShift, so it's really easy to run your own version.
 
 Email us and let us know you're interested, and what you can do, and we'll figure out something you can help with. Or just fork it and hack on it! Up to you! More contribution points on the [wiki](http://github.com/sarupbanskota/GlitterGallery/wiki/Contributing)!
 
+[![Stories in Ready](https://badge.waffle.io/emilydirsh/glittergallery.png?label=ready)](https://waffle.io/emilydirsh/glittergallery)
+
 ### Authors
 
 Sarup Banskota (sbanskota08@gmail.com)
