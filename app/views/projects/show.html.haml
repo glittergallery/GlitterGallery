@@ -1,0 +1,60 @@
+- parent = Project.find @project.parent
+- content_for :title do
+  = @project.name.titleize
+
+- content_for :pagetitle do
+  = @project.name.titleize
+
+- content_for :toolbar do
+  %ul
+    -if @project.user_id == current_user.id
+      %li
+        = link_to 'Draw', File.join(@project.id.to_s, 'createsvg'), :class => 'draw'
+
+      %li
+        = link_to 'Add files', File.join(@project.id.to_s, 'newfile'), :class => 'files'
+
+    - if logged_in? && (@project.user_id != current_user.id && parent.user_id != current_user.id)
+      %li
+        = link_to 'Fork' , File.join(@project.id.to_s, 'forkyou'), :class => 'fork'
+
+    - if logged_in? && (@project.user_id == current_user.id && parent.user_id != current_user.id)
+      %li
+        = link_to 'Send Pull Request', File.join(@project.id.to_s, 'pull'), :class => 'pull-request'
+
+    %li
+      =link_to 'History', File.join(@project.id.to_s, 'commits'), :class => 'history'
+
+    %li
+      %a.sparkleshare(href="#{@invite_uri}") SparkleShare
+
+
+.meta
+  = avatar(User.find(@project.user_id).email)
+
+  %p
+    Created by
+    = User.find(@project.user_id).username
+    on
+    = time_tag @project.created_at, :format => '%B %d, %Y'
+
+  - if (@project.parent != @project.id)
+    %p
+      = 'Forked from ' 
+      = User.find(parent.user_id).username
+      = '/'
+      = parent.name
+
+  %p
+    Last updated
+    = distance_of_time_in_words_to_now @project.updated_at
+    ago
+
+
+= render 'images'
+
+.comment_form
+  = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s}
+
+%ul.comments
+  = render partial: "comments/comment", collection: @comments

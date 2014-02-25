@@ -1,0 +1,5 @@
+= form_for Comment.new do |f|
+  = hidden_field_tag 'polycomment_type', type
+  = hidden_field_tag 'polycomment_id', id 
+  = f.text_area :body, :placeholder => 'Add your comment...'
+  = f.submit 

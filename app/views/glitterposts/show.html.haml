@@ -1,0 +1,29 @@
+- markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+- content_for :title do
+  = @glitterpost.title.titleize
+#glitterposts
+  .glitterpost
+    .glitterpost-meta
+      = avatar(User.find(@glitterpost.user_id).email)
+      %p.author.padded
+        Posted by #{User.find(@glitterpost.user_id).username} #{distance_of_time_in_words_to_now @glitterpost.created_at} ago
+      %p.title.padded
+        = @glitterpost.title
+    .glitterpost-body
+      = raw markdown.render @glitterpost.content
+    
+#operations
+  .operation
+    = link_to 'Back', glitterposts_path
+  - if logged_in? && (@glitterpost.user_id == current_user.id)
+    .operation
+      = link_to 'Edit', edit_glitterpost_path
+    .operation
+      = link_to 'Destroy', glitterpost_path, method: :delete, data: { confirm: 'Are you sure?' }
+
+
+  .comment_form
+    = render partial: "comments/new", locals: {type: 'glitterpost', id: @glitterpost.id.to_s}
+
+  %ul.comments
+    = render partial: "comments/comment", collection: @comments

@@ -1,0 +1,9 @@
+= content_for :pagetitle do
+  Edit your masterpiece
+
+= form_tag update_svg_project_path do
+  = sketchily_tag :sketch, nil, :url => @path
+  = label_tag "commit message"
+  = text_field_tag "message", "Update #{@filename}"
+  = hidden_field_tag 'filename', @filename
+  = submit_tag

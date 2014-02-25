@@ -1,0 +1,12 @@
+- markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+%li
+  .meta
+    = avatar(User.find(comment.user_id).email)
+    %p.author
+      = User.find(comment.user_id).username
+    %p.time
+      = distance_of_time_in_words_to_now comment.created_at
+      ago
+
+  .body><
+    = raw markdown.render comment.body
