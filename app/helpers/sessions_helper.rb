@@ -24,7 +24,7 @@ module SessionsHelper
 
   def authenticate_user!
     if !current_user
-      flash[:error] = 'You need to login before accessing this page!'
+      flash[:alert] = 'You need to login before accessing this page!'
       redirect_to login_path
     end
   end 
