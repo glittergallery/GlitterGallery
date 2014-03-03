@@ -9,11 +9,9 @@ describe User do
   it "is invalid without an identity url" do
     expect(FactoryGirl.build(:user,identity_url: nil)).to_not be_valid
   end
-
+  
   it "is invalid with a duplicate identity_url" do
-    before do
-      @user = FactoryGirl.create(:user, identity_url:"duplicate.id.fedoraproject.org")
-    end
+    FactoryGirl.create(:user, identity_url:"duplicate.id.fedoraproject.org")
     expect(FactoryGirl.build(:user, identity_url: "duplicate.id.fedoraproject.org")).to_not be_valid
   end
 
@@ -26,11 +24,9 @@ describe User do
     expect(FactoryGirl.build(:user,email: "wrong_at_email.com")).to_not be_valid
     expect(FactoryGirl.build(:user,email: "wrong.email@url.")).to_not be_valid    
   end
-
+  
   it "is invalid with a duplicate email address" do
-    before do
-      @user = FactoryGirl.create(:user, email: "duplicate@email.com")
-    end
+    FactoryGirl.create(:user, email: "duplicate@email.com")
     expect(FactoryGirl.build(:user, email: "duplicate@email.com")).to_not be_valid
   end
 
