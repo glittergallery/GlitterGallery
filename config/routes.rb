@@ -42,6 +42,6 @@ Glitter::Application.routes.draw do
 
   get 'dashboard/' => 'dashboard#index', :as => :dashboard
 
-  root :to => 'dashboard#index'
+  root :to => 'sessions#new'
 
 end
