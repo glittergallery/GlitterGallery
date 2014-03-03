@@ -15,7 +15,7 @@ class CommentsController < ApplicationController
                            :issue => false
     @comment.polycomment_type = params[:polycomment_type]
     @comment.polycomment_id = params[:polycomment_id]
-    @comment.user_id = current_user.id                      
+    @comment.user = current_user                      
     if @comment.save
       #flash[:notice] = 'Your comment was posted!'
       redirect_to :back
