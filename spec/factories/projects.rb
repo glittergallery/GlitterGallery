@@ -5,7 +5,9 @@ FactoryGirl.define do
     f.name { Faker::Lorem.words(2) }
     f.association :user
   end
-  factory :project_with_glimages, parent: :project do |f|
-    f.glimages { |g| [g.association(:glimage)] }
+  factory :project_with_glimages, parent: :project do
+    after_create do |project|
+      FactoryGirl.create(:glimage, project: project)
+    end
   end
 end
