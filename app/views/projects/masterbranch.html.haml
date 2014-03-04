@@ -30,3 +30,5 @@
 
 %ul.comments
   = render partial: "comments/comment", collection: @comments
+  - if !@comments.nil?
+    = will_paginate @comments, :style => 'color:blue' 

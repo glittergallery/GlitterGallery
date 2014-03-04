@@ -23,26 +23,15 @@ class SessionsController < ApplicationController
   #         See http://en.wikipedia.org/wiki/URL_normalization for more on this.
   
   def create
-    authenticate_with_open_id(params[:openid_identifier], 
-                              required: [:email, :nickname]) do |result, identity_url, registration|
-      if result.successful?
-        #FIXME - needs normalizing before checking for the identity_url?
-        unless @user = User.find_by_identity_url(identity_url) or
-                      User.find_by_email(registration['email'])
-          # creates new user if there was none registered
-          # with the provided url, or fetched email            
-          @user = User.create(identity_url: identity_url, 
-                             email: registration['email'], 
-                             username: registration['nickname'])
-        end
-        login @user
-      else
-        # indicates that login failed
-        # something went wrong with the auth 
-        # process, prompt for a retry
-        flash[:alert] = "Something went wrong. Please try logging in again."
-        redirect_to(login_url)
-      end
+    @user = User.find_by_email(params[:openid_identifier])
+    if @user
+      login @user
+    else
+      # indicates that login failed
+      # something went wrong with the auth 
+      # process, prompt for a retry
+      flash[:alert] = "Something went wrong. Please try logging in again."
+      render 'new'
     end
   end
 
