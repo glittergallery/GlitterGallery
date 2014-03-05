@@ -12,6 +12,9 @@ class SessionsController < ApplicationController
   #         Modify the login to accomodate every possible OpenID based login request. 
 
   def new
+    if logged_in?
+      redirect_to(dashboard_path)
+    end
   end
 
   # Helps create a new session for a user. We're relying on fetching auth data from the 
