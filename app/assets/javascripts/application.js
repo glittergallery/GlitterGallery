@@ -11,6 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
 //= require less-1.1.3.min
 //= require form
@@ -19,3 +20,4 @@
 //= require jquery-ui
 //= require jquery.infinitescroll.min
 //= require glimages
+//= require turbolinks

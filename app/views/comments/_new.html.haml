@@ -1,4 +1,4 @@
-= form_for Comment.new, remote: true do |f|
+= form_for Comment.new, remote: ajax do |f|
   = hidden_field_tag 'polycomment_type', type
   = hidden_field_tag 'polycomment_id', id 
   = f.text_area :body, :placeholder => 'Add your comment...'

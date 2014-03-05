@@ -6,6 +6,9 @@ gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
+
+gem "turbolinks", "~> 2.2.1"
+gem 'jquery-turbolinks'
 gem 'will_paginate'
 gem 'sqlite3'
 gem 'mysql2'

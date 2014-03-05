@@ -1,4 +1,3 @@
 :plain
 	$('ul.comments, ul.history').html("#{escape_javascript(render :partial => 'comments/comment', :collection => 	@comments)}");
-	$('ul.comments, ul.history').append("#{escape_javascript(will_paginate @comments, :style => 'color:blue')}");
 	$('#comment_body').val('');

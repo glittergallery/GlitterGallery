@@ -80,6 +80,9 @@ GEM
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-turbolinks (2.0.2)
+      railties (>= 3.1.0)
+      turbolinks
     json (1.8.0)
     launchy (2.3.0)
       addressable (~> 2.3)
@@ -185,6 +188,8 @@ GEM
     turbo-sprockets-rails3 (0.3.11)
       railties (> 3.2.8, < 4.0.0)
       sprockets (>= 2.2.0)
+    turbolinks (2.2.1)
+      coffee-rails
     tzinfo (0.3.37)
     uglifier (2.1.1)
       execjs (>= 0.3.0)
@@ -206,6 +211,7 @@ DEPENDENCIES
   guard-rspec
   haml
   jquery-rails
+  jquery-turbolinks
   launchy
   mysql2
   open_id_authentication
@@ -219,5 +225,6 @@ DEPENDENCIES
   sqlite3
   therubyracer
   turbo-sprockets-rails3
+  turbolinks (~> 2.2.1)
   uglifier (>= 1.0.3)
   will_paginate

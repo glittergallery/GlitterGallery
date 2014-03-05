@@ -52,11 +52,11 @@ class ProjectsController < ApplicationController
     else
       @invite_uri = "#{Rails.root}/uploads/#{Rails.env}/projects/#{params[:id]}/invite.xml" # If not in production.
     end
-
     @project = Project.find params[:id]
     @images = Dir.glob(File.join @project.path, '*')
     @comments = Comment.where(polycomment_type: "project", polycomment_id: @project.id)
     @comments = pg @comments, 10
+    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   # Displays the git commits for a given project. We're making use of
@@ -94,6 +94,7 @@ class ProjectsController < ApplicationController
     @comments = Comment.where(polycomment_type: "file", polycomment_id: params[:image_name])
     @comments = @comments.paginate(page: params[:page], per_page: 10)
     @comments = pg @comments, 10 
+    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   # Given a filename, view it's entire commit history, including author
@@ -305,6 +306,8 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     @pull = PullRequest.find params[:pull_id]
     @comments = Comment.where(polycomment_type: "pull", polycomment_id: @pull.id)
+    @comments = pg @comments, 10
+    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   # allow merging a pull request
