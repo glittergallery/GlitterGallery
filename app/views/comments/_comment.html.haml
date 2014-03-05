@@ -9,11 +9,10 @@
       ago
   .body><
     = raw markdown.render comment.body
-    .delete><
-      = link_to "Delete", 
+    - if comment.user_id == current_user.id
+      .delete><
+        = link_to "Delete", 
                            comment_path(comment.id),  
                            method:"delete",                                                 
-                           data: { confirm: "Are you sure?"},
-                           remote: true,
-                           style: {float: "right"}
+                           data: { confirm: "Are you sure?"}
 
