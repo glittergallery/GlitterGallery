@@ -9,11 +9,12 @@
   %ul
     -if @project.user_id == current_user.id
       %li
+        = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
+      %li
         = link_to 'Draw', File.join(@project.id.to_s, 'createsvg'), :class => 'draw'
 
       %li
         = link_to 'Add files', File.join(@project.id.to_s, 'newfile'), :class => 'files'
-
     - if logged_in? && (@project.user_id != current_user.id && parent.user_id != current_user.id)
       %li
         = link_to 'Fork' , File.join(@project.id.to_s, 'forkyou'), :class => 'fork'
@@ -54,7 +55,12 @@
 = render 'images'
 
 .comment_form
-  = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s}
+  = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax}
 
+ 
 %ul.comments
   = render partial: "comments/comment", collection: @comments
+%ul.paginate
+  - if @comments.any?
+    = will_paginate @comments, params: { controller: "projects", action: "show"},:style => 'color:blue' 
+

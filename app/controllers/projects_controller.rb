@@ -21,7 +21,11 @@ class ProjectsController < ApplicationController
   # Project creation is defined in the method below. We're allowing 
   # them to name a project, and we're then adding them to the project list
   # of the person who's currently logged in.
-
+  def destroy
+    Project.find(params[:id]).destroy
+    flash[:notice] = "It has been destroyed!"
+    redirect_to root_url
+  end
 
   def create
     project = Project.new :name => params[:project][:name]
@@ -48,10 +52,11 @@ class ProjectsController < ApplicationController
     else
       @invite_uri = "#{Rails.root}/uploads/#{Rails.env}/projects/#{params[:id]}/invite.xml" # If not in production.
     end
-
     @project = Project.find params[:id]
     @images = Dir.glob(File.join @project.path, '*')
     @comments = Comment.where(polycomment_type: "project", polycomment_id: @project.id)
+    @comments = pg @comments, 10
+    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   # Displays the git commits for a given project. We're making use of
@@ -61,8 +66,13 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
     @commits = repo.commits
+    @comments = Comment.where(polycomment_type: "commit", polycomment_id: params[:tree_id])
+    @comments = pg @comments, 10
   end
 
+  def pg(things, num)
+    return things.paginate(page: params[:page], per_page: num) unless things.nil?
+  end
   # View the state of a project for any given commit. Every commit has 
   # a list of comments associated with it. 
 
@@ -82,6 +92,9 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     @imageurl = File.join @project.path, params[:image_name]
     @comments = Comment.where(polycomment_type: "file", polycomment_id: params[:image_name])
+    @comments = @comments.paginate(page: params[:page], per_page: 10)
+    @comments = pg @comments, 10 
+    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   # Given a filename, view it's entire commit history, including author
@@ -293,6 +306,8 @@ class ProjectsController < ApplicationController
     @project = Project.find params[:id]
     @pull = PullRequest.find params[:pull_id]
     @comments = Comment.where(polycomment_type: "pull", polycomment_id: @pull.id)
+    @comments = pg @comments, 10
+    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   # allow merging a pull request
