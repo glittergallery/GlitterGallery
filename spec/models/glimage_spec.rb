@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Glimage do
+describe "Glimage" do
   it 'has a valid factory' do
     expect(create(:glimage)).to  be_valid
   end

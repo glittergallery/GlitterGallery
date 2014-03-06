@@ -9,7 +9,7 @@
 vendor
 
 # Ignore the data files created by user uploads
-/public/data/*
+/public/test/*
 # Ignore the default SQLite database.
 /db/*.sqlite3
 

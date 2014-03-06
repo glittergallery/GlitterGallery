@@ -15,5 +15,8 @@
 
   %ul.comments
     = render partial: "comments/comment", collection: @comments
+  %ul.paginate
+    - if @comments.any?
+      = will_paginate @comments, params: { controller: "projects", action: "show"},:style => 'color:blue'
   .comment_form
-    = render partial: "comments/new", locals: {type: 'pull', id: @pull.id.to_s}
+    = render partial: "comments/new", locals: {type: 'pull', id: @pull.id.to_s, ajax: @ajax}
