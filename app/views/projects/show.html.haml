@@ -11,7 +11,7 @@
       %li
         = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
       %li
-        = link_to 'Draw', File.join(@project.id.to_s, 'createsvg'), :class => 'draw'
+        = link_to 'Draw', File.join(@project.id.to_s, 'createsvg'), :class => 'draw', "data-no-turbolink" => true
 
       %li
         = link_to 'Add files', File.join(@project.id.to_s, 'newfile'), :class => 'files'
