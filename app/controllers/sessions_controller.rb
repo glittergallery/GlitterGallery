@@ -30,7 +30,7 @@ class SessionsController < ApplicationController
         unless @user = User.find_by_identity_url(identity_url) or
                       User.find_by_email(registration['email'])
           # creates new user if there was none registered
-          # with the provided url, or fetched email            
+          # with the provided url, or fetched email
           @user = User.create(identity_url: identity_url, 
                              email: registration['email'], 
                              username: registration['nickname'])

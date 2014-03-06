@@ -2,7 +2,7 @@ module SessionsHelper
   def login(user)
     cookies.permanent[:remember_token] = user.remember_token
     self.current_user = user
-    redirect_to dashboard_url
+    redirect_to dashboard_path
   end
   
   def current_user=(user)
