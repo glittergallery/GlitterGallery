@@ -3,7 +3,7 @@ Glitter::Application.routes.draw do
   resources :users, only: :show
   resources :projects
   resource :session, only: [:new, :create, :destroy]
-  resource :comments
+  resources :comments, only: [:new, :create, :destroy]
   resources :glitterposts 
 
 
@@ -35,12 +35,12 @@ Glitter::Application.routes.draw do
       post :create_svg, :as => :create_svg
       post :edit_svg, :as => :edit_svg
       post :update_svg, :as => :update_svg
+
     end
   end
-
+  
   match '/login', to: 'sessions#new'
   match '/logout', to: 'sessions#destroy', via: :delete
-
   get 'dashboard/' => 'dashboard#index', :as => :dashboard
 
   root :to => 'sessions#new'

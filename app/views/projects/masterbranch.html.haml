@@ -26,7 +26,9 @@
 = image_tag @imageurl.gsub("public",""), :class => 'big'
 
 .comment_form
-  = render partial: "comments/new", locals: {type: 'file', id: filename}
+  = render partial: "comments/new", locals: {type: 'file', id: filename, ajax: @ajax}
 
 %ul.comments
   = render partial: "comments/comment", collection: @comments
+- if !@comments.nil?
+  = will_paginate @comments, :style => 'color:blue' 
