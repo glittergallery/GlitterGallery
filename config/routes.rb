@@ -1,6 +1,7 @@
 Glitter::Application.routes.draw do
 
-  resources :users, :projects
+  resources :users, only: :show
+  resources :projects
   resource :session, only: [:new, :create, :destroy]
   resource :comments
   resources :glitterposts 
