@@ -56,6 +56,7 @@ class ProjectsController < ApplicationController
     @images = Dir.glob(File.join @project.path, '*')
     @comments = Comment.where(polycomment_type: "project", polycomment_id: @project.id)
     @comments = pg @comments, 10
+    @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1
   end
 

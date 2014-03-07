@@ -55,7 +55,7 @@
 = render 'images'
 
 .comment_form
-  = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax}
+  = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
 
  
 %ul.comments

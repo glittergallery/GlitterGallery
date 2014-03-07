@@ -12,17 +12,14 @@ class CommentsController < ApplicationController
   # that helps distinguish the nature of what these comments are for.
 
   def create
-    @comment = Comment.new :body  => params[:comment][:body],
-                           :issue => false
-    @comment.polycomment_type = params[:polycomment_type]
-    @comment.polycomment_id = params[:polycomment_id]
+    @comment = Comment.new(params[:comment])
     @comment.user = current_user                      
     if @comment.save
-      @comments = Comment.where(polycomment_type: params[:polycomment_type],
-                              polycomment_id: params[:polycomment_id])
+      @comments = Comment.where(polycomment_type: params[:comment][:polycomment_type],
+                              polycomment_id: params[:comment][:polycomment_id])
       @comments = @comments.paginate(page: 1, per_page: 10)
       respond_to do |format|
-        format.html { redirect_to project_path(params[:polycomment_id]) }
+        format.html { redirect_to project_path(params[:comment][:polycomment_id]) }
         format.js {}
       end
       #flash[:notice] = 'Your comment was posted!'
