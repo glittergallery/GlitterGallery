@@ -95,6 +95,7 @@ class ProjectsController < ApplicationController
     @comments = Comment.where(polycomment_type: "file", polycomment_id: params[:image_name])
     @comments = @comments.paginate(page: params[:page], per_page: 10)
     @comments = pg @comments, 10 
+    @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
