@@ -1,8 +1,8 @@
 #source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 
-gem 'rails', '3.2.13'
+gem 'rails', '~> 4.0.0'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -22,19 +22,19 @@ gem 'open_id_authentication'
 gem 'sketchily'
 gem 'redcarpet'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'turbo-sprockets-rails3'
+# Gems to make migration to Rails 4 easier
+gem 'protected_attributes'
 
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  #(Mac OSX and Windows often include their own JavaScript runtimes, but Linux does not.)
-  gem 'therubyracer', :platform => :ruby
+gem 'sass-rails'
+gem 'coffee-rails'
 
-  gem 'uglifier', '>= 1.0.3'
-end
+
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+#(Mac OSX and Windows often include their own JavaScript runtimes, but Linux does not.)
+gem 'therubyracer', :platform => :ruby
+
+gem 'uglifier', '>= 1.0.3'
+
 
 group :development, :test do
   gem 'rspec-rails'

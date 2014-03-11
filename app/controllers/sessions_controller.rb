@@ -24,8 +24,9 @@ class SessionsController < ApplicationController
   #         http://username.id.fedoraproject.org. 
   #         Basically, we shouldn't discriminate between different URLs referring to the same id.
   #         See http://en.wikipedia.org/wiki/URL_normalization for more on this.
-  
+  skip_before_action :verify_authenticity_token
   def create
+    
     authenticate_with_open_id(params[:openid_identifier], 
                               required: [:email, :nickname]) do |result, identity_url, registration|
       if result.successful?

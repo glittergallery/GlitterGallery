@@ -39,7 +39,7 @@ Glitter::Application.routes.draw do
     end
   end
   
-  match '/login', to: 'sessions#new'
+  get '/login' => 'sessions#new'
   match '/logout', to: 'sessions#destroy', via: :delete
   get 'dashboard/' => 'dashboard#index', :as => :dashboard
 
