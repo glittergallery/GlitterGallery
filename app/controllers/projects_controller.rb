@@ -180,6 +180,18 @@ class ProjectsController < ApplicationController
     redirect_to url_for(@project)
   end
 
+  def file_delete
+    #Delete file if exists. COmmit to repo
+    @project = Project.find params[:id]
+    @imagename = params[:image_name]
+
+    repo = Grit::Repo.new @project.path
+    File.delete(File.join(@project.path + '/'+ @imagename))
+    repo.remove(File.join(@project.path + '/' + @imagename))
+    repo.commit_index("Removed File")
+    redirect_to url_for(@project)
+  end
+
   # WIP - Supposed to help in forking a repo that belongs to another user.
   # Fork works but creates only bare repos.
 
