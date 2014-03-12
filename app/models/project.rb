@@ -7,7 +7,7 @@ class Project < ActiveRecord::Base
 
   attr_accessible :name, :path, :parent
 
-  validates :name, :presence => true
+  validates :name, :presence => true, uniqueness: true
 
   # get the last update time
   # of the images in the project
