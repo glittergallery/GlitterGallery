@@ -22,9 +22,15 @@ class ProjectsController < ApplicationController
   # them to name a project, and we're then adding them to the project list
   # of the person who's currently logged in.
   def destroy
-    Project.find(params[:id]).destroy
-    flash[:notice] = "It has been destroyed!"
-    redirect_to root_url
+    @project = Project.find(params[:id])
+    if current_user.id == @project.user_id
+      @project.destroy
+      flash[:notice] = "It has been destroyed!"
+      redirect_to dashboard_path
+    else
+      flash[:error] = "You don't have permission for this command!"
+      redirect_to url_for(@project)
+    end
   end
 
   def create
