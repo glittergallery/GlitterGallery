@@ -20,12 +20,6 @@ describe "Project" do
     FactoryGirl.build(:project, name: nil).should_not be_valid
   end
 
-  it 'returns the update time of its last updated glimage' do
-    project = FactoryGirl.create(:project_with_glimages)
-    glimage = project.glimages.order('updated_at DESC').first
-    project.last_updated.should eql glimage.updated_at
-  end
-
   it 'sets its repo path' do
     project = FactoryGirl.create(:project)
     path = File.join 'public', 'data', 'repos', project.user.email, project.name
@@ -53,14 +47,15 @@ describe "Project" do
         @project = project_with_custom_path(@path)
         @gitpath = File.join @path, '.git'
       end
+
       it 'does not initialize a repo at an existing path' do
         expect(File.exists?(@gitpath)).to be_false
-        
       end
+
       after do
         Dir.delete(@path)
       end
-
     end
+    
   end
 end

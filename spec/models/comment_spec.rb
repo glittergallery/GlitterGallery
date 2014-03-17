@@ -16,7 +16,7 @@ describe "Comment" do
   end
   
   it 'is invalid without a issue check' do
-    expect(FactoryGirl.build(:comment, issue?: nil)).to_not be_valid
+    expect(FactoryGirl.build(:comment, issue: nil)).to_not be_valid
   end
 end
 
