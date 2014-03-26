@@ -89,6 +89,8 @@ class ProjectsController < ApplicationController
     @tree = repo.tree(params[:tree_id])
     @contents = @tree.contents
     @comments = Comment.where(polycomment_type: "commit", polycomment_id: params[:tree_id])
+    @comment = Comment.new
+    @id = params[:tree_id]
   end
 
   # Given a filename, view the state of the file in master.

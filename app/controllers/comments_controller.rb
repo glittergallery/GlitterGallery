@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
                               polycomment_id: params[:comment][:polycomment_id])
       @comments = @comments.paginate(page: 1, per_page: 10)
       respond_to do |format|
-        format.html { redirect_to project_path(params[:comment][:polycomment_id]) }
+        format.html { redirect_to :back }
         format.js {}
       end
       #flash[:notice] = 'Your comment was posted!'
