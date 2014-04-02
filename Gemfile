@@ -23,7 +23,11 @@ gem 'sketchily'
 gem 'redcarpet'
 
 # Gems to make migration to Rails 4 easier
-gem 'protected_attributes'
+gem 'protected_attributes' # https://github.com/rails/protected_attributes
+gem 'actionpack-action_caching' # https://github.com/rails/actionpack-action_caching
+gem 'activerecord-session_store' # https://github.com/rails/activerecord-session_store
+gem 'rails-observers' # https://github.com/rails/rails-observers
+# Note that there might be more functionalities that were extracted
 
 gem 'sass-rails'
 gem 'coffee-rails'

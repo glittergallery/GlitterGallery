@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(version: 20131104181756) do
     t.string   "polycomment_type"
     t.integer  "user_id"
     t.boolean  "issue"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "comments", ["polycomment_type", "polycomment_id"], name: "index_comments_on_polycomment_type_and_polycomment_id"
@@ -28,16 +28,16 @@ ActiveRecord::Schema.define(version: 20131104181756) do
   create_table "glitterposts", force: true do |t|
     t.string   "title"
     t.text     "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "user_id"
   end
 
   create_table "projects", force: true do |t|
     t.string   "name"
     t.integer  "repo_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "path"
     t.integer  "parent"
@@ -51,8 +51,8 @@ ActiveRecord::Schema.define(version: 20131104181756) do
     t.string   "status"
     t.integer  "parent"
     t.integer  "fork"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "pulltable", force: true do |t|
@@ -61,14 +61,14 @@ ActiveRecord::Schema.define(version: 20131104181756) do
     t.string   "lastcommit"
     t.integer  "fork"
     t.integer  "parent"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
     t.string   "email"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "identity_url"
     t.string   "username"
     t.string   "remember_token"

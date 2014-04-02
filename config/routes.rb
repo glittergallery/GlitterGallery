@@ -4,7 +4,7 @@ Glitter::Application.routes.draw do
   resources :projects
   resource :session, only: [:new, :create, :destroy]
   resources :comments, only: [:new, :create, :destroy]
-  resources :glitterposts 
+  resources :glitterposts
 
 
   get 'projects/:id/commits' => 'projects#commits'
@@ -44,5 +44,4 @@ Glitter::Application.routes.draw do
   get 'dashboard/' => 'dashboard#index', :as => :dashboard
 
   root :to => 'sessions#new'
-
 end
