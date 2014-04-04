@@ -31,11 +31,11 @@ Email us and let us know you're interested, and what you can do, and we'll figur
 
 ### Authors
 
-Sarup Banskota (sbanskota08@gmail.com)
+Sarup Banskota (sarup@glittergallery.net)
 
 Maírín Duffy (duffy@fedoraproject.org)
 
-Emily Dirsh (emily@redhat.com)
+Emily Dirsh (emily@glittergallery.net)
 
 
 
