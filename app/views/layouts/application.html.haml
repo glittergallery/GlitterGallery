@@ -1,0 +1,50 @@
+!!! 5
+%html
+  %head
+    %title
+      GlitterGallery! 
+      - if content_for?(:title)
+        |
+        = yield :title
+
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tag
+
+  %body{ :class => "#{controller.controller_name} #{controller.action_name} #{logged_in? ? 'logged_in' : 'not_logged_in'} #{yield :body_class}" }
+
+    %header
+      %h1.logo
+        = link_to root_url do
+          Glitter Gallery
+
+      %nav
+        - if logged_in?
+          %ul
+            %li
+              = link_to current_user.username + "'s dashboard", dashboard_path, :class => 'welcome'
+            %li
+              = link_to 'Logout', logout_path, :method => :delete, :class => 'logout'
+
+        - else
+          %ul
+            %li
+              = link_to 'Login', login_path, :class => 'login'
+
+      = yield :header
+
+    %section.content
+      %header
+        -# - if content_for? :prev_link
+        -#   .prev
+        -#     = yield :prev_link
+
+        %h1.page-title
+          = yield :pagetitle
+
+        %nav.toolbar
+          = yield :toolbar
+
+      = render 'shared/messages'
+      = yield
+

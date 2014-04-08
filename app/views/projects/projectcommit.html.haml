@@ -1,0 +1,23 @@
+.center
+  - content_for :title do
+    = @project.name.titleize
+  .meta
+    %h2
+      = avatar(User.find(@project.user_id).email)
+      = @project.name.titleize.to_s 
+  %hr
+
+  - @contents.each do |blob|
+    = blob.name
+    %svg{:xmlns => "http://www.w3.org/2000/svg"}
+      = raw blob.data
+
+  #comments
+    - @comments.each do |comment|
+      - if comment.user_id == @project.user_id
+        = render 'comments/comment_author', :comment => comment
+      - elsif logged_in? and comment.user_id == current_user.id
+        = render 'comments/comment_current', :comment => comment
+      - else 
+        = render 'comments/comment_normal', comment: comment
+    = render 'comments/new', comment: @comment, ajax: false, type: "commit", id: @id
