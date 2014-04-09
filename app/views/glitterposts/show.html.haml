@@ -23,7 +23,9 @@
 
 
   .comment_form
-    = render partial: "comments/new", locals: {type: 'glitterpost', id: @glitterpost.id.to_s}
+    = render partial: "comments/new", locals: {type: 'glitterpost', id: @glitterpost.id.to_s, ajax: @ajax, comment: @comment}
 
   %ul.comments
     = render partial: "comments/comment", collection: @comments
+  - if !@comments.nil?
+    = will_paginate @comments, :style => 'color:blue'
