@@ -1,6 +1,10 @@
-= form_for(comment, remote: ajax) do |f|
-  = f.hidden_field(:polycomment_type, :value => type)
-  = f.hidden_field(:polycomment_id, :value => id)
-  = f.hidden_field(:issue, :value => false)
-  = f.text_area :body, :placeholder => 'Add your comment...'
-  = f.submit
+- unless logged_in?
+  = 'You need to login to be able to comment!'
+  = link_to "Login now!", '/login'
+- else
+  = form_for(comment, remote: ajax) do |f|
+    = f.hidden_field(:polycomment_type, :value => type)
+    = f.hidden_field(:polycomment_id, :value => id)
+    = f.hidden_field(:issue, :value => false)
+    = f.text_area :body, :placeholder => 'Add your comment...'
+    = f.submit

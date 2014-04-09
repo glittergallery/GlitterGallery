@@ -5,29 +5,30 @@
 - content_for :pagetitle do
   = @project.name.titleize
 
-- content_for :toolbar do
-  %ul
-    -if @project.user_id == current_user.id
-      %li
-        = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
-      %li
-        = link_to 'Draw', File.join(@project.id.to_s, 'createsvg'), :class => 'draw', "data-no-turbolink" => true
+- if logged_in?
+  - content_for :toolbar do
+    %ul
+      -if @project.user_id == current_user.id
+        %li
+          = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
+        %li
+          = link_to 'Draw', File.join(@project.id.to_s, 'createsvg'), :class => 'draw', "data-no-turbolink" => true
+
+        %li
+          = link_to 'Add files', File.join(@project.id.to_s, 'newfile'), :class => 'files'
+      - if logged_in? && (@project.user_id != current_user.id && parent.user_id != current_user.id)
+        %li
+          = link_to 'Fork' , File.join(@project.id.to_s, 'forkyou'), :class => 'fork'
+
+      - if logged_in? && (@project.user_id == current_user.id && parent.user_id != current_user.id)
+        %li
+          = link_to 'Send Pull Request', File.join(@project.id.to_s, 'pull'), :class => 'pull-request'
 
       %li
-        = link_to 'Add files', File.join(@project.id.to_s, 'newfile'), :class => 'files'
-    - if logged_in? && (@project.user_id != current_user.id && parent.user_id != current_user.id)
+        =link_to 'History', File.join(@project.id.to_s, 'commits'), :class => 'history'
+
       %li
-        = link_to 'Fork' , File.join(@project.id.to_s, 'forkyou'), :class => 'fork'
-
-    - if logged_in? && (@project.user_id == current_user.id && parent.user_id != current_user.id)
-      %li
-        = link_to 'Send Pull Request', File.join(@project.id.to_s, 'pull'), :class => 'pull-request'
-
-    %li
-      =link_to 'History', File.join(@project.id.to_s, 'commits'), :class => 'history'
-
-    %li
-      %a.sparkleshare(href="#{@invite_uri}") SparkleShare
+        %a.sparkleshare(href="#{@invite_uri}") SparkleShare
 
 
 .meta
@@ -57,7 +58,6 @@
 .comment_form
   = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
 
- 
 %ul.comments
   = render partial: "comments/comment", collection: @comments
 %ul.paginate
