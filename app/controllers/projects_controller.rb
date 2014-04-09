@@ -7,6 +7,7 @@ require 'grit'
 # image format files, but right now there is no provision to verify that.
 
 class ProjectsController < ApplicationController
+  before_filter :store_return_to
   before_filter :authenticate_user!, except: [:show, :commits, :projectcommit, :masterbranch, :file_history]
 
   # New projects can be named in the projects#new page.

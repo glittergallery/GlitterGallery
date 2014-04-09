@@ -1,7 +1,7 @@
 module SessionsHelper
   def login(user)
     session[:current_user_id]=user.id
-    redirect_to dashboard_url
+    redirect_back()
   end
   
   def current_user
@@ -23,4 +23,14 @@ module SessionsHelper
       redirect_to login_path
     end
   end 
+
+  def store_return_to
+    session[:return_to] = request.url
+  end
+
+  def redirect_back()
+      redirect_to session[:return_to]
+      session[:return_to] = nil
+  end
+
 end
