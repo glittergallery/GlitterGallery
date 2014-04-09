@@ -74,4 +74,9 @@ class ApplicationController < ActionController::Base
     File.join path, "#{filename}_thumb.png"
   end
 
+
+  def pg(things, num)
+    return things.paginate(page: params[:page], per_page: num) unless things.nil?
+  end
+
 end

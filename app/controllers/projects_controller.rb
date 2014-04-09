@@ -77,9 +77,6 @@ class ProjectsController < ApplicationController
     @comments = pg @comments, 10
   end
 
-  def pg(things, num)
-    return things.paginate(page: params[:page], per_page: num) unless things.nil?
-  end
   # View the state of a project for any given commit. Every commit has 
   # a list of comments associated with it. 
 
