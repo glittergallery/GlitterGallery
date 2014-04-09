@@ -61,6 +61,9 @@ class GlitterpostsController < ApplicationController
   def show
   	@glitterpost = Glitterpost.find(params[:id])
     @comments = Comment.where(polycomment_type: "glitterpost", polycomment_id: @glitterpost.id)
+    @comments = pg @comments, 10
+    @comment = Comment.new
+    @ajax = params[:page].nil? || params[:page] == 1
     
   end
 

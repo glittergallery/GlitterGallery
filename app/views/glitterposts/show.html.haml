@@ -22,10 +22,10 @@
       = link_to 'Destroy', glitterpost_path, method: :delete, data: { confirm: 'Are you sure?' }
 
 
-  .comment_form
-    = render partial: "comments/new", locals: {type: 'glitterpost', id: @glitterpost.id.to_s, ajax: @ajax, comment: @comment}
+.comment_form
+  = render partial: "comments/new", locals: {type: 'glitterpost', id: @glitterpost.id.to_s, ajax: @ajax, comment: @comment}
 
-  %ul.comments
-    = render partial: "comments/comment", collection: @comments
-  - if !@comments.nil?
-    = will_paginate @comments, :style => 'color:blue'
+%ul.comments
+  = render partial: "comments/comment", collection: @comments
+- if !@comments.nil?
+  = will_paginate @comments, :style => 'color:blue'
