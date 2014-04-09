@@ -1,0 +1,22 @@
+.center
+  %br 
+  Pull request #{@pull.id}. [#{@pull.status}]
+  %br
+  = @pull.desc
+  %br
+  - if current_user.id == @project.user_id and @pull.status == 'open'
+    .button
+      = link_to 'Merge', File.join(@pull.id.to_s,'merge')
+    .button
+      = link_to 'Close', File.join(@pull.id.to_s,'close')
+  - if current_user.id == @project.user_id and @pull.status == 'closed'
+    .button
+      = link_to 'Re-open', File.join(@pull.id.to_s,'open')
+
+  %ul.comments
+    = render partial: "comments/comment", collection: @comments
+  %ul.paginate
+    - if @comments.any?
+      = will_paginate @comments, params: { controller: "projects", action: "show"},:style => 'color:blue'
+  .comment_form
+    = render partial: "comments/new", locals: {type: 'pull', id: @pull.id.to_s, ajax: @ajax}

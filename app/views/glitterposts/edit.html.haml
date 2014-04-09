@@ -1,0 +1,22 @@
+.title
+  Edit this Glitterpost #{link_to '(or go back to the Glitterposts)', glitterposts_path }
+
+= form_for @glitterpost do |f|
+  - if @glitterpost.errors.any?
+    %p
+      #{pluralize(@glitterpost.errors.count, "error")} prohibited this post from being saved
+    %ul
+    = @glitterpost.errors.full_messages.each do |msg|
+      %li
+        = msg 
+  %p.input
+    = f.label :title 
+    = f.text_field :title 
+ 
+  %p.input
+    = f.label :content
+    = f.text_area :content  
+
+  %p.submit
+    = f.submit
+ 
