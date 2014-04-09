@@ -12,12 +12,10 @@
     %svg{:xmlns => "http://www.w3.org/2000/svg"}
       = raw blob.data
 
-  #comments
-    - @comments.each do |comment|
-      - if comment.user_id == @project.user_id
-        = render 'comments/comment_author', :comment => comment
-      - elsif logged_in? and comment.user_id == current_user.id
-        = render 'comments/comment_current', :comment => comment
-      - else 
-        = render 'comments/comment_normal', comment: comment
-    = render 'comments/new', comment: @comment, ajax: false, type: "commit", id: @id
+
+
+.comment_form
+  = render partial: "comments/new", locals: {type: 'commit', id: @id.to_s, ajax: @ajax, comment: @comment}
+
+%ul.comments
+  = render partial: "comments/comment", collection: @comments
