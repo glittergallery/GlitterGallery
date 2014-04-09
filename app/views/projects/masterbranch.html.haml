@@ -11,11 +11,11 @@
   \/
   = filename
 
-
 - content_for :toolbar do
   %ul
     %li
       = link_to "History", File.join(File.basename(@imageurl).to_s, 'history'), :class => 'history'
+    - if logged_in?
     
       -if @project.user_id == current_user.id
         %li
