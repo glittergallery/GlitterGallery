@@ -1,0 +1,10 @@
+- content_for :title do
+  Create new project!
+
+- content_for :pagetitle do
+  Show the world some design love!
+
+= form_for @project do |f|
+  = f.label "I wanna create a new project called: "
+  = f.text_field :name, :placeholder => "My awesome project's nickname"
+  = f.submit

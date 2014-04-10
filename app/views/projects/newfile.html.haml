@@ -1,0 +1,11 @@
+- content_for :title do
+  Upload new file
+
+- content_for :pagetitle do
+  Upload new design work
+
+
+= form_tag file_upload_project_path(@project), multipart: true do
+  = file_field_tag "file" 
+  = submit_tag 
+
