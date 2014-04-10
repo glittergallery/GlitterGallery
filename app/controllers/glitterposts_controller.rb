@@ -6,8 +6,8 @@
 # system out of a good gem.
 
 class GlitterpostsController < ApplicationController
-  before_filter :authenticate_user!
-
+  before_filter :store_return_to
+  before_filter :authenticate_user!, except: [:show, :index]
 
   # New glitterposts can be created  in the glitterposts#new page. 
   # We're currently asking just for the title and content.

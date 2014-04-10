@@ -1,7 +1,13 @@
-#glitterposts
-  - @glitterposts.each do |post| 
-    .glitterpost
-      .glitterpost-meta
-        = avatar(User.find(post.user_id).email)
-      %p.title.padded
-        = link_to post.title, post
+- content_for :pagetitle do
+  = "Recently added Glitterposts"
+
+- @glitterposts.each do |post| 
+  .meta
+    = avatar(User.find(post.user_id).email)
+    = link_to post.title, post
+    %br
+    Posted by
+    = User.find(post.user_id).username
+    on
+    = time_tag post.created_at, :format => '%B %d, %Y'
+    %hr

@@ -1,25 +1,38 @@
 - markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
 - content_for :title do
   = @glitterpost.title.titleize
-#glitterposts
-  .glitterpost
-    .glitterpost-meta
-      = avatar(User.find(@glitterpost.user_id).email)
-      %p.author.padded
-        Posted by #{User.find(@glitterpost.user_id).username} #{distance_of_time_in_words_to_now @glitterpost.created_at} ago
-      %p.title.padded
-        = @glitterpost.title
-    .glitterpost-body
-      = raw markdown.render @glitterpost.content
+
+- content_for :pagetitle do
+  = @glitterpost.title.titleize
+
+- content_for :toolbar do
+  %ul
+    %li
+      = link_to 'Back', glitterposts_path
+    - if logged_in? && (@glitterpost.user_id == current_user.id)
+      %li  
+        = link_to 'Edit', edit_glitterpost_path
+      %li
+        = link_to 'Destroy', glitterpost_path, method: :delete, data: { confirm: 'Are you sure?' }
+
+
+.meta
+  = avatar(User.find(@glitterpost.user_id).email)
+
+  %p
+    Posted by
+    = User.find(@glitterpost.user_id).username
+    on
+    = time_tag @glitterpost.created_at, :format => '%B %d, %Y'
+
+  %p
+    Last updated
+    = distance_of_time_in_words_to_now @glitterpost.updated_at
+    ago
+
+%hr
+= raw markdown.render @glitterpost.content
     
-#operations
-  .operation
-    = link_to 'Back', glitterposts_path
-  - if logged_in? && (@glitterpost.user_id == current_user.id)
-    .operation
-      = link_to 'Edit', edit_glitterpost_path
-    .operation
-      = link_to 'Destroy', glitterpost_path, method: :delete, data: { confirm: 'Are you sure?' }
 
 
 .comment_form

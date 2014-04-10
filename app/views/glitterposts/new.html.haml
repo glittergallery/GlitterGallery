@@ -1,12 +1,14 @@
-.title
-  Create a new glitterpost! #{link_to '(or go back to the Glitterposts)', glitterposts_path }
-= form_for :glitterpost, url: glitterposts_path do |f|
-  %p.input
-    Title: <br /><br />
-    = f.text_field :title
-  %p.input
-    Content: <br /><br />
-    = f.text_area :content 
-  %p.submit
-    = f.submit  
+- unless logged_in?
+  = 'You need to login to be able to add Glitterposts!'
+  = link_to "Login now!", '/login'
+
+- content_for :pagetitle do
+  = "New Glitterpost"
+
+= form_for(:glitterpost, url: glitterposts_path) do |f|
+  = f.label "Title"
+  = f.text_field :title
+  = f.label "Emotions go here:"
+  = f.text_area :content 
+  = f.submit  
   
