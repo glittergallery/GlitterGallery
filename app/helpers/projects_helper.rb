@@ -11,10 +11,16 @@ module ProjectsHelper
 
   def private_check
     @project = Project.find params[:id]
-    unless @project.private and ((logged_in? and current_user.id != @project.user_id) or 
-                            (!logged_in?))
-      true
-    else false
+    if logged_in?
+      unless @project.private and ((params[:xid]!=@project.uniqueurl and current_user.id!=@project.user_id))
+        true
+      else false
+      end
+    else
+      unless @project.private and (params[:xid]!=@project.uniqueurl)
+        true
+      else false
+      end
     end
   end
   
