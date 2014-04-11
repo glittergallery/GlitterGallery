@@ -35,8 +35,11 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.new :name => params[:project][:name]
+    project = Project.new params[:project]
     project.user_id = current_user.id
+    if params[:project][:private]
+      project.uniqueurl = SecureRandom.hex
+    end
     if project.save
       project.parent = project.id
       project.save
@@ -194,13 +197,16 @@ class ProjectsController < ApplicationController
     @forked_project = Project.new :name => @project.name, 
                                   :parent => @project.id
     @forked_project.user_id = current_user.id
+    if @project.private
+      @forked_project.private = true
+      @forked_project.uniqueurl = @project.uniqueurl
+    end
 
     if @forked_project.save
       @forked_project_saved = true
       if @forked_project_saved
 
         git = Grit::Git.new @forked_project.path
-        #repo.git.clone({} , File.join(@forked_project.path, 'test'), @project.path)
         git.native(clone,{}, File.join(@project.path, '.git'),@forked_project.path)
 
         redirect_to url_for(@forked_project)
@@ -222,7 +228,10 @@ class ProjectsController < ApplicationController
     @forked_project = Project.new :name => @project.name,
                                   :parent => @project.id
     @forked_project.user_id = current_user.id
-    #@forked_project = @project.clone
+    if @project.private
+      @forked_project.private = true
+      @forked_project.uniqueurl = @project.uniqueurl
+    end
 
     if @forked_project.save
       @forked_project_saved = true

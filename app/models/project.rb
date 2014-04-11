@@ -3,9 +3,9 @@ class Project < ActiveRecord::Base
   after_create :init
 
   belongs_to :user
-  #accepts_nested_attributes_for :glimages
 
-  attr_accessible :name, :path, :parent
+
+  attr_accessible :name, :path, :parent, :private
 
   validates :name, :presence => true, uniqueness: { scope: :user }
 
