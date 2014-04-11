@@ -1,5 +1,6 @@
-- unless @project.private and current_user.id != @project.user_id
-
+- unless private_check
+  = render 'private_error'
+- else
   - filename = File.basename(@imageurl).to_s
 
   - content_for :title do
@@ -35,6 +36,4 @@
   - if !@comments.nil?
     = will_paginate @comments, :style => 'color:blue' 
     
-- else
-  = 'Sorry, but this repository is private and only accessible through a unique url. If you have believe you must have access to this repository, please contact the project owner and request the link.'
 

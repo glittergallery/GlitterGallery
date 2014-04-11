@@ -8,5 +8,14 @@ module ProjectsHelper
       tag :image, :src => "#{image.imagepath}"
     end
   end
+
+  def private_check
+    @project = Project.find params[:id]
+    unless @project.private and ((logged_in? and current_user.id != @project.user_id) or 
+                            (!logged_in?))
+      true
+    else false
+    end
+  end
   
 end

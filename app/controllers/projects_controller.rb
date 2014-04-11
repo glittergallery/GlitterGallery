@@ -421,6 +421,6 @@ class ProjectsController < ApplicationController
       flash[:alert] = "Unable to update #{filename}. The server ponies are sad."
     end
     redirect_to url_for(@project)
-
   end
+
 end
