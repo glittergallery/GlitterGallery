@@ -5,7 +5,7 @@
 
   - content_for :title do
     = @project.name.titleize
-    history
+    History
 
   - content_for :pagetitle do
     = link_to @project.name.titleize, @project
@@ -23,7 +23,7 @@
             = distance_of_time_in_words_to_now commit.authored_date
             ago
 
-        = link_to commit.message, File.join('commit', commit.tree.id), :class => 'commit'
+        = link_to commit.message, File.join(@project.urlbase, 'commit', commit.tree.id), :class => 'commit'
     - if !@comments.nil?
       = will_paginate @comments, :style => 'color:blue' 
 

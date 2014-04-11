@@ -1,17 +1,15 @@
 - unless private_check
   = render 'private_error'
 - else
+  - content_for :title do
+    Update file
 
-	- content_for :title do
-	  Update file
+  - content_for :pagetitle do
+    Update file
 
-	- content_for :pagetitle do
-	  Update file
-
-
-	= form_tag file_update_project_path(@project), multipart: true do
-	  = file_field_tag "file" 
-	  = text_field_tag "message","commit message"
-	  = hidden_field_tag "image_name", params[:image_name]
-	  = submit_tag 
+  = form_tag file_update_project_path(@project), multipart: true do
+    = file_field_tag "file" 
+    = text_field_tag "message","commit message"
+    = hidden_field_tag "image_name", params[:image_name]
+    = submit_tag 
 

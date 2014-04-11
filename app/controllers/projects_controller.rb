@@ -8,7 +8,7 @@ require 'grit'
 
 class ProjectsController < ApplicationController
   before_filter :store_return_to
-  before_filter :authenticate_user!, except: [:show, :commits, :projectcommit, :masterbranch, :file_history]
+  before_filter :authenticate_user!, except: [:show, :commits, :projectcommit, :masterbranch, :file_history, :pulls, :pull]
 
   # New projects can be named in the projects#new page.
   # The list of current projects is required so we can display
@@ -42,6 +42,10 @@ class ProjectsController < ApplicationController
     end
     if project.save
       project.parent = project.id
+      project.urlbase = File.join '/projects', project.id.to_s
+      if project.private
+        project.urlbase = File.join project.urlbase, project.uniqueurl
+      end
       project.save
       redirect_to url_for(project)
     else

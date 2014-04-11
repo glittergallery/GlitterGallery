@@ -1,16 +1,12 @@
-- unless private_check
-  = render 'private_error'
-- else
+- content_for :title do
+  Create new project!
 
-	- content_for :title do
-	  Create new project!
+- content_for :pagetitle do
+  Show the world some design love!
 
-	- content_for :pagetitle do
-	  Show the world some design love!
-
-	= form_for @project do |f|
-	  = f.label "I wanna create a new project called: ", :for => :name
-	  = f.text_field :name, :placeholder => "My awesome project's nickname"
-	  = f.label "Private?", :for => :private
-	  = f.check_box :private
-	  = f.submit
+= form_for @project do |f|
+  = f.label "I wanna create a new project called: ", :for => :name
+  = f.text_field :name, :placeholder => "My awesome project's nickname"
+  = f.label "Private?", :for => :private
+  = f.check_box :private
+  = f.submit

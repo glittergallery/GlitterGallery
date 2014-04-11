@@ -13,24 +13,24 @@
   - content_for :toolbar do
     %ul
       %li
-        =link_to 'History', File.join(@project.id.to_s, 'commits'), :class => 'history'
+        =link_to 'History', File.join(@project.urlbase, 'commits'), :class => 'history'
 
       -if logged_in? && @project.user_id == current_user.id
         %li
           = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
         %li
-          = link_to 'Draw', File.join(@project.id.to_s, 'createsvg'), :class => 'draw', "data-no-turbolink" => true
+          = link_to 'Draw', File.join(@project.urlbase, 'createsvg'), :class => 'draw', "data-no-turbolink" => true
 
         %li
-          = link_to 'Add files', File.join(@project.id.to_s, 'newfile'), :class => 'files'
+          = link_to 'Add files', File.join(@project.urlbase, 'newfile'), :class => 'files'
           
       - if logged_in? && (@project.user_id != current_user.id and parent.user_id != current_user.id)
         %li
-          = link_to 'Fork' , File.join(@project.id.to_s, 'forkyou'), :class => 'fork'
+          = link_to 'Fork' , File.join(request.original_url, 'forkyou'), :class => 'fork'
 
       - if logged_in? && (@project.user_id == current_user.id and parent.user_id != current_user.id)
         %li
-          = link_to 'Send Pull Request', File.join(@project.id.to_s, 'pull'), :class => 'pull-request'
+          = link_to 'Send Pull Request', File.join(request.original_url, 'pull'), :class => 'pull-request'
 
       %li
         %a.sparkleshare(href="#{@invite_uri}") SparkleShare
@@ -59,8 +59,8 @@
 
 
   = render 'images'
-  - if @project.private
-    = link_to 'Unique link', (File.join @project.id.to_s, @project.uniqueurl)
+  - if @project.private and params[:xid] == nil
+    = link_to 'Unique link', @project.uniqueurl
 
   .comment_form
     = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
