@@ -59,6 +59,8 @@
 
 
   = render 'images'
+  - if @project.private
+    = link_to 'Unique link', (File.join @project.id.to_s, @project.uniqueurl)
 
   .comment_form
     = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
