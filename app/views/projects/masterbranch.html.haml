@@ -1,30 +1,30 @@
 - unless private_check
   = render 'private_error'
 - else
-  - filename = File.basename(@imageurl).to_s
 
+  - filename = File.basename(@imageurl).to_s
+  
   - content_for :title do
     = filename
 
-  -# - content_for :prev_link do
-  -#   = link_to 'dashboard', dashboard_path
-
   - content_for :pagetitle do
-    = link_to @project.name.titleize, @project
+    = link_to @project.name.titleize, @project.urlbase
     \/
     = filename
+
+  = render 'project_toolbar'
 
   - content_for :toolbar do
     %ul
       %li
-        = link_to "History", File.join(File.basename(@imageurl).to_s, 'history'), :class => 'history'
+        = link_to "File history", File.join(File.basename(@imageurl).to_s, 'history'), :class => 'history'
       - if logged_in?
       
         -if @project.user_id == current_user.id
           %li
-            = link_to "Edit", File.join(File.basename(@imageurl).to_s, 'edit'), :class => 'edit'
+            = link_to "Edit file", File.join(File.basename(@imageurl).to_s, 'edit'), :class => 'edit'
           %li
-            = link_to "Upload update", File.join(File.basename(@imageurl).to_s, 'update'), :class => 'upload'
+            = link_to "Update file", File.join(File.basename(@imageurl).to_s, 'update'), :class => 'upload'
 
   = image_tag @imageurl.gsub("public",""), :class => 'big'
 

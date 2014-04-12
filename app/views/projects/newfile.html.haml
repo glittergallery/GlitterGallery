@@ -1,11 +1,17 @@
 - unless private_check
   = render 'private_error'
 - else
+ 
   - content_for :title do
-    Upload new file
+    New file
 
   - content_for :pagetitle do
-    Upload new design work
+    = link_to @project.name.titleize, @project.urlbase
+    \/
+    = 'New file'
+
+  = render 'project_toolbar'
+  %br
 
   = form_tag file_upload_project_path(@project), multipart: true do
     = file_field_tag "file" 

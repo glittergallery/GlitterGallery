@@ -2,21 +2,23 @@
   = render 'private_error'
 - else
 
-
   - content_for :title do
     = @project.name.titleize
     History
 
   - content_for :pagetitle do
-    = link_to @project.name.titleize, @project
+    = link_to @project.name.titleize, @project.urlbase
     \/
     History
+
+  = render 'project_toolbar'
+
+  %hr
 
   %ul.history
     - @commits.each do |commit|
       %li
         .meta
-          = avatar(commit.author.email)
           %p
             = commit.author
           %p

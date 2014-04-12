@@ -2,19 +2,25 @@
   = render 'private_error'
 - else
 
-  .center
-    - content_for :title do
-      = @project.name.titleize
-    .meta
-      %h2
-        = avatar(User.find(@project.user_id).email)
-        = @project.name.titleize.to_s 
-    %hr
+  - content_for :title do
+    = @project.name.titleize
+    Commit
 
-    - @contents.each do |blob|
-      = blob.name
-      %svg{:xmlns => "http://www.w3.org/2000/svg"}
-        = raw blob.data
+  - content_for :pagetitle do
+    = link_to @project.name.titleize, @project.urlbase
+    \/
+    = link_to "Commits", (File.join @project.urlbase, 'commits')
+    \/
+    = @id
+
+
+  = render 'project_toolbar'
+
+
+  - @contents.each do |blob|
+    = blob.name
+    %svg{:xmlns => "http://www.w3.org/2000/svg"}
+      = raw blob.data
 
 
 
