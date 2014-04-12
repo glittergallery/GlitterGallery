@@ -2,27 +2,44 @@
   = render 'private_error'
 - else
 
-  .center
-    %br 
-    Pull request #{@pull.id}. [#{@pull.status}]
-    %br
-    = @pull.desc
-    %br
-    - if current_user.id == @project.user_id and @pull.status == 'open'
-      .button
-        = link_to 'Merge', File.join(@pull.id.to_s,'merge')
-      .button
-        = link_to 'Close', File.join(@pull.id.to_s,'close')
-    - if current_user.id == @project.user_id and @pull.status == 'closed'
-      .button
-        = link_to 'Re-open', File.join(@pull.id.to_s,'open')
+  - content_for :title do
+    = 'Pull Request'
 
-    %ul.comments
-      = render partial: "comments/comment", collection: @comments
-    %ul.paginate
-      - if @comments.any?
-        = will_paginate @comments, params: { controller: "projects", action: "show"},:style => 'color:blue'
-    .comment_form
-      = render partial: "comments/new", locals: {type: 'pull', id: @pull.id.to_s, ajax: @ajax}
+  - content_for :pagetitle do
+    = link_to @project.name.titleize, @project.urlbase
+    \/
+    = link_to 'Pull Requests', File.join(@project.urlbase, 'pulls')
+    \/
+    = @pull.id
+
+  = render 'project_toolbar'
+  %br
+
+  .center
+    %h1
+      = "##{@pull.id}"
+    %ul
+      %li
+        = @pull.desc
+      %li
+        .meta
+          = "First opened #{distance_of_time_in_words_to_now @pull.created_at} ago | "
+          =  @pull.status
+    %ul
+      %li
+        - if current_user.id == @project.user_id and @pull.status == 'open'
+          = link_to 'Merge', File.join(@pull.id.to_s,'merge')
+          |
+          = link_to 'Close', File.join(@pull.id.to_s,'close')
+        - if current_user.id == @project.user_id and @pull.status == 'closed'
+          = link_to 'Re-open', File.join(@pull.id.to_s,'open')
+
+
+  .comment_form
+    = render partial: "comments/new", locals: {type: 'pull', id: @pull.id.to_s, ajax: @ajax, comment: @comment}
+  %ul.comments
+    = render partial: "comments/comment", collection: @comments
+  - if !@comments.nil?
+    = will_paginate @comments, :style => 'color:blue'
 
   

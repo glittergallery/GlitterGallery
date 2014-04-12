@@ -31,7 +31,7 @@
   - if (@project.parent != @project.id)
     %p
       = 'Forked from ' 
-      = User.find(parent.user_id).username
+      = User.find(@parent.user_id).username
       = '/'
       = @parent.name
 
@@ -39,3 +39,5 @@
     Last updated
     = distance_of_time_in_words_to_now @project.updated_at
     ago
+
+%br

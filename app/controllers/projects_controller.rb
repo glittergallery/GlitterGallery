@@ -201,6 +201,7 @@ class ProjectsController < ApplicationController
     @forked_project = Project.new :name => @project.name, 
                                   :parent => @project.id
     @forked_project.user_id = current_user.id
+
     if @project.private
       @forked_project.private = true
       @forked_project.uniqueurl = @project.uniqueurl
@@ -232,23 +233,21 @@ class ProjectsController < ApplicationController
     @forked_project = Project.new :name => @project.name,
                                   :parent => @project.id
     @forked_project.user_id = current_user.id
-    if @project.private
-      @forked_project.private = true
-      @forked_project.uniqueurl = @project.uniqueurl
-    end
 
     if @forked_project.save
-      @forked_project_saved = true
-      if @forked_project_saved
-
-        FileUtils.rm_r(@forked_project.path)
-        FileUtils.cp_r(@project.path,@forked_project.path)
-
-        redirect_to url_for(@forked_project)
-
-      else
-        redirect_to dashboard_path
+      @forked_project.urlbase = File.join '/projects', @forked_project.id.to_s    
+      if @project.private
+        @forked_project.private = true
+        @forked_project.uniqueurl = @project.uniqueurl
+        @forked_project.urlbase = File.join @forked_project.urlbase, @forked_project.uniqueurl
       end
+      @forked_project.save
+
+      FileUtils.rm_r(@forked_project.path)
+      FileUtils.cp_r(@project.path,@forked_project.path)
+
+      redirect_to url_for(@forked_project)
+
     else
       flash[:alert] = "Didn't save project!"
       redirect_to dashboard_path
@@ -307,7 +306,7 @@ class ProjectsController < ApplicationController
       if request.save
         # we want the directory containing all of the stuff in this request to be copied over.
         FileUtils.cp_r(@forked_project.path, @forked_project.path + request.id.to_s)
-        redirect_to File.join(url_for(@parent_project), 'pulls')
+        redirect_to File.join(@parent_project.urlbase, 'pulls')
       else
         flash[:error] = "Damn, something went wrong. Please try again!"
         redirect_to dashboard_path
@@ -326,6 +325,7 @@ class ProjectsController < ApplicationController
   def pull
     @project = Project.find params[:id]
     @pull = PullRequest.find params[:pull_id]
+    @comment = Comment.new
     @comments = Comment.where(polycomment_type: "pull", polycomment_id: @pull.id)
     @comments = pg @comments, 10
     @ajax = params[:page].nil? || params[:page] == 1

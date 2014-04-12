@@ -11,7 +11,7 @@
   = render 'project_toolbar'
   = render 'images'
 
-  - if @project.private and params[:xid] == nil
+  - if @project.private and params[:xid] != @project.uniqueurl
     = link_to 'Unique link', @project.urlbase
 
   .comment_form
