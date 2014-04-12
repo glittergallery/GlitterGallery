@@ -1,18 +1,32 @@
-%br
-.center
-  - @pulls.each do |pull|
-    .button
-      = link_to pull.id, File.join('pull',pull.id.to_s)
-      = pull.desc
-    First opened 
-    = distance_of_time_in_words_to_now pull.created_at
-    ago
-    %br
-    The pull request is now
-    = pull.status
-    %br
-    %hr
-    %br
+- unless private_check
+  = render 'private_error'
+- else
+
+  - content_for :title do
+    = 'Pull Requests'
+
+  - content_for :pagetitle do
+    = link_to @project.name.titleize, @project.urlbase
+    \/
+    = 'Pull Requests'
+
+  = render 'project_toolbar'
+  %br
+
+
+  .center
+    - @pulls.each do |pull|
+      %h1
+        = link_to "##{pull.id}", File.join(@project.urlbase, 'pull',pull.id.to_s)
+      %ul
+        %li
+          = pull.desc
+        %li
+          .meta
+            = "First opened #{distance_of_time_in_words_to_now pull.created_at} ago | "
+            =  pull.status
+  
+
 
 
 

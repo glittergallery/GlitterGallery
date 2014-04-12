@@ -8,7 +8,7 @@ require 'grit'
 
 class ProjectsController < ApplicationController
   before_filter :store_return_to
-  before_filter :authenticate_user!, except: [:show, :commits, :projectcommit, :masterbranch, :file_history]
+  before_filter :authenticate_user!, except: [:show, :commits, :projectcommit, :masterbranch, :file_history, :pulls, :pull]
 
   # New projects can be named in the projects#new page.
   # The list of current projects is required so we can display
@@ -35,10 +35,17 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.new :name => params[:project][:name]
+    project = Project.new params[:project]
     project.user_id = current_user.id
+    if params[:project][:private]
+      project.uniqueurl = SecureRandom.hex
+    end
     if project.save
       project.parent = project.id
+      project.urlbase = File.join '/projects', project.id.to_s
+      if project.private
+        project.urlbase = File.join project.urlbase, project.uniqueurl
+      end
       project.save
       redirect_to url_for(project)
     else
@@ -195,12 +202,16 @@ class ProjectsController < ApplicationController
                                   :parent => @project.id
     @forked_project.user_id = current_user.id
 
+    if @project.private
+      @forked_project.private = true
+      @forked_project.uniqueurl = @project.uniqueurl
+    end
+
     if @forked_project.save
       @forked_project_saved = true
       if @forked_project_saved
 
         git = Grit::Git.new @forked_project.path
-        #repo.git.clone({} , File.join(@forked_project.path, 'test'), @project.path)
         git.native(clone,{}, File.join(@project.path, '.git'),@forked_project.path)
 
         redirect_to url_for(@forked_project)
@@ -222,20 +233,21 @@ class ProjectsController < ApplicationController
     @forked_project = Project.new :name => @project.name,
                                   :parent => @project.id
     @forked_project.user_id = current_user.id
-    #@forked_project = @project.clone
 
     if @forked_project.save
-      @forked_project_saved = true
-      if @forked_project_saved
-
-        FileUtils.rm_r(@forked_project.path)
-        FileUtils.cp_r(@project.path,@forked_project.path)
-
-        redirect_to url_for(@forked_project)
-
-      else
-        redirect_to dashboard_path
+      @forked_project.urlbase = File.join '/projects', @forked_project.id.to_s    
+      if @project.private
+        @forked_project.private = true
+        @forked_project.uniqueurl = @project.uniqueurl
+        @forked_project.urlbase = File.join @forked_project.urlbase, @forked_project.uniqueurl
       end
+      @forked_project.save
+
+      FileUtils.rm_r(@forked_project.path)
+      FileUtils.cp_r(@project.path,@forked_project.path)
+
+      redirect_to url_for(@forked_project)
+
     else
       flash[:alert] = "Didn't save project!"
       redirect_to dashboard_path
@@ -294,7 +306,7 @@ class ProjectsController < ApplicationController
       if request.save
         # we want the directory containing all of the stuff in this request to be copied over.
         FileUtils.cp_r(@forked_project.path, @forked_project.path + request.id.to_s)
-        redirect_to File.join(url_for(@parent_project), 'pulls')
+        redirect_to File.join(@parent_project.urlbase, 'pulls')
       else
         flash[:error] = "Damn, something went wrong. Please try again!"
         redirect_to dashboard_path
@@ -313,6 +325,7 @@ class ProjectsController < ApplicationController
   def pull
     @project = Project.find params[:id]
     @pull = PullRequest.find params[:pull_id]
+    @comment = Comment.new
     @comments = Comment.where(polycomment_type: "pull", polycomment_id: @pull.id)
     @comments = pg @comments, 10
     @ajax = params[:page].nil? || params[:page] == 1
@@ -412,6 +425,11 @@ class ProjectsController < ApplicationController
       flash[:alert] = "Unable to update #{filename}. The server ponies are sad."
     end
     redirect_to url_for(@project)
-
   end
+
+  # WIP - provide settings for the project
+  def settings
+    @project = Project.find params[:id]
+  end
+
 end

@@ -1,13 +1,25 @@
-- content_for :title do
-  Update file
+- unless private_check
+  = render 'private_error'
+- else
 
-- content_for :pagetitle do
-  Update file
+  - filename = params[:image_name]
+  - content_for :title do
+    = 'Update file'
 
+  - content_for :pagetitle do
+    = link_to @project.name.titleize, @project.urlbase
+    \/
+    = filename
+    \/
+    = 'Update'
 
-= form_tag file_update_project_path(@project), multipart: true do
-  = file_field_tag "file" 
-  = text_field_tag "message","commit message"
-  = hidden_field_tag "image_name", params[:image_name]
-  = submit_tag 
+  = render 'project_toolbar'
+
+  %br
+
+  = form_tag file_update_project_path(@project), multipart: true do
+    = file_field_tag "file" 
+    = text_field_tag "message","commit message"
+    = hidden_field_tag "image_name", params[:image_name]
+    = submit_tag 
 
