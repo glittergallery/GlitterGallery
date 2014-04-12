@@ -60,7 +60,7 @@
 
   = render 'images'
   - if @project.private and params[:xid] == nil
-    = link_to 'Unique link', @project.uniqueurl
+    = link_to 'Unique link', @project.urlbase
 
   .comment_form
     = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
