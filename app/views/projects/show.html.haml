@@ -1,75 +1,17 @@
-- unless private_check
-  = render 'private_error'
-- else
+= render 'project_toolbar'
+= render 'images'
 
-  - parent = Project.find @project.parent
-  - content_for :title do
-    = @project.name.titleize
+- if @project.private and params[:xid] == nil
+  = link_to 'Unique link', @project.urlbase
 
-  - content_for :pagetitle do
-    = @project.name.titleize
+.comment_form
+  = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
 
-
-  - content_for :toolbar do
-    %ul
-      %li
-        =link_to 'History', File.join(@project.urlbase, 'commits'), :class => 'history'
-
-      -if logged_in? && @project.user_id == current_user.id
-        %li
-          = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
-        %li
-          = link_to 'Draw', File.join(@project.urlbase, 'createsvg'), :class => 'draw', "data-no-turbolink" => true
-
-        %li
-          = link_to 'Add files', File.join(@project.urlbase, 'newfile'), :class => 'files'
-          
-      - if logged_in? && (@project.user_id != current_user.id and parent.user_id != current_user.id)
-        %li
-          = link_to 'Fork' , File.join(request.original_url, 'forkyou'), :class => 'fork'
-
-      - if logged_in? && (@project.user_id == current_user.id and parent.user_id != current_user.id)
-        %li
-          = link_to 'Send Pull Request', File.join(request.original_url, 'pull'), :class => 'pull-request'
-
-      %li
-        %a.sparkleshare(href="#{@invite_uri}") SparkleShare
-
-
-  .meta
-    = avatar(User.find(@project.user_id).email)
-
-    %p
-      Created by
-      = User.find(@project.user_id).username
-      on
-      = time_tag @project.created_at, :format => '%B %d, %Y'
-
-    - if (@project.parent != @project.id)
-      %p
-        = 'Forked from ' 
-        = User.find(parent.user_id).username
-        = '/'
-        = parent.name
-
-    %p
-      Last updated
-      = distance_of_time_in_words_to_now @project.updated_at
-      ago
-
-
-  = render 'images'
-  - if @project.private and params[:xid] == nil
-    = link_to 'Unique link', @project.urlbase
-
-  .comment_form
-    = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
-
-  %ul.comments
-    = render partial: "comments/comment", collection: @comments
-  %ul.paginate
-    - if @comments.any?
-      = will_paginate @comments, params: { controller: "projects", action: "show"},:style => 'color:blue' 
+%ul.comments
+  = render partial: "comments/comment", collection: @comments
+%ul.paginate
+  - if @comments.any?
+    = will_paginate @comments, params: { controller: "projects", action: "show"},:style => 'color:blue' 
 
 
 

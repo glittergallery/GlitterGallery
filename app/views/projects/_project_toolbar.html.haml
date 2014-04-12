@@ -1,0 +1,53 @@
+- @parent = Project.find @project.parent
+- unless private_check
+  = render 'private_error'
+- else
+
+  - content_for :title do
+    = @project.name.titleize
+
+  - content_for :pagetitle do
+    = link_to @project.name.titleize, @project.urlbase
+    
+  - content_for :toolbar do
+    %ul
+      %li
+        =link_to 'Log', File.join(@project.urlbase, 'commits'), :class => 'history'
+
+      -if logged_in? && @project.user_id == current_user.id
+        %li
+          = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
+        %li
+          = link_to 'New SVG', File.join(@project.urlbase, 'createsvg'), :class => 'draw', "data-no-turbolink" => true
+
+        %li
+          = link_to 'Add Files', File.join(@project.urlbase, 'newfile'), :class => 'files'
+          
+      - if logged_in? && (@project.user_id != current_user.id and @parent.user_id != current_user.id)
+        %li
+          = link_to 'Fork' , File.join(request.original_url, 'forkyou'), :class => 'fork'
+
+      - if logged_in? && (@project.user_id == current_user.id and @parent.user_id != current_user.id)
+        %li
+          = link_to 'Send Pull Request', File.join(request.original_url, 'pull'), :class => 'pull-request'
+
+  .meta
+    = avatar(User.find(@project.user_id).email)
+
+    %p
+      Created by
+      = User.find(@project.user_id).username
+      on
+      = time_tag @project.created_at, :format => '%B %d, %Y'
+
+    - if (@project.parent != @project.id)
+      %p
+        = 'Forked from ' 
+        = User.find(parent.user_id).username
+        = '/'
+        = @parent.name
+
+    %p
+      Last updated
+      = distance_of_time_in_words_to_now @project.updated_at
+      ago
