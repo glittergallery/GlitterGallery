@@ -1,7 +1,10 @@
-- content_for :title do
-  Create New Project
+- unless private_check
+  = render 'private_error'
+- else
 
-#project_info
-  %pre
-    = @project.inspect.to_yaml
+  - content_for :title do
+    Create New Project
+  #project_info
+	%pre
+	  = @project.inspect.to_yaml
 
