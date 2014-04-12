@@ -1,0 +1,16 @@
+- unless private_check
+  = render 'private_error'
+- else
+
+  - content_for :title do
+    = @project.name.titleize
+    Settings
+
+  - content_for :pagetitle do
+    = link_to @project.name.titleize, @project.urlbase
+    \/ Settings
+
+  = render 'project_toolbar'
+  %br
+  -if logged_in? && @project.user_id == current_user.id
+    = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"

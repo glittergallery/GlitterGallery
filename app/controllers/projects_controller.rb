@@ -427,4 +427,9 @@ class ProjectsController < ApplicationController
     redirect_to url_for(@project)
   end
 
+  # WIP - provide settings for the project
+  def settings
+    @project = Project.find params[:id]
+  end
+
 end

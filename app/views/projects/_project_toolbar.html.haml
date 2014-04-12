@@ -4,13 +4,10 @@
   %ul
     %li
       =link_to 'Log', File.join(@project.urlbase, 'commits'), :class => 'history'
-
-    -if logged_in? && @project.user_id == current_user.id
       %li
-        = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
+        = link_to "Settings", File.join(@project.urlbase, 'settings')
       %li
         = link_to 'New SVG', File.join(@project.urlbase, 'createsvg'), :class => 'draw', "data-no-turbolink" => true
-
       %li
         = link_to 'Add Files', File.join(@project.urlbase, 'newfile'), :class => 'files'
         
