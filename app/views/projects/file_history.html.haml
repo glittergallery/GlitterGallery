@@ -9,7 +9,7 @@
   - content_for :pagetitle do
     = link_to @project.name.titleize, @project.urlbase
     \/
-    = params[:image_name]
+    = link_to params[:image_name], File.join(@project.urlbase, 'master', params[:image_name])
     \/
     = "File history"
 

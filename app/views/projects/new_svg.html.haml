@@ -13,7 +13,7 @@
   = render 'project_toolbar'
 
     
-  = form_tag create_svg_project_path do
+  = form_tag(:controller=>"projects", :action=>"create_svg", :id => @project.id) do
     What are you calling your sketch?
     = text_field_tag :filename
     = sketchily_tag :sketch

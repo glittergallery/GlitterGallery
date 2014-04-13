@@ -9,7 +9,7 @@
   - content_for :pagetitle do
     = link_to @project.name.titleize, @project.urlbase
     \/
-    = filename
+    = link_to filename, File.join(@project.urlbase, 'master', filename)
     \/
     = 'Update'
 

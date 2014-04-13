@@ -23,15 +23,14 @@ class ProjectsController < ApplicationController
   # them to name a project, and we're then adding them to the project list
   # of the person who's currently logged in.
   def destroy
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
+    @project = Project.find params[:id]
     if current_user.id == @project.user_id
       @project.destroy
       flash[:notice] = "It has been destroyed!"
       redirect_to dashboard_path
     else
       flash[:error] = "You don't have permission for this command!"
-      redirect_to url_for(@project)
+      redirect_to @project.urlbase
     end
   end
 
@@ -43,12 +42,13 @@ class ProjectsController < ApplicationController
     end
     if project.save
       project.parent = project.id
-      project.urlbase = File.join '/projects', project.id.to_s
+      user = User.find project.user_id
+      project.urlbase = File.join "/#{user.username}", project.name
       if project.private
         project.urlbase = File.join project.urlbase, project.uniqueurl
       end
       project.save
-      redirect_to url_for(project)
+      redirect_to project.urlbase
     else
       flash[:alert] = "Didn't save project!"      
       redirect_to dashboard_path
@@ -168,8 +168,7 @@ class ProjectsController < ApplicationController
   # FIXME - allow uploads of only supported images.
 
   def file_upload 
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
+    @project = Project.find params[:id]
     tmp = params[:file].tempfile
     file = File.join @project.path, params[:file].original_filename
     FileUtils.cp tmp.path, file
@@ -179,7 +178,7 @@ class ProjectsController < ApplicationController
     else
       flash[:alert]  = "Your new image didn't get saved! How sad :("
     end
-    redirect_to url_for(@project)
+    redirect_to @project.urlbase
   end
 
   # Update files using this function. Updated files get commited to the non_bare repo
@@ -188,8 +187,7 @@ class ProjectsController < ApplicationController
   # FIXME - allow uploads of only supported images.
 
   def file_update  
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
+    @project = Project.find params[:id]
     tmp = params[:file].tempfile
     file = File.join @project.path, params[:image_name]
     FileUtils.cp tmp.path, file
@@ -201,7 +199,7 @@ class ProjectsController < ApplicationController
     else
       flash[:alert] = "Unable to update #{params[:image_name]}. The server ponies are sad."
     end
-    redirect_to url_for(@project)
+    redirect_to @project.urlbase
   end
 
   # WIP - Supposed to help in forking a repo that belongs to another user.
@@ -226,7 +224,7 @@ class ProjectsController < ApplicationController
         git = Grit::Git.new @forked_project.path
         git.native(clone,{}, File.join(@project.path, '.git'),@forked_project.path)
 
-        redirect_to url_for(@forked_project)
+        redirect_to @forked_project.urlbase
 
       else
         redirect_to dashboard_path
@@ -248,7 +246,7 @@ class ProjectsController < ApplicationController
     @forked_project.user_id = current_user.id
 
     if @forked_project.save
-      @forked_project.urlbase = File.join '/projects', @forked_project.id.to_s    
+      @forked_project.urlbase = File.join "/#{current_user.username}", @forked_project.name.to_s    
       if @project.private
         @forked_project.private = true
         @forked_project.uniqueurl = @project.uniqueurl
@@ -259,7 +257,7 @@ class ProjectsController < ApplicationController
       FileUtils.rm_r(@forked_project.path)
       FileUtils.cp_r(@project.path,@forked_project.path)
 
-      redirect_to url_for(@forked_project)
+      redirect_to @forked_project.urlbase
 
     else
       flash[:alert] = "Didn't save project!"
@@ -290,20 +288,19 @@ class ProjectsController < ApplicationController
     end
 
     if @parent_repo.commits.first == @forked_repo.commits.first
-      redirect_to url_for @forked_project
+      redirect_to @forked_project.urlbase
       flash[:notice] = "Nothing to pull, the parent project is up to date! :)"
     end
 
     unless @parent_repo.commits.first != nil and @fork_commits.include? @parent_repo.commits.first.id
-      redirect_to url_for @forked_project
+      redirect_to @forked_project.urlbase
       flash[:alert] = "Hm, looks like you're left behind and we cannot do an auto merge :-("
     end
 
   end
 
   def handle_pull_request
-    @user = User.find_by username: params[:username]
-    @forked_project = Project.find_by user_id: @user.id, name: params[:project]
+    @forked_project = Project.find params[:id]
     @parent_project = Project.find @forked_project.parent
     @parent_repo = Grit::Repo.init_bare_or_open(File.join (@parent_project.path) , '.git')
     @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
@@ -374,7 +371,7 @@ class ProjectsController < ApplicationController
         pull.save
       end
     end
-    redirect_to url_for @project
+    redirect_to @project.urlbase
   end
 
   # Helps to re-open requests that have been closed
@@ -384,7 +381,7 @@ class ProjectsController < ApplicationController
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'open'
     @pull.save
-    redirect_to url_for @project
+    redirect_to @project.urlbase
   end
 
   # Helps to close requests that shouldn't be open
@@ -394,7 +391,7 @@ class ProjectsController < ApplicationController
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'closed'
     @pull.save
-    redirect_to url_for @project
+    redirect_to @project.urlbase
   end
 
 
@@ -413,8 +410,7 @@ class ProjectsController < ApplicationController
   #         can auto-render it.
 
   def create_svg
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
+    @project = Project.find params[:id]
     filename = params[:filename].squish.downcase.tr(" ","_") + '.svg'
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
     if file
@@ -423,7 +419,7 @@ class ProjectsController < ApplicationController
     else
       flash[:alert]  = "Your new image didn't get saved! How sad :("
     end
-    redirect_to url_for(@project)
+    redirect_to @project.urlbase
   end
 
   # WIP - lets you edit svg images created on SVG-edit, or manually uploaded ones too.
@@ -432,12 +428,11 @@ class ProjectsController < ApplicationController
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
     @filename = params[:image_name]
-    @path= (File.join project.path, @filename).gsub("public","")
+    @path= (File.join @project.path, @filename).gsub("public","")
   end
 
   def update_svg
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
+    @project = Project.find params[:id]
     filename = params[:filename]
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
 
@@ -448,7 +443,7 @@ class ProjectsController < ApplicationController
     else
       flash[:alert] = "Unable to update #{filename}. The server ponies are sad."
     end
-    redirect_to url_for(@project)
+    redirect_to @project.urlbase
   end
 
   # WIP - provide settings for the project

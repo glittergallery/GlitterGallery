@@ -10,9 +10,9 @@ Glitter::Application.routes.draw do
 
   get '/:username/:project' => 'projects#show'
   get '/:username/:project/commits' => 'projects#commits'
-  get '/:username/:project/commit/:tree_id' => 'projects#commit'
+  get '/:username/:project/commit/:tree_id' => 'projects#projectcommit'
   get '/:username/:project/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
-  get '/:username/:project/master/:image_name/:history' => 'projects#file_history', :image_name => /[^\/]*/
+  get '/:username/:project/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
   get '/:username/:project/createsvg' => 'projects#new_svg'
   get '/:username/:project/newfile' => 'projects#newfile'
   get '/:username/:project/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
@@ -25,6 +25,7 @@ Glitter::Application.routes.draw do
   get '/:username/:project/pull/:pull_id/close' => 'projects#close'
   get '/:username/:project/pull/:pull_id/open' => 'projects#open'
   get '/:username/:project/pulls' => 'projects#pulls'
+  get '/:username/:project/settings' => 'projects#settings'
 
 
   post 'glitterposts/:id/edit' => 'glitterposts#update'
