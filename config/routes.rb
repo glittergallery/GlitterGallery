@@ -4,10 +4,11 @@ Glitter::Application.routes.draw do
   resource :session, only: [:new, :create, :destroy]
   resources :comments, only: [:new, :create, :destroy]
   resources :glitterposts
+  post 'glitterposts/:id/edit' => 'glitterposts#update'
+
 
   get '/dashboard' => 'dashboard#index', :as => :dashboard
   get '/:username' => 'users#show'
-
   get '/:username/:project' => 'projects#show'
   get '/:username/:project/commits' => 'projects#commits'
   get '/:username/:project/commit/:tree_id' => 'projects#projectcommit'
@@ -27,26 +28,24 @@ Glitter::Application.routes.draw do
   get '/:username/:project/pulls' => 'projects#pulls'
   get '/:username/:project/settings' => 'projects#settings'
 
-
-  post 'glitterposts/:id/edit' => 'glitterposts#update'
-
-  get 'projects/:id/:xid' => 'projects#show'
-  get 'projects/:id/:xid/commits' => 'projects#commits'
-  get 'projects/:id/:xid/commit/:tree_id' => 'projects#projectcommit'
-  get 'projects/:id/:xid/masterbranch/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
-  get 'projects/:id/:xid/masterbranch/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
-  get 'projects/:id/:xid/createsvg' => 'projects#new_svg'
-  get 'projects/:id/:xid/newfile' => 'projects#newfile'
-  get 'projects/:id/:xid/masterbranch/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
-  get 'projects/:id/:xid/masterbranch/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
-  get 'projects/:id/:xid/fork' => 'projects#fork'
-  get 'projects/:id/:xid/forkyou' => 'projects#forkyou'
-  get 'projects/:id/:xid/pull' => 'projects#pull_request'
-  get 'projects/:id/:xid/pull/:pull_id' => 'projects#pull'
-  get 'projects/:id/:xid/pull/:pull_id/merge' => 'projects#merge'
-  get 'projects/:id/:xid/pull/:pull_id/close' => 'projects#close'
-  get 'projects/:id/:xid/pull/:pull_id/open' => 'projects#open'
-  get 'projects/:id/:xid/pulls' => 'projects#pulls'
+  get '/:username/:project/:xid' => 'projects#show'
+  get '/:username/:project/:xid/commits' => 'projects#commits'
+  get '/:username/:project/:xid/commit/:tree_id' => 'projects#projectcommit'
+  get '/:username/:project/:xid/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
+  get '/:username/:project/:xid/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
+  get '/:username/:project/:xid/createsvg' => 'projects#new_svg'
+  get '/:username/:project/:xid/newfile' => 'projects#newfile'
+  get '/:username/:project/:xid/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
+  get '/:username/:project/:xid/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
+  get '/:username/:project/:xid/fork' => 'projects#fork'
+  get '/:username/:project/:xid/forkyou' => 'projects#forkyou'
+  get '/:username/:project/:xid/pull' => 'projects#pull_request'
+  get '/:username/:project/:xid/pull/:pull_id' => 'projects#pull'
+  get '/:username/:project/:xid/pull/:pull_id/merge' => 'projects#merge'
+  get '/:username/:project/:xid/pull/:pull_id/close' => 'projects#close'
+  get '/:username/:project/:xid/pull/:pull_id/open' => 'projects#open'
+  get '/:username/:project/:xid/pulls' => 'projects#pulls'
+  get '/:username/:project/:xid/settings' => 'projects#settings'
 
   
   resources :projects do
