@@ -23,7 +23,8 @@ class ProjectsController < ApplicationController
   # them to name a project, and we're then adding them to the project list
   # of the person who's currently logged in.
   def destroy
-    @project = Project.find(params[:id])
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     if current_user.id == @project.user_id
       @project.destroy
       flash[:notice] = "It has been destroyed!"
@@ -61,12 +62,13 @@ class ProjectsController < ApplicationController
   #         be able to view thumbnails instead. 
 
   def show
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     if Rails.env.production?
       @invite_uri = "sparkleshare://#{ENV['OPENSHIFT_APP_DNS'].downcase}/projects/#{params[:id]}/invite.xml" # If it's in production.
     else
       @invite_uri = "#{Rails.root}/uploads/#{Rails.env}/projects/#{params[:id]}/invite.xml" # If not in production.
     end
-    @project = Project.find params[:id]
     @images = Dir.glob(File.join @project.path, '*')
     @comments = Comment.where(polycomment_type: "project", polycomment_id: @project.id)
     @comments = pg @comments, 10
@@ -78,7 +80,8 @@ class ProjectsController < ApplicationController
   # inbuilt functions available from the grit gem. 
 
   def commits
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
     @commits = repo.commits
     @comments = Comment.where(polycomment_type: "commit", polycomment_id: params[:tree_id])
@@ -89,7 +92,8 @@ class ProjectsController < ApplicationController
   # a list of comments associated with it. 
 
   def projectcommit
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
     @tree = repo.tree(params[:tree_id])
     @contents = @tree.contents
@@ -103,7 +107,8 @@ class ProjectsController < ApplicationController
   # is useful for fetching the current state of a file in a project.
 
   def masterbranch
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @imageurl = File.join @project.path, params[:image_name]
     @comments = Comment.where(polycomment_type: "file", polycomment_id: params[:image_name])
     @comments = @comments.paginate(page: params[:page], per_page: 10)
@@ -117,8 +122,9 @@ class ProjectsController < ApplicationController
   # please note that this is different from the project's commit history.
 
   def file_history
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @bloblist = Array.new
-    @project = Project.find params[:id]
     repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
     repo.commits.each do |commit|
       commit.tree.contents.each do |blob|
@@ -132,7 +138,8 @@ class ProjectsController < ApplicationController
   # Sparkleshare integration.
 
   def invite
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     mime_type = Mime::Type.lookup_by_extension('xml')
     content_type = mime_type.to_s unless mime_type.nil?
     @git_dir = "/#{@project.user.email}/#{@project.name}"
@@ -144,11 +151,13 @@ class ProjectsController < ApplicationController
   # project show page, moved to a separate page now.
 
   def newfile
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
   def update
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
 
@@ -159,7 +168,8 @@ class ProjectsController < ApplicationController
   # FIXME - allow uploads of only supported images.
 
   def file_upload 
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     tmp = params[:file].tempfile
     file = File.join @project.path, params[:file].original_filename
     FileUtils.cp tmp.path, file
@@ -178,7 +188,8 @@ class ProjectsController < ApplicationController
   # FIXME - allow uploads of only supported images.
 
   def file_update  
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     tmp = params[:file].tempfile
     file = File.join @project.path, params[:image_name]
     FileUtils.cp tmp.path, file
@@ -197,7 +208,8 @@ class ProjectsController < ApplicationController
   # Fork works but creates only bare repos.
 
   def fork
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @forked_project = Project.new :name => @project.name, 
                                   :parent => @project.id
     @forked_project.user_id = current_user.id
@@ -228,7 +240,8 @@ class ProjectsController < ApplicationController
   # This function will be removed soon, just being used to test fork.
 
   def forkyou
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     # what if X is trying to fork a project that was forked by Y from X? 
     @forked_project = Project.new :name => @project.name,
                                   :parent => @project.id
@@ -265,7 +278,8 @@ class ProjectsController < ApplicationController
   #Pull request - WIP
 
   def pull_request
-    @forked_project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @forked_project = Project.find_by user_id: @user.id, name: params[:project]
     @parent_project = Project.find @forked_project.parent
     @parent_repo = Grit::Repo.init_bare_or_open(File.join (@parent_project.path) , '.git')
     @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
@@ -288,7 +302,8 @@ class ProjectsController < ApplicationController
   end
 
   def handle_pull_request
-    @forked_project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @forked_project = Project.find_by user_id: @user.id, name: params[:project]
     @parent_project = Project.find @forked_project.parent
     @parent_repo = Grit::Repo.init_bare_or_open(File.join (@parent_project.path) , '.git')
     @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
@@ -316,14 +331,16 @@ class ProjectsController < ApplicationController
 
   # Renders pull requests page for specific projects
   def pulls
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     #spit a list of all pulls from the table which have @project.id as parent
     @pulls = PullRequest.where("parent=?",@project.id)
   end
 
   # Shows details about a specific pull request on a project
   def pull
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @pull = PullRequest.find params[:pull_id]
     @comment = Comment.new
     @comments = Comment.where(polycomment_type: "pull", polycomment_id: @pull.id)
@@ -333,7 +350,8 @@ class ProjectsController < ApplicationController
 
   # allow merging a pull request
   def merge
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @pull = PullRequest.find params[:pull_id]
     @forked_project = Project.find @pull.fork
 
@@ -361,7 +379,8 @@ class ProjectsController < ApplicationController
 
   # Helps to re-open requests that have been closed
   def open
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'open'
     @pull.save
@@ -370,7 +389,8 @@ class ProjectsController < ApplicationController
 
   # Helps to close requests that shouldn't be open
   def close
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'closed'
     @pull.save
@@ -382,7 +402,8 @@ class ProjectsController < ApplicationController
   # and 
 
   def new_svg
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
   # Saves a new SVG file generated through SVG-edit. The image data is passed through to params, 
@@ -392,7 +413,8 @@ class ProjectsController < ApplicationController
   #         can auto-render it.
 
   def create_svg
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     filename = params[:filename].squish.downcase.tr(" ","_") + '.svg'
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
     if file
@@ -407,13 +429,15 @@ class ProjectsController < ApplicationController
   # WIP - lets you edit svg images created on SVG-edit, or manually uploaded ones too.
 
   def edit_svg
-    project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @filename = params[:image_name]
     @path= (File.join project.path, @filename).gsub("public","")
   end
 
   def update_svg
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     filename = params[:filename]
     file = File.open(File.join(@project.path, filename), 'w+') {|f| f.write(params[:sketch]) }
 
@@ -429,7 +453,8 @@ class ProjectsController < ApplicationController
 
   # WIP - provide settings for the project
   def settings
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
 end
