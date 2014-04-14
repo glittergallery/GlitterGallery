@@ -1,23 +1,31 @@
-- content_for :title do
-  = @project.name.titleize
-  history
+- unless private_check
+  = render 'private_error'
+- else
 
-- content_for :pagetitle do
-  = link_to @project.name.titleize, @project
-  \/
-  History
 
-%ul.history
-  - @commits.each do |commit|
-    %li
-      .meta
-        = avatar(commit.author.email)
-        %p
-          = commit.author
-        %p
-          = distance_of_time_in_words_to_now commit.authored_date
-          ago
+  - content_for :title do
+    = @project.name.titleize
+    History
 
-      = link_to commit.message, File.join('commit', commit.tree.id), :class => 'commit'
-  - if !@comments.nil?
-    = will_paginate @comments, :style => 'color:blue' 
+  - content_for :pagetitle do
+    = link_to @project.name.titleize, @project
+    \/
+    History
+
+  %ul.history
+    - @commits.each do |commit|
+      %li
+        .meta
+          = avatar(commit.author.email)
+          %p
+            = commit.author
+          %p
+            = distance_of_time_in_words_to_now commit.authored_date
+            ago
+
+        = link_to commit.message, File.join(@project.urlbase, 'commit', commit.tree.id), :class => 'commit'
+    - if !@comments.nil?
+      = will_paginate @comments, :style => 'color:blue' 
+
+
+

@@ -1,21 +1,27 @@
-.center
-  - content_for :title do
-    = @project.name.titleize
-  .meta
-    %h2
-      = avatar(User.find(@project.user_id).email)
-      = @project.name.titleize.to_s 
-  %hr
+- unless private_check
+  = render 'private_error'
+- else
 
-  - @contents.each do |blob|
-    = blob.name
-    %svg{:xmlns => "http://www.w3.org/2000/svg"}
-      = raw blob.data
+  .center
+    - content_for :title do
+      = @project.name.titleize
+    .meta
+      %h2
+        = avatar(User.find(@project.user_id).email)
+        = @project.name.titleize.to_s 
+    %hr
+
+    - @contents.each do |blob|
+      = blob.name
+      %svg{:xmlns => "http://www.w3.org/2000/svg"}
+        = raw blob.data
 
 
 
-.comment_form
-  = render partial: "comments/new", locals: {type: 'commit', id: @id.to_s, ajax: @ajax, comment: @comment}
+  .comment_form
+    = render partial: "comments/new", locals: {type: 'commit', id: @id.to_s, ajax: @ajax, comment: @comment}
 
-%ul.comments
-  = render partial: "comments/comment", collection: @comments
+  %ul.comments
+    = render partial: "comments/comment", collection: @comments
+
+

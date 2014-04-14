@@ -1,12 +1,16 @@
-- content_for :title do
-  New Pull Request
+- unless private_check
+  = render 'private_error'
+- else
 
-- content_for :pagetitle do
-  New Pull Request
+	- content_for :title do
+	  New Pull Request
+
+	- content_for :pagetitle do
+	  New Pull Request
 
 
-= form_tag handle_pull_request_project_path(@forked_project), multipart: true do
-  = text_field_tag "description", "short description" 
-  = hidden_field_tag "image_name", params[:image_name]
-  = submit_tag 
+	= form_tag handle_pull_request_project_path(@forked_project), multipart: true do
+	  = text_field_tag "description", "short description" 
+	  = hidden_field_tag "image_name", params[:image_name]
+	  = submit_tag 
 
