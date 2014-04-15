@@ -1,10 +1,36 @@
 - content_for :title do
-  = @username.titleize
+  = @user.username.titleize
+
+- content_for :pagetitle do
+  = @user.username.titleize
+
+
+.meta
+  = avatar @user.email
+  %p
+    = @user.email
+  %p
+    Joined
+    = time_tag @user.created_at, :format => '%B %d, %Y'
 %br
 
 .center
-  = avatar(@email)
-  %br
-  = @username
-  %br
-  = @email
+  %h1
+    Public projects
+  %ul
+  - @projects.each do |project|
+    - unless project.private
+      %li
+        = link_to project.name, project.urlbase
+
+%br
+
+  - if logged_in? and current_user.id == @user.id
+    %h1
+      Private projects
+    - # TODO: if there are no private projects, provide link to create one
+    %ul
+    - @projects.each do |project|
+      - if project.private
+        %li
+          = link_to project.name, project.urlbase

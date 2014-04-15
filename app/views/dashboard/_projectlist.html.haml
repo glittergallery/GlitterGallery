@@ -1,16 +1,16 @@
 %ul.project-list
-  - @projects.each do |p|
+  - @projects.each do |project|
     %li
-      = link_to url_for(p) do
+      = link_to project.urlbase do
         %h3
-          = p.name
+          = project.name
 
         .meta
           %p
             Created
-            = time_tag p.created_at, :format=>'%B %d, %Y'
+            = time_tag project.created_at, :format=>'%B %d, %Y'
           %p
             Last updated
-            = distance_of_time_in_words_to_now p.updated_at
+            = distance_of_time_in_words_to_now project.updated_at
             ago
 

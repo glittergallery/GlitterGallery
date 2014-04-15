@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131104181756) do
+ActiveRecord::Schema.define(version: 20140411185005) do
 
   create_table "comments", force: true do |t|
     t.text     "body"
@@ -41,6 +41,9 @@ ActiveRecord::Schema.define(version: 20131104181756) do
     t.integer  "user_id"
     t.string   "path"
     t.integer  "parent"
+    t.boolean  "private"
+    t.string   "uniqueurl"
+    t.string   "urlbase"
   end
 
   add_index "projects", ["name", "user_id"], name: "index_projects_on_name_and_user_id", unique: true

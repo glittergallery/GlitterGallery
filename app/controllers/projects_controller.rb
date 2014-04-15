@@ -8,7 +8,7 @@ require 'grit'
 
 class ProjectsController < ApplicationController
   before_filter :store_return_to
-  before_filter :authenticate_user!, except: [:show, :commits, :projectcommit, :masterbranch, :file_history]
+  before_filter :authenticate_user!, except: [:show, :commits, :projectcommit, :masterbranch, :file_history, :pulls, :pull]
 
   # New projects can be named in the projects#new page.
   # The list of current projects is required so we can display
@@ -23,24 +23,32 @@ class ProjectsController < ApplicationController
   # them to name a project, and we're then adding them to the project list
   # of the person who's currently logged in.
   def destroy
-    @project = Project.find(params[:id])
+    @project = Project.find params[:id]
     if current_user.id == @project.user_id
       @project.destroy
       flash[:notice] = "It has been destroyed!"
       redirect_to dashboard_path
     else
       flash[:error] = "You don't have permission for this command!"
-      redirect_to url_for(@project)
+      redirect_to @project.urlbase
     end
   end
 
   def create
-    project = Project.new :name => params[:project][:name]
+    project = Project.new params[:project]
     project.user_id = current_user.id
+    if params[:project][:private]
+      project.uniqueurl = SecureRandom.hex
+    end
     if project.save
       project.parent = project.id
+      user = User.find project.user_id
+      project.urlbase = File.join "/#{user.username}", project.name.gsub(" ", "%20")
+      if project.private
+        project.urlbase = File.join project.urlbase, project.uniqueurl
+      end
       project.save
-      redirect_to url_for(project)
+      redirect_to project.urlbase
     else
       flash[:alert] = "Didn't save project!"      
       redirect_to dashboard_path
@@ -54,12 +62,13 @@ class ProjectsController < ApplicationController
   #         be able to view thumbnails instead. 
 
   def show
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     if Rails.env.production?
       @invite_uri = "sparkleshare://#{ENV['OPENSHIFT_APP_DNS'].downcase}/projects/#{params[:id]}/invite.xml" # If it's in production.
     else
       @invite_uri = "#{Rails.root}/uploads/#{Rails.env}/projects/#{params[:id]}/invite.xml" # If not in production.
     end
-    @project = Project.find params[:id]
     @images = Dir.glob(File.join @project.path, '*')
     @comments = Comment.where(polycomment_type: "project", polycomment_id: @project.id)
     @comments = pg @comments, 10
@@ -71,7 +80,8 @@ class ProjectsController < ApplicationController
   # inbuilt functions available from the grit gem. 
 
   def commits
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
     @commits = repo.commits
     @comments = Comment.where(polycomment_type: "commit", polycomment_id: params[:tree_id])
@@ -82,7 +92,8 @@ class ProjectsController < ApplicationController
   # a list of comments associated with it. 
 
   def projectcommit
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     repo = Grit::Repo.init_bare_or_open(File.join (@project.path) , '.git')
     @tree = repo.tree(params[:tree_id])
     @contents = @tree.contents
@@ -96,7 +107,8 @@ class ProjectsController < ApplicationController
   # is useful for fetching the current state of a file in a project.
 
   def masterbranch
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @imageurl = File.join @project.path, params[:image_name]
     @comments = Comment.where(polycomment_type: "file", polycomment_id: params[:image_name])
     @comments = @comments.paginate(page: params[:page], per_page: 10)
@@ -110,8 +122,9 @@ class ProjectsController < ApplicationController
   # please note that this is different from the project's commit history.
 
   def file_history
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @bloblist = Array.new
-    @project = Project.find params[:id]
     repo = Grit::Repo.init_bare_or_open (File.join (@project.path) , '.git')
     repo.commits.each do |commit|
       commit.tree.contents.each do |blob|
@@ -125,7 +138,8 @@ class ProjectsController < ApplicationController
   # Sparkleshare integration.
 
   def invite
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     mime_type = Mime::Type.lookup_by_extension('xml')
     content_type = mime_type.to_s unless mime_type.nil?
     @git_dir = "/#{@project.user.email}/#{@project.name}"
@@ -137,11 +151,13 @@ class ProjectsController < ApplicationController
   # project show page, moved to a separate page now.
 
   def newfile
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
   def update
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
 
@@ -162,7 +178,7 @@ class ProjectsController < ApplicationController
     else
       flash[:alert]  = "Your new image didn't get saved! How sad :("
     end
-    redirect_to url_for(@project)
+    redirect_to @project.urlbase
   end
 
   # Update files using this function. Updated files get commited to the non_bare repo
@@ -183,27 +199,32 @@ class ProjectsController < ApplicationController
     else
       flash[:alert] = "Unable to update #{params[:image_name]}. The server ponies are sad."
     end
-    redirect_to url_for(@project)
+    redirect_to @project.urlbase
   end
 
   # WIP - Supposed to help in forking a repo that belongs to another user.
   # Fork works but creates only bare repos.
 
   def fork
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @forked_project = Project.new :name => @project.name, 
                                   :parent => @project.id
     @forked_project.user_id = current_user.id
+
+    if @project.private
+      @forked_project.private = true
+      @forked_project.uniqueurl = @project.uniqueurl
+    end
 
     if @forked_project.save
       @forked_project_saved = true
       if @forked_project_saved
 
         git = Grit::Git.new @forked_project.path
-        #repo.git.clone({} , File.join(@forked_project.path, 'test'), @project.path)
         git.native(clone,{}, File.join(@project.path, '.git'),@forked_project.path)
 
-        redirect_to url_for(@forked_project)
+        redirect_to @forked_project.urlbase
 
       else
         redirect_to dashboard_path
@@ -217,25 +238,27 @@ class ProjectsController < ApplicationController
   # This function will be removed soon, just being used to test fork.
 
   def forkyou
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     # what if X is trying to fork a project that was forked by Y from X? 
     @forked_project = Project.new :name => @project.name,
                                   :parent => @project.id
     @forked_project.user_id = current_user.id
-    #@forked_project = @project.clone
 
     if @forked_project.save
-      @forked_project_saved = true
-      if @forked_project_saved
-
-        FileUtils.rm_r(@forked_project.path)
-        FileUtils.cp_r(@project.path,@forked_project.path)
-
-        redirect_to url_for(@forked_project)
-
-      else
-        redirect_to dashboard_path
+      @forked_project.urlbase = File.join "/#{current_user.username}", @forked_project.name.to_s    
+      if @project.private
+        @forked_project.private = true
+        @forked_project.uniqueurl = @project.uniqueurl
+        @forked_project.urlbase = File.join @forked_project.urlbase, @forked_project.uniqueurl
       end
+      @forked_project.save
+
+      FileUtils.rm_r(@forked_project.path)
+      FileUtils.cp_r(@project.path,@forked_project.path)
+
+      redirect_to @forked_project.urlbase
+
     else
       flash[:alert] = "Didn't save project!"
       redirect_to dashboard_path
@@ -253,7 +276,8 @@ class ProjectsController < ApplicationController
   #Pull request - WIP
 
   def pull_request
-    @forked_project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @forked_project = Project.find_by user_id: @user.id, name: params[:project]
     @parent_project = Project.find @forked_project.parent
     @parent_repo = Grit::Repo.init_bare_or_open(File.join (@parent_project.path) , '.git')
     @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
@@ -264,12 +288,12 @@ class ProjectsController < ApplicationController
     end
 
     if @parent_repo.commits.first == @forked_repo.commits.first
-      redirect_to url_for @forked_project
+      redirect_to @forked_project.urlbase
       flash[:notice] = "Nothing to pull, the parent project is up to date! :)"
     end
 
     unless @parent_repo.commits.first != nil and @fork_commits.include? @parent_repo.commits.first.id
-      redirect_to url_for @forked_project
+      redirect_to @forked_project.urlbase
       flash[:alert] = "Hm, looks like you're left behind and we cannot do an auto merge :-("
     end
 
@@ -294,7 +318,7 @@ class ProjectsController < ApplicationController
       if request.save
         # we want the directory containing all of the stuff in this request to be copied over.
         FileUtils.cp_r(@forked_project.path, @forked_project.path + request.id.to_s)
-        redirect_to File.join(url_for(@parent_project), 'pulls')
+        redirect_to File.join(@parent_project.urlbase, 'pulls')
       else
         flash[:error] = "Damn, something went wrong. Please try again!"
         redirect_to dashboard_path
@@ -304,15 +328,18 @@ class ProjectsController < ApplicationController
 
   # Renders pull requests page for specific projects
   def pulls
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     #spit a list of all pulls from the table which have @project.id as parent
     @pulls = PullRequest.where("parent=?",@project.id)
   end
 
   # Shows details about a specific pull request on a project
   def pull
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @pull = PullRequest.find params[:pull_id]
+    @comment = Comment.new
     @comments = Comment.where(polycomment_type: "pull", polycomment_id: @pull.id)
     @comments = pg @comments, 10
     @ajax = params[:page].nil? || params[:page] == 1
@@ -320,7 +347,8 @@ class ProjectsController < ApplicationController
 
   # allow merging a pull request
   def merge
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @pull = PullRequest.find params[:pull_id]
     @forked_project = Project.find @pull.fork
 
@@ -343,25 +371,27 @@ class ProjectsController < ApplicationController
         pull.save
       end
     end
-    redirect_to url_for @project
+    redirect_to @project.urlbase
   end
 
   # Helps to re-open requests that have been closed
   def open
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'open'
     @pull.save
-    redirect_to url_for @project
+    redirect_to @project.urlbase
   end
 
   # Helps to close requests that shouldn't be open
   def close
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'closed'
     @pull.save
-    redirect_to url_for @project
+    redirect_to @project.urlbase
   end
 
 
@@ -369,7 +399,8 @@ class ProjectsController < ApplicationController
   # and 
 
   def new_svg
-    @project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
   # Saves a new SVG file generated through SVG-edit. The image data is passed through to params, 
@@ -388,15 +419,16 @@ class ProjectsController < ApplicationController
     else
       flash[:alert]  = "Your new image didn't get saved! How sad :("
     end
-    redirect_to url_for(@project)
+    redirect_to @project.urlbase
   end
 
   # WIP - lets you edit svg images created on SVG-edit, or manually uploaded ones too.
 
   def edit_svg
-    project = Project.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
     @filename = params[:image_name]
-    @path= (File.join project.path, @filename).gsub("public","")
+    @path= (File.join @project.path, @filename).gsub("public","")
   end
 
   def update_svg
@@ -411,7 +443,13 @@ class ProjectsController < ApplicationController
     else
       flash[:alert] = "Unable to update #{filename}. The server ponies are sad."
     end
-    redirect_to url_for(@project)
-
+    redirect_to @project.urlbase
   end
+
+  # WIP - provide settings for the project
+  def settings
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
+  end
+
 end

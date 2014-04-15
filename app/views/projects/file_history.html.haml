@@ -1,13 +1,20 @@
-.center
+- unless private_check
+  = render 'private_error'
+- else
+
   - content_for :title do
     = @project.name.titleize
-  .meta
-    %h2
-      = avatar(User.find(@project.user_id).email)
-      = @project.name.titleize.to_s + " /  " + @bloblist.first.first.name.to_s + " / history"
- 
-  %br
-  %hr
+    File history
+
+  - content_for :pagetitle do
+    = link_to @project.name.titleize, @project.urlbase
+    \/
+    = link_to params[:image_name], File.join(@project.urlbase, 'master', params[:image_name])
+    \/
+    = "File history"
+
+  = render 'project_toolbar'
+
   %br
   - @bloblist.each do |blob, commit|
     = commit.author
@@ -17,3 +24,5 @@
     %br
     %img{:src => "data:image/svg+xml;base64,#{Base64.encode64(raw blob.data)}"}
     %hr
+    
+  
