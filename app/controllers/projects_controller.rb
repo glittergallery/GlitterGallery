@@ -43,7 +43,7 @@ class ProjectsController < ApplicationController
     if project.save
       project.parent = project.id
       user = User.find project.user_id
-      project.urlbase = File.join "/#{user.username}", project.name
+      project.urlbase = File.join "/#{user.username}", project.name.gsub(" ", "%20")
       if project.private
         project.urlbase = File.join project.urlbase, project.uniqueurl
       end
