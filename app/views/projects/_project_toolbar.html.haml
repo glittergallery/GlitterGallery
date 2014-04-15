@@ -4,6 +4,7 @@
   %ul
     %li
       =link_to 'Log', File.join(@project.urlbase, 'commits'), :class => 'history'
+    - if logged_in? and @project.user_id == current_user.id
       %li
         = link_to "Settings", File.join(@project.urlbase, 'settings')
       %li
