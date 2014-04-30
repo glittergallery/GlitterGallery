@@ -15,30 +15,6 @@ module ApplicationHelper
     end
   end
 
-  # No longer needed. 
 
-  def project_for(glimage, link = true)
-    p = Project.find(glimage.project_id)
-    if link
-      content_tag :a, p.name, :href => url_for(p)
-    else
-      p.name
-    end
-  end
-
-  def user_for(obj, link = true)
-    if obj.class == Glimage
-      p = Project.find(obj.project_id)
-    elsif obj.class == Project
-      p = obj
-    else
-      return false
-    end
-    
-    User.find(p.user_id).email
-
-    #TODO - implement link when public user profiles have landed
-
-  end
 
 end

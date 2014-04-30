@@ -1,11 +1,20 @@
-- content_for :title do
-  Create a new sketch
+- unless private_check and owner_check
+  = render 'permissions_error'
+- else
+ 
+  - content_for :title do
+    New SVG
 
-- content_for :pagetitle do
-  Create your masterpiece
+  - content_for :pagetitle do
+    = link_to @project.name.titleize, @project.urlbase
+    \/
+    = 'New SVG'
 
-= form_tag create_svg_project_path do
-  What are you calling your sketch?
-  = text_field_tag :filename
-  = sketchily_tag :sketch
-  = submit_tag
+  = render 'project_toolbar'
+
+    
+  = form_tag(:controller=>"projects", :action=>"create_svg", :id => @project.id) do
+    What are you calling your sketch?
+    = text_field_tag :filename
+    = sketchily_tag :sketch
+    = submit_tag

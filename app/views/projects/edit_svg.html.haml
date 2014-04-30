@@ -1,9 +1,24 @@
-= content_for :pagetitle do
-  Edit your masterpiece
+- unless private_check and owner_check
+  = render 'permissions_error'
+- else
 
-= form_tag update_svg_project_path do
-  = sketchily_tag :sketch, nil, :url => @path
-  = label_tag "commit message"
-  = text_field_tag "message", "Update #{@filename}"
-  = hidden_field_tag 'filename', @filename
-  = submit_tag
+  - filename = params[:image_name]
+  - content_for :title do
+    = 'Edit SVG'
+
+  - content_for :pagetitle do
+    = link_to @project.name.titleize, @project.urlbase
+    \/
+    = link_to filename, File.join(@project.urlbase,'master',filename)
+    \/
+    = 'Edit'
+
+  = render 'project_toolbar'
+  
+
+  = form_tag(:controller=>"projects", :action=>"update_svg", :id=>@project.id) do
+    = sketchily_tag :sketch, nil, :url => @path
+    = label_tag "commit message"
+    = text_field_tag "message", "Update #{@filename}"
+    = hidden_field_tag 'filename', @filename
+    = submit_tag
