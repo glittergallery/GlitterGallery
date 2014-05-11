@@ -41,13 +41,15 @@ class ApplicationController < ActionController::Base
     # set up repo and index
     repo = Grit::Repo.new repopath
     index = Grit::Index.new repo
+    actor = Grit::Actor.new current_user.username, current_user.email
     # write file to repo
     fullpath = File.join repopath, file
     File.open(fullpath, 'wb') {|f| f.write contents}
     # commit file
     index.add file, contents
     parent = repo.commits.count > 0 ? [repo.commits.first] : nil
-    index.commit message, parent
+    index.commit message, parent, actor
+
   end
 
   # Intended to generate thumbnails for Glimages (a previously used model).
