@@ -18,7 +18,7 @@
     %ul
       %li
         = link_to "File history", File.join(File.basename(@imageurl).to_s, 'history'), :class => 'history'
-      - if logged_in?
+      - if user_signed_in?
       
         -if @project.user_id == current_user.id
           %li

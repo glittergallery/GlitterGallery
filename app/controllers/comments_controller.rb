@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
   # that helps distinguish the nature of what these comments are for.
 
   def create
-    @comment = Comment.new(params[:comment])
+    @comment = Comment.new comment_params
     @comment.user = current_user                      
     if @comment.save
       @comments = Comment.where(polycomment_type: params[:comment][:polycomment_type],
@@ -44,6 +44,10 @@ class CommentsController < ApplicationController
 
     def logged_in
       redirect_to root_url unless !current_user.nil?
+    end
+
+    def comment_params
+      params.require(:comment).permit(:polycomment_id,:polycomment_type,:issue,:body)
     end
 
 end

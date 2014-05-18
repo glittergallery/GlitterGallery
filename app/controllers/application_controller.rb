@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   include Escape
   include SessionsHelper
   protect_from_forgery
+  before_filter :configure_permitted_parameters, if: :devise_controller?
+
   
   private
   
@@ -18,7 +20,7 @@ class ApplicationController < ActionController::Base
   #         the commit function and drop this idea for non uploaded files.
 
   def image_commit(project, imagefile)
-    if logged_in?
+    if user_signed_in?
       commit project.path, imagefile.original_filename, imagefile.read, "Add new file #{imagefile.original_filename}." 
     end
   end
@@ -79,6 +81,12 @@ class ApplicationController < ActionController::Base
 
   def pg(things, num)
     return things.paginate(page: params[:page], per_page: num) unless things.nil?
+  end
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) << :username    
   end
 
 end

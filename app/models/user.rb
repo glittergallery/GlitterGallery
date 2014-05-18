@@ -1,4 +1,10 @@
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+
+  devise :database_authenticatable, :registerable,
+         :recoverable, :validatable
+  has_many :identities
   has_many :projects
   has_many :glimages, :through => :projects
   has_many :comments
@@ -6,21 +12,25 @@ class User < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
    
   
-  before_save { |user| user.email = email.downcase 
-                       user.identity_url = identity_url.downcase }
-  # before_save :normalize_identity_url
-
-  attr_accessible :email, :identity_url, :username
-
+  before_save { |user| user.email = email.downcase }
   validates :username, presence: true
-  validates :identity_url, presence: true, uniqueness: { case_sensitive: false }
-  validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, 
-             uniqueness: { case_sensitive: false}
+  # validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, 
+  #            uniqueness: { case_sensitive: false}
+  def applyomniauth(omniauth)           
+    self.email = omniauth['info']['email'] if email.blank?
+    self.username = omniauth['info']['nickname'] if username.blank?
+    identities.build(:provider => omniauth['provider'], :uid => omniauth['uid'])
+  end
 
-private
+  # This is a method within devise - we're overwriting it by saying that
+  # we will require a password only if
+  # A ) There are no linked identities
+  #       OR
+  # B ) There is a password already
+  def password_required?
+    (identities.empty? || !password.blank?) && super
+  end
+private   
+
     
-
-    def normalize_identity_url
-      self.identity_url = URI.parse(self.identity_url)
-    end
 end
