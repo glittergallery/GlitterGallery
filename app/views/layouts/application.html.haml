@@ -11,7 +11,7 @@
     = javascript_include_tag "application"
     = csrf_meta_tag
 
-  %body{ :class => "#{controller.controller_name} #{controller.action_name} #{logged_in? ? 'logged_in' : 'not_logged_in'} #{yield :body_class}" }
+  %body{ :class => "#{controller.controller_name} #{controller.action_name} #{user_signed_in? ? 'logged_in' : 'not_logged_in'} #{yield :body_class}" }
 
     %header
       %h1.logo
@@ -19,19 +19,21 @@
           GlitterGallery
 
       %nav
-        - if logged_in?
+        - if user_signed_in?
           %ul
             %li
               = link_to current_user.username + "'s dashboard", dashboard_path, :class => 'welcome'
             %li
               = link_to "New Project", new_project_path
             %li
-              = link_to 'Logout', logout_path, :method => :delete, :class => 'logout'
+              = link_to 'Logout', destroy_user_session_path, :method => :delete, :class => 'logout'
+            %li
+              = link_to 'Account Settings', user_settings_path
 
         - else
           %ul
             %li
-              = link_to 'Login', login_path, :class => 'login'
+              = link_to 'Login', new_user_session_path, :class => 'login'
 
       = yield :header
 

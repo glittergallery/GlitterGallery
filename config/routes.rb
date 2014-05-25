@@ -1,15 +1,21 @@
 Glitter::Application.routes.draw do
 
+  devise_for :users,:controllers => { :registrations => 'registrations' }
+  match 'auth/:provider/callback' => "identities#create", :via => [:get,:post]
+  
+
   resources :projects
-  resource :session, only: [:new, :create, :destroy]
+  resources :identities, only: [:destroy,:index]
+  #resource :session, only: [:new, :create, :destroy]
   resources :comments, only: [:new, :create, :destroy]
   resources :glitterposts
-  get '/login' => 'sessions#new'
+  #get '/login' => 'sessions#new'
   
   post 'glitterposts/:id/edit' => 'glitterposts#update'
 
 
   get '/dashboard' => 'dashboard#index', :as => :dashboard
+  get 'settings' => 'users#settings', :as => :user_settings
   get '/:username' => 'users#show'
   get '/:username/:project' => 'projects#show'
   get '/:username/:project/commits' => 'projects#commits'
@@ -64,8 +70,7 @@ Glitter::Application.routes.draw do
     end
   end
 
-  match '/logout', to: 'sessions#destroy', via: :delete
+  #match '/logout', to: 'sessions#destroy', via: :delete
 
-
-  root :to => 'sessions#new'
+  root :to => "identities#new"
 end

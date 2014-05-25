@@ -9,7 +9,7 @@
       ago
   .body><
     = raw markdown.render comment.body
-    - if logged_in? && comment.user_id == current_user.id
+    - if user_signed_in? && comment.user_id == current_user.id
       .delete><
         = link_to "Delete", 
                            comment_path(comment.id),  

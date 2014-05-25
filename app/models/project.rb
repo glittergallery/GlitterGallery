@@ -5,7 +5,7 @@ class Project < ActiveRecord::Base
   belongs_to :user
 
 
-  attr_accessible :name, :path, :parent, :private
+  #attr_accessible :name, :path, :parent, :private
 
   validates :name, :presence => true, uniqueness: { scope: :user }
 

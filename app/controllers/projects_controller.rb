@@ -35,7 +35,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.new params[:project]
+    project = Project.new project_params
     project.user_id = current_user.id
     if params[:project][:private]
       project.uniqueurl = SecureRandom.hex
@@ -450,6 +450,12 @@ class ProjectsController < ApplicationController
   def settings
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
+  end
+
+  private
+
+  def project_params
+    params.require(:project).permit(:name)
   end
 
 end

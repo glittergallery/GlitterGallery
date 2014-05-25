@@ -4,7 +4,7 @@
   %ul
     %li
       =link_to 'Log', File.join(@project.urlbase, 'commits'), :class => 'history'
-    - if logged_in? and @project.user_id == current_user.id
+    - if user_signed_in? and @project.user_id == current_user.id
       %li
         = link_to "Settings", File.join(@project.urlbase, 'settings')
       %li
@@ -12,11 +12,11 @@
       %li
         = link_to 'Add Files', File.join(@project.urlbase, 'newfile'), :class => 'files'
         
-    - if logged_in? && (@project.user_id != current_user.id and @parent.user_id != current_user.id)
+    - if user_signed_in? && (@project.user_id != current_user.id and @parent.user_id != current_user.id)
       %li
         = link_to 'Fork' , File.join(request.original_url, 'forkyou'), :class => 'fork'
 
-    - if logged_in? && (@project.user_id == current_user.id and @parent.user_id != current_user.id)
+    - if user_signed_in? && (@project.user_id == current_user.id and @parent.user_id != current_user.id)
       %li
         = link_to 'Send Pull Request', File.join(request.original_url, 'pull'), :class => 'pull-request'
 

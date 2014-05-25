@@ -1,0 +1,9 @@
+%p You can sign in with the following providers listed below!
+
+-for method in @allowedmethods
+  =link_to(method.to_s.capitalize,"/auth/#{method.to_s}")
+
+
+%P Alternatively, you can sign in via email. 
+=link_to('Sign in',new_session_path(:user))
+=link_to('Sign up',new_registration_path(:user))

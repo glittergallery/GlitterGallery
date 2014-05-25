@@ -1,4 +1,4 @@
-- unless logged_in?
+- unless user_signed_in?
   = 'You need to login to be able to comment!'
   = link_to "Login now!", '/login'
 - else
