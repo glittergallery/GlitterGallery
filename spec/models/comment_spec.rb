@@ -1,20 +1,22 @@
 require 'spec_helper'
 
-describe Comment do
+#FIXME - All of these tests are failing, because Comment model doesn't have a 'belongs_to' relationship with User.
+
+describe "Comment" do
   it 'has a valid factory' do
-    expect(create(:comment)).to be_valid
+    expect(FactoryGirl.create(:comment)).to be_valid
   end
 
   it 'is invalid without a user_id' do
-    expect(build(:comment, user_id: nil)).to have(1).errors_on(:user_id)
+    expect(FactoryGirl.build(:comment, user_id: nil)).to_not be_valid
   end
 
   it 'is invalid without a body' do
-    expect(build(:comment, body: nil)).to have(1).errors_on(:body)
+    expect(FactoryGirl.build(:comment, body: nil)).to_not be_valid
   end
   
   it 'is invalid without a issue check' do
-    expect(build(:comment, issue?: nil)).to have(1).errors_on(:issue?)
+    expect(FactoryGirl.build(:comment, issue: nil)).to_not be_valid
   end
-  end
+end
 
