@@ -9,6 +9,16 @@ require 'capybara/rspec'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+OmniAuth.config.test_mode = true
+OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
+  :provider => 'facebook',
+  :uid => '123123123123',
+  :info => {
+    :email => "sbanskota08@gmail.com",
+    :nickname => "sarupbanskota"
+  }  
+})
+
 RSpec.configure do |config|
   # ## Mock Framework
   #
@@ -18,6 +28,7 @@ RSpec.configure do |config|
   # config.mock_with :flexmock
   # config.mock_with :rr
 
+  config.include Devise::TestHelpers, :type => :controller
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
