@@ -1,5 +1,7 @@
 require 'spec_helper'
 
 describe Identity do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "has a valid factory" do
+    expect(FactoryGirl.create(:identity)).to be_valid
+  end
 end
