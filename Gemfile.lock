@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/libgit2/rugged.git
+  revision: 7c354728ba7ca560e8fead40a1de7d1508756dea
+  branch: development
+  submodules: true
+  specs:
+    rugged (0.19.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -296,6 +304,7 @@ DEPENDENCIES
   rake (= 0.9.2.2)
   redcarpet
   rspec-rails
+  rugged!
   sass-rails
   sketchily
   sqlite3

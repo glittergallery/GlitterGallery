@@ -15,19 +15,13 @@
 
 
   = render 'project_toolbar'
-
-
-  - @contents.each do |blob|
-    = blob.name
-    %svg{:xmlns => "http://www.w3.org/2000/svg"}
-      = raw blob.data
-
-
+  - @images.each do |image|
+    %div
+      = image[:name]
+    = data_image_tag(image,"100%",nil)
 
   .comment_form
     = render partial: "comments/new", locals: {type: 'commit', id: @id.to_s, ajax: @ajax, comment: @comment}
 
   %ul.comments
     = render partial: "comments/comment", collection: @comments
-
-

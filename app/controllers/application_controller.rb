@@ -21,7 +21,8 @@ class ApplicationController < ActionController::Base
 
   def image_commit(project, imagefile)
     if user_signed_in?
-      commit project.path, imagefile.original_filename, imagefile.read, "Add new file #{imagefile.original_filename}." 
+      satellite_commit project.satelliterepo, imagefile.original_filename, imagefile.read, "Add new file #{imagefile.original_filename}." 
+      project.pushtobare
     end
   end
 
@@ -39,19 +40,17 @@ class ApplicationController < ActionController::Base
 
   # Useful for commiting changes to the non bare repo of a project.
 
-  def commit(repopath, file, contents, message)
-    # set up repo and index
-    repo = Grit::Repo.new repopath
-    index = Grit::Index.new repo
-    actor = Grit::Actor.new current_user.username, current_user.email
-    # write file to repo
-    fullpath = File.join repopath, file
-    File.open(fullpath, 'wb') {|f| f.write contents}
-    # commit file
-    index.add file, contents
-    parent = repo.commits.count > 0 ? [repo.commits.first] : nil
-    index.commit message, parent, actor
-
+  def satellite_commit(repo, file, contents, message)
+    repo.index.add(file)
+    options = {}
+    options[:author] = { :email => current_user.email, :name => current_user.username, :time => Time.now }
+    options[:committer] = { :email => current_user.email, :name => current_user.username, :time => Time.now }
+    options[:tree] = repo.index.write_tree(repo)
+    options[:update_ref] = 'HEAD'
+    options[:message] = message
+    options[:parents] = repo.empty? ? [] : [repo.head.target].compact
+    Rugged::Commit.create(repo,options)
+    repo.index.write
   end
 
   # Intended to generate thumbnails for Glimages (a previously used model).

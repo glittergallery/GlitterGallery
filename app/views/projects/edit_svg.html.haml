@@ -17,7 +17,7 @@
   
 
   = form_tag(:controller=>"projects", :action=>"update_svg", :id=>@project.id) do
-    = sketchily_tag :sketch, nil, :url => @path
+    = sketchily_tag :sketch, :url => @path
     = label_tag "commit message"
     = text_field_tag "message", "Update #{@filename}"
     = hidden_field_tag 'filename', @filename

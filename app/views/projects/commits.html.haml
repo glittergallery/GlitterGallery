@@ -14,18 +14,18 @@
   = render 'project_toolbar'
 
   %hr
-
+  
   %ul.history
     - @commits.each do |commit|
       %li
         .meta
           %p
-            = commit.author
+            = commit.author[:name]
           %p
-            = distance_of_time_in_words_to_now commit.authored_date
+            = distance_of_time_in_words_to_now Time.at(commit.epoch_time)
             ago
 
-        = link_to commit.message, File.join(@project.urlbase, 'commit', commit.tree.id), :class => 'commit'
+        = link_to commit.message, File.join(@project.urlbase, 'commit', commit.tree_id), :class => 'commit'
     - if !@comments.nil?
       = will_paginate @comments, :style => 'color:blue' 
 
