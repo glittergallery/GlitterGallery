@@ -59,14 +59,12 @@ Glitter::Application.routes.draw do
   resources :projects do
     member do
       get 'projects/:id/invite.xml' => 'projects#invite'
-
       post :file_upload
       post :file_update
       post :handle_pull_request
       post :create_svg, :as => :create_svg
       post :edit_svg, :as => :edit_svg
       post :update_svg, :as => :update_svg
-
     end
   end
 

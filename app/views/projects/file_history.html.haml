@@ -16,13 +16,14 @@
   = render 'project_toolbar'
 
   %br
-  - @bloblist.each do |blob, commit|
-    = commit.author
+  - @bloblist.each do |image, commit|
+    = commit.author[:name]
     = commit.message
-    = distance_of_time_in_words_to_now commit.date
+    = distance_of_time_in_words_to_now Time.at(commit.epoch_time)
     ago
     %br
-    %img{:src => "data:image/svg+xml;base64,#{Base64.encode64(raw blob.data)}"}
+    = data_image_tag(image,"100%",nil)
+
     %hr
     
   
