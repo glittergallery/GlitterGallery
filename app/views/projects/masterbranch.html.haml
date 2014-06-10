@@ -25,6 +25,8 @@
             = link_to "Edit file", File.join(File.basename(@imageurl).to_s, 'edit'), :class => 'edit'
           %li
             = link_to "Update file", File.join(File.basename(@imageurl).to_s, 'update'), :class => 'upload'
+          %li
+            = link_to "Delete file", File.join(File.basename(@imageurl).to_s, 'delete'), {:method => "delete",:class => 'delete',confirm: "Are you sure?"}  
 
   = image_tag @imageurl.gsub("public",""), :class => 'big'
 
