@@ -84,14 +84,8 @@ class Project < ActiveRecord::Base
   def init
     logger.debug "Initing repo path: #{path}"
     unless File.exists? self.path
-      #barepath = File.join self.path , 'repo.git'
-      #satellitepath = File.join self.path , 'satellite' , '.git'
       Rugged::Repository.init_at(self.barerepopath, :bare)
-      Rugged::Repository.clone_at(self.barerepopath,self.satelliterepopath)
-       
-      #Grit::Repo.init_bare(gitpath)
-      #bare_repo = Grit::Git.new (File.join (path + "_bare"), '.git')
-      #bare_repo.clone({}, gitpath, (File.join (path.to_s + "_bare"), '.git'))
+      Rugged::Repository.clone_at(self.barerepopath,self.satelliterepopath)      
     end
   end
 
