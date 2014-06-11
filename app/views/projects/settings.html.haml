@@ -1,16 +1,27 @@
-- unless private_check and owner_check
+- content_for :head do
+  = stylesheet_link_tag :projects
+
+- unless private_check
   = render 'permissions_error'
 - else
 
   - content_for :title do
     = @project.name.titleize
-    Settings
 
-  - content_for :pagetitle do
-    = link_to @project.name.titleize, @project.urlbase
-    \/ Settings
 
-  = render 'project_toolbar'
-  %br
-  -if user_signed_in? && @project.user_id == current_user.id
-    = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
+  %article
+    %header
+      %h1.generated 
+        = @project.name
+      %h2 
+        FIXME - Descriptions are private, so they won't show up here.
+        /= @project.desc
+
+    %section
+      = render 'project_toolbar'
+  
+    - if @project.private and params[:xid] != @project.uniqueurl
+      = link_to 'Unique link', @project.urlbase
+
+    -if user_signed_in? && @project.user_id == current_user.id
+      = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"

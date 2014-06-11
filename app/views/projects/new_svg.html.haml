@@ -1,20 +1,30 @@
-- unless private_check and owner_check
+- content_for :head do
+  = stylesheet_link_tag :projects
+  
+- unless private_check
   = render 'permissions_error'
 - else
- 
+
   - content_for :title do
-    New SVG
+    = @project.name.titleize
 
-  - content_for :pagetitle do
-    = link_to @project.name.titleize, @project.urlbase
-    \/
-    = 'New SVG'
 
-  = render 'project_toolbar'
+  %article
+    %header
+      %h1.generated 
+        = @project.name
+      %h2 
+        FIXME - Descriptions are private, so they won't show up here.
+        /= @project.desc
 
+    %section
+      = render 'project_toolbar'
+  
+    - if @project.private and params[:xid] != @project.uniqueurl
+      = link_to 'Unique link', @project.urlbase
     
-  = form_tag(:controller=>"projects", :action=>"create_svg", :id => @project.id) do
-    What are you calling your sketch?
-    = text_field_tag :filename
-    = sketchily_tag :sketch
-    = submit_tag
+    = form_tag(:controller=>"projects", :action=>"create_svg", :id => @project.id) do
+      What are you calling your sketch?
+      = text_field_tag :filename
+      = sketchily_tag :sketch
+      = submit_tag

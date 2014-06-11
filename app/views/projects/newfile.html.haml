@@ -1,19 +1,30 @@
-- unless private_check and owner_check
+- content_for :head do
+  = stylesheet_link_tag :projects
+
+- unless private_check
   = render 'permissions_error'
 - else
- 
+
   - content_for :title do
-    New file
+    = @project.name.titleize
 
-  - content_for :pagetitle do
-    = link_to @project.name.titleize, @project.urlbase
-    \/
-    = 'New file'
 
-  = render 'project_toolbar'
-  %br
+  %article
+    %header
+      %h1.generated 
+        = @project.name
+      %h2 
+        FIXME - Descriptions are private, so they won't show up here.
+        /= @project.desc
 
-  = form_tag file_upload_project_path(@project), multipart: true do
-    = file_field_tag "file" 
-    = submit_tag 
+    %section
+      = render 'project_toolbar'
+  
+    - if @project.private and params[:xid] != @project.uniqueurl
+      = link_to 'Unique link', @project.urlbase
+      
+
+    = form_tag file_upload_project_path(@project), multipart: true do
+      = file_field_tag "file" 
+      = submit_tag 
 

@@ -1,3 +1,6 @@
+- content_for :head do
+  = stylesheet_link_tag :projects
+
 - unless private_check
   = render 'permissions_error'
 - else
@@ -8,32 +11,43 @@
     = filename
 
   - content_for :pagetitle do
-    = link_to @project.name.titleize, @project.urlbase
-    \/
-    = filename
 
-  = render 'project_toolbar'
+  %article
+    %header
+      %h1.generated
+        = link_to @project.name.titleize, @project.urlbase
+        \/
+        = filename
+      %h2
+        FIXME - Descriptions are private, so they won't show up here.
+        /= @project.desc
+    %section.album.image
+      %div
+        %p
+          = image_tag @imageurl.gsub("public","")
+    %section.comments
+      %div
+        %header
+          %h1 Emily Dirsh
+          %h2 3 hours ago
+        %article
+          %p What plans do you have for this project? Who else is involved?
+        %footer
+      %div
+        %header
+          %h1 Rohit Paul Kuruvilla
+          %h2 3 hours ago
+        %article
+          %p Noodles!
+        %footer
 
-  - content_for :toolbar do
-    %ul
-      %li
-        = link_to "File history", File.join(File.basename(@imageurl).to_s, 'history'), :class => 'history'
-      - if user_signed_in?
-      
-        -if @project.user_id == current_user.id
-          %li
-            = link_to "Edit file", File.join(File.basename(@imageurl).to_s, 'edit'), :class => 'edit'
-          %li
-            = link_to "Update file", File.join(File.basename(@imageurl).to_s, 'update'), :class => 'upload'
 
-  = image_tag @imageurl.gsub("public",""), :class => 'big'
+    .comment_form
+      = render partial: "comments/new", locals: {type: 'file', id: filename, ajax: @ajax, comment: @comment}
 
-  .comment_form
-    = render partial: "comments/new", locals: {type: 'file', id: filename, ajax: @ajax, comment: @comment}
-
-  %ul.comments
-    = render partial: "comments/comment", collection: @comments
-  - if !@comments.nil?
-    = will_paginate @comments, :style => 'color:blue' 
+    %ul.comments
+      = render partial: "comments/comment", collection: @comments
+    - if !@comments.nil?
+      = will_paginate @comments, :style => 'color:blue' 
     
 

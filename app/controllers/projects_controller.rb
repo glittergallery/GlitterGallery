@@ -24,7 +24,8 @@ class ProjectsController < ApplicationController
   def create
     project = Project.new project_params
     project.user_id = current_user.id
-    if params[:project][:private]
+    if params[:commit]=="Private"
+      project.private = true
       project.uniqueurl = SecureRandom.hex
     end
     if project.save

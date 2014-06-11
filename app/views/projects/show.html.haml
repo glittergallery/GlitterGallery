@@ -1,27 +1,40 @@
+- content_for :head do
+  = stylesheet_link_tag :projects
+
 - unless private_check
   = render 'permissions_error'
 - else
 
   - content_for :title do
     = @project.name.titleize
-
-  - content_for :pagetitle do
-    = link_to @project.name.titleize, @project.urlbase
     
-  = render 'project_toolbar'
-  = render 'images'
+  %article
+    %header
+      %h1.generated 
+        = @project.name
+      %h2 
+        FIXME - Descriptions are private, so they won't show up here.
+        /= @project.desc
 
-  - if @project.private and params[:xid] != @project.uniqueurl
-    = link_to 'Unique link', @project.urlbase
+    %section
+      = render 'project_toolbar'
+    %section.album
+      = render 'images'
+  
+    - if @project.private and params[:xid] != @project.uniqueurl
+      = link_to 'Unique link', @project.urlbase
 
-  .comment_form
-    = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
+    .comment_form
+      = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
 
-  %ul.comments
-    = render partial: "comments/comment", collection: @comments
-  %ul.paginate
-    - if @comments.any?
-      = will_paginate @comments, params: { controller: "projects", action: "show"},:style => 'color:blue' 
+    %ul.comments
+      = render partial: "comments/comment", collection: @comments
+    %ul.paginate
+      - if @comments.any?
+        = will_paginate @comments, params: { controller: "projects", action: "show"},:style => 'color:blue' 
+
+
+
 
 
 
