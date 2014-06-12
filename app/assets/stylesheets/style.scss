@@ -196,21 +196,13 @@ $raleway: 'Raleway', sans-serif;
 	  .comments{
 	  	@include span(1);
 	  	padding: 0;
-			border-top: solid 0.1em red;
 			div{
 				padding: 1em;
+				margin: 0;
 				padding-bottom: 0;
+				width: 95%;
 				header{
 					margin: 0;
-					h1, h2{
-						padding: 0.25em;
-					}
-					h2{
-						border-bottom: solid 0.15em $dark_geometry_gray;
-					}
-				}
-				article{
-					padding: 0.25em;
 				}
 				h1, h2, article{
 					@include span(1);
@@ -218,6 +210,27 @@ $raleway: 'Raleway', sans-serif;
 					min-height: 0;
 					font-size: 0.8em;
 					background-color: $geometry_gray;
+				}
+				footer{
+				 @extend h2;
+				 color: gray;
+				 a{
+				   text-decoration: none;
+				   color: gray;
+				 }
+				 a:hover{
+				 	 text-decoration: underline;
+				 }
+				}
+				form{
+					background-color: white;
+					input[type="submit"]{
+						display: none;
+					}
+					input[type="text"]{
+						width: 100%;
+						margin: 0;		
+					}
 				}	
 			}
 		}

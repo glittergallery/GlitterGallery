@@ -1,18 +1,19 @@
 - markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
-%li
-  .meta
-    = avatar(comment.user.email)
-    %p.author
+%div
+  %header
+    %h1
+      /= avatar(comment.user.email)
       = comment.user.username
-    %p.time
-      = distance_of_time_in_words_to_now comment.created_at
-      ago
-  .body><
+  %article
+    %p 
     = raw markdown.render comment.body
-    - if user_signed_in? && comment.user_id == current_user.id
-      .delete><
-        = link_to "Delete", 
-                           comment_path(comment.id),  
-                           method:"delete",                                                 
-                           data: { confirm: "Are you sure?"}
+  %footer
+    = distance_of_time_in_words_to_now comment.created_at
+    ago
+    - if user_signed_in? && comment.user.id == current_user.id
+      = link_to "Delete", 
+                         comment_path(comment.id),  
+                         method:"delete",                                                 
+                         data: { confirm: "Are you sure?" }
+
 

@@ -145,6 +145,7 @@
         .asidewrapper
           - if user_signed_in?
             - @projects = current_user.projects
+            /- @glitterposts = current_user.glitterposts
             %section
               %header
                 %h1 MY PUBLIC PROJECTS
@@ -155,25 +156,23 @@
                     - unless project.private
                       %li
                         = link_to project.name, project.urlbase
-
-            - if user_signed_in?
-              %section
-                %header
-                  %h1 MY PRIVATE PROJECTS
-                  %h2 Last updated June 6
-                %article
-                  %ul
-                    - @projects.each do |project|
-                      - if project.private
-                        %li
-                          = link_to project.name, project.urlbase
-
+            %section
+              %header
+                %h1 MY PRIVATE PROJECTS
+                %h2 Last updated June 6
+              %article
+                %ul
+                  - @projects.each do |project|
+                    - if project.private
+                      %li
+                        = link_to project.name, project.urlbase
             %section
               %header
                 %h1 MY LATEST GLITTERPOSTS
                 %h2 Last updated yesterday
               %article
                 %ul
+                /
                   - @projects.each do |project|
                     - unless project.private
                       %li

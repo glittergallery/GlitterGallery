@@ -24,14 +24,9 @@
     - if @project.private and params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
 
-    .comment_form
-      = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
-
-    %ul.comments
+    %section.comments
       = render partial: "comments/comment", collection: @comments
-    %ul.paginate
-      - if @comments.any?
-        = will_paginate @comments, params: { controller: "projects", action: "show"},:style => 'color:blue' 
+      = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
 
 
 

@@ -1,27 +1,79 @@
 @import 'style';
 
 @media screen and (min-width: 0em){
-	.album{
-		background-color: white;
-		@include center;
-		div{
-			padding: 1em;
-			p{
-				@include span(0.5);
-				@include center;
-				background-color: $dark_geometry_gray;
-				width: 95%;
-				img{
-					max-width: 100%;
-					height: auto;
+	article{
+		.toolbar{
+	    @include center;
+	    font-size: 0.9em;
+	    font-weight: 300;
+	    div{
+	      padding: 1em 0;
+	      @include span(1);
+	      text-align: center;
+	      font-size: 0.8em;
+	      a{
+	        text-decoration: none;
+	        color: $map_blue;
+	      }
+	    }
+	    .active, div:hover{
+	        background-color: $dark_geometry_gray;
+	        font-weight: 700;
+	      a{
+	        color:$map_blue;
+	      }
+	    }
+		}
+		.action{
+		 @extend .toolbar;
+		 div{
+		 	background-color: $geometry_gray;
+		 }
+		}
+		.album{
+			background-color: white;
+			@include center;
+			div{
+				padding: 1em;
+				p{
+					@include span(0.5);
+					@include center;
+					background-color: $dark_geometry_gray;
+					width: 95%;
+					img{
+						max-width: 100%;
+						height: auto;
+					}
 				}
 			}
 		}
 	}
-	.image{
-
-	}
 }
+
+
+@media screen and (min-width: 20em){
+  article{
+    .toolbar{
+      div{
+        @include span(1/5);
+        text-align: center;
+        border-bottom: solid 0.1em $dark_geometry_gray;
+      }
+      .active, div:hover{
+        border-bottom: solid 0.1em $map_blue;
+      }
+    }
+    .action{
+			border-bottom: solid 0.1em $dark_geometry_gray;
+  		div{
+    		@include span(1/4);
+      	text-align: center;  		
+  		}
+    }
+  }
+}
+
+
 
 @media screen and (min-width: 40.063em){
 
