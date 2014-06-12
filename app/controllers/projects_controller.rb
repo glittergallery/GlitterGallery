@@ -184,9 +184,7 @@ class ProjectsController < ApplicationController
 
   # Update files using this function. Updated files get commited to the non_bare repo
   # and then pushed to the bare repo.
-  # FIXME - work on the push from non_bare to bare repo method.
   # FIXME - allow uploads of only supported images.
-
   def file_update  
     @project = Project.find params[:id]
     tmp = params[:file].tempfile
@@ -201,6 +199,18 @@ class ProjectsController < ApplicationController
     else
       flash[:alert] = "Unable to update #{params[:image_name]}. The server ponies are sad."
     end
+    redirect_to @project.urlbase
+  end
+
+  # Delete files using this function.
+  def file_delete
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
+    file = File.join(@project.satellitedir, params[:image_name])
+    FileUtils.rm(file) if File.exists?(file)    
+    satellite_delete(@project.satelliterepo,params[:image_name])
+    @project.pushtobare
+    flash[:notice] = "#{params[:image_name]} has been deleted!"
     redirect_to @project.urlbase
   end
 

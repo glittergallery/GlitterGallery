@@ -51,6 +51,19 @@ class ApplicationController < ActionController::Base
     repo.index.write
   end
 
+  def satellite_delete(repo,file_name)
+    repo.index.remove(file_name)
+    options = {}
+    options[:author] = { :email => current_user.email, :name => current_user.username, :time => Time.now }
+    options[:committer] = { :email => current_user.email, :name => current_user.username, :time => Time.now }
+    options[:tree] = repo.index.write_tree(repo)
+    options[:update_ref] = 'HEAD'
+    options[:message] = "Deleted #{file_name}"
+    options[:parents] = repo.empty? ? [] : [repo.head.target].compact
+    Rugged::Commit.create(repo,options)
+    repo.index.write
+  end
+
   # Intended to generate thumbnails for Glimages (a previously used model).
   # FIXME - redo this to work without the glimage idea for all kinds of image files.
 

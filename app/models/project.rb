@@ -77,7 +77,6 @@ class Project < ActiveRecord::Base
     unless File.exists? self.path
       Rugged::Repository.init_at(self.barerepopath, :bare)
       Rugged::Repository.clone_at(self.barerepopath,self.satelliterepopath)
-       
     end
   end
 
