@@ -6,7 +6,6 @@ class User < ActiveRecord::Base
          :recoverable, :validatable
   has_many :identities
   has_many :projects
-  has_many :glimages, :through => :projects
   has_many :comments
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

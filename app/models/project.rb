@@ -6,24 +6,20 @@ class Project < ActiveRecord::Base
 
   validates :name, :presence => true, uniqueness: { scope: :user }
 
-  # get the last update time
-  # of the images in the project
   def last_updated
     repo = Grit::Repo.init_bare_or_open(File.join(path , '.git'))
     repo.commits.first.commited_date
   end
 
-  # Delete all the files and directories associated with the project
   def deletefiles
     FileUtils.rm_rf(self.path)
   end
 
-  # Return linkable url of an image
   def imageurl(imagename)
     File.join(self.satellitedir,imagename).gsub("public","")
   end
 
-  # Get the URL of the project
+  # Project URL
   def urlbase
     urlbase = File.join "/#{user.username}", self.name.gsub(" ", "%20")
     if self.private
@@ -33,27 +29,22 @@ class Project < ActiveRecord::Base
     end
   end
 
-  # Return the bare repo
   def barerepo
     Rugged::Repository.new(self.barerepopath)
   end
 
-  # Return the satellite repo
   def satelliterepo
     Rugged::Repository.new(self.satelliterepopath)
   end
 
-  # Get the path of the bare repo
   def barerepopath
     File.join self.path , 'repo.git'
   end
 
-  # Get the path of the satelliterepo
   def satelliterepopath
     File.join self.path , 'satellite' , '.git'
   end
 
-  # Get the path of the satelite directory. This is useful to link to images
   def satellitedir
     File.join self.path , 'satellite'
   end
@@ -85,7 +76,7 @@ class Project < ActiveRecord::Base
     logger.debug "Initing repo path: #{path}"
     unless File.exists? self.path
       Rugged::Repository.init_at(self.barerepopath, :bare)
-      Rugged::Repository.clone_at(self.barerepopath,self.satelliterepopath)      
+      Rugged::Repository.clone_at(self.barerepopath,self.satelliterepopath)
     end
   end
 

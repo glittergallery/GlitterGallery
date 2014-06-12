@@ -1,6 +1,3 @@
-# User interacts with comments throughout the application through 
-# the methods defined in this controller. 
-
 class CommentsController < ApplicationController
   before_filter :logged_in,  only: [:new, :create]
 
@@ -8,8 +5,8 @@ class CommentsController < ApplicationController
     @comment = Comment.new
   end
 
-  # Helps create new comments. They have polycomment attributes (type, id)
-  # that helps distinguish the nature of what these comments are for.
+  # polycomment attributes (type, id) to help
+  # tell what the comments are for
 
   def create
     @comment = Comment.new comment_params
@@ -22,7 +19,6 @@ class CommentsController < ApplicationController
         format.html { redirect_to :back }
         format.js {}
       end
-      #flash[:notice] = 'Your comment was posted!'
     else
       redirect_to :back
       flash[:alert] = 'Something went wrong, try reposting your comment.'

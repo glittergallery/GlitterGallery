@@ -1,36 +1,39 @@
 - content_for :title do
   = @user.username.titleize
 
-- content_for :pagetitle do
-  = @user.username.titleize
+- content_for :head do
+  = stylesheet_link_tag :user
 
 
-.meta
-  = avatar @user.email
-  %p
-    = @user.email
-  %p
-    Joined
-    = time_tag @user.created_at, :format => '%B %d, %Y'
-%br
-
-.center
-  %h1
-    Public projects
-  %ul
-  - @projects.each do |project|
-    - unless project.private
-      %li
-        = link_to project.name, project.urlbase
-
-%br
-
-  - if user_signed_in? and current_user.id == @user.id
+%article
+  %header
     %h1
-      Private projects
-    - # TODO: if there are no private projects, provide link to create one
+      = @user.username
+    %h2
+      = @user.username
+  %section.bio
+    = avatar @user.email
+  %section.social
+    .active
+      %p
+        %a{href: "#"} 1
+      %p
+        %a{href: "#"} Activity
+    %div
+      %p
+        %a{href: "#"} 0
+      %p
+        %a{href: "#"} Followers
+    %div
+      %p
+        %a{href: "#"} 0
+      %p
+        %a{href: "#"} Following
+  %section.feed
     %ul
-    - @projects.each do |project|
-      - if project.private
-        %li
-          = link_to project.name, project.urlbase
+      %li.comment
+        %a{href: "/sarupbanskota"} Sarup Banskota
+        joined
+        %a{href: "#"} GlitterGallery
+        = distance_of_time_in_words_to_now @user.created_at
+        ago.

@@ -1,27 +1,35 @@
+- content_for :head do
+  = stylesheet_link_tag :projects
+  
 - unless private_check
   = render 'permissions_error'
 - else
 
   - content_for :title do
     = @project.name.titleize
-    Commit
-
-  - content_for :pagetitle do
-    = link_to @project.name.titleize, @project.urlbase
-    \/
-    = link_to "Commits", (File.join @project.urlbase, 'commits')
-    \/
-    = @id
 
 
-  = render 'project_toolbar'
-  - @images.each do |image|
-    %div
-      = image[:name]
-    = data_image_tag(image,"100%",nil)
+  %article
+    %header
+      %h1.generated 
+        = @project.name
+      %h2 
+        FIXME - Descriptions are private, so they won't show up here.
+        /= @project.desc
 
-  .comment_form
-    = render partial: "comments/new", locals: {type: 'commit', id: @id.to_s, ajax: @ajax, comment: @comment}
+    %section
+      = render 'project_toolbar'
+  
+    - if @project.private and params[:xid] != @project.uniqueurl
+      = link_to 'Unique link', @project.urlbase
+    
+    - @images.each do |image|
+      %div
+        = image[:name]
+      = data_image_tag(image,"100%",nil)
 
-  %ul.comments
-    = render partial: "comments/comment", collection: @comments
+    .comment_form
+      = render partial: "comments/new", locals: {type: 'commit', id: @id.to_s, ajax: @ajax, comment: @comment}
+
+    %ul.comments
+      = render partial: "comments/comment", collection: @comments

@@ -1,24 +1,14 @@
 require 'grit'
 
-# User interacts with projects through the methods defined 
-# in this controller. 
-# User may create multiple unique projects, and they in 
-# turn contain multiple files. We expect these files to be 
-# image format files, but right now there is no provision to verify that.
-
 class ProjectsController < ApplicationController
   before_filter :store_return_to
   before_filter :authenticate_user!, except: [:show, :commits, :projectcommit, :masterbranch, :file_history, :pulls, :pull]
 
-  # New projects can be named in the projects#new page.
-  # The list of current projects is required so we can display
-  # them as a carousel in the projects#new page. 
   def new
     @project = Project.new
     @projects = current_user.projects
   end
   
-  # Projects can be destroyed from the settings page
   def destroy
     @project = Project.find params[:id]
     if current_user.id == @project.user_id
@@ -31,13 +21,11 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # Project creation is defined in the method below. We're allowing 
-  # them to name a project, and we're then adding them to the project list
-  # of the person who's currently logged in.
   def create
     project = Project.new project_params
     project.user_id = current_user.id
-    if params[:project][:private]
+    if params[:commit]=="Private"
+      project.private = true
       project.uniqueurl = SecureRandom.hex
     end
     if project.save
@@ -49,12 +37,6 @@ class ProjectsController < ApplicationController
       redirect_to dashboard_path
     end
   end
-
-  # Projects with thumbnails of their files can be viewed on :username/:project_name
-  # We're currently not displaying thumbnails though, we're fetching the 
-  # images off the current working tree of the repo where they're stored.
-  # FIXME - instead of showing the images themselves, it would be nice to 
-  #         be able to view thumbnails instead. 
 
   def show
     @user = User.find_by username: params[:username]
@@ -82,8 +64,6 @@ class ProjectsController < ApplicationController
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
-  # Displays the git commits for a given project. We're making use of
-  # commit walker function provided by rugged. 
 
   def commits
     @user = User.find_by username: params[:username]
@@ -95,9 +75,6 @@ class ProjectsController < ApplicationController
     @comments = Comment.where(polycomment_type: "commit", polycomment_id: params[:tree_id])
     @comments = pg @comments, 10
   end
-
-  # View the state of a project for any given commit. Every commit has 
-  # a list of comments associated with it. 
 
   def projectcommit
     @user = User.find_by username: params[:username]
@@ -361,7 +338,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # Renders pull requests page for specific projects
   def pulls
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
@@ -369,7 +345,6 @@ class ProjectsController < ApplicationController
     @pulls = PullRequest.where("parent=?",@project.id)
   end
 
-  # Shows details about a specific pull request on a project
   def pull
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
@@ -380,7 +355,6 @@ class ProjectsController < ApplicationController
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
-  # allow merging a pull request
   def merge
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
@@ -409,7 +383,6 @@ class ProjectsController < ApplicationController
     redirect_to @project.urlbase
   end
 
-  # Helps to re-open requests that have been closed
   def open
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
@@ -419,7 +392,6 @@ class ProjectsController < ApplicationController
     redirect_to @project.urlbase
   end
 
-  # Helps to close requests that shouldn't be open
   def close
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
@@ -429,20 +401,11 @@ class ProjectsController < ApplicationController
     redirect_to @project.urlbase
   end
 
-
-  # Renders the SVG-edit form. Helps you specify a filename for the SVG,
-  # and 
-
   def new_svg
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
-  # Saves a new SVG file generated through SVG-edit. The image data is passed through to params, 
-  # we might want to change that at a later stage, though, lest the file is too big.
-  # FIXME - We're using a base64 encoded version of the original SVG data. 
-  #         We should look at converting it back to native XML mark so the browser
-  #         can auto-render it.
 
   def create_svg
     @project = Project.find params[:id]
@@ -458,7 +421,6 @@ class ProjectsController < ApplicationController
     redirect_to @project.urlbase
   end
 
-  # WIP - lets you edit svg images created on SVG-edit, or manually uploaded ones too.
 
   def edit_svg
     @user = User.find_by username: params[:username]
@@ -482,7 +444,6 @@ class ProjectsController < ApplicationController
     redirect_to @project.urlbase
   end
 
-  # WIP - provide settings for the project
   def settings
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]

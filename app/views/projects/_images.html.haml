@@ -1,9 +1,7 @@
-%ul.images
-  - @images.each do |image|
-    %li
+- @images.each do |image|
+  %div
+    %p
       = link_to(image_tag(image[:url]),image[:link])
-           
-
 
 
     

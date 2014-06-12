@@ -7,48 +7,215 @@
         |
         = yield :title
 
-    = stylesheet_link_tag "application", :media => "all"
+    = yield :head
+
     = javascript_include_tag "application"
     = csrf_meta_tag
 
   %body{ :class => "#{controller.controller_name} #{controller.action_name} #{user_signed_in? ? 'logged_in' : 'not_logged_in'} #{yield :body_class}" }
 
-    %header
-      %h1.logo
-        = link_to root_url do
-          GlitterGallery
 
-      %nav
-        - if user_signed_in?
-          %ul
-            %li
-              = link_to current_user.username + "'s dashboard", dashboard_path, :class => 'welcome'
-            %li
-              = link_to "New Project", new_project_path
-            %li
-              = link_to 'Logout', destroy_user_session_path, :method => :delete, :class => 'logout'
-            %li
-              = link_to 'Account Settings', user_settings_path
-
+    %nav
+      .left
+        %img{src: "logo.svg"}/
+      .right
+        %img{src: "sarup.jpg"}/
+        -if user_signed_in?
+          %span.username
+            = link_to current_user.username, (File.join '/', current_user.username)
+            = link_to 'logout', destroy_user_session_path, :method => :delete, :class => 'logout'
         - else
-          %ul
-            %li
-              = link_to 'Login', new_user_session_path, :class => 'login'
+          %span.username
+            = link_to 'Login', new_user_session_path, :class => 'login'
 
-      = yield :header
+    = yield :header
 
-    %section.content
-      %header
-        -# - if content_for? :prev_link
-        -#   .prev
-        -#     = yield :prev_link
 
-        %h1.page-title
-          = yield :pagetitle
-
-        %nav.toolbar
-          = yield :toolbar
+    #wrapper
+      / Use left asides for Navigation help
+      %aside.map.left
+        .asidewrapper
+          -if user_signed_in?
+            %section
+              %header PROJECTS
+              %ul
+                %li
+                  %a{href: "/projects/new"} New Project
+                %li
+                  %a{href: "/projects"}
+                    %span.count
+                      = current_user.projects.count
+                    My Projects
+                %li
+                  %a{href: "#"}
+                    %span.count 
+                      /= current_user.starred_projects.count
+                    Starred
+                %li
+                  %a{href: "#"}
+                    %span.count 
+                      /projects whose notifs haven't been read
+                      /= current_user.starred_projects.count
+                    Unread
+                %li
+                  %a{href: "/projects/settings"}
+                    Settings
+            %section
+              %header GLITTERPOSTS
+              %ul
+                %li
+                  %a{href: "/glitterposts/new"} Compose New
+                %li
+                  %a{href: "/glitterposts"}
+                    %span.count
+                      /= current_user.glitterposts.count
+                    My Glitterposts
+                %li
+                  %a{href: "#"}
+                    %span.count
+                      / = current_user.glitterposts[draft=true]
+                    Drafts
+                %li
+                  %a{href: "#"}
+                    %span.count
+                      / = current_user.glitterpost_bookmarks
+                    Bookmarks
+                %li
+                  %a{href: "/glitterposts/settings"} 
+                    Settings
+            %section
+              %header DOODLES
+              %ul
+                %li
+                  %a{href: "/doodles/new"} 
+                    Doodle New
+                %li
+                  %a{href: "#"} 
+                    %span.count
+                      / = current_user.doodles.count
+                    My Doodles
+                %li
+                  %a{href: "#"}
+                    %span.count
+                      / = current_user.doodle[draft=true]
+                    Drafts
+                %li
+                  %a{href: "#"} 
+                    / = current_user.doodle_bookmarks
+                    Bookmarks
+            %section
+              %header MEETINGS
+              %ul
+                %li
+                  %a{href: "/meetings/new"}
+                    Schedule New
+                %li
+                  %a{href: "#"}
+                    %span.count
+                      / = current_user.meetings[upcoming].count
+                    Upcoming
+                %li
+                  %a{href: "#"}
+                    %span.count
+                      / = current_user.meetings[past].count
+                    Past
+                %li
+                  %a{href: "/meetings/settings"} 
+                  Settings
+          - else
+            %section
+              %header DEVELOPER
+              %ul
+                %li
+                  %a{href: "#"} Source
+                %li
+                  %a{href: "#"} Wiki
+                %li
+                  %a{href: "#"} Contribute
+                %li
+                  %a{href: "#"} Report Issue
+                  / close left aside
+                  / Use article for central content
 
       = render 'shared/messages'
       = yield
 
+
+      %aside.right.widget
+        .asidewrapper
+          - if user_signed_in?
+            - @projects = current_user.projects
+            %section
+              %header
+                %h1 MY PUBLIC PROJECTS
+                %h2 Last updated yesterday
+              %article
+                %ul
+                  - @projects.each do |project|
+                    - unless project.private
+                      %li
+                        = link_to project.name, project.urlbase
+
+            - if user_signed_in?
+              %section
+                %header
+                  %h1 MY PRIVATE PROJECTS
+                  %h2 Last updated June 6
+                %article
+                  %ul
+                    - @projects.each do |project|
+                      - if project.private
+                        %li
+                          = link_to project.name, project.urlbase
+
+            %section
+              %header
+                %h1 MY LATEST GLITTERPOSTS
+                %h2 Last updated yesterday
+              %article
+                %ul
+                  - @projects.each do |project|
+                    - unless project.private
+                      %li
+                        = link_to project.name, project.urlbase
+          - else
+            %section
+              %header
+                %h1 WHAT'S AWESOME
+                %h2 Awesome stuff people are doing.
+              %article
+                %ul
+                  %li
+                    %a{href: "https://fedorahosted.org/design-team/ticket/330#comment:2"} Flock Tshirts
+                  %li
+                    %a{href: "http://sarupbanskota.fedorapeople.org/waartaa/"} Waartaa Logos
+                  %li
+                    %a{href: "http://blog.linuxgrrl.com/2014/04/01/a-proposal-for-fedoras-website-considering-fedora-next/"} Fedora Websites
+                  %li
+                    %a{href: "http://blog.linuxgrrl.com/2014/06/05/son-of-more-fedora-next-logos/"} Fedora.next logos
+
+            %section
+              %header
+                %h1 BLOG
+                %h2 News from GG town.
+              %article
+                %ul
+                  %li
+                    %a{href: "http://rohitpaulk.roon.io/multiple-authentication-methods-with-devise-and-omniauth"} More social GG auth
+                  %li
+                    %a{href: "sarupbanskota.github.io/fedora/2014/05/22/glittergallery-more-gsoc-love.html"} GlitterGallery: 2X GSoC love this year!
+                  %li
+                    %a{href: "http://sarupbanskota.github.io/fedora/2014/06/07/init-redesigning-glittergallery-responsively.html"} Redesigning GlitterGallery
+                    
+            %section
+              %header
+                %h1 MORE NEWS
+                %h2 A little more won't hurt, promise.
+              %article
+                %ul
+                  %li
+                    %a{href: "#"} Blog
+                  %li
+                    %a{href: "#"} FedoraGG
+                  %li
+                    %a{href: "#"} Talks

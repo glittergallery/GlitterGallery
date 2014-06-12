@@ -1,7 +1,5 @@
 require 'escape'
 
-# Methods here are accessibe by all controllers.
-
 class ApplicationController < ActionController::Base
   include Escape
   include SessionsHelper

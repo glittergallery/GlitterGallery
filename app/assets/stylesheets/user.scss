@@ -1,0 +1,54 @@
+@import 'style';
+
+@media screen and (min-width: 0em){
+
+	article{
+		.bio{
+			img{	
+				max-width: 100%;
+				height: auto;
+			}
+		}
+		.social{
+			@include center;
+			font-size: 0.9em;
+			div{
+				padding: 1em 0;
+				@include span(1);
+				text-align: center;
+				a{
+					text-decoration: none;
+					color: $map_blue;
+				}
+			}
+			.active, div:hover{
+					background-color: $dark_geometry_gray;
+					font-weight: 700;
+				a{
+					color:$map_blue;
+				}
+			}
+			font-weight: 300;
+		}
+	}
+
+}
+
+
+// potrait smartphones
+
+@media screen and (min-width: 20em){
+	article{
+		.social{
+			div{
+				@include span(1/3);
+				text-align: center;
+				border-bottom: solid 0.25em red;
+			}
+			.active, div:hover{
+				border-bottom: solid 0.25em $map_blue;
+			}
+		}
+	}
+	
+}

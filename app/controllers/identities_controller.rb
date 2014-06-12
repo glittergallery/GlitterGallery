@@ -54,7 +54,6 @@ class IdentitiesController < ApplicationController
     end        
   end
 
-  # This is the page where the user can view/link extra identities
   def index
     @identities = current_user.identities
     @allowedmethods = Identity.allowedmethods

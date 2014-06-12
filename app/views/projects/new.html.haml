@@ -1,12 +1,18 @@
 - content_for :title do
   Create new project!
 
-- content_for :pagetitle do
-  Show the world some design love!
+- content_for :head do
+  = stylesheet_link_tag :style
 
-= form_for @project do |f|
-  = f.label "I wanna create a new project called: ", :for => :name
-  = f.text_field :name, :placeholder => "My awesome project's nickname"
-  = f.label "Private?", :for => :private
-  = f.check_box :private
-  = f.submit
+
+%article
+  %header
+    %h1 New project
+    %h2 Projects on GlitterGallery can be used to collaborate over important design work with your team.
+  = form_for @project do |f|
+    %p Give it a name:
+    = f.text_field :name, placeholder: "Fancy project name", autofocus: true
+    %p We let you decide if you want your project to be private - only colleagues with the unique URL get access to private projects.
+    %section.decision
+      = f.submit "Public", class: "recommended"
+      = f.submit "Private"
