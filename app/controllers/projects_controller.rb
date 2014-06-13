@@ -50,7 +50,7 @@ class ProjectsController < ApplicationController
     barerepo = @project.barerepo    
     unless barerepo.empty?
       headcommit = barerepo.head.target
-      headtree = barerepo.lookup(headcommit.tree_id)      
+      headtree = barerepo.lookup(headcommit).tree
       headtree.each do |blob|
         link = File.join(@project.urlbase,'master',blob[:name])
         @images.push({
