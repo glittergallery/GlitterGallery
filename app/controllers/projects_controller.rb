@@ -69,9 +69,11 @@ class ProjectsController < ApplicationController
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
     @commits = []
-    walker = Rugged::Walker.new(@project.barerepo)
-    walker.push(@project.barerepo.head.target)
-    walker.each { |c| @commits.push(c) }
+    unless @project.barerepo.empty?
+      walker = Rugged::Walker.new(@project.barerepo)
+      walker.push(@project.barerepo.head.target)
+      walker.each { |c| @commits.push(c) }
+    end
     @comments = Comment.where(polycomment_type: "commit", polycomment_id: params[:tree_id])
     @comments = pg @comments, 10
   end
