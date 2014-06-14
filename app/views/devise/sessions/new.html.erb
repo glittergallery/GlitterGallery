@@ -1,8 +1,8 @@
 <% content_for :head do %>
-   <%= stylesheet_link_tag :login -%>
+   <%= stylesheet_link_tag :style -%>
 <% end %>
 
-<article>
+<article class="hero">
 
   <header>
     <h1>GlitterGallery</h1>
@@ -10,18 +10,31 @@
   </header>
 
   <section>
-		<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-	    <%= f.email_field :email, placeholder: "Your email", autofocus: true %>
-	    <%= f.password_field :password, placeholder: "Your password", autocomplete: "off" %>
-	    <%= f.submit "Login" %>
-	  <% end %>
+    <div>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <%= f.email_field :email, placeholder: "Your email", autofocus: true %>
+        <%= f.password_field :password, placeholder: "Your password", autocomplete: "off" %>
+        <%= f.submit "Login" %>
+      </form>
+    <% end %>
   </section>
 
   <section class="social">
-  	<p><%=link_to('Sign up',new_registration_path(:user))%></p>
-  	<a href="/auth/github"><p class="github">GitHub</p></a>
-  	<a href="/auth/openid"><p class="openid">OpenID</p></a>
-  </section>
-        
+    <div>
+      <form action="/auth/github" class="hide">
+        <input type="submit" class="github" value="GitHub"></input>
+      </form>
+    </div>
+    <div>
+      <form action="/auth/facebook" class="hide">
+        <input type="submit" class="facebook" value="Facebook"></input>
+      </form>
+    </div>
+    <div>
+      <form action="/auth/openid">
+        <input type="submit" class="openid" value="OpenID"></input>
+      </form>
+    </div>
+  </section>     
 
 </article> <!-- close central article -->

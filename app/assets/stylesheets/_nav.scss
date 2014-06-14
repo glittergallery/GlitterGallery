@@ -1,0 +1,47 @@
+@import '_var';
+
+@media screen and (min-width: 0em){
+	body{
+		nav{
+			position: fixed;
+		  @include span(1);
+		  background-color: $map_blue;
+		  padding: 0.25em 0;
+		  div{
+				img{
+					@include border-radius(0.1em);
+					max-width: 1.3em;
+					height: auto;
+				}
+		  }
+			div.right{
+				display: none;
+			}
+		}
+	}
+	
+}
+
+
+@media screen and (min-width: 60.063em){
+  body{
+		nav{
+			div.left{
+				@include span(3/4);
+			}
+			div.right{
+				display: initial;
+				@include span(1/4);
+				img{
+					padding-left: 2em;
+				}
+				span{
+					text-align: right;
+					color: $geometry_gray;
+					font-weight: 300;
+					font-height: 1.2em;
+				}
+			}
+		}
+  }
+}

@@ -1,0 +1,63 @@
+- content_for :title do
+  = current_user.username.titleize
+
+- content_for :head do
+  = stylesheet_link_tag :user
+
+
+%article
+  %header
+    %h1
+      = current_user.username
+    %h2
+      = '@' + current_user.username
+
+  %section.toolbar
+    %div.active
+      %p
+        = link_to 'Profile', edit_user_registration_path
+    %div
+      %p
+        = link_to 'Identities', identities_path
+    %div
+      %p
+        = link_to 'SSH Keys', identities_path
+    %div
+      %p
+        = link_to 'Projects', identities_path
+    %div
+      %p
+        = link_to 'Following', identities_path
+
+  %section
+    = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+      = devise_error_messages!
+      %div
+        = f.label :email
+        %br/
+        = f.email_field :email, autofocus: true
+      - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+        %div
+          Currently waiting confirmation for: #{resource.unconfirmed_email}
+      %div
+        = f.label :password
+        %i (leave blank if you don't want to change it)
+        %br/
+        = f.password_field :password, autocomplete: "off"
+      %div
+        = f.label :password_confirmation
+        %br/
+        = f.password_field :password_confirmation, autocomplete: "off"
+      %div
+        = f.label :username
+        %br/
+        = f.text_field :username
+      %div
+        = f.label :current_password
+        %i (we need your current password to confirm your changes)
+        %br/
+        = f.password_field :current_password, autocomplete: "off"
+      %div= f.submit "Update"
+    %p
+      Unhappy? #{button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete}
+    = link_to "Back", :back

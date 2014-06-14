@@ -1,0 +1,93 @@
+@import '_var';
+
+@media screen and (min-width: 0em){
+	body{
+		.wrapper{
+			article{
+				section{
+					div{
+						form{
+							p{
+								text-align: left;
+								font-size: 0.8em;
+							}
+							input[type="text"],input[type="email"],input[type="password"]{
+								margin: 0.25em auto;
+								padding: 1em 0;
+								width: 80%;
+								display: block;
+								border-style: none;
+								@include border-radius(0.25em);
+		      			box-shadow:inset 0 0 0.125em 0 $map_blue;
+								background-color: $geometry_gray;
+								font-size: 0.85em;
+								text-align: left;
+							}
+							input[type="submit"]{
+								@include center;
+								width: 80%;
+								text-align: center;
+								border-style: none;
+								@include border-radius(0.25em);
+								background-color: $map_blue;
+								color: white;
+								font-size: 1em;
+								height: 2.5em;
+								-webkit-transition: opacity .25s ease-in-out;
+									 -moz-transition: opacity .25s ease-in-out;
+									 			transition: opacity .25s ease-in-out;
+							}
+							input[type="submit"].recommended{
+								background-color: $light_green;
+								box-shadow:inset 0 0 0.125em 0 green;
+								color: green;
+							}
+							input[type="submit"]:hover{
+								opacity: 0.9;
+								cursor: pointer;
+							}
+
+							section.decision{
+								padding: 0.25em;
+								input{
+									@include col(1);
+									margin-top: 0.25em;
+									text-align: center;
+								}
+							}
+
+							a{
+								text-decoration: none;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+@media screen and (min-width: 25em){
+	body{
+		.wrapper{
+			article{
+				section{
+					div{
+						form{
+							section.decision{
+								padding: 0.25em;
+								input{
+									@include col(1/2);
+									text-align: center;
+									margin: 0.25em;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

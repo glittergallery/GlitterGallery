@@ -1,0 +1,46 @@
+@import '_var';
+
+@media screen and (min-width: 0em){
+	body{
+		.wrapper{
+			article{
+				section{
+				  .feed{
+				    @include col(1);
+				  	background-color: $dark_geometry_gray;
+						text-align: left;
+				  	ul{
+				  		list-style-type: none;
+				  		font-size: 0.95em;
+				  		color: $map_blue;
+						  font-weight: 300;
+				  		padding: 1em;
+						  li{
+						  	margin-top: 0.3em;
+							  a{
+							  	text-decoration: underline;
+							  	color: $map_blue;
+							  	font-weight: 700;
+							  }
+						  }
+				  	}
+				  }
+				}
+			}
+		}
+	}
+	
+}
+
+@media screen and (min-width: 20em){
+
+
+				.feed{
+					ul{
+			  		padding-top: 1em;
+			  		padding-left: 10%;
+			  		padding-right: 10%;
+					}
+				}
+	
+}
