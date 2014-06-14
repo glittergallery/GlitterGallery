@@ -31,9 +31,9 @@
     = yield :header
 
 
-    #wrapper
+    .wrapper
       / Use left asides for Navigation help
-      %aside.map.left
+      %aside.map
         .asidewrapper
           -if user_signed_in?
             %section
@@ -141,7 +141,7 @@
       = yield
 
 
-      %aside.right.widget
+      %aside.widget
         .asidewrapper
           - if user_signed_in?
             - @projects = current_user.projects

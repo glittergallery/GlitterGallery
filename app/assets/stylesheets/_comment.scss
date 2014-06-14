@@ -1,0 +1,41 @@
+@import '_var';
+
+@media screen and (min-width: 0em){
+	body{
+		.wrapper{
+			article{
+				section{
+				  .comments{
+				  	@include span(1);
+				  	padding: 0;
+						border-top: solid 0.1em red;
+						div{
+							padding: 1em;
+							padding-bottom: 0;
+							header{
+								margin: 0;
+								h1, h2{
+									padding: 0.25em;
+								}
+								h2{
+									border-bottom: solid 0.15em $dark_geometry_gray;
+								}
+							}
+							article{
+								padding: 0.25em;
+							}
+							h1, h2, article{
+								@include span(1);
+								@include center;
+								min-height: 0;
+								font-size: 0.8em;
+								background-color: $geometry_gray;
+							}	
+						}
+					}
+				}
+			}
+		}
+	}
+	
+}

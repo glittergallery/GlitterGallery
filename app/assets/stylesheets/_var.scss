@@ -1,0 +1,13 @@
+// Variables come here
+$map_blue: #141823;
+$geometry_gray: #f9fafb;
+$dark_geometry_gray: #f1f1f1;
+$light_green: #c1f0c1;
+$raleway: 'Raleway', sans-serif;
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
