@@ -1,12 +1,44 @@
-%p You can sign in via the following accounts
-%br
-%div
-  -for identity in @identities
-    = identity.provider
-    = identity.uid
-    = link_to "Delete", identity_path(identity.id), method:"delete", data: { confirm: "Are you sure?"}
-%br
-%p You may link these accounts also
+- content_for :title do
+  = current_user.username.titleize
 
--for method in @allowedmethods
-  =link_to(method.to_s.capitalize,"/auth/#{method.to_s}")
+- content_for :head do
+  = stylesheet_link_tag :user
+
+
+%article
+  %header
+    %h1
+      = current_user.username
+    %h2
+      = '@' + current_user.username
+
+  %section.toolbar
+    %div
+      %p
+        = link_to 'Profile', edit_user_registration_path
+    %div.active
+      %p
+        = link_to 'Identities', identities_path
+    %div
+      %p
+        = link_to 'SSH Keys', identities_path
+    %div
+      %p
+        = link_to 'Projects', identities_path
+    %div
+      %p
+        = link_to 'Following', identities_path
+
+  %section
+    %p You can sign in via the following accounts
+    %br
+    %div
+      -for identity in @identities
+        = identity.provider
+        = identity.uid
+        = link_to "Delete", identity_path(identity.id), method:"delete", data: { confirm: "Are you sure?"}
+    %br
+    %p You may link these accounts also
+
+    -for method in @allowedmethods
+      =link_to(method.to_s.capitalize,"/auth/#{method.to_s}")

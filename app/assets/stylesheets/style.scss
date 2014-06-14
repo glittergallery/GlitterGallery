@@ -1,15 +1,19 @@
 @import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
 
 @import 'jeet/index';
+@import '_button';
+@import '_comment';
+@import '_feed';
+@import '_form';
+@import '_guide';
+@import '_hero';
+@import '_map';
+@import '_nav';
+@import '_widget';
+
+
+
 //@include edit;
-
-// Variables come here
-$map_blue: #141823;
-$geometry_gray: #f9fafb;
-$dark_geometry_gray: #f1f1f1;
-$light_green: #c1f0c1;
-$raleway: 'Raleway', sans-serif;
-
 
 *{
 	margin:0;
@@ -17,443 +21,92 @@ $raleway: 'Raleway', sans-serif;
 	font-family: $raleway;
 }
 
-
-@mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-     -moz-border-radius: $radius;
-      -ms-border-radius: $radius;
-          border-radius: $radius;
-}
-
 // smaller phones
 
 @media screen and (min-width: 0em){
 
 	body{
-		background-color: $geometry_gray;
-	}
-
-	nav{
-		position: fixed;
-	  @include col(1);
-	  background-color: $map_blue;
-	  padding: 0.25em;
-	  a{
-	  	text-decoration: none;
-	  	color: $geometry_gray;
-	  }
-	  a:hover{
-	  	font-weight: 700;
-	  }
-	  div{
-			img{
-				@include border-radius(10%);
-				max-width: 1.5em;
-				height: auto;
-				padding-left: 0.25em;
-			}
-	  }
-		div.right{
-			display: none;
-		}
-	}
-
-	.wrapper{
-		min-height: 100vh;
-	}
-
-	article{
-		@include center;
-		@include col(1);
-		color:$map_blue;
-		background-color: white;
-		min-height: 100vh;
-
-		header{
-			margin-top: 2.25em;
-			h1{
-				padding: 0.25em;
-				text-align: left;
-				color: $map_blue;
-				background-color: $dark_geometry_gray;
-			}
-			h1.generated{
-				font-size: 1em;
-			}
-			h2{
-				text-align: left;
-				padding: 0.5em;
-				font-size: 0.85em;
-				font-weight: 300;
-				border-bottom: solid 0.15em red;
-				a{
-					text-decoration: underline;
-					color: $map_blue;
-				}
-			}
-		}
-
-		form{
-			padding-top: 2em;
+		.wrapper{
+			min-height: 100vh;
 			background-color: $geometry_gray;
-			//@include col(1);
-			p{
-				padding: 0.5em;
-				text-align: left;
-				font-size: 0.8em;
-			}
-			input[type="text"]{
-				margin: 0.5em;
-				display: inline-block;
-				border-style: none;
-				background-color: $geometry_gray;
-				border-bottom: solid 0.125em $map_blue;
-				font-size: 0.85em;
-				text-align: left;
-			}
-			input[type="submit"]{
+
+			article{
 				@include center;
-				text-align: center;
-				border-style: none;
-				@include border-radius(0.25em);
-				background-color: $map_blue;
-				color: white;
-				font-size: 1em;
-				height: 2.5em;
-				width: 100%;
-				margin-top: 1em;
-				-webkit-transition: opacity .25s ease-in-out;
-					 -moz-transition: opacity .25s ease-in-out;
-					 			transition: opacity .25s ease-in-out;
-			}
-			input[type="submit"].recommended{
-				background-color: $light_green;
-				box-shadow:inset 0 0 0.125em 0 green;
-				color: green;
-			}
-			input[type="submit"]:hover{
-				opacity: 0.9;
-				cursor: pointer;
-			}
+				@include span(1);
+				color:$map_blue;
 
-			section.decision{
-				padding: 0.25em;
-				input{
-					@include col(1/2);
-					margin-top: 0.25em;
-					text-align: center;
-				}
-			}
-
-			a{
-				text-decoration: none;
-			}
-		}
-
-		.guide{
-			@include span(1);
-			div{
-				padding: 1em;
-				background-color: $geometry_gray;
-	  		box-shadow:inset 0 0 0.5em 0 $dark_geometry_gray;
-	  		@include border-radius(2%);
-				min-height: 5em;
-				text-align: center;
-				font-weight: 700;
-				a{
-					text-decoration: none;
-				}
-				form{
-					input{
-						margin-top: 0;
-						margin-bottom: 1em;
-						width: 80%;
-					}
-				}
-			}
-		}
-
-	  .feed{
-	    @include col(1);
-	  	background-color: $dark_geometry_gray;
-			text-align: left;
-	  	ul{
-	  		list-style-type: none;
-	  		font-size: 0.95em;
-	  		color: $map_blue;
-			  font-weight: 300;
-	  		padding: 1em;
-			  li{
-			  	margin-top: 0.3em;
-				  a{
-				  	text-decoration: underline;
-				  	color: $map_blue;
-				  	font-weight: 700;
-				  }
-			  }
-	  	}
-	  }
-	  .comments{
-	  	@include span(1);
-	  	padding: 0;
-			border-top: solid 0.1em red;
-			div{
-				padding: 1em;
-				padding-bottom: 0;
 				header{
-					margin: 0;
-					h1, h2{
+					margin-top: 2.25em;
+					border-bottom: solid 0.15em red;
+					h1{
 						padding: 0.25em;
+						text-align: left;
+						color: $map_blue;
+						background-color: $dark_geometry_gray;
+					}
+					h1.generated{
+						font-size: 1em;
 					}
 					h2{
-						border-bottom: solid 0.15em $dark_geometry_gray;
+						text-align: left;
+						padding: 0.5em;
+						font-size: 0.85em;
+						font-weight: 300;
+						background-color: white;
+						a{
+							text-decoration: underline;
+							color: $map_blue;
+						}
 					}
 				}
-				article{
+
+				section{
+					background-color: white;
 					padding: 0.25em;
 				}
-				h1, h2, article{
-					@include span(1);
-					@include center;
-					min-height: 0;
-					font-size: 0.8em;
-					background-color: $geometry_gray;
-				}	
 			}
-		}
-	}
-
-  aside{
-  	display: none;
-  }
-
- .widget{
-    section{
-      @include span(1);
-      @include center;
-      margin: 1em auto;
-      @include border-radius(0.5em);
-      box-shadow:inset 0 0 0.125em 0 $map_blue;
-      background-color: white;
-      width: 80%;
-      height: 100%;
-      padding: 0.75em;
-      header{
-        margin: 0;
-        padding: 0.25em;
-        background-color: $geometry_gray;
-        color: $map_blue;
-        font-weight:700;
-        font-size:0.75em;
-        h1{
-          font-size: 1.5em;
-        }
-        h2{
-          font-size: 1em;
-        }
-      }
-      article{
-        min-height: initial;
-        @include col(1);
-        font-size: 0.85em;
-        p{
-          @include col(1/3);
-          text-align: center;
-          a{
-            text-decoration: none;
-            color: $map_blue;
-          }
-          a:hover{
-            text-decoration: underline;
-          }
-        }
-
-		    ul{
-		      list-style-type: none;
-		      margin: 0;
-		      font-size: 0.8em;
-		      li{
-		      		margin: 0.25em auto;
-		      		font-size: 1.2em;
-				    a{
-					    text-decoration:none;
-					    color: $map_blue;
-				    }
-				    a:hover{
-				    	font-weight: 700;
-				    }
-		      }
-		    }
-
-      }
-      footer{
-        @include col(1);
-        form{
-        	padding: 0;
-          @include col(1/3);
-          text-align: center;
-          background-color: white;
-          a{
-            text-decoration: none;
-            color: white;
-          }
-        }
-      }
-    }
-  }	
-
-}
-
-// potrait smartphones
-
-@media screen and (min-width: 20em){
-
-	article{
-
-		.feed{
-			ul{
-	  		padding-top: 1em;
-	  		padding-left: 10%;
-	  		padding-right: 10%;
-			}
+		  aside{
+		  	display: none;
+		  }
 		}
 	}
 
 }
+
 
 // potrait tablets
 
 @media screen and (min-width: 60.063em){
 
-	nav{
-		div.left{
-			@include span(3/4);
-		}
-		div.right{
-			display: initial;
-			@include span(1/4);
-			img{
-				padding-left: 2em;
-			}
-			span{
-				text-align: right;
-				color: $geometry_gray;
-				font-weight: 300;
-				font-height: 1.2em;
-			}
-		}
-	}
-
-	article {
-		@include span(3/4);
-		header{
-			h1.generated{
-				font-size: 1.5em;
-			}		
-		}
-	}
-
-	aside{
-		@include span(1/4);
-	}
-
-	aside.right{
-		min-height: 100vh;
-		div.asidewrapper{
-			margin-top: 3em;
-			margin-left: -1.25em;
-			padding-left: 2em;
-			header{
-				h1{
-					font-size: 1em;
-				}
-				h2{
-					font-size: 1em;
-					font-weight: 300;
-					border-bottom: solid 0.1em $dark_geometry_gray;
-					margin-bottom: 0.5em;
+	body{
+		.wrapper{
+			article {
+				@include span(3/4);
+				header{
+					h1.generated{
+						font-size: 1.5em;
+					}		
 				}
 			}
+
+			aside{
+				@include span(1/4);
+			}
 		}
 	}
-
-
-
-	.left{
-		display:none;
-	}
-
-	.right{
-		text-align: left;
-	}
-
-	.center{
-		text-align: center;
-	}
-
 }
 
 // desktops and bigger tablets
 
 @media screen and (min-width: 64.063em){
 
-	article{
-		@include span(1/2);
-		background-color: white;
-		header{
-			margin-top: 2.25em;
-		}
-	}
-	.left{
-		display: initial;
-		text-align: right;
-	}
-
-	.map{
-		margin-top: 3em;
-	 	min-height: 100vh;
-		section{
-			padding-right: 2em;
-			margin-bottom: 1em;
-	    header{
-	      color: $map_blue;
-	      font-weight:700;
-	      font-size:0.75em;
-	      margin-bottom: 0.25em;
-	    }
-	    a{
-		    text-decoration:none;
-		    color: $map_blue;
-	    }
-	    a:hover{
-	    	font-weight: 700;
-	    }
-
-	    ul{
-	      list-style-type: none;
-	      padding: 0;
-	      margin: 0;
-	      font-size: 0.8em;
-				span.count{
-					display: inline-block;
-					min-width: 1.5em;
-					text-align: center;
-					color: $map_blue;
-					font-size: 0.75em;
-					font-weight: 700;
-					background-color: $dark_geometry_gray;
+	body{
+		.wrapper{
+			article{
+				@include span(1/2);
+				header{
+					margin-top: 2.25em;
 				}
-				li{
-					margin-bottom:0.5em;
-				}
-	    }
-		}
-	}
-
-	.widget{
-		section{
-			span.badge{
-				display: initial;
 			}
 		}
 	}
