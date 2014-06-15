@@ -8,11 +8,17 @@
     %p
       = raw markdown.render comment.body
   %footer
+    %p
+      /check if it's resource owner                     
+      /-if current_user.id == comment.user.id
+      = link_to "Issue?", "path_to_do_so"
+
+      -if current_user.id == comment.user.id
+        = link_to "Delete?", 
+                           comment_path(comment.id),  
+                           method:"delete",                                                 
+                           data: { confirm: "Are you sure?"}
     = distance_of_time_in_words_to_now comment.created_at
     ago
-    %p
-      = link_to "Delete", 
-                         comment_path(comment.id),  
-                         method:"delete",                                                 
-                         data: { confirm: "Are you sure?"}
+
 

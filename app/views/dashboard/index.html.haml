@@ -1,36 +1,32 @@
 - content_for :title do
   Dashboard
 
-- content_for :head do
-  = stylesheet_link_tag :style
-
-
 %article
   %header
     %h1 GlitterGallery
     %h2 The open source pixelpub where awesome designers hangout.
   %section
-    -if current_user.projects.nil?
+    -if current_user.projects.empty?
       %div.guide
         %p Welcome aboard! Without wasting any further time, let's get you started!
         %form{action: "/projects/new"}
           %input{type: "submit", value: "Create first project!"}
   -#
     %section
-      -if current_user.doodles.nil?
+      -if current_user.doodles.empty?
         %div.guide
           %p Welcome aboard! Without wasting any further time, let's get you started!
           %form{action: "/doodles/new"}
             %input{type: "submit", value: "Create first doodle!"}
     %section
-      -if current_user.glitterposts.nil?
+      -if current_user.glitterposts.empty?
         %div.guide
           %p Welcome aboard! Without wasting any further time, let's get you started!
           %form{action: "/glitterposts/new"}
             %input{type: "submit", value: "Write first Glitterpost!"}
-  %section
-    %div.guide
-      %p Looks like you're going great, congrats! Get noticed by updating your profile.
-      %form{action: "/users/edit"}
-        %input{type: "submit", value: "Get me started!"}
+    - else
+      %div.guide
+        %p Looks like you're going great, congrats! Get noticed by updating your profile.
+        %form{action: "/users/edit"}
+          %input{type: "submit", value: "Get me started!"}
 

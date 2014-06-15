@@ -7,32 +7,31 @@
         |
         = yield :title
 
-    = yield :head
+    = stylesheet_link_tag :application, :media => "all"
 
     = javascript_include_tag "application"
     = csrf_meta_tag
 
   %body{ :class => "#{controller.controller_name} #{controller.action_name} #{user_signed_in? ? 'logged_in' : 'not_logged_in'} #{yield :body_class}" }
 
-
-    %nav
-      .left
-        %img{src: "logo.svg"}/
-      .right
-        = avatar current_user.email
-        -if user_signed_in?
-          %span.username
-            = link_to current_user.username, (File.join '/', current_user.username)
-            = link_to 'logout', destroy_user_session_path, :method => :delete, :class => 'logout'
-        - else
-          %span.username
-            = link_to 'Login', new_user_session_path, :class => 'login'
-
     = yield :header
 
 
     .wrapper
-      / Use left asides for Navigation help
+      %nav
+        .left
+          %img{src: "logo.svg"}/
+        .right
+          -if user_signed_in?
+            = avatar current_user.email
+            %span.username
+              = link_to current_user.username, (File.join '/', current_user.username)
+              = link_to 'logout', destroy_user_session_path, :method => :delete, :class => 'logout'
+          - else
+            %span.username
+              = link_to 'Login', new_user_session_path, :class => 'login'
+
+            
       %aside.map
         .asidewrapper
           -if user_signed_in?

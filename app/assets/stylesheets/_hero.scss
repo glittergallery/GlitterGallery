@@ -42,6 +42,22 @@
 						}
 					}
 				}
+				section.options{
+					background-color: $geometry_gray;
+					div{
+						margin: 0 auto;
+						width: 80%;
+						text-align: right;
+						p{
+							a{
+								color: $map_blue;
+							}
+							a:hover{
+								font-weight: 700;
+							}
+						}
+					}
+				}
 				section.social{
 					div{
 						@include span(1);

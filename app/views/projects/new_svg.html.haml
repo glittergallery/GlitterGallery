@@ -1,6 +1,3 @@
-- content_for :head do
-  = stylesheet_link_tag :style
-  
 - unless private_check
   = render 'permissions_error'
 - else
@@ -9,7 +6,7 @@
     = @project.name.titleize
 
 
-  %article
+  %article.project
     %header
       %h1.generated 
         = @project.name
@@ -17,14 +14,17 @@
         FIXME - Descriptions are private, so they won't show up here.
         /= @project.desc
 
-    %section
-      = render 'project_toolbar'
+
+    = render 'project_toolbar'
   
     - if @project.private and params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
     
-    = form_tag(:controller=>"projects", :action=>"create_svg", :id => @project.id) do
-      What are you calling your sketch?
-      = text_field_tag :filename
-      = sketchily_tag :sketch
-      = submit_tag
+    %section
+      %div
+        = form_tag(:controller=>"projects", :action=>"create_svg", :id => @project.id) do
+          = sketchily_tag :sketch
+          %label What are you calling your sketch?
+          = text_field_tag :filename
+          = submit_tag
+

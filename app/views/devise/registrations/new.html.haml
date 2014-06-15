@@ -1,22 +1,22 @@
-%h2 Sign up
-= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-  = devise_error_messages!
-  %div
-    = f.label :email
-    %br/
-    = f.email_field :email, autofocus: true, value: (session[:omniauth]['info']['email'] if session[:omniauth])
-  - unless session[:omniauth]
+- content_for :title do
+  Sign Up
+
+%article
+  %header
+    %h1 Sign up for GlitterGallery!
+    %h2 The open source pixelpub where awesome designers hangout.
+
+  %section
     %div
-      = f.label :password
-      %br/
-      = f.password_field :password, autocomplete: "off"
-    %div
-      = f.label :password_confirmation
-      %br/
-      = f.password_field :password_confirmation, autocomplete: "off"
-  %div
-    = f.label :username
-    %br/
-    = f.text_field :username, value: (session[:omniauth]['info']['nickname'] if session[:omniauth])
-  %div= f.submit "Sign up"
-= render "devise/shared/links"
+      = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        = devise_error_messages!
+        = f.label :email
+        = f.email_field :email, autofocus: true, value: (session[:omniauth]['info']['email'] if session[:omniauth])
+        - unless session[:omniauth]
+          = f.label :password
+          = f.password_field :password, autocomplete: "off"
+          = f.label :password_confirmation
+          = f.password_field :password_confirmation, autocomplete: "off"
+        = f.label :username
+        = f.text_field :username, value: (session[:omniauth]['info']['nickname'] if session[:omniauth])
+        = f.submit "Sign up!"

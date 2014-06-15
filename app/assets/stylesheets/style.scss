@@ -1,6 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
 
-@import 'jeet/index';
+
 @import '_button';
 @import '_comment';
 @import '_feed';
@@ -10,9 +10,9 @@
 @import '_map';
 @import '_nav';
 @import '_project';
+@import '_user';
+@import '_var';
 @import '_widget';
-
-
 
 
 //@include edit;
@@ -47,6 +47,13 @@
 					}
 					h1.generated{
 						font-size: 1em;
+						a{
+							color: $map_blue;
+							text-decoration: none;
+						}
+						a:hover{
+							text-decoration: underline;
+						}
 					}
 					h2{
 						text-align: left;

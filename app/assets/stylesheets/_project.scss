@@ -22,6 +22,7 @@
   }
 }
 
+
 @media screen and (min-width: 0em){
   body{
   	.wrapper{
@@ -51,6 +52,14 @@
 						}
 					}
 				}
+				section.image{
+					p{
+						img{
+							max-width: 100%;
+							height: auto;
+						}
+					}
+				}
 			}
   	}
   }
@@ -63,6 +72,11 @@
 		.wrapper{
 			article.project{
 		    section.toolbar{
+				  position: -webkit-sticky;
+				  position: -moz-sticky;
+				  position: -ms-sticky;
+				  position: -o-sticky;
+				  top: 5px;
 		      div{
 		        @include span(1/5);
 		        text-align: center;
@@ -97,15 +111,6 @@
 						}
 					}
 				}
-				section.image{
-					div{
-						@include span(1);
-					}
-				}
-				section.comments{
-					@include cf();
-				}
-
 			}
 		}
 	}

@@ -1,6 +1,3 @@
-- content_for :head do
-  = stylesheet_link_tag :style
-
 - unless private_check
   = render 'permissions_error'
 - else
@@ -8,12 +5,11 @@
   - content_for :title do
     = @project.name.titleize
 
-
   %article.project
     %header
-      %h1.generated
-        = link_to @project.name.titleize, @project.urlbase
-      %h2
+      %h1.generated 
+        = @project.name
+      %h2 
         FIXME - Descriptions are private, so they won't show up here.
         /= @project.desc
 
@@ -22,8 +18,15 @@
     - if @project.private and params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
       
-
-    = form_tag file_upload_project_path(@project), multipart: true do
-      = file_field_tag "file" 
-      = submit_tag 
+    %section
+      %div
+        - if current_user.id == @project.user.id
+          = form_tag file_upload_project_path(@project), multipart: true do
+            = file_field_tag "file" 
+            = submit_tag 
+        - else
+          .guide
+            %p You can make changes to yor fork of this project!
+            %form{action: "forkyou"}
+              %input{type: "submit", value: "Fork it!"}
 

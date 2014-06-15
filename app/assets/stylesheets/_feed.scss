@@ -5,31 +5,41 @@
 		.wrapper{
 			article{
 				section{
-				  .feed{
-				    @include col(1);
-				  	background-color: $dark_geometry_gray;
-						text-align: left;
-				  	ul{
-				  		list-style-type: none;
-				  		font-size: 0.95em;
-				  		color: $map_blue;
-						  font-weight: 300;
-				  		padding: 1em;
-						  li{
-						  	margin-top: 0.3em;
-							  a{
-							  	text-decoration: underline;
-							  	color: $map_blue;
-							  	font-weight: 700;
-							  }
+					div.feed{
+					  div{
+					  	@include cf();
+					  	margin: 0.5em auto;
+					  	header{
+					  		margin: 0;
+					  		border-style: none;
+					  		font-weight: 700;
+					  	}
+						  article{
+						  	p{
+						  		font-size: 0.9em;
+						  		a{
+						  			color: $map_blue;
+						  			font-weight: 300;
+						  			text-decoration: none;
+						  		}
+						  		a:hover{
+						  			text-decoration: underline;
+						  		}
+						  	}
 						  }
-				  	}
-				  }
+						  footer{
+						  	@include span(1);
+						  	p{
+							  	color: gray;
+							  	font-size: 0.8em;
+						  	}
+						  }
+						}
+					}
 				}
 			}
 		}
-	}
-	
+ 	}
 }
 
 @media screen and (min-width: 20em){

@@ -2,23 +2,33 @@
   = render 'permissions_error'
 - else
 
-  - filename = params[:image_name]
+- unless private_check
+  = render 'permissions_error'
+- else
+
   - content_for :title do
-    = 'Edit SVG'
+    = @project.name.titleize
 
-  - content_for :pagetitle do
-    = link_to @project.name.titleize, @project.urlbase
-    \/
-    = link_to filename, File.join(@project.urlbase,'master',filename)
-    \/
-    = 'Edit'
 
-  = render 'project_toolbar'
+  %article.project
+    %header
+      %h1.generated 
+        = link_to @project.name
+      %h2 
+        FIXME - Descriptions are private, so they won't show up here.
+        /= @project.desc
+
+
+    = render 'project_toolbar'
   
-
-  = form_tag(:controller=>"projects", :action=>"update_svg", :id=>@project.id) do
-    = sketchily_tag :sketch, :url => @path
-    = label_tag "commit message"
-    = text_field_tag "message", "Update #{@filename}"
-    = hidden_field_tag 'filename', @filename
-    = submit_tag
+    - if @project.private and params[:xid] != @project.uniqueurl
+      = link_to 'Unique link', @project.urlbase
+  
+    %section
+      %div
+        = form_tag(:controller=>"projects", :action=>"update_svg", :id=>@project.id) do
+          = sketchily_tag :sketch, :url => @path
+          = label_tag "commit message"
+          = text_field_tag "message", "Update #{@filename}"
+          = hidden_field_tag 'filename', @filename
+          = submit_tag
