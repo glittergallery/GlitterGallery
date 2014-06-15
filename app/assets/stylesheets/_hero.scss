@@ -22,13 +22,22 @@
 					}
 				}
 				section{
+					padding: 0;
 					div{
+						padding: 0;
 						form{
 							input[type="email"], input[type="password"]{
+								margin: 0 auto;
+								width: 80%;
 								text-align: center;
 								box-shadow: none;
 								border-style: none;
+								//background-color: $geometry_gray;
 								border-bottom: solid 0.125em $map_blue;
+							}
+							input[type="submit"]{
+								@include center;
+								width: 80%;
 							}
 						}
 					}

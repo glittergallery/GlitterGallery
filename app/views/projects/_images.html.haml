@@ -1,8 +1,6 @@
-- @images.each do |image|
+%section.album
   %div
-    %p
-      = link_to(image_tag(image[:url]),image[:link])
-
-
-    
-    
+    - @images.each do |image|
+      %div
+        %p
+          = link_to(image_tag(image[:url]),image[:link])

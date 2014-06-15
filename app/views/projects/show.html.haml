@@ -1,5 +1,5 @@
 - content_for :head do
-  = stylesheet_link_tag :projects
+  = stylesheet_link_tag :style
 
 - unless private_check
   = render 'permissions_error'
@@ -8,7 +8,7 @@
   - content_for :title do
     = @project.name.titleize
     
-  %article
+  %article.project
     %header
       %h1.generated 
         = @project.name
@@ -16,22 +16,16 @@
         FIXME - Descriptions are private, so they won't show up here.
         /= @project.desc
 
-    %section
-      = render 'project_toolbar'
-    %section.album
-      = render 'images'
+    = render 'project_toolbar'
+    = render 'images'
   
     - if @project.private and params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
 
-    .comment_form
+    %section.comments
+      = render partial: "comments/comment", collection: @comments
       = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
 
-    %ul.comments
-      = render partial: "comments/comment", collection: @comments
-    %ul.paginate
-      - if @comments.any?
-        = will_paginate @comments, params: { controller: "projects", action: "show"},:style => 'color:blue' 
 
 
 

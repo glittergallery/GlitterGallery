@@ -9,7 +9,9 @@
 @import '_hero';
 @import '_map';
 @import '_nav';
+@import '_project';
 @import '_widget';
+
 
 
 
@@ -26,9 +28,8 @@
 @media screen and (min-width: 0em){
 
 	body{
+		background-color: $geometry_gray;
 		.wrapper{
-			min-height: 100vh;
-			background-color: $geometry_gray;
 
 			article{
 				@include center;
@@ -63,6 +64,10 @@
 				section{
 					background-color: white;
 					padding: 0.25em;
+					div{
+						background-color: $geometry_gray;
+						padding: 0.25em;
+					}
 				}
 			}
 		  aside{

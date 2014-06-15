@@ -7,25 +7,29 @@
 				section{
 					div{
 						form{
-							p{
-								text-align: left;
-								font-size: 0.8em;
+							padding-top: 1em;
+							label{
+								display: block;
+								font-weight: 300;
+								font-size: 1em;
+								margin-bottom: 0.5em;
 							}
 							input[type="text"],input[type="email"],input[type="password"]{
-								margin: 0.25em auto;
+								margin-bottom: 0.5em;
 								padding: 1em 0;
-								width: 80%;
+								text-indent: 1em;
+								width: 100%;
 								display: block;
 								border-style: none;
 								@include border-radius(0.25em);
 		      			box-shadow:inset 0 0 0.125em 0 $map_blue;
-								background-color: $geometry_gray;
 								font-size: 0.85em;
 								text-align: left;
 							}
 							input[type="submit"]{
-								@include center;
-								width: 80%;
+								display: block;
+								width: 40%;
+								margin: 0.25em 0;
 								text-align: center;
 								border-style: none;
 								@include border-radius(0.25em);
@@ -47,12 +51,11 @@
 								cursor: pointer;
 							}
 
-							section.decision{
-								padding: 0.25em;
+							.decision{
+								padding: 0;
 								input{
-									@include col(1);
-									margin-top: 0.25em;
-									text-align: center;
+									width: 100%;
+									margin-bottom: 0.5em;
 								}
 							}
 
@@ -76,12 +79,11 @@
 				section{
 					div{
 						form{
-							section.decision{
-								padding: 0.25em;
+							.decision{
 								input{
-									@include col(1/2);
-									text-align: center;
-									margin: 0.25em;
+									display: inline;
+									width: 40%;
+									margin: 0.25em auto;
 								}
 							}
 						}

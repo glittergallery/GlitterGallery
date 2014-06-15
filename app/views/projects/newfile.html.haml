@@ -1,5 +1,5 @@
 - content_for :head do
-  = stylesheet_link_tag :projects
+  = stylesheet_link_tag :style
 
 - unless private_check
   = render 'permissions_error'
@@ -9,16 +9,15 @@
     = @project.name.titleize
 
 
-  %article
+  %article.project
     %header
-      %h1.generated 
-        = @project.name
-      %h2 
+      %h1.generated
+        = link_to @project.name.titleize, @project.urlbase
+      %h2
         FIXME - Descriptions are private, so they won't show up here.
         /= @project.desc
 
-    %section
-      = render 'project_toolbar'
+    = render 'project_toolbar'
   
     - if @project.private and params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase

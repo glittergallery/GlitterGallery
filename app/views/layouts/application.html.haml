@@ -19,7 +19,7 @@
       .left
         %img{src: "logo.svg"}/
       .right
-        %img{src: "sarup.jpg"}/
+        = avatar current_user.email
         -if user_signed_in?
           %span.username
             = link_to current_user.username, (File.join '/', current_user.username)

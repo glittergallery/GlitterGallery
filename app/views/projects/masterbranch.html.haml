@@ -1,5 +1,5 @@
 - content_for :head do
-  = stylesheet_link_tag :projects
+  = stylesheet_link_tag :style
 
 - unless private_check
   = render 'permissions_error'
@@ -10,9 +10,8 @@
   - content_for :title do
     = filename
 
-  - content_for :pagetitle do
 
-  %article
+  %article.project
     %header
       %h1.generated
         = link_to @project.name.titleize, @project.urlbase
@@ -21,31 +20,14 @@
       %h2
         FIXME - Descriptions are private, so they won't show up here.
         /= @project.desc
+
+    = render 'project_toolbar'
+
     %section.album.image
       %div
         %p
           = image_tag @imageurl.gsub("public","")
+
     %section.comments
-      %div
-        %header
-          %h1 Emily Dirsh
-          %h2 3 hours ago
-        %article
-          %p What plans do you have for this project? Who else is involved?
-        %footer
-      %div
-        %header
-          %h1 Rohit Paul Kuruvilla
-          %h2 3 hours ago
-        %article
-          %p Noodles!
-        %footer
-
-
-    .comment_form
-      = render partial: "comments/new", locals: {type: 'file', id: filename, ajax: @ajax, comment: @comment}
-
-    %ul.comments
       = render partial: "comments/comment", collection: @comments
-    - if !@comments.nil?
-      = will_paginate @comments, :style => 'color:blue' 
+      = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
