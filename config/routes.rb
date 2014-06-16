@@ -6,10 +6,8 @@ Glitter::Application.routes.draw do
 
   resources :projects
   resources :identities, only: [:destroy,:index]
-  #resource :session, only: [:new, :create, :destroy]
   resources :comments, only: [:new, :create, :destroy]
   resources :glitterposts
-  #get '/login' => 'sessions#new'
   
   post 'glitterposts/:id/edit' => 'glitterposts#update'
 
@@ -70,7 +68,6 @@ Glitter::Application.routes.draw do
     end
   end
 
-  #match '/logout', to: 'sessions#destroy', via: :delete
 
   root :to => "identities#new"
 end

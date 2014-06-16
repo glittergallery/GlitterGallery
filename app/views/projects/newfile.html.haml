@@ -25,8 +25,15 @@
             = file_field_tag "file" 
             = submit_tag 
         - else
-          .guide
-            %p You can make changes to yor fork of this project!
-            %form{action: "forkyou"}
-              %input{type: "submit", value: "Fork it!"}
+          - if user_signed_in?
+            - unless current_user.id == @project.user.id
+              .guide
+                %p You can make changes to your fork of this project!
+                %form{action: "forkyou"}
+                  %input{type: "submit", value: "Fork it!"}
+          - else
+            .guide
+              %p You'll need to sign in to work on these cool projects!
+              %form{action: "/users/sign_in"}
+                %input{type: "submit", value: "Sign in!"}
 

@@ -34,10 +34,23 @@
                   = distance_of_time_in_words_to_now Time.at(commit.epoch_time)
                   ago.
       - else
-        .guide
-          %p Work hasn't started on this project yet. Maybe you want to contribute?
-          %form{action: File.join(@project.name, "fork")}
-            %input{type: "submit", value: "Fork this project!"}
+        %div
+          - if user_signed_in?
+            - unless current_user.id == @project.user.id
+              .guide
+                %p Work hasn't started on this project yet. Maybe you want to contribute?
+                %form{action: File.join(@project.name, "fork")}
+                  %input{type: "submit", value: "Fork this project!"}
+            - else
+              .guide
+                %p Submit your design work on this project to start collaborating.
+                %form{action: File.join(@project.name, "newfile")}
+                  %input{type: "submit", value: "Add first file!"}
+          - else
+            .guide
+              %p You'll need to sign in to work on these cool projects!
+              %form{action: "/users/sign_in"}
+                %input{type: "submit", value: "Sign in!"}
 
 
 

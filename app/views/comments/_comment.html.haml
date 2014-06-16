@@ -13,7 +13,7 @@
       /-if current_user.id == comment.user.id
       = link_to "Issue?", "path_to_do_so"
 
-      -if current_user.id == comment.user.id
+      -if user_signed_in? and current_user.id == comment.user.id
         = link_to "Delete?", 
                            comment_path(comment.id),  
                            method:"delete",                                                 
