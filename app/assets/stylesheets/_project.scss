@@ -27,15 +27,6 @@
   body{
   	.wrapper{
 			article.project{
-				section.toolbar{
-					@include bar-styling;
-				}
-				section.action{
-				  @include bar-styling;
-					div{
-						background-color: $geometry_gray;
-					}
-				}
 				section.album{
 					div{
 						@include cf();
@@ -63,39 +54,6 @@
 			}
   	}
   }
-
-}
-
-
-@media screen and (min-width: 20em){
-	body{
-		.wrapper{
-			article.project{
-		    section.toolbar{
-				  position: -webkit-sticky;
-				  position: -moz-sticky;
-				  position: -ms-sticky;
-				  position: -o-sticky;
-				  top: 5px;
-		      div{
-		        @include span(1/5);
-		        text-align: center;
-		        border-bottom: solid 0.1em $dark_geometry_gray;
-		      }
-		      .active, div:hover{
-		        border-bottom: solid 0.1em $map_blue;
-		      }
-		    }
-		    section.action{
-					border-bottom: solid 0.1em $dark_geometry_gray;
-		  		div{
-		    		@include span(1/4);
-		      	text-align: center;  		
-		  		}
-		    }
-			}
-		}
-	}
 }
 
 

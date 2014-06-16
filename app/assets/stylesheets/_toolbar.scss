@@ -1,0 +1,67 @@
+@import '_var';
+
+@mixin bar-styling{
+  font-size: 0.9em;
+  padding: 0;
+  @include cf();
+  div{
+    padding: 1em 0;
+    text-align: center;
+    font-size: 0.8em;
+    a{
+      text-decoration: none;
+      color: $map_blue;
+    }
+  }
+  .active, div:hover{
+      background-color: $dark_geometry_gray;
+      font-weight: 700;
+    a{
+      color:$map_blue;
+    }
+  }
+}
+
+@media screen and (min-width: 0em){
+  body{
+    .wrapper{
+      article{
+        section.toolbar{
+          @include bar-styling;
+        }
+        section.action{
+          @include bar-styling;
+          div{
+            background-color: $geometry_gray;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 20em){
+  body{
+    .wrapper{
+      article{
+        section.toolbar{
+          div{
+            @include span(1/5);
+            text-align: center;
+            border-bottom: solid 0.1em $dark_geometry_gray;
+          }
+          .active, div:hover{
+            border-bottom: solid 0.1em $map_blue;
+          }
+        }
+        section.action{
+          border-bottom: solid 0.1em $dark_geometry_gray;
+          div{
+            @include span(1/4);
+            text-align: center;     
+          }
+        }
+      }
+    }
+  }
+}

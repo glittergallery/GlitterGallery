@@ -8,17 +8,21 @@
     %h2
       = '@' + @user.username
 
+  = render 'user_toolbar'
+
   %section.bio
     %div
-      = avatar current_user.email
+      / FIXME - substitute with cover photo
+      = avatar @user.email
 
   %section.social
     %div
       .active
         %p
-          %a{href: "#"} 1
+          %a{href: "#"} Follow
         %p
-          %a{href: "#"} Activity
+          %a{href: "#"}
+            = @user.username
       %div
         %p
           %a{href: "#"} 0

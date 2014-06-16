@@ -1,0 +1,2065 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+
+
+
+*/
+
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 0em) {
+  body .wrapper article section.comments {
+    margin-bottom: 1em; }
+    body .wrapper article section.comments div {
+      *zoom: 1;
+      padding: 0.25em 0.25em 0 0.25em; }
+      body .wrapper article section.comments div:before, body .wrapper article section.comments div:after {
+        content: '';
+        display: table; }
+      body .wrapper article section.comments div:after {
+        clear: both; }
+      body .wrapper article section.comments div header, body .wrapper article section.comments div h1, body .wrapper article section.comments div article, body .wrapper article section.comments div footer {
+        *zoom: 1;
+        float: left;
+        display: inline;
+        clear: none;
+        padding-left: 0;
+        padding-right: 0;
+        text-align: inherit;
+        width: 100%;
+        margin-left: 0%;
+        margin-right: 0%;
+        margin: 0;
+        font-size: 0.8em;
+        background-color: #f9fafb;
+        border-style: none; }
+        body .wrapper article section.comments div header:before, body .wrapper article section.comments div header:after, body .wrapper article section.comments div h1:before, body .wrapper article section.comments div h1:after, body .wrapper article section.comments div article:before, body .wrapper article section.comments div article:after, body .wrapper article section.comments div footer:before, body .wrapper article section.comments div footer:after {
+          content: '';
+          display: table; }
+        body .wrapper article section.comments div header:after, body .wrapper article section.comments div h1:after, body .wrapper article section.comments div article:after, body .wrapper article section.comments div footer:after {
+          clear: both; }
+        body .wrapper article section.comments div header p, body .wrapper article section.comments div h1 p, body .wrapper article section.comments div article p, body .wrapper article section.comments div footer p {
+          display: inline; }
+          body .wrapper article section.comments div header p a, body .wrapper article section.comments div h1 p a, body .wrapper article section.comments div article p a, body .wrapper article section.comments div footer p a {
+            text-decoration: none;
+            font-weight: 700;
+            color: #141823; }
+          body .wrapper article section.comments div header p a:hover, body .wrapper article section.comments div h1 p a:hover, body .wrapper article section.comments div article p a:hover, body .wrapper article section.comments div footer p a:hover {
+            text-decoration: underline; }
+        body .wrapper article section.comments div header h1, body .wrapper article section.comments div h1 h1, body .wrapper article section.comments div article h1, body .wrapper article section.comments div footer h1 {
+          font-size: 1em; }
+      body .wrapper article section.comments div footer {
+        color: gray; }
+        body .wrapper article section.comments div footer p a {
+          color: gray;
+          font-weight: 300; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 0em) {
+  body .wrapper article section div.feed div {
+    *zoom: 1;
+    margin: 0.5em auto; }
+    body .wrapper article section div.feed div:before, body .wrapper article section div.feed div:after {
+      content: '';
+      display: table; }
+    body .wrapper article section div.feed div:after {
+      clear: both; }
+    body .wrapper article section div.feed div header {
+      margin: 0;
+      border-style: none;
+      font-weight: 700; }
+    body .wrapper article section div.feed div article p {
+      font-size: 0.9em; }
+      body .wrapper article section div.feed div article p a {
+        color: #141823;
+        font-weight: 300;
+        text-decoration: none; }
+      body .wrapper article section div.feed div article p a:hover {
+        text-decoration: underline; }
+    body .wrapper article section div.feed div footer {
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: inherit;
+      width: 100%;
+      margin-left: 0%;
+      margin-right: 0%; }
+      body .wrapper article section div.feed div footer:before, body .wrapper article section div.feed div footer:after {
+        content: '';
+        display: table; }
+      body .wrapper article section div.feed div footer:after {
+        clear: both; }
+      body .wrapper article section div.feed div footer p {
+        color: gray;
+        font-size: 0.8em; } }
+@media screen and (min-width: 20em) {
+  .feed ul {
+    padding-top: 1em;
+    padding-left: 10%;
+    padding-right: 10%; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 0em) {
+  body .wrapper article section div form {
+    padding-top: 1em; }
+    body .wrapper article section div form label {
+      display: block;
+      font-weight: 300;
+      font-size: 1em;
+      margin-bottom: 0.5em; }
+    body .wrapper article section div form input[type="text"], body .wrapper article section div form input[type="email"], body .wrapper article section div form input[type="password"] {
+      margin-bottom: 0.5em;
+      padding: 1em 0;
+      text-indent: 1em;
+      width: 100%;
+      display: block;
+      border-style: none;
+      -webkit-border-radius: 0.25em;
+      -moz-border-radius: 0.25em;
+      -ms-border-radius: 0.25em;
+      border-radius: 0.25em;
+      box-shadow: inset 0 0 0.125em 0 #141823;
+      font-size: 0.85em;
+      text-align: left; }
+    body .wrapper article section div form input[type="submit"] {
+      display: block;
+      width: 40%;
+      margin: 0.25em 0;
+      text-align: center;
+      border-style: none;
+      -webkit-border-radius: 0.25em;
+      -moz-border-radius: 0.25em;
+      -ms-border-radius: 0.25em;
+      border-radius: 0.25em;
+      background-color: #141823;
+      color: white;
+      font-size: 1em;
+      height: 2.5em;
+      -webkit-transition: opacity .25s ease-in-out;
+      -moz-transition: opacity .25s ease-in-out;
+      transition: opacity .25s ease-in-out; }
+    body .wrapper article section div form input[type="submit"].recommended {
+      background-color: #c1f0c1;
+      box-shadow: inset 0 0 0.125em 0 green;
+      color: green; }
+    body .wrapper article section div form input[type="submit"]:hover {
+      opacity: 0.9;
+      cursor: pointer; }
+    body .wrapper article section div form .decision {
+      padding: 0; }
+      body .wrapper article section div form .decision input {
+        width: 100%;
+        margin-bottom: 0.5em; }
+    body .wrapper article section div form a {
+      text-decoration: none; } }
+@media screen and (min-width: 25em) {
+  body .wrapper article section div form .decision input {
+    display: inline;
+    width: 40%;
+    margin: 0.25em auto; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 0em) {
+  body .wrapper article section .guide {
+    text-align: center;
+    background-color: #f9fafb;
+    padding: 1em; }
+    body .wrapper article section .guide p {
+      padding: 2em 0;
+      font-weight: 700; }
+      body .wrapper article section .guide p a {
+        text-decoration: none; }
+    body .wrapper article section .guide form input[type="submit"] {
+      *zoom: 1;
+      width: auto;
+      max-width: 1410px;
+      float: none;
+      display: block;
+      margin-right: auto;
+      margin-left: auto;
+      padding-left: 0;
+      padding-right: 0;
+      width: 80%; }
+      body .wrapper article section .guide form input[type="submit"]:before, body .wrapper article section .guide form input[type="submit"]:after {
+        content: '';
+        display: table; }
+      body .wrapper article section .guide form input[type="submit"]:after {
+        clear: both; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 0em) {
+  .wrapper article.hero header {
+    background-color: #141823;
+    margin: 0;
+    padding-top: 2.25em; }
+    .wrapper article.hero header h1 {
+      background-color: #141823;
+      text-align: center;
+      font-size: 2.5em;
+      color: white; }
+    .wrapper article.hero header h2 {
+      padding: 0 1em 1em 1em;
+      background-color: #141823;
+      color: #f9fafb;
+      text-align: center;
+      font-size: 1.5em; }
+  .wrapper article.hero section {
+    padding: 0; }
+    .wrapper article.hero section div {
+      padding: 0; }
+      .wrapper article.hero section div form input[type="email"], .wrapper article.hero section div form input[type="password"] {
+        margin: 0 auto;
+        width: 80%;
+        text-align: center;
+        box-shadow: none;
+        border-style: none;
+        border-bottom: solid 0.125em #141823; }
+      .wrapper article.hero section div form input[type="submit"] {
+        *zoom: 1;
+        width: auto;
+        max-width: 1410px;
+        float: none;
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 0;
+        padding-right: 0;
+        width: 80%; }
+        .wrapper article.hero section div form input[type="submit"]:before, .wrapper article.hero section div form input[type="submit"]:after {
+          content: '';
+          display: table; }
+        .wrapper article.hero section div form input[type="submit"]:after {
+          clear: both; }
+  .wrapper article.hero section.options {
+    background-color: #f9fafb; }
+    .wrapper article.hero section.options div {
+      margin: 0 auto;
+      width: 80%;
+      text-align: right; }
+      .wrapper article.hero section.options div p a {
+        color: #141823; }
+      .wrapper article.hero section.options div p a:hover {
+        font-weight: 700; }
+  .wrapper article.hero section.social div {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: inherit;
+    width: 100%;
+    margin-left: 0%;
+    margin-right: 0%;
+    margin-top: 0.25em; }
+    .wrapper article.hero section.social div:before, .wrapper article.hero section.social div:after {
+      content: '';
+      display: table; }
+    .wrapper article.hero section.social div:after {
+      clear: both; }
+    .wrapper article.hero section.social div form input[type="submit"] {
+      width: 60%; }
+    .wrapper article.hero section.social div form input[type="submit"].openid {
+      display: none; }
+    .wrapper article.hero section.social div form input[type="submit"].facebook {
+      display: none; }
+    .wrapper article.hero section.social div form input[type="submit"].github {
+      background-color: gray; } }
+@media screen and (min-width: 40.063em) {
+  body .wrapper article.hero section.social {
+    width: 80%;
+    margin: 0 auto; }
+    body .wrapper article.hero section.social div {
+      margin: 1em auto;
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: inherit;
+      width: 33.33333%;
+      margin-left: 0%;
+      margin-right: 0%; }
+      body .wrapper article.hero section.social div:before, body .wrapper article.hero section.social div:after {
+        content: '';
+        display: table; }
+      body .wrapper article.hero section.social div:after {
+        clear: both; }
+      body .wrapper article.hero section.social div form {
+        margin: 0 auto;
+        width: 60%; }
+        body .wrapper article.hero section.social div form input[type="submit"] {
+          *zoom: 1;
+          float: left;
+          display: inline;
+          clear: none;
+          text-align: inherit;
+          padding-left: 0;
+          padding-right: 0;
+          width: 100%;
+          margin-left: 0%;
+          margin-right: 3%;
+          text-align: center; }
+          body .wrapper article.hero section.social div form input[type="submit"]:before, body .wrapper article.hero section.social div form input[type="submit"]:after {
+            content: '';
+            display: table; }
+          body .wrapper article.hero section.social div form input[type="submit"]:after {
+            clear: both; }
+          body .wrapper article.hero section.social div form input[type="submit"]:last-child {
+            margin-right: 0%; }
+        body .wrapper article.hero section.social div form input[type="submit"].openid {
+          display: initial;
+          background-color: orange; }
+        body .wrapper article.hero section.social div form input[type="submit"].facebook {
+          display: initial;
+          background-color: #3b5998; } }
+@media screen and (min-width: 64.063em) {
+  body .wrapper aside.widget div.asidewrapper {
+    margin-top: 0; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 0em) {
+  body .wrapper aside.map {
+    display: none; } }
+@media screen and (min-width: 64.063em) {
+  body .wrapper aside.map {
+    display: initial;
+    text-align: right;
+    margin-top: 3em;
+    min-height: 100vh; }
+    body .wrapper aside.map section {
+      padding-right: 2em;
+      margin-bottom: 1em; }
+      body .wrapper aside.map section header {
+        color: #141823;
+        font-weight: 700;
+        font-size: 0.75em;
+        margin-bottom: 0.25em; }
+      body .wrapper aside.map section a {
+        text-decoration: none;
+        color: #141823; }
+      body .wrapper aside.map section a:hover {
+        font-weight: 700; }
+      body .wrapper aside.map section ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        font-size: 0.8em; }
+        body .wrapper aside.map section ul span.count {
+          display: inline-block;
+          min-width: 1.5em;
+          text-align: center;
+          color: #141823;
+          font-size: 0.75em;
+          font-weight: 700;
+          background-color: #f1f1f1; }
+        body .wrapper aside.map section ul li {
+          margin-bottom: 0.5em; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 0em) {
+  body .wrapper nav {
+    *zoom: 1;
+    position: fixed;
+    width: 100%;
+    background-color: #141823;
+    padding: 0.25em 0; }
+    body .wrapper nav:before, body .wrapper nav:after {
+      content: '';
+      display: table; }
+    body .wrapper nav:after {
+      clear: both; }
+    body .wrapper nav div img {
+      -webkit-border-radius: 0.1em;
+      -moz-border-radius: 0.1em;
+      -ms-border-radius: 0.1em;
+      border-radius: 0.1em;
+      max-width: 1.3em;
+      height: auto; }
+    body .wrapper nav div.right {
+      display: none; } }
+@media screen and (min-width: 60.063em) {
+  body .wrapper nav {
+    *zoom: 1; }
+    body .wrapper nav:before, body .wrapper nav:after {
+      content: '';
+      display: table; }
+    body .wrapper nav:after {
+      clear: both; }
+    body .wrapper nav div.left {
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      text-align: inherit;
+      padding-left: 0;
+      padding-right: 0;
+      width: 74.25%;
+      margin-left: 0%;
+      margin-right: 3%; }
+      body .wrapper nav div.left:before, body .wrapper nav div.left:after {
+        content: '';
+        display: table; }
+      body .wrapper nav div.left:after {
+        clear: both; }
+      body .wrapper nav div.left:last-child {
+        margin-right: 0%; }
+    body .wrapper nav div.right {
+      display: initial;
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      text-align: inherit;
+      padding-left: 0;
+      padding-right: 0;
+      width: 22.75%;
+      margin-left: 0%;
+      margin-right: 3%; }
+      body .wrapper nav div.right:before, body .wrapper nav div.right:after {
+        content: '';
+        display: table; }
+      body .wrapper nav div.right:after {
+        clear: both; }
+      body .wrapper nav div.right:last-child {
+        margin-right: 0%; }
+      body .wrapper nav div.right a {
+        text-decoration: none;
+        color: #f9fafb; }
+      body .wrapper nav div.right a:hover {
+        font-weight: 700; }
+      body .wrapper nav div.right img {
+        padding-left: 2em; }
+      body .wrapper nav div.right span {
+        text-align: right;
+        color: #f9fafb;
+        font-weight: 300;
+        font-height: 1.2em; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 0em) {
+  body .wrapper article.project section.album div {
+    *zoom: 1; }
+    body .wrapper article.project section.album div:before, body .wrapper article.project section.album div:after {
+      content: '';
+      display: table; }
+    body .wrapper article.project section.album div:after {
+      clear: both; }
+    body .wrapper article.project section.album div div {
+      margin-bottom: 1em;
+      box-shadow: 0 0 0.5em 0 #f1f1f1;
+      background-color: white; }
+      body .wrapper article.project section.album div div p img {
+        max-width: 100%;
+        height: auto; }
+  body .wrapper article.project section.image p img {
+    max-width: 100%;
+    height: auto; } }
+@media screen and (min-width: 40.063em) {
+  body .wrapper article.project section.album div div {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    text-align: inherit;
+    padding-left: 0;
+    padding-right: 0;
+    width: 31.33333%;
+    margin-left: 0%;
+    margin-right: 3%; }
+    body .wrapper article.project section.album div div:before, body .wrapper article.project section.album div div:after {
+      content: '';
+      display: table; }
+    body .wrapper article.project section.album div div:after {
+      clear: both; }
+    body .wrapper article.project section.album div div:nth-child(3n) {
+      margin-right: 0%;
+      float: right; }
+    body .wrapper article.project section.album div div:nth-child(3n + 1) {
+      clear: both; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 0em) {
+  body .wrapper article section.toolbar {
+    font-size: 0.9em;
+    padding: 0;
+    *zoom: 1; }
+    body .wrapper article section.toolbar:before, body .wrapper article section.toolbar:after {
+      content: '';
+      display: table; }
+    body .wrapper article section.toolbar:after {
+      clear: both; }
+    body .wrapper article section.toolbar div {
+      padding: 1em 0;
+      text-align: center;
+      font-size: 0.8em; }
+      body .wrapper article section.toolbar div a {
+        text-decoration: none;
+        color: #141823; }
+    body .wrapper article section.toolbar .active, body .wrapper article section.toolbar div:hover {
+      background-color: #f1f1f1;
+      font-weight: 700; }
+      body .wrapper article section.toolbar .active a, body .wrapper article section.toolbar div:hover a {
+        color: #141823; }
+  body .wrapper article section.action {
+    font-size: 0.9em;
+    padding: 0;
+    *zoom: 1; }
+    body .wrapper article section.action:before, body .wrapper article section.action:after {
+      content: '';
+      display: table; }
+    body .wrapper article section.action:after {
+      clear: both; }
+    body .wrapper article section.action div {
+      padding: 1em 0;
+      text-align: center;
+      font-size: 0.8em; }
+      body .wrapper article section.action div a {
+        text-decoration: none;
+        color: #141823; }
+    body .wrapper article section.action .active, body .wrapper article section.action div:hover {
+      background-color: #f1f1f1;
+      font-weight: 700; }
+      body .wrapper article section.action .active a, body .wrapper article section.action div:hover a {
+        color: #141823; }
+    body .wrapper article section.action div {
+      background-color: #f9fafb; } }
+@media screen and (min-width: 20em) {
+  body .wrapper article section.toolbar div {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: inherit;
+    width: 20%;
+    margin-left: 0%;
+    margin-right: 0%;
+    text-align: center;
+    border-bottom: solid 0.1em #f1f1f1; }
+    body .wrapper article section.toolbar div:before, body .wrapper article section.toolbar div:after {
+      content: '';
+      display: table; }
+    body .wrapper article section.toolbar div:after {
+      clear: both; }
+  body .wrapper article section.toolbar .active, body .wrapper article section.toolbar div:hover {
+    border-bottom: solid 0.1em #141823; }
+  body .wrapper article section.action {
+    border-bottom: solid 0.1em #f1f1f1; }
+    body .wrapper article section.action div {
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: inherit;
+      width: 25%;
+      margin-left: 0%;
+      margin-right: 0%;
+      text-align: center; }
+      body .wrapper article section.action div:before, body .wrapper article section.action div:after {
+        content: '';
+        display: table; }
+      body .wrapper article section.action div:after {
+        clear: both; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 0em) {
+  body article.user section.bio, body article.user section.social {
+    padding: 0; }
+    body article.user section.bio div, body article.user section.social div {
+      padding: 0; }
+      body article.user section.bio div img, body article.user section.social div img {
+        max-width: 100%;
+        height: auto; }
+  body article.user section.social div {
+    *zoom: 1;
+    width: auto;
+    max-width: 1410px;
+    float: none;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 0.9em; }
+    body article.user section.social div:before, body article.user section.social div:after {
+      content: '';
+      display: table; }
+    body article.user section.social div:after {
+      clear: both; }
+    body article.user section.social div div {
+      padding: 1em 0;
+      text-align: center; }
+      body article.user section.social div div a {
+        text-decoration: none;
+        color: #141823; }
+    body article.user section.social div .active, body article.user section.social div div:hover {
+      background-color: #f1f1f1;
+      font-weight: 700; }
+      body article.user section.social div .active a, body article.user section.social div div:hover a {
+        color: #141823; } }
+@media screen and (min-width: 20em) {
+  body article.user section.social div div {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: inherit;
+    width: 33.33333%;
+    margin-left: 0%;
+    margin-right: 0%;
+    border-bottom: solid 0.25em red; }
+    body article.user section.social div div:before, body article.user section.social div div:after {
+      content: '';
+      display: table; }
+    body article.user section.social div div:after {
+      clear: both; }
+    body article.user section.social div div p {
+      text-align: center; }
+  body article.user section.social div .active, body article.user section.social div div:hover {
+    border-bottom: solid 0.25em #141823; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 60.063em) {
+  body .wrapper aside.widget section {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: inherit;
+    width: 100%;
+    margin-left: 0%;
+    margin-right: 0%;
+    *zoom: 1;
+    width: auto;
+    max-width: 1410px;
+    float: none;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 1em auto;
+    -webkit-border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+    -ms-border-radius: 0.5em;
+    border-radius: 0.5em;
+    box-shadow: inset 0 0 0.125em 0 #141823;
+    background-color: white;
+    width: 80%;
+    height: 100%;
+    padding: 0.75em; }
+    body .wrapper aside.widget section:before, body .wrapper aside.widget section:after {
+      content: '';
+      display: table; }
+    body .wrapper aside.widget section:after {
+      clear: both; }
+    body .wrapper aside.widget section:before, body .wrapper aside.widget section:after {
+      content: '';
+      display: table; }
+    body .wrapper aside.widget section:after {
+      clear: both; }
+    body .wrapper aside.widget section header {
+      margin: 0;
+      padding: 0.25em;
+      background-color: #f9fafb;
+      color: #141823;
+      font-weight: 700;
+      font-size: 0.75em; }
+      body .wrapper aside.widget section header h1 {
+        font-size: 1.5em; }
+      body .wrapper aside.widget section header h2 {
+        font-size: 1em; }
+    body .wrapper aside.widget section article {
+      min-height: initial;
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      text-align: inherit;
+      padding-left: 0;
+      padding-right: 0;
+      width: 100%;
+      margin-left: 0%;
+      margin-right: 3%;
+      font-size: 0.85em; }
+      body .wrapper aside.widget section article:before, body .wrapper aside.widget section article:after {
+        content: '';
+        display: table; }
+      body .wrapper aside.widget section article:after {
+        clear: both; }
+      body .wrapper aside.widget section article:last-child {
+        margin-right: 0%; }
+      body .wrapper aside.widget section article p {
+        *zoom: 1;
+        float: left;
+        display: inline;
+        clear: none;
+        text-align: inherit;
+        padding-left: 0;
+        padding-right: 0;
+        width: 31.33333%;
+        margin-left: 0%;
+        margin-right: 3%;
+        text-align: center; }
+        body .wrapper aside.widget section article p:before, body .wrapper aside.widget section article p:after {
+          content: '';
+          display: table; }
+        body .wrapper aside.widget section article p:after {
+          clear: both; }
+        body .wrapper aside.widget section article p:last-child {
+          margin-right: 0%; }
+        body .wrapper aside.widget section article p a {
+          text-decoration: none;
+          color: #141823; }
+        body .wrapper aside.widget section article p a:hover {
+          text-decoration: underline; }
+      body .wrapper aside.widget section article ul {
+        list-style-type: none;
+        margin: 0;
+        font-size: 0.8em; }
+        body .wrapper aside.widget section article ul li {
+          margin: 0.25em auto;
+          font-size: 1.2em; }
+          body .wrapper aside.widget section article ul li a {
+            text-decoration: none;
+            color: #141823; }
+          body .wrapper aside.widget section article ul li a:hover {
+            font-weight: 700; }
+    body .wrapper aside.widget section footer {
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      text-align: inherit;
+      padding-left: 0;
+      padding-right: 0;
+      width: 100%;
+      margin-left: 0%;
+      margin-right: 3%; }
+      body .wrapper aside.widget section footer:before, body .wrapper aside.widget section footer:after {
+        content: '';
+        display: table; }
+      body .wrapper aside.widget section footer:after {
+        clear: both; }
+      body .wrapper aside.widget section footer:last-child {
+        margin-right: 0%; }
+      body .wrapper aside.widget section footer form {
+        padding: 0;
+        *zoom: 1;
+        float: left;
+        display: inline;
+        clear: none;
+        text-align: inherit;
+        padding-left: 0;
+        padding-right: 0;
+        width: 31.33333%;
+        margin-left: 0%;
+        margin-right: 3%;
+        text-align: center;
+        background-color: white; }
+        body .wrapper aside.widget section footer form:before, body .wrapper aside.widget section footer form:after {
+          content: '';
+          display: table; }
+        body .wrapper aside.widget section footer form:after {
+          clear: both; }
+        body .wrapper aside.widget section footer form:last-child {
+          margin-right: 0%; }
+        body .wrapper aside.widget section footer form a {
+          text-decoration: none;
+          color: white; } }
+@media screen and (min-width: 60.063em) {
+  body .wrapper aside.widget {
+    text-align: left;
+    min-height: 100vh; }
+    body .wrapper aside.widget div.asidewrapper {
+      margin-top: 3em; }
+      body .wrapper aside.widget div.asidewrapper header h1 {
+        font-size: 1em; }
+      body .wrapper aside.widget div.asidewrapper header h2 {
+        font-size: 1em;
+        font-weight: 300;
+        border-bottom: solid 0.1em #f1f1f1;
+        margin-bottom: 0.5em; } }
+@media screen and (min-width: 64.063em) {
+  body .wrapper aside.widget section span.badge {
+    display: initial; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@media screen and (min-width: 0em) {
+  body .wrapper article section.comments {
+    margin-bottom: 1em; }
+    body .wrapper article section.comments div {
+      *zoom: 1;
+      padding: 0.25em 0.25em 0 0.25em; }
+      body .wrapper article section.comments div:before, body .wrapper article section.comments div:after {
+        content: '';
+        display: table; }
+      body .wrapper article section.comments div:after {
+        clear: both; }
+      body .wrapper article section.comments div header, body .wrapper article section.comments div h1, body .wrapper article section.comments div article, body .wrapper article section.comments div footer {
+        *zoom: 1;
+        float: left;
+        display: inline;
+        clear: none;
+        padding-left: 0;
+        padding-right: 0;
+        text-align: inherit;
+        width: 100%;
+        margin-left: 0%;
+        margin-right: 0%;
+        margin: 0;
+        font-size: 0.8em;
+        background-color: #f9fafb;
+        border-style: none; }
+        body .wrapper article section.comments div header:before, body .wrapper article section.comments div header:after, body .wrapper article section.comments div h1:before, body .wrapper article section.comments div h1:after, body .wrapper article section.comments div article:before, body .wrapper article section.comments div article:after, body .wrapper article section.comments div footer:before, body .wrapper article section.comments div footer:after {
+          content: '';
+          display: table; }
+        body .wrapper article section.comments div header:after, body .wrapper article section.comments div h1:after, body .wrapper article section.comments div article:after, body .wrapper article section.comments div footer:after {
+          clear: both; }
+        body .wrapper article section.comments div header p, body .wrapper article section.comments div h1 p, body .wrapper article section.comments div article p, body .wrapper article section.comments div footer p {
+          display: inline; }
+          body .wrapper article section.comments div header p a, body .wrapper article section.comments div h1 p a, body .wrapper article section.comments div article p a, body .wrapper article section.comments div footer p a {
+            text-decoration: none;
+            font-weight: 700;
+            color: #141823; }
+          body .wrapper article section.comments div header p a:hover, body .wrapper article section.comments div h1 p a:hover, body .wrapper article section.comments div article p a:hover, body .wrapper article section.comments div footer p a:hover {
+            text-decoration: underline; }
+        body .wrapper article section.comments div header h1, body .wrapper article section.comments div h1 h1, body .wrapper article section.comments div article h1, body .wrapper article section.comments div footer h1 {
+          font-size: 1em; }
+      body .wrapper article section.comments div footer {
+        color: gray; }
+        body .wrapper article section.comments div footer p a {
+          color: gray;
+          font-weight: 300; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@media screen and (min-width: 0em) {
+  body .wrapper article section div.feed div {
+    *zoom: 1;
+    margin: 0.5em auto; }
+    body .wrapper article section div.feed div:before, body .wrapper article section div.feed div:after {
+      content: '';
+      display: table; }
+    body .wrapper article section div.feed div:after {
+      clear: both; }
+    body .wrapper article section div.feed div header {
+      margin: 0;
+      border-style: none;
+      font-weight: 700; }
+    body .wrapper article section div.feed div article p {
+      font-size: 0.9em; }
+      body .wrapper article section div.feed div article p a {
+        color: #141823;
+        font-weight: 300;
+        text-decoration: none; }
+      body .wrapper article section div.feed div article p a:hover {
+        text-decoration: underline; }
+    body .wrapper article section div.feed div footer {
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: inherit;
+      width: 100%;
+      margin-left: 0%;
+      margin-right: 0%; }
+      body .wrapper article section div.feed div footer:before, body .wrapper article section div.feed div footer:after {
+        content: '';
+        display: table; }
+      body .wrapper article section div.feed div footer:after {
+        clear: both; }
+      body .wrapper article section div.feed div footer p {
+        color: gray;
+        font-size: 0.8em; } }
+@media screen and (min-width: 20em) {
+  .feed ul {
+    padding-top: 1em;
+    padding-left: 10%;
+    padding-right: 10%; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@media screen and (min-width: 0em) {
+  body .wrapper article section div form {
+    padding-top: 1em; }
+    body .wrapper article section div form label {
+      display: block;
+      font-weight: 300;
+      font-size: 1em;
+      margin-bottom: 0.5em; }
+    body .wrapper article section div form input[type="text"], body .wrapper article section div form input[type="email"], body .wrapper article section div form input[type="password"] {
+      margin-bottom: 0.5em;
+      padding: 1em 0;
+      text-indent: 1em;
+      width: 100%;
+      display: block;
+      border-style: none;
+      -webkit-border-radius: 0.25em;
+      -moz-border-radius: 0.25em;
+      -ms-border-radius: 0.25em;
+      border-radius: 0.25em;
+      box-shadow: inset 0 0 0.125em 0 #141823;
+      font-size: 0.85em;
+      text-align: left; }
+    body .wrapper article section div form input[type="submit"] {
+      display: block;
+      width: 40%;
+      margin: 0.25em 0;
+      text-align: center;
+      border-style: none;
+      -webkit-border-radius: 0.25em;
+      -moz-border-radius: 0.25em;
+      -ms-border-radius: 0.25em;
+      border-radius: 0.25em;
+      background-color: #141823;
+      color: white;
+      font-size: 1em;
+      height: 2.5em;
+      -webkit-transition: opacity .25s ease-in-out;
+      -moz-transition: opacity .25s ease-in-out;
+      transition: opacity .25s ease-in-out; }
+    body .wrapper article section div form input[type="submit"].recommended {
+      background-color: #c1f0c1;
+      box-shadow: inset 0 0 0.125em 0 green;
+      color: green; }
+    body .wrapper article section div form input[type="submit"]:hover {
+      opacity: 0.9;
+      cursor: pointer; }
+    body .wrapper article section div form .decision {
+      padding: 0; }
+      body .wrapper article section div form .decision input {
+        width: 100%;
+        margin-bottom: 0.5em; }
+    body .wrapper article section div form a {
+      text-decoration: none; } }
+@media screen and (min-width: 25em) {
+  body .wrapper article section div form .decision input {
+    display: inline;
+    width: 40%;
+    margin: 0.25em auto; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@media screen and (min-width: 0em) {
+  body .wrapper article section .guide {
+    text-align: center;
+    background-color: #f9fafb;
+    padding: 1em; }
+    body .wrapper article section .guide p {
+      padding: 2em 0;
+      font-weight: 700; }
+      body .wrapper article section .guide p a {
+        text-decoration: none; }
+    body .wrapper article section .guide form input[type="submit"] {
+      *zoom: 1;
+      width: auto;
+      max-width: 1410px;
+      float: none;
+      display: block;
+      margin-right: auto;
+      margin-left: auto;
+      padding-left: 0;
+      padding-right: 0;
+      width: 80%; }
+      body .wrapper article section .guide form input[type="submit"]:before, body .wrapper article section .guide form input[type="submit"]:after {
+        content: '';
+        display: table; }
+      body .wrapper article section .guide form input[type="submit"]:after {
+        clear: both; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@media screen and (min-width: 0em) {
+  .wrapper article.hero header {
+    background-color: #141823;
+    margin: 0;
+    padding-top: 2.25em; }
+    .wrapper article.hero header h1 {
+      background-color: #141823;
+      text-align: center;
+      font-size: 2.5em;
+      color: white; }
+    .wrapper article.hero header h2 {
+      padding: 0 1em 1em 1em;
+      background-color: #141823;
+      color: #f9fafb;
+      text-align: center;
+      font-size: 1.5em; }
+  .wrapper article.hero section {
+    padding: 0; }
+    .wrapper article.hero section div {
+      padding: 0; }
+      .wrapper article.hero section div form input[type="email"], .wrapper article.hero section div form input[type="password"] {
+        margin: 0 auto;
+        width: 80%;
+        text-align: center;
+        box-shadow: none;
+        border-style: none;
+        border-bottom: solid 0.125em #141823; }
+      .wrapper article.hero section div form input[type="submit"] {
+        *zoom: 1;
+        width: auto;
+        max-width: 1410px;
+        float: none;
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 0;
+        padding-right: 0;
+        width: 80%; }
+        .wrapper article.hero section div form input[type="submit"]:before, .wrapper article.hero section div form input[type="submit"]:after {
+          content: '';
+          display: table; }
+        .wrapper article.hero section div form input[type="submit"]:after {
+          clear: both; }
+  .wrapper article.hero section.options {
+    background-color: #f9fafb; }
+    .wrapper article.hero section.options div {
+      margin: 0 auto;
+      width: 80%;
+      text-align: right; }
+      .wrapper article.hero section.options div p a {
+        color: #141823; }
+      .wrapper article.hero section.options div p a:hover {
+        font-weight: 700; }
+  .wrapper article.hero section.social div {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: inherit;
+    width: 100%;
+    margin-left: 0%;
+    margin-right: 0%;
+    margin-top: 0.25em; }
+    .wrapper article.hero section.social div:before, .wrapper article.hero section.social div:after {
+      content: '';
+      display: table; }
+    .wrapper article.hero section.social div:after {
+      clear: both; }
+    .wrapper article.hero section.social div form input[type="submit"] {
+      width: 60%; }
+    .wrapper article.hero section.social div form input[type="submit"].openid {
+      display: none; }
+    .wrapper article.hero section.social div form input[type="submit"].facebook {
+      display: none; }
+    .wrapper article.hero section.social div form input[type="submit"].github {
+      background-color: gray; } }
+@media screen and (min-width: 40.063em) {
+  body .wrapper article.hero section.social {
+    width: 80%;
+    margin: 0 auto; }
+    body .wrapper article.hero section.social div {
+      margin: 1em auto;
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: inherit;
+      width: 33.33333%;
+      margin-left: 0%;
+      margin-right: 0%; }
+      body .wrapper article.hero section.social div:before, body .wrapper article.hero section.social div:after {
+        content: '';
+        display: table; }
+      body .wrapper article.hero section.social div:after {
+        clear: both; }
+      body .wrapper article.hero section.social div form {
+        margin: 0 auto;
+        width: 60%; }
+        body .wrapper article.hero section.social div form input[type="submit"] {
+          *zoom: 1;
+          float: left;
+          display: inline;
+          clear: none;
+          text-align: inherit;
+          padding-left: 0;
+          padding-right: 0;
+          width: 100%;
+          margin-left: 0%;
+          margin-right: 3%;
+          text-align: center; }
+          body .wrapper article.hero section.social div form input[type="submit"]:before, body .wrapper article.hero section.social div form input[type="submit"]:after {
+            content: '';
+            display: table; }
+          body .wrapper article.hero section.social div form input[type="submit"]:after {
+            clear: both; }
+          body .wrapper article.hero section.social div form input[type="submit"]:last-child {
+            margin-right: 0%; }
+        body .wrapper article.hero section.social div form input[type="submit"].openid {
+          display: initial;
+          background-color: orange; }
+        body .wrapper article.hero section.social div form input[type="submit"].facebook {
+          display: initial;
+          background-color: #3b5998; } }
+@media screen and (min-width: 64.063em) {
+  body .wrapper aside.widget div.asidewrapper {
+    margin-top: 0; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@media screen and (min-width: 0em) {
+  body .wrapper aside.map {
+    display: none; } }
+@media screen and (min-width: 64.063em) {
+  body .wrapper aside.map {
+    display: initial;
+    text-align: right;
+    margin-top: 3em;
+    min-height: 100vh; }
+    body .wrapper aside.map section {
+      padding-right: 2em;
+      margin-bottom: 1em; }
+      body .wrapper aside.map section header {
+        color: #141823;
+        font-weight: 700;
+        font-size: 0.75em;
+        margin-bottom: 0.25em; }
+      body .wrapper aside.map section a {
+        text-decoration: none;
+        color: #141823; }
+      body .wrapper aside.map section a:hover {
+        font-weight: 700; }
+      body .wrapper aside.map section ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        font-size: 0.8em; }
+        body .wrapper aside.map section ul span.count {
+          display: inline-block;
+          min-width: 1.5em;
+          text-align: center;
+          color: #141823;
+          font-size: 0.75em;
+          font-weight: 700;
+          background-color: #f1f1f1; }
+        body .wrapper aside.map section ul li {
+          margin-bottom: 0.5em; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@media screen and (min-width: 0em) {
+  body .wrapper nav {
+    *zoom: 1;
+    position: fixed;
+    width: 100%;
+    background-color: #141823;
+    padding: 0.25em 0; }
+    body .wrapper nav:before, body .wrapper nav:after {
+      content: '';
+      display: table; }
+    body .wrapper nav:after {
+      clear: both; }
+    body .wrapper nav div img {
+      -webkit-border-radius: 0.1em;
+      -moz-border-radius: 0.1em;
+      -ms-border-radius: 0.1em;
+      border-radius: 0.1em;
+      max-width: 1.3em;
+      height: auto; }
+    body .wrapper nav div.right {
+      display: none; } }
+@media screen and (min-width: 60.063em) {
+  body .wrapper nav {
+    *zoom: 1; }
+    body .wrapper nav:before, body .wrapper nav:after {
+      content: '';
+      display: table; }
+    body .wrapper nav:after {
+      clear: both; }
+    body .wrapper nav div.left {
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      text-align: inherit;
+      padding-left: 0;
+      padding-right: 0;
+      width: 74.25%;
+      margin-left: 0%;
+      margin-right: 3%; }
+      body .wrapper nav div.left:before, body .wrapper nav div.left:after {
+        content: '';
+        display: table; }
+      body .wrapper nav div.left:after {
+        clear: both; }
+      body .wrapper nav div.left:last-child {
+        margin-right: 0%; }
+    body .wrapper nav div.right {
+      display: initial;
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      text-align: inherit;
+      padding-left: 0;
+      padding-right: 0;
+      width: 22.75%;
+      margin-left: 0%;
+      margin-right: 3%; }
+      body .wrapper nav div.right:before, body .wrapper nav div.right:after {
+        content: '';
+        display: table; }
+      body .wrapper nav div.right:after {
+        clear: both; }
+      body .wrapper nav div.right:last-child {
+        margin-right: 0%; }
+      body .wrapper nav div.right a {
+        text-decoration: none;
+        color: #f9fafb; }
+      body .wrapper nav div.right a:hover {
+        font-weight: 700; }
+      body .wrapper nav div.right img {
+        padding-left: 2em; }
+      body .wrapper nav div.right span {
+        text-align: right;
+        color: #f9fafb;
+        font-weight: 300;
+        font-height: 1.2em; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@media screen and (min-width: 0em) {
+  body .wrapper article.project section.album div {
+    *zoom: 1; }
+    body .wrapper article.project section.album div:before, body .wrapper article.project section.album div:after {
+      content: '';
+      display: table; }
+    body .wrapper article.project section.album div:after {
+      clear: both; }
+    body .wrapper article.project section.album div div {
+      margin-bottom: 1em;
+      box-shadow: 0 0 0.5em 0 #f1f1f1;
+      background-color: white; }
+      body .wrapper article.project section.album div div p img {
+        max-width: 100%;
+        height: auto; }
+  body .wrapper article.project section.image p img {
+    max-width: 100%;
+    height: auto; } }
+@media screen and (min-width: 40.063em) {
+  body .wrapper article.project section.album div div {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    text-align: inherit;
+    padding-left: 0;
+    padding-right: 0;
+    width: 31.33333%;
+    margin-left: 0%;
+    margin-right: 3%; }
+    body .wrapper article.project section.album div div:before, body .wrapper article.project section.album div div:after {
+      content: '';
+      display: table; }
+    body .wrapper article.project section.album div div:after {
+      clear: both; }
+    body .wrapper article.project section.album div div:nth-child(3n) {
+      margin-right: 0%;
+      float: right; }
+    body .wrapper article.project section.album div div:nth-child(3n + 1) {
+      clear: both; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@media screen and (min-width: 0em) {
+  body .wrapper article section.toolbar {
+    font-size: 0.9em;
+    padding: 0;
+    *zoom: 1; }
+    body .wrapper article section.toolbar:before, body .wrapper article section.toolbar:after {
+      content: '';
+      display: table; }
+    body .wrapper article section.toolbar:after {
+      clear: both; }
+    body .wrapper article section.toolbar div {
+      padding: 1em 0;
+      text-align: center;
+      font-size: 0.8em; }
+      body .wrapper article section.toolbar div a {
+        text-decoration: none;
+        color: #141823; }
+    body .wrapper article section.toolbar .active, body .wrapper article section.toolbar div:hover {
+      background-color: #f1f1f1;
+      font-weight: 700; }
+      body .wrapper article section.toolbar .active a, body .wrapper article section.toolbar div:hover a {
+        color: #141823; }
+  body .wrapper article section.action {
+    font-size: 0.9em;
+    padding: 0;
+    *zoom: 1; }
+    body .wrapper article section.action:before, body .wrapper article section.action:after {
+      content: '';
+      display: table; }
+    body .wrapper article section.action:after {
+      clear: both; }
+    body .wrapper article section.action div {
+      padding: 1em 0;
+      text-align: center;
+      font-size: 0.8em; }
+      body .wrapper article section.action div a {
+        text-decoration: none;
+        color: #141823; }
+    body .wrapper article section.action .active, body .wrapper article section.action div:hover {
+      background-color: #f1f1f1;
+      font-weight: 700; }
+      body .wrapper article section.action .active a, body .wrapper article section.action div:hover a {
+        color: #141823; }
+    body .wrapper article section.action div {
+      background-color: #f9fafb; } }
+@media screen and (min-width: 20em) {
+  body .wrapper article section.toolbar div {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: inherit;
+    width: 20%;
+    margin-left: 0%;
+    margin-right: 0%;
+    text-align: center;
+    border-bottom: solid 0.1em #f1f1f1; }
+    body .wrapper article section.toolbar div:before, body .wrapper article section.toolbar div:after {
+      content: '';
+      display: table; }
+    body .wrapper article section.toolbar div:after {
+      clear: both; }
+  body .wrapper article section.toolbar .active, body .wrapper article section.toolbar div:hover {
+    border-bottom: solid 0.1em #141823; }
+  body .wrapper article section.action {
+    border-bottom: solid 0.1em #f1f1f1; }
+    body .wrapper article section.action div {
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: inherit;
+      width: 25%;
+      margin-left: 0%;
+      margin-right: 0%;
+      text-align: center; }
+      body .wrapper article section.action div:before, body .wrapper article section.action div:after {
+        content: '';
+        display: table; }
+      body .wrapper article section.action div:after {
+        clear: both; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@media screen and (min-width: 0em) {
+  body article.user section.bio, body article.user section.social {
+    padding: 0; }
+    body article.user section.bio div, body article.user section.social div {
+      padding: 0; }
+      body article.user section.bio div img, body article.user section.social div img {
+        max-width: 100%;
+        height: auto; }
+  body article.user section.social div {
+    *zoom: 1;
+    width: auto;
+    max-width: 1410px;
+    float: none;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 0.9em; }
+    body article.user section.social div:before, body article.user section.social div:after {
+      content: '';
+      display: table; }
+    body article.user section.social div:after {
+      clear: both; }
+    body article.user section.social div div {
+      padding: 1em 0;
+      text-align: center; }
+      body article.user section.social div div a {
+        text-decoration: none;
+        color: #141823; }
+    body article.user section.social div .active, body article.user section.social div div:hover {
+      background-color: #f1f1f1;
+      font-weight: 700; }
+      body article.user section.social div .active a, body article.user section.social div div:hover a {
+        color: #141823; } }
+@media screen and (min-width: 20em) {
+  body article.user section.social div div {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: inherit;
+    width: 33.33333%;
+    margin-left: 0%;
+    margin-right: 0%;
+    border-bottom: solid 0.25em red; }
+    body article.user section.social div div:before, body article.user section.social div div:after {
+      content: '';
+      display: table; }
+    body article.user section.social div div:after {
+      clear: both; }
+    body article.user section.social div div p {
+      text-align: center; }
+  body article.user section.social div .active, body article.user section.social div div:hover {
+    border-bottom: solid 0.25em #141823; } }
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+/*  Syntax Quick Reference
+  --------------------------
+  column($ratios: 1, $offset: 0, $cycle: 0, $uncycle: 0, $gutter: $jeet-gutter)
+  span($ratio: 1, $offset: 0)
+  shift($ratios: 0, $col_or_span: column, $gutter: $jeet-gutter)
+  unshift()
+  edit()
+  center($max_width: 1410px, $pad: 0)
+  stack($pad: 0, $align: false)
+  unstack()
+  align($direction: both)
+  cf()
+*/
+@media screen and (min-width: 60.063em) {
+  body .wrapper aside.widget section {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: inherit;
+    width: 100%;
+    margin-left: 0%;
+    margin-right: 0%;
+    *zoom: 1;
+    width: auto;
+    max-width: 1410px;
+    float: none;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 1em auto;
+    -webkit-border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+    -ms-border-radius: 0.5em;
+    border-radius: 0.5em;
+    box-shadow: inset 0 0 0.125em 0 #141823;
+    background-color: white;
+    width: 80%;
+    height: 100%;
+    padding: 0.75em; }
+    body .wrapper aside.widget section:before, body .wrapper aside.widget section:after {
+      content: '';
+      display: table; }
+    body .wrapper aside.widget section:after {
+      clear: both; }
+    body .wrapper aside.widget section:before, body .wrapper aside.widget section:after {
+      content: '';
+      display: table; }
+    body .wrapper aside.widget section:after {
+      clear: both; }
+    body .wrapper aside.widget section header {
+      margin: 0;
+      padding: 0.25em;
+      background-color: #f9fafb;
+      color: #141823;
+      font-weight: 700;
+      font-size: 0.75em; }
+      body .wrapper aside.widget section header h1 {
+        font-size: 1.5em; }
+      body .wrapper aside.widget section header h2 {
+        font-size: 1em; }
+    body .wrapper aside.widget section article {
+      min-height: initial;
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      text-align: inherit;
+      padding-left: 0;
+      padding-right: 0;
+      width: 100%;
+      margin-left: 0%;
+      margin-right: 3%;
+      font-size: 0.85em; }
+      body .wrapper aside.widget section article:before, body .wrapper aside.widget section article:after {
+        content: '';
+        display: table; }
+      body .wrapper aside.widget section article:after {
+        clear: both; }
+      body .wrapper aside.widget section article:last-child {
+        margin-right: 0%; }
+      body .wrapper aside.widget section article p {
+        *zoom: 1;
+        float: left;
+        display: inline;
+        clear: none;
+        text-align: inherit;
+        padding-left: 0;
+        padding-right: 0;
+        width: 31.33333%;
+        margin-left: 0%;
+        margin-right: 3%;
+        text-align: center; }
+        body .wrapper aside.widget section article p:before, body .wrapper aside.widget section article p:after {
+          content: '';
+          display: table; }
+        body .wrapper aside.widget section article p:after {
+          clear: both; }
+        body .wrapper aside.widget section article p:last-child {
+          margin-right: 0%; }
+        body .wrapper aside.widget section article p a {
+          text-decoration: none;
+          color: #141823; }
+        body .wrapper aside.widget section article p a:hover {
+          text-decoration: underline; }
+      body .wrapper aside.widget section article ul {
+        list-style-type: none;
+        margin: 0;
+        font-size: 0.8em; }
+        body .wrapper aside.widget section article ul li {
+          margin: 0.25em auto;
+          font-size: 1.2em; }
+          body .wrapper aside.widget section article ul li a {
+            text-decoration: none;
+            color: #141823; }
+          body .wrapper aside.widget section article ul li a:hover {
+            font-weight: 700; }
+    body .wrapper aside.widget section footer {
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      text-align: inherit;
+      padding-left: 0;
+      padding-right: 0;
+      width: 100%;
+      margin-left: 0%;
+      margin-right: 3%; }
+      body .wrapper aside.widget section footer:before, body .wrapper aside.widget section footer:after {
+        content: '';
+        display: table; }
+      body .wrapper aside.widget section footer:after {
+        clear: both; }
+      body .wrapper aside.widget section footer:last-child {
+        margin-right: 0%; }
+      body .wrapper aside.widget section footer form {
+        padding: 0;
+        *zoom: 1;
+        float: left;
+        display: inline;
+        clear: none;
+        text-align: inherit;
+        padding-left: 0;
+        padding-right: 0;
+        width: 31.33333%;
+        margin-left: 0%;
+        margin-right: 3%;
+        text-align: center;
+        background-color: white; }
+        body .wrapper aside.widget section footer form:before, body .wrapper aside.widget section footer form:after {
+          content: '';
+          display: table; }
+        body .wrapper aside.widget section footer form:after {
+          clear: both; }
+        body .wrapper aside.widget section footer form:last-child {
+          margin-right: 0%; }
+        body .wrapper aside.widget section footer form a {
+          text-decoration: none;
+          color: white; } }
+@media screen and (min-width: 60.063em) {
+  body .wrapper aside.widget {
+    text-align: left;
+    min-height: 100vh; }
+    body .wrapper aside.widget div.asidewrapper {
+      margin-top: 3em; }
+      body .wrapper aside.widget div.asidewrapper header h1 {
+        font-size: 1em; }
+      body .wrapper aside.widget div.asidewrapper header h2 {
+        font-size: 1em;
+        font-weight: 300;
+        border-bottom: solid 0.1em #f1f1f1;
+        margin-bottom: 0.5em; } }
+@media screen and (min-width: 64.063em) {
+  body .wrapper aside.widget section span.badge {
+    display: initial; } }
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Raleway", sans-serif; }
+
+@media screen and (min-width: 0em) {
+  body {
+    background-color: #f9fafb; }
+    body .wrapper article {
+      *zoom: 1;
+      width: auto;
+      max-width: 1410px;
+      float: none;
+      display: block;
+      margin-right: auto;
+      margin-left: auto;
+      padding-left: 0;
+      padding-right: 0;
+      *zoom: 1;
+      float: left;
+      display: inline;
+      clear: none;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: inherit;
+      width: 100%;
+      margin-left: 0%;
+      margin-right: 0%;
+      color: #141823; }
+      body .wrapper article:before, body .wrapper article:after {
+        content: '';
+        display: table; }
+      body .wrapper article:after {
+        clear: both; }
+      body .wrapper article:before, body .wrapper article:after {
+        content: '';
+        display: table; }
+      body .wrapper article:after {
+        clear: both; }
+      body .wrapper article header {
+        margin-top: 2.25em;
+        border-bottom: solid 0.15em red; }
+        body .wrapper article header h1 {
+          padding: 0.25em;
+          text-align: left;
+          color: #141823;
+          background-color: #f1f1f1; }
+        body .wrapper article header h1.generated {
+          font-size: 1em; }
+          body .wrapper article header h1.generated a {
+            color: #141823;
+            text-decoration: none; }
+          body .wrapper article header h1.generated a:hover {
+            text-decoration: underline; }
+        body .wrapper article header h2 {
+          text-align: left;
+          padding: 0.5em;
+          font-size: 0.85em;
+          font-weight: 300;
+          background-color: white; }
+          body .wrapper article header h2 a {
+            text-decoration: underline;
+            color: #141823; }
+      body .wrapper article section {
+        background-color: white;
+        padding: 0.25em; }
+        body .wrapper article section div {
+          background-color: #f9fafb;
+          padding: 0.25em; }
+    body .wrapper aside {
+      display: none; } }
+@media screen and (min-width: 60.063em) {
+  body .wrapper article {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: inherit;
+    width: 75%;
+    margin-left: 0%;
+    margin-right: 0%; }
+    body .wrapper article:before, body .wrapper article:after {
+      content: '';
+      display: table; }
+    body .wrapper article:after {
+      clear: both; }
+    body .wrapper article header h1.generated {
+      font-size: 1.5em; }
+  body .wrapper aside {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: inherit;
+    width: 25%;
+    margin-left: 0%;
+    margin-right: 0%; }
+    body .wrapper aside:before, body .wrapper aside:after {
+      content: '';
+      display: table; }
+    body .wrapper aside:after {
+      clear: both; } }
+@media screen and (min-width: 64.063em) {
+  body .wrapper article {
+    *zoom: 1;
+    float: left;
+    display: inline;
+    clear: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: inherit;
+    width: 50%;
+    margin-left: 0%;
+    margin-right: 0%; }
+    body .wrapper article:before, body .wrapper article:after {
+      content: '';
+      display: table; }
+    body .wrapper article:after {
+      clear: both; }
+    body .wrapper article header {
+      margin-top: 2.25em; } }
+span.badge {
+  -webkit-border-radius: 10%;
+  -moz-border-radius: 10%;
+  -ms-border-radius: 10%;
+  border-radius: 10%;
+  padding: 0.15em;
+  font-size: 1em;
+  font-weight: 700; }
+
+.author, .pr {
+  background-color: #c1f0c1;
+  color: green; }

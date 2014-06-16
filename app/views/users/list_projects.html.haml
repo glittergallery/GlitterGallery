@@ -1,0 +1,20 @@
+%article.user
+  %header
+    %h1
+      = @user.username
+    %h2
+      = '@' + @user.username
+
+  = render 'user_toolbar'
+
+  %section.bio
+    %div
+      / FIXME - substitute with cover photo
+      = avatar @user.email
+
+  %section
+    %div
+      - @user.projects.each do |project|
+        %p
+        = link_to project.name, project.name
+

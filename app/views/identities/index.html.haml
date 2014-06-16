@@ -1,7 +1,7 @@
 - content_for :title do
   = current_user.username.titleize
 
-%article
+%article.user
   %header
     %h1
       = current_user.username
@@ -9,10 +9,27 @@
       = '@' + current_user.username
 
   %section.toolbar
+    %div.active
+      %p
+        = link_to 'Userpage', "/#{current_user.username}"
     %div
       %p
-        = link_to 'Profile', edit_user_registration_path
+        = link_to 'Projects', File.join("/#{current_user.username}", 'projects')
+    %div
+      %p
+        = link_to 'Glitterposts', File.join("/#{current_user.username}", 'glitterposts')
+    %div
+      %p
+        = link_to 'Activity', File.join("/#{current_user.username}", 'activity')
+    %div
+      %p
+        = link_to 'Badges', File.join("/#{current_user.username}", 'badges')
+
+  %section.action
     %div.active
+      %p
+        = link_to 'Profile', edit_user_registration_path
+    %div
       %p
         = link_to 'Identities', identities_path
     %div
@@ -21,20 +38,13 @@
     %div
       %p
         = link_to 'Projects', identities_path
-    %div
-      %p
-        = link_to 'Following', identities_path
 
   %section
-    %p You can sign in via the following accounts
-    %br
     %div
       -for identity in @identities
         = identity.provider
         = identity.uid
         = link_to "Delete", identity_path(identity.id), method:"delete", data: { confirm: "Are you sure?"}
-    %br
-    %p You may link these accounts also
 
-    -for method in @allowedmethods
-      =link_to(method.to_s.capitalize,"/auth/#{method.to_s}")
+      -for method in @allowedmethods
+        =link_to(method.to_s.capitalize,"/auth/#{method.to_s}")
