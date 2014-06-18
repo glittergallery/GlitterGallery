@@ -1,6 +1,9 @@
 Glitter::Application.routes.draw do
 
   devise_for :users,:controllers => { :registrations => 'registrations' }
+  devise_scope :user do
+    root to: "devise/sessions#new"
+  end
   match 'auth/:provider/callback' => "identities#create", :via => [:get,:post]
   
 
@@ -67,8 +70,5 @@ Glitter::Application.routes.draw do
       post :edit_svg, :as => :edit_svg
       post :update_svg, :as => :update_svg
     end
-  end
-
-
-  root :to => "identities#new"
+  end 
 end
