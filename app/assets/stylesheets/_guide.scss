@@ -1,0 +1,31 @@
+@import '_var';
+
+@media screen and (min-width: 0em){
+	body{
+		.wrapper{
+			article{
+				section{
+					.guide{
+						text-align: center;
+					  background-color: $geometry_gray;
+						padding: 1em;
+						p{
+							padding: 2em 0;
+							font-weight: 700;
+							a{
+								text-decoration: none;
+							}
+						}
+						form{
+							input[type="submit"]{
+								@include center;
+								width: 80%;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+}

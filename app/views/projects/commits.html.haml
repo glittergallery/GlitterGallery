@@ -1,6 +1,3 @@
-- content_for :head do
-  = stylesheet_link_tag :projects
-  
 - unless private_check
   = render 'permissions_error'
 - else
@@ -9,7 +6,7 @@
     = @project.name.titleize
 
 
-  %article
+  %article.project
     %header
       %h1.generated 
         = @project.name
@@ -17,25 +14,43 @@
         FIXME - Descriptions are private, so they won't show up here.
         /= @project.desc
 
-    %section
-      = render 'project_toolbar'
+    = render 'project_toolbar'
   
     - if @project.private and params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
   
-    %ul.history
-      - @commits.each do |commit|
-        %li
-          .meta
-            %p
-              = commit.author[:name]
-            %p
-              = distance_of_time_in_words_to_now Time.at(commit.epoch_time)
-              ago
-
-          = link_to commit.message, File.join(@project.urlbase, 'commit', commit.tree_id), :class => 'commit'
-      - if !@comments.nil?
-        = will_paginate @comments, :style => 'color:blue' 
+    %section
+      - unless @commits.empty?
+        %div.feed
+          - @commits.each do |commit|
+            %div
+              %header 
+                = commit.author[:name]             
+              %article
+                %p
+                  = link_to commit.message, File.join(@project.urlbase, 'commit', commit.tree_id)
+              %footer
+                %p
+                  = distance_of_time_in_words_to_now Time.at(commit.epoch_time)
+                  ago.
+      - else
+        %div
+          - if user_signed_in?
+            - unless current_user.id == @project.user.id
+              .guide
+                %p Work hasn't started on this project yet. Maybe you want to contribute?
+                %form{action: File.join(@project.name, "fork")}
+                  %input{type: "submit", value: "Fork this project!"}
+            - else
+              .guide
+                %p Submit your design work on this project to start collaborating.
+                %form{action: File.join(@project.name, "newfile")}
+                  %input{type: "submit", value: "Add first file!"}
+          - else
+            .guide
+              %p You'll need to sign in to work on these cool projects!
+              %form{action: "/users/sign_in"}
+                %input{type: "submit", value: "Sign in!"}
 
 
 

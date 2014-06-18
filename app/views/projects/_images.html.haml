@@ -1,8 +1,30 @@
-- @images.each do |image|
-  %div
-    %p
-      = link_to(image_tag(image[:url]),image[:link])
+%section.album
+  - unless @images.empty?
+    %div
+      - @images.each do |image|
+        %div
+          %p
+            = link_to(image_tag(image[:url]),image[:link])
+    - if user_signed_in? and current_user.id == @project.user.id
+      %div
+        = form_tag file_upload_project_path(@project), multipart: true do
+          = file_field_tag "file" 
+          = submit_tag "Upload file!"
+  -else 
+    - if user_signed_in?
+      - if current_user.id == @project.user.id
+        .guide
+          %p Submit your design work on this project to start collaborating.
+          %form{action: File.join(@project.name, "newfile")}
+            %input{type: "submit", value: "Add first file!"}
+      - else
+        .guide
+          %p Design work is yet to be added to this project. Maybe you want to follow to receive updates?
+          %form{action: File.join(@project.name, "follow")}
+            %input{type: "submit", value: "Follow this project"}
+    - else
+      .guide
+        %p You'll need to sign in to work on these cool projects!
+        %form{action: "/users/sign_in"}
+          %input{type: "submit", value: "Sign in!"}
 
-
-    
-    

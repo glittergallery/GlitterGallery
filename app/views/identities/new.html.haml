@@ -1,12 +1,8 @@
-- content_for :head do
-  = stylesheet_link_tag :style
-
-
 %article
   %header
-    %h1
-      GlitterGallery
-    %h2
-      Just a note, till we're completely set up, please hit return on each page to load the styles right.
-
-
+    %h1 GlitterGallery
+    %h2 The open source pixelpub where awesome designers hangout.
+  %section
+    %div
+      %p 
+        = link_to 'Login', '/users/sign_in'

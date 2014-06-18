@@ -1,0 +1,30 @@
+%article.hero
+  %header
+    %h1 GlitterGallery
+    %h2 The open source pixelpub where awesome designers hangout.
+
+  %section
+    %div
+      = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+        = f.email_field :email, placeholder: "Your email", autofocus: true
+        = f.password_field :password, placeholder: "Your password", autocomplete: "off"
+        = f.submit "Login"
+
+  %section.options
+    %div
+      %p
+        = link_to 'Sign Up?', '/users/sign_up'
+      %p
+        = link_to 'Forgot Password?', '/password/forgot'
+
+  %section.social
+    %div
+      %form.hide{action: "/auth/github"}
+        %input.github{type: "submit", value: "GitHub"}/
+    %div
+      %form.hide{action: "/auth/facebook"}
+        %input.facebook{type: "submit", value: "Facebook"}/
+    %div
+      %form{action: "/auth/openid"}
+        %input.openid{type: "submit", value: "OpenID"}/
+/ close central article

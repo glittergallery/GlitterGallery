@@ -1,21 +1,46 @@
 - @parent = Project.find @project.parent
 
 
-%ul
-  %li
-    =link_to 'Log', File.join(@project.urlbase, 'commits'), :class => 'history'
-  - if user_signed_in? and @project.user_id == current_user.id
-    %li
-      = link_to "Settings", File.join(@project.urlbase, 'settings')
-    %li
-      = link_to 'New SVG', File.join(@project.urlbase, 'createsvg'), :class => 'draw', "data-no-turbolink" => true
-    %li
-      = link_to 'Add Files', File.join(@project.urlbase, 'newfile'), :class => 'files'
-      
-  - if user_signed_in? && (@project.user_id != current_user.id and @parent.user_id != current_user.id)
-    %li
-      = link_to 'Fork' , File.join(request.original_url, 'forkyou'), :class => 'fork'
+%section.toolbar
+  %div.active
+    %p
+      = link_to 'Current', File.join(@project.urlbase, @project_path.to_s)
+  %div
+    %p
+      = link_to 'Log', File.join(@project.urlbase, 'commits')
+  %div
+    %p
+      = link_to 'Contributors', File.join(@project.urlbase, 'contributors')
+  %div
+    %p
+      = link_to 'Issues', File.join(@project.urlbase, 'issues')
+  %div
+    %p
+      = link_to 'Milestones', File.join(@project.urlbase, 'milestones')
 
-  - if user_signed_in? && (@project.user_id == current_user.id and @parent.user_id != current_user.id)
-    %li
-      = link_to 'Send Pull Request', File.join(request.original_url, 'pull'), :class => 'pull-request'
+
+%section.action
+  - if user_signed_in? and @project.user.id == current_user.id
+    %div
+      %p
+        = link_to 'Upload', File.join(@project.urlbase, 'newfile')
+    %div
+      %p
+        = link_to 'Doodle', File.join(@project.urlbase, 'createsvg'), "data-no-turbolink" => true
+    %div
+      %p
+        = link_to "Settings", File.join(@project.urlbase, 'settings')
+      
+  - else
+    %div
+      %p
+        = link_to 'Fork' , File.join(request.original_url, 'forkyou')
+    %div
+      %p
+        = link_to 'Star' , File.join(request.original_url, 'star')
+    %div
+      %p
+        = link_to 'Follow' , File.join(request.original_url, 'follow')
+  %div
+    %p
+      = link_to 'Blame', File.join(request.original_url, 'issues/new')

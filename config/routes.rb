@@ -6,10 +6,8 @@ Glitter::Application.routes.draw do
 
   resources :projects
   resources :identities, only: [:destroy,:index]
-  #resource :session, only: [:new, :create, :destroy]
   resources :comments, only: [:new, :create, :destroy]
   resources :glitterposts
-  #get '/login' => 'sessions#new'
   
   post 'glitterposts/:id/edit' => 'glitterposts#update'
 
@@ -17,6 +15,7 @@ Glitter::Application.routes.draw do
   get '/dashboard' => 'dashboard#index', :as => :dashboard
   get 'settings' => 'users#settings', :as => :user_settings
   get '/:username' => 'users#show'
+  get '/:username/projects' => 'users#list_projects'
   get '/:username/:project' => 'projects#show'
   get '/:username/:project/commits' => 'projects#commits'
   get '/:username/:project/commit/:tree_id' => 'projects#projectcommit'
@@ -70,7 +69,6 @@ Glitter::Application.routes.draw do
     end
   end
 
-  #match '/logout', to: 'sessions#destroy', via: :delete
 
   root :to => "identities#new"
 end
