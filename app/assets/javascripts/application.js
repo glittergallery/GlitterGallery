@@ -20,3 +20,7 @@
 //= require jquery-ui
 //= require jquery.infinitescroll.min
 //= require turbolinks
+//= require nprogress
+//= require nprogress-turbolinks
+
+NProgress.configure({ showSpinner: false, speed: 700});
