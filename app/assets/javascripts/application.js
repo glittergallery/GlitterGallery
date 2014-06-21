@@ -19,5 +19,4 @@
 //= require jquery.annotate
 //= require jquery-ui
 //= require jquery.infinitescroll.min
-//= require glimages
 //= require turbolinks

@@ -42,17 +42,18 @@
                 %li
                   %a{href: "/projects/new"} New Project
                 %li
-                  %a{href: "/projects"}
+                  %a{href: "/#{current_user.username}/projects"}
                     %span.count
                       = current_user.projects.count
                     My Projects
+              -#
                 %li
-                  %a{href: "#"}
+                  %a{href: "/#{current_user.username}/projects"}
                     %span.count
                       /= current_user.starred_projects.count
                     Starred
                 %li
-                  %a{href: "#"}
+                  %a{href: "/#{current_user.username}/projects"}
                     %span.count
                       /projects whose notifs haven't been read
                       /= current_user.starred_projects.count
@@ -60,68 +61,69 @@
                 %li
                   %a{href: "/projects/settings"}
                     Settings
-            %section
-              %header GLITTERPOSTS
-              %ul
-                %li
-                  %a{href: "/glitterposts/new"} Compose New
-                %li
-                  %a{href: "/glitterposts"}
-                    %span.count
-                      /= current_user.glitterposts.count
-                    My Glitterposts
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.glitterposts[draft=true]
-                    Drafts
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.glitterpost_bookmarks
-                    Bookmarks
-                %li
-                  %a{href: "/glitterposts/settings"}
+            -#
+              %section
+                %header GLITTERPOSTS
+                %ul
+                  %li
+                    %a{href: "/glitterposts/new"} Compose New
+                  %li
+                    %a{href: "/glitterposts"}
+                      %span.count
+                        /= current_user.glitterposts.count
+                      My Glitterposts
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.glitterposts[draft=true]
+                      Drafts
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.glitterpost_bookmarks
+                      Bookmarks
+                  %li
+                    %a{href: "/glitterposts/settings"}
+                      Settings
+              %section
+                %header DOODLES
+                %ul
+                  %li
+                    %a{href: "/doodles/new"}
+                      Doodle New
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.doodles.count
+                      My Doodles
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.doodle[draft=true]
+                      Drafts
+                  %li
+                    %a{href: "#"}
+                      / = current_user.doodle_bookmarks
+                      Bookmarks
+              %section
+                %header MEETINGS
+                %ul
+                  %li
+                    %a{href: "/meetings/new"}
+                      Schedule New
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.meetings[upcoming].count
+                      Upcoming
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.meetings[past].count
+                      Past
+                  %li
+                    %a{href: "/meetings/settings"}
                     Settings
-            %section
-              %header DOODLES
-              %ul
-                %li
-                  %a{href: "/doodles/new"}
-                    Doodle New
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.doodles.count
-                    My Doodles
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.doodle[draft=true]
-                    Drafts
-                %li
-                  %a{href: "#"}
-                    / = current_user.doodle_bookmarks
-                    Bookmarks
-            %section
-              %header MEETINGS
-              %ul
-                %li
-                  %a{href: "/meetings/new"}
-                    Schedule New
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.meetings[upcoming].count
-                    Upcoming
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.meetings[past].count
-                    Past
-                %li
-                  %a{href: "/meetings/settings"}
-                  Settings
           - else
             %section
               %header DEVELOPER
@@ -164,17 +166,6 @@
                 %ul
                   - @projects.each do |project|
                     - if project.private
-                      %li
-                        = link_to project.name, project.urlbase
-            %section
-              %header
-                %h1 MY LATEST GLITTERPOSTS
-                %h2 Last updated yesterday
-              %article
-                %ul
-                /
-                  - @projects.each do |project|
-                    - unless project.private
                       %li
                         = link_to project.name, project.urlbase
           - else

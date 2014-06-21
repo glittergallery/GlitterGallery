@@ -1,3 +1,6 @@
+- content_for :title do
+  = @user.username.titleize
+
 %article.user
   %header
     %h1
@@ -9,8 +12,7 @@
 
   %section.bio
     %div
-      / FIXME - substitute with cover photo
-      = avatar @user.email
+      %img{src: "/usercover.jpg"}
 
   %section
     %div
