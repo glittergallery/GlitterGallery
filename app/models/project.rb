@@ -64,7 +64,7 @@ class Project < ActiveRecord::Base
   def set_path
     #TODO - let basedir for repos be set in app config
     user = User.find(self.user_id)
-    self.path = File.join 'public', 'data', 'repos', user.id.to_s, self.id.to_s
+    self.path = File.join 'public', 'data', 'repos', user.email.to_s, name
     logger.debug "setting path - path: #{self.path}"
     self.save
   end
