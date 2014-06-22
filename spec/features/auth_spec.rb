@@ -2,13 +2,7 @@ require 'spec_helper'
 
 feature "Authentication" do
   scenario "New user signs up via email" do
-      visit "/"
-      click_link "Sign Up?"
-      fill_in "user_email", :with => "sbanskota08@gmail.com"
-      fill_in "user_password", :with => "secret12345"
-      fill_in "user_password_confirmation", :with => "secret12345"
-      fill_in "user_username", :with => "sarupbanskota"
-      click_button "Sign up!"
+      sign_up_with("sbanskota08@gmail.com","sarupbanskota","secret12345","secret12345")
       expect(page.current_path).to eq("/dashboard")    
   end
   scenario "New user signs up via omniauth" do
@@ -17,12 +11,8 @@ feature "Authentication" do
       expect(page.current_path).to eq("/dashboard")  
   end
   scenario "Existing user signs in via email" do
-    @user = FactoryGirl.create(:user)
-    visit "/"
-    #click_link "Sign in"
-    fill_in "user_email", :with => @user.email
-    fill_in "user_password", :with => "secret12345"   
-    click_button "Login"
+    @user = FactoryGirl.create(:user,:password => "secret12345",:password_confirmation => "secret12345")
+    sign_in_with(@user.email,"secret12345")
     expect(page.current_path).to eq("/dashboard")
   end
   scenario "Existing user signs up via omniauth" do
