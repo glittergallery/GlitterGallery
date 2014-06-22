@@ -3,6 +3,8 @@
     %h1 GlitterGallery
     %h2 The open source pixelpub where awesome designers hangout.
 
+  = render 'shared/messages'
+
   %section
     %div
       = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|

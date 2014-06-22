@@ -4,9 +4,11 @@
 %article.project
   %header
     %h1
+      = avatar @user.email
       = @user.username
     %h2
       = '@' + @user.username
+  = render 'shared/messages'
 
 
   %section.album

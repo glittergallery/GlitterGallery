@@ -4,6 +4,7 @@
 %article.user
   %header
     %h1
+      = avatar @user.email
       = @user.username
     %h2
       = '@' + @user.username

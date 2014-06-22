@@ -37,7 +37,7 @@
         .asidewrapper
           -if user_signed_in?
             %section
-              %header #{current_user.username}
+              %header #{current_user.username.upcase}
               %ul
                 %li
                   %a{href: "/users/edit"} Settings
@@ -144,7 +144,6 @@
                   / close left aside
                   / Use article for central content
 
-      = render 'shared/messages'
       = yield
 
 

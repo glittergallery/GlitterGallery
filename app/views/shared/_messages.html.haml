@@ -1,6 +1,8 @@
-- if notice
-  %p.message.notice
-    = notice
-- if alert
-  %p.message.alert
-    = alert
+%section.message
+  - if notice
+    %div.notice
+      = notice
+  - if alert
+    %div.alert
+      = alert
+

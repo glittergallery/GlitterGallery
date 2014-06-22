@@ -21,7 +21,7 @@
             PARENT
         - else
           Forked from parent/project
-
+    = render 'shared/messages'
     = render 'project_toolbar'
   
     - if @project.private and params[:xid] != @project.uniqueurl

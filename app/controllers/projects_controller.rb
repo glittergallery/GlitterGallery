@@ -34,7 +34,7 @@ class ProjectsController < ApplicationController
       redirect_to project.urlbase
     else
       flash[:alert] = "Didn't save project!"      
-      redirect_to dashboard_path
+      redirect_to new_project_path
     end
   end
 
