@@ -1,24 +1,6 @@
 require 'spec_helper'
 
 describe IdentitiesController do
-  describe "GET #new" do
-    context "no signed in" do
-      it "renders new template" do
-        get :new
-        expect(response).to render_template("new")      
-      end
-    end
-    context "is signed in" do
-      before do
-        @user = FactoryGirl.create(:user)
-        sign_in(@user)
-      end
-      it "redirects to dashboard" do
-        get :new
-        expect(response).to redirect_to(dashboard_path)   
-      end
-    end   
-  end
   describe "POST #create" do
     before :each do
       request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:facebook]
