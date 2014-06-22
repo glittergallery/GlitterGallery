@@ -14,20 +14,3 @@
   %div
     %p
       = link_to 'Badges', File.join("/#{@user.username}", 'badges')
-
-
-
-- if user_signed_in? and current_user.id == @user.id
-  %section.action
-    %div.active
-      %p
-        = link_to 'Profile', edit_user_registration_path
-    %div
-      %p
-        = link_to 'Identities', identities_path
-    %div
-      %p
-        = link_to 'SSH Keys', identities_path
-    %div
-      %p
-        = link_to 'Projects', identities_path

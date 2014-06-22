@@ -5,14 +5,21 @@
   - content_for :title do
     = @project.name.titleize
 
-
-  %article
+  %article.project
     %header
-      %h1.generated 
-        = @project.name
+      %h1.generated
+        = avatar @project.user.email
+        %p
+          = link_to @user.username, "/#{@user.username}"
+          = "/"
+          %span 
+            = link_to @project.name, "/#{@user.username}/#{@project.name}"
       %h2 
-        FIXME - Descriptions are private, so they won't show up here.
-        /= @project.desc
+        - if @project.id == @project.parent
+          %span.badge.author
+            PARENT
+        - else
+          Forked from parent/project
 
     %section
       = render 'project_toolbar'

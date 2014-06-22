@@ -1,0 +1,22 @@
+- content_for :title do
+  = @user.username.titleize
+
+%article.project
+  %header
+    %h1
+      = @user.username
+    %h2
+      = '@' + @user.username
+
+
+  %section.album
+    - unless @projects.empty?
+      %div
+        - @projects.each do |project|
+          %div
+            %p
+              %img{ src: "/usercover.jpg"}
+              = link_to project.name, File.join("/", @user.username, project.name)
+              %br
+              Last updated #{distance_of_time_in_words_to_now project.updated_at} ago
+

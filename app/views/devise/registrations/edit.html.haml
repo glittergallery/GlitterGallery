@@ -12,30 +12,45 @@
 
   %section
     %div
-      = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
-        = devise_error_messages!
-        %div
-          = f.label :email
-          = f.email_field :email, autofocus: true
-        - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+      %aside
+        %h1
+          User Settings
+        %nav
+          %ul
+            %li.active
+              = link_to 'Profile', edit_user_registration_path
+            %li
+              = link_to 'Identities', identities_path
+            %li
+              = link_to 'SSH Keys', identities_path
+            %li
+              = link_to 'Projects', identities_path
+
+      %div.option
+        = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+          = devise_error_messages!
           %div
-            Currently waiting confirmation for: #{resource.unconfirmed_email}
+            = f.label :email
+            = f.email_field :email, autofocus: true
+          - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+            %div
+              Currently waiting confirmation for: #{resource.unconfirmed_email}
+          %div
+            = f.label :password
+            %i (leave blank if you don't want to change it)
+            = f.password_field :password, autocomplete: "off"
+          %div
+            = f.label :password_confirmation
+            = f.password_field :password_confirmation, autocomplete: "off"
+          %div
+            = f.label :username
+            = f.text_field :username
+          %div
+            = f.label :current_password
+            %i (we need your current password to confirm your changes)
+            = f.password_field :current_password, autocomplete: "off"
+          %div= f.submit "Update"
+
         %div
-          = f.label :password
-          %i (leave blank if you don't want to change it)
-          = f.password_field :password, autocomplete: "off"
-        %div
-          = f.label :password_confirmation
-          = f.password_field :password_confirmation, autocomplete: "off"
-        %div
-          = f.label :username
-          = f.text_field :username
-        %div
-          = f.label :current_password
-          %i (we need your current password to confirm your changes)
-          = f.password_field :current_password, autocomplete: "off"
-        %div= f.submit "Update"
-  %section
-    %div
-      #{button_to "Cancel account?", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete}
-    = link_to "Back", :back
+          #{button_to "Cancel account?", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete}
+        = link_to "Back", :back

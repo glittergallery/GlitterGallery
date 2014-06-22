@@ -6,9 +6,5 @@ class UsersController < ApplicationController
 	  @username = @user.username
 	  @projects = @user.projects
 	end
-
-	def list_projects
-		@user = User.find_by username: params[:username]
-	end
 	
 end

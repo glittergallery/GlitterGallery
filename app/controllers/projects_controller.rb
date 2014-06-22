@@ -64,6 +64,10 @@ class ProjectsController < ApplicationController
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
+  def user_show
+    @user = User.find_by username: params[:username]
+    @projects = @user.projects
+  end
 
   def commits
     @user = User.find_by username: params[:username]

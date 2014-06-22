@@ -21,7 +21,7 @@
     .wrapper
       %nav
         .left
-          %img{src: "logo.svg"}/
+          %img{src: "/logo.svg"}/
         .right
           -if user_signed_in?
             = avatar current_user.email
@@ -36,6 +36,11 @@
       %aside.map
         .asidewrapper
           -if user_signed_in?
+            %section
+              %header #{current_user.username}
+              %ul
+                %li
+                  %a{href: "/users/edit"} Settings
             %section
               %header PROJECTS
               %ul

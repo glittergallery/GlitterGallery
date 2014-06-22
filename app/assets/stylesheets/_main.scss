@@ -1,7 +1,7 @@
 *{
 	margin:0;
 	padding:0;
-	font-family: $raleway;
+	font-family: $font;
 }
 
 $nprogress-color: red;
@@ -24,13 +24,22 @@ $nprogress-color: red;
 					margin-top: 2.25em;
 					border-bottom: solid 0.15em red;
 					h1{
+						font-weight: 300;
 						padding: 0.25em;
 						text-align: left;
 						color: $map_blue;
 						background-color: $dark_geometry_gray;
+						img{
+							width: 1.2em;
+							height: auto;
+							float: left;
+							margin: auto 0.15em;
+						}
+						span{
+							font-weight: 700;
+						}
 					}
 					h1.generated{
-						font-size: 1em;
 						a{
 							color: $map_blue;
 							text-decoration: none;
@@ -56,8 +65,17 @@ $nprogress-color: red;
 					background-color: white;
 					padding: 0.25em;
 					div{
+						@include cf();
 						background-color: $geometry_gray;
 						padding: 0.25em;
+						div.option{
+							@include col(2/3);
+							min-height: 30vh;
+							padding-top: 2em;
+							form{
+								padding-top: 0;
+							}
+						}
 					}
 				}
 			}
@@ -109,9 +127,9 @@ $nprogress-color: red;
 }
 
 span.badge{
-	@include border-radius(10%);
+	@include border-radius(0.1em);
 	padding: 0.15em;
-	font-size: 1em;
+	font-size: 0.8em;
 	font-weight: 700;
 }
 .author{

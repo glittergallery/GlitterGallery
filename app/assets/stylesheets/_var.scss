@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Raleway:100,300,700);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,700);
 @import 'jeet/index';
 
 
@@ -7,7 +7,7 @@ $map_blue: #141823;
 $geometry_gray: #f9fafb;
 $dark_geometry_gray: #f1f1f1;
 $light_green: #c1f0c1;
-$raleway: 'Raleway', sans-serif;
+$font: 'Open Sans', sans-serif;
 
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
