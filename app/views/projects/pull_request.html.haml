@@ -11,6 +11,7 @@
     = 'New Pull Request'
 
   = render 'project_toolbar'
+  = render 'shared/messages'
 
   = form_tag handle_pull_request_project_path(@forked_project), multipart: true do
     = label_tag "description"

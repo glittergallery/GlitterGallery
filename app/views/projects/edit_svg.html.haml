@@ -25,8 +25,8 @@
         - else
           Forked from parent/project
 
-    = render 'shared/messages'
     = render 'project_toolbar'
+    = render 'shared/messages'
   
     - if @project.private and params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase

@@ -1,3 +1,6 @@
+- if user_signed_in?
+  - @projects = current_user.projects
+
 !!! 5
 %html
   %head
@@ -41,16 +44,17 @@
               %ul
                 %li
                   %a{href: "/users/edit"} Settings
-            %section
-              %header PROJECTS
-              %ul
-                %li
-                  %a{href: "/projects/new"} New Project
-                %li
-                  %a{href: "/#{current_user.username}/projects"}
-                    %span.count
-                      = current_user.projects.count
-                    My Projects
+            - unless @projects.empty?
+              %section
+                %header PROJECTS
+                %ul
+                  %li
+                    %a{href: "/projects/new"} New Project
+                  %li
+                    %a{href: "/#{current_user.username}/projects"}
+                      %span.count
+                        = current_user.projects.count
+                      My Projects
               -#
                 %li
                   %a{href: "/#{current_user.username}/projects"}
@@ -150,28 +154,21 @@
       %aside.widget
         .asidewrapper
           - if user_signed_in?
-            - @projects = current_user.projects
-            /- @glitterposts = current_user.glitterposts
-            %section
-              %header
-                %h1 MY PUBLIC PROJECTS
-                %h2 Last updated yesterday
-              %article
-                %ul
-                  - @projects.each do |project|
-                    - unless project.private
+            - unless @projects.empty?
+              %section
+                %header
+                  %h1 MY RECENT PROJECTS
+                  %h2 Last updated yesterday
+                %article
+                  %ul
+                    - @projects.each do |project|
                       %li
+                        - if project.private
+                          %span.badge.type PRV
+                        - else
+                          %span.badge.type PUB
                         = link_to project.name, project.urlbase
-            %section
-              %header
-                %h1 MY PRIVATE PROJECTS
-                %h2 Last updated June 6
-              %article
-                %ul
-                  - @projects.each do |project|
-                    - if project.private
-                      %li
-                        = link_to project.name, project.urlbase
+
           - else
             %section
               %header

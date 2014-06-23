@@ -22,8 +22,8 @@
         - else
           Forked from parent/project
 
-    = render 'shared/messages'
     = render 'project_toolbar'
+    = render 'shared/messages'
 
     - if @project.private and params[:xid] != @project.uniqueurl
       %section
@@ -33,6 +33,9 @@
 
     %section
       %div
+        %div.option
+          -if user_signed_in? && @project.user_id == current_user.id
+            = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
         %aside
           %h1
             Project Settings
@@ -44,9 +47,6 @@
                 %a{href: ""}Resources
               %li.active
                 %a{href: ""}Delete
-        %div.option
-          -if user_signed_in? && @project.user_id == current_user.id
-            = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
 
 
 

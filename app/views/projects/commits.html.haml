@@ -21,8 +21,10 @@
             PARENT
         - else
           Forked from parent/project
-    = render 'shared/messages'
+          
     = render 'project_toolbar'
+    = render 'shared/messages'
+
   
     - if @project.private and params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
@@ -47,12 +49,12 @@
             - unless current_user.id == @project.user.id
               .guide
                 %p Work hasn't started on this project yet. Maybe you want to contribute?
-                %form{action: File.join(@project.name, "fork")}
+                %form{action: "#"}
                   %input{type: "submit", value: "Fork this project!"}
             - else
               .guide
                 %p Submit your design work on this project to start collaborating.
-                %form{action: File.join(@project.name, "newfile")}
+                %form{action: File.join(@project.urlbase, 'newfile')}
                   %input{type: "submit", value: "Add first file!"}
           - else
             .guide

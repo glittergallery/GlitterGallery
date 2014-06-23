@@ -28,6 +28,16 @@
 
   %section
     %div
+      %div.option
+        -for identity in @identities
+          %div
+            = identity.provider
+            = identity.uid
+            = link_to "Delete", identity_path(identity.id), method:"delete", data: { confirm: "Are you sure?"}
+
+        -for method in @allowedmethods
+          %div
+            =link_to(method.to_s.capitalize,"/auth/#{method.to_s}")
       %aside
         %h1
           User Settings
@@ -42,11 +52,3 @@
             %li
               = link_to 'Projects', identities_path
 
-      %div.option
-        -for identity in @identities
-          = identity.provider
-          = identity.uid
-          = link_to "Delete", identity_path(identity.id), method:"delete", data: { confirm: "Are you sure?"}
-
-        -for method in @allowedmethods
-          =link_to(method.to_s.capitalize,"/auth/#{method.to_s}")

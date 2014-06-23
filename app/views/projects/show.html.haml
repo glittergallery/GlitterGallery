@@ -15,14 +15,17 @@
           %span 
             = link_to @project.name, "/#{@user.username}/#{@project.name}"
       %h2 
+        - if @project.private == true
+          %span.badge.type PRV
+        -else
+          %span.badge.type PUB
         - if @project.id == @project.parent
-          %span.badge.author
-            PARENT
-        - else
-          Forked from parent/project
+          %span.badge.author PARENT
+        - else FORK
+
         /= @project.desc
-    = render 'shared/messages'
     = render 'project_toolbar'
+    = render 'shared/messages'
     = render 'images'
 
     - if @project.private and params[:xid] != @project.uniqueurl

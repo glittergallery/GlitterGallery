@@ -23,6 +23,7 @@
 		          font-size: 1.5em;
 		        }
 		        h2{
+		        	color: gray;
 		          font-size: 1em;
 		        }
 		      }
@@ -54,7 +55,7 @@
 							    color: $map_blue;
 						    }
 						    a:hover{
-						    	font-weight: 700;
+						    	text-decoration: underline;
 						    }
 				      }
 				    }
