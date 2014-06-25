@@ -1,6 +1,5 @@
-source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
-#source 'http://rubygems.org'
-
+source 'http://rubygems.org'
+#source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
 
 gem 'rails', '~> 4.0.0'
 
