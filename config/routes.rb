@@ -11,6 +11,8 @@ Glitter::Application.routes.draw do
   resources :identities, only: [:destroy,:index]
   resources :comments, only: [:new, :create, :destroy]
   resources :glitterposts
+  resources :notifications, only: [:index,:show]
+
   
   post 'glitterposts/:id/edit' => 'glitterposts#update'
 

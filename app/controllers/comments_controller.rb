@@ -15,10 +15,24 @@ class CommentsController < ApplicationController
       @comments = Comment.where(polycomment_type: params[:comment][:polycomment_type],
                               polycomment_id: params[:comment][:polycomment_id])
       @comments = @comments.paginate(page: 1, per_page: 10)
+      
+      if params[:comment][:polycomment_type] == 'project'
+        project = Project.find(params[:comment][:polycomment_id])
+        unless project.user == current_user
+          Notification.create(
+            :actor => current_user,
+            :action => 0, #Commented
+            :object_type => 1, # Comment
+            :object_id => @comment.id,
+            :victims => [project.user]
+          )
+        end
+      end      
+
       respond_to do |format|
         format.html { redirect_to :back }
         format.js {}
-      end
+      end            
     else
       redirect_to :back
       flash[:alert] = 'Something went wrong, try reposting your comment.'
