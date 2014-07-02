@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   has_many :identities
   has_many :projects
   has_many :comments
+  has_many :notification_statuses
+  has_many :notifications, :through => :notification_statuses
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
    
