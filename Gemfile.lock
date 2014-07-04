@@ -7,7 +7,7 @@ GIT
     rugged (0.19.0)
 
 GEM
-  remote: http://mirror1.prod.rhcloud.com/mirror/ruby/
+  remote: http://rubygems.org/
   specs:
     actionmailer (4.0.3)
       actionpack (= 4.0.3)
