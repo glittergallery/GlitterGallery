@@ -13,7 +13,8 @@
     \/
     = "File history"
 
-  = render 'project_toolbar'
+    = render 'project_toolbar'
+    = render 'shared/messages'
 
   %br
   - @bloblist.each do |image, commit|

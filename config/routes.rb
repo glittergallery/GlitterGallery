@@ -18,9 +18,8 @@ Glitter::Application.routes.draw do
 
 
   get '/dashboard' => 'dashboard#index', :as => :dashboard
-  get 'settings' => 'users#settings', :as => :user_settings
   get '/:username' => 'users#show'
-  get '/:username/projects' => 'users#list_projects'
+  get '/:username/projects' => 'projects#user_show'
   get '/:username/:project' => 'projects#show'
   get '/:username/:project/commits' => 'projects#commits'
   get '/:username/:project/commit/:tree_id' => 'projects#projectcommit'

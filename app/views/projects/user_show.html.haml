@@ -1,0 +1,31 @@
+- content_for :title do
+  = @user.username.titleize
+
+%article.project
+  %header
+    %h1
+      = avatar @user.email
+      #{@user.username}'s Projects
+    %h2
+      = '@' + @user.username
+      
+  = render 'users/user_toolbar'
+  = render 'shared/messages'
+
+  - unless @projects.empty?
+    %section.album
+      %div
+        - @projects.each do |project|
+          %div
+            %p
+              %img{ src: "/usercover.jpg"}
+              = link_to project.name, project.urlbase
+              %br
+              Last updated #{distance_of_time_in_words_to_now project.updated_at} ago
+  - else
+    %section
+      .guide
+        %p Create design projects on GlitterGallery to start collaborating with your circle.
+        %form{action: "/projects/new"}
+          %input{type: "submit", value: "Create first project!"}
+

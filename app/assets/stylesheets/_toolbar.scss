@@ -1,5 +1,3 @@
-@import '_var';
-
 @mixin bar-styling{
   font-size: 0.9em;
   padding: 0;
@@ -8,6 +6,7 @@
     padding: 1em 0;
     text-align: center;
     font-size: 0.8em;
+    cursor: pointer;
     a{
       text-decoration: none;
       color: $map_blue;
@@ -15,9 +14,9 @@
   }
   .active, div:hover{
       background-color: $dark_geometry_gray;
-      font-weight: 700;
     a{
       color:$map_blue;
+      font-weight: 700;
     }
   }
 }

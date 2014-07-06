@@ -7,6 +7,7 @@ gem 'rails', '~> 4.0.0'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem "turbolinks", "~> 2.2.1"
+gem 'nprogress-rails'
 gem 'jquery-turbolinks'
 gem 'will_paginate'
 gem 'sqlite3'

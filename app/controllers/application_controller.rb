@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include Escape
   include SessionsHelper
   protect_from_forgery
-  before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_action :configure_devise_permitted_parameters, if: :devise_controller?
 
   
   private
@@ -95,12 +95,24 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) << :username    
+  def configure_devise_permitted_parameters
+    registration_params = [:email, :password, :password_confirmation]
+
+    if params[:action] == 'update'
+      devise_parameter_sanitizer.for(:account_update) { 
+        |u| u.permit(registration_params << :name << :current_password)
+      }
+    elsif params[:action] == 'create'
+      devise_parameter_sanitizer.for(:sign_up) { 
+        |u| u.permit(registration_params << :username) 
+      }
+    end
   end
 
   def after_sign_in_path_for(resource)
     dashboard_path
   end
+
+
 
 end

@@ -1,0 +1,17 @@
+article{
+	section.message{
+		padding: 0;
+		div{
+			margin: 0;
+			text-align: center;
+		}
+		div.alert{
+			background-color: pink;
+			color: red;
+		}
+		div.notice{
+			background-color: $light_green;
+			color: green;
+		}
+	}
+}
