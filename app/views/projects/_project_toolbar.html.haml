@@ -40,7 +40,7 @@
         = link_to 'Star' , File.join(request.original_url, 'star')
     %div
       %p
-        = link_to 'Follow' , File.join(request.original_url, 'follow')
+        = link_to 'Follow' , File.join(@project.urlbase, 'follow') , "data-method" => "POST"
   %div
     %p
       Blame

@@ -57,10 +57,10 @@
                       My Projects
               -#
                 %li
-                  %a{href: "/#{current_user.username}/projects"}
+                  %a{href: followed_projects_path(:username => current_user.username)}
                     %span.count
-                      /= current_user.starred_projects.count
-                    Starred
+                      = current_user.followed_projects.count
+                    Following
                 %li
                   %a{href: "/#{current_user.username}/projects"}
                     %span.count

@@ -19,7 +19,8 @@ Glitter::Application.routes.draw do
 
   get '/dashboard' => 'dashboard#index', :as => :dashboard
   get '/:username' => 'users#show'
-  get '/:username/projects' => 'projects#user_show'
+  get '/:username/projects' => 'users#list_projects'
+  get '/:username/projects/following' => 'users#list_followed_projects', :as => :followed_projects
   get '/:username/:project' => 'projects#show'
   get '/:username/:project/commits' => 'projects#commits'
   get '/:username/:project/commit/:tree_id' => 'projects#projectcommit'
@@ -30,6 +31,7 @@ Glitter::Application.routes.draw do
   get '/:username/:project/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
   get '/:username/:project/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
   delete '/:username/:project/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
+  post '/:username/:project/follow' => 'projects#follow'
   get '/:username/:project/fork' => 'projects#fork'
   get '/:username/:project/forkyou' => 'projects#forkyou'
   get '/:username/:project/pull' => 'projects#pull_request'
@@ -50,6 +52,7 @@ Glitter::Application.routes.draw do
   get '/:username/:project/:xid/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
   get '/:username/:project/:xid/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
   delete '/:username/:project/:xid/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
+  post '/:username/:project/:xid/follow' => 'projects#follow'
   get '/:username/:project/:xid/fork' => 'projects#fork'
   get '/:username/:project/:xid/forkyou' => 'projects#forkyou'
   get '/:username/:project/:xid/pull' => 'projects#pull_request'

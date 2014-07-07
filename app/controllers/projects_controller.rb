@@ -38,6 +38,20 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def follow
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
+    unless @user == current_user
+      if ProjectFollower.where(:follower => current_user, :following => @project).empty?
+        ProjectFollower.create(:follower => current_user, :following => @project)
+      end
+      flash[:notice] = "You're now following #{@user.username}/#{@project.name}"
+    else
+      flash[:notice] = "You're the owner of this project, you automatically receive updates."
+    end
+    redirect_to @project.urlbase
+  end
+
   def show
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
