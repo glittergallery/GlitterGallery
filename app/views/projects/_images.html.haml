@@ -20,8 +20,8 @@
       - else
         .guide
           %p Design work is yet to be added to this project. Maybe you want to follow to receive updates?
-          %form{action: File.join(@project.name, "follow")}
-            %input{type: "submit", value: "Follow this project"}
+          = form_tag File.join(@project.urlbase, "follow") do
+            = submit_tag "Follow this project"            
     - else
       .guide
         %p You'll need to sign in to work on these cool projects!

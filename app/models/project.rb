@@ -3,6 +3,8 @@ class Project < ActiveRecord::Base
   after_destroy :deletefiles
   
   belongs_to :user
+  has_many :project_followers
+  has_many :followers, :through => :project_followers, :class_name => "User", :foreign_key => "follower_id"
 
   validates :name, :presence => true, uniqueness: { scope: :user }
 
