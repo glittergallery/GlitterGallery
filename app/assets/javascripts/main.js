@@ -1,0 +1,1 @@
+NProgress.configure({ showSpinner: false, speed: 700});
