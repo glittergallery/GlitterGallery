@@ -21,10 +21,10 @@
     .wrapper
       %nav
         .left
-          %img{src: "logo.svg"}/
+          %img{src: "/logo.svg"}/
         .right
           -if user_signed_in?
-            = avatar current_user.email
+            = link_to avatar(current_user.email), (File.join '/', current_user.username)
             %span.username
               = link_to current_user.username, (File.join '/', current_user.username)
               = link_to 'logout', destroy_user_session_path, :method => :delete, :class => 'logout'
@@ -37,91 +37,99 @@
         .asidewrapper
           -if user_signed_in?
             %section
-              %header PROJECTS
+              %header #{current_user.username.upcase}
               %ul
                 %li
-                  %a{href: "/projects/new"} New Project
-                %li
-                  %a{href: "/projects"}
-                    %span.count
-                      = current_user.projects.count
-                    My Projects
-                %li
-                  %a{href: followed_projects_path(:username => current_user.username)}
-                    %span.count
-                      = current_user.followed_projects.count
-                    Following
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      /projects whose notifs haven't been read
-                      /= current_user.starred_projects.count
-                    Unread
-                %li
-                  %a{href: "/projects/settings"}
+                  %a{href: "/users/edit"} Settings
+            - unless @projects.empty?
+              %section
+                %header PROJECTS
+                %ul
+                  %li
+                    %a{href: "/projects/new"} New Project
+                  %li
+                    %a{href: "/#{current_user.username}/projects"}
+                      %span.count
+                        = current_user.projects.count
+                      My Projects
+              
+                  %li
+                    %a{href: followed_projects_path(:username => current_user.username)}
+                      %span.count
+                        = current_user.followed_projects.count
+                      Following
+                  %li
+                    %a{href: "/#{current_user.username}/projects"}
+                      %span.count
+                        /projects whose notifs haven't been read
+                        /= current_user.starred_projects.count
+                      Unread
+                  %li
+                    %a{href: "/projects/settings"}
+                      Settings
+            -#
+              %section
+                %header GLITTERPOSTS
+                %ul
+                  %li
+                    %a{href: "/glitterposts/new"} Compose New
+                  %li
+                    %a{href: "/glitterposts"}
+                      %span.count
+                        /= current_user.glitterposts.count
+                      My Glitterposts
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.glitterposts[draft=true]
+                      Drafts
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.glitterpost_bookmarks
+                      Bookmarks
+                  %li
+                    %a{href: "/glitterposts/settings"}
+                      Settings
+              %section
+                %header DOODLES
+                %ul
+                  %li
+                    %a{href: "/doodles/new"}
+                      Doodle New
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.doodles.count
+                      My Doodles
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.doodle[draft=true]
+                      Drafts
+                  %li
+                    %a{href: "#"}
+                      / = current_user.doodle_bookmarks
+                      Bookmarks
+              %section
+                %header MEETINGS
+                %ul
+                  %li
+                    %a{href: "/meetings/new"}
+                      Schedule New
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.meetings[upcoming].count
+                      Upcoming
+                  %li
+                    %a{href: "#"}
+                      %span.count
+                        / = current_user.meetings[past].count
+                      Past
+                  %li
+                    %a{href: "/meetings/settings"}
                     Settings
-            %section
-              %header GLITTERPOSTS
-              %ul
-                %li
-                  %a{href: "/glitterposts/new"} Compose New
-                %li
-                  %a{href: "/glitterposts"}
-                    %span.count
-                      /= current_user.glitterposts.count
-                    My Glitterposts
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.glitterposts[draft=true]
-                    Drafts
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.glitterpost_bookmarks
-                    Bookmarks
-                %li
-                  %a{href: "/glitterposts/settings"}
-                    Settings
-            %section
-              %header DOODLES
-              %ul
-                %li
-                  %a{href: "/doodles/new"}
-                    Doodle New
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.doodles.count
-                    My Doodles
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.doodle[draft=true]
-                    Drafts
-                %li
-                  %a{href: "#"}
-                    / = current_user.doodle_bookmarks
-                    Bookmarks
-            %section
-              %header MEETINGS
-              %ul
-                %li
-                  %a{href: "/meetings/new"}
-                    Schedule New
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.meetings[upcoming].count
-                    Upcoming
-                %li
-                  %a{href: "#"}
-                    %span.count
-                      / = current_user.meetings[past].count
-                    Past
-                %li
-                  %a{href: "/meetings/settings"}
-                  Settings
           - else
             %section
               %header DEVELOPER
@@ -137,46 +145,27 @@
                   / close left aside
                   / Use article for central content
 
-      = render 'shared/messages'
       = yield
 
 
       %aside.widget
         .asidewrapper
           - if user_signed_in?
-            - @projects = current_user.projects
-            /- @glitterposts = current_user.glitterposts
-            %section
-              %header
-                %h1 MY PUBLIC PROJECTS
-                %h2 Last updated yesterday
-              %article
-                %ul
-                  - @projects.each do |project|
-                    - unless project.private
+            - unless @projects.empty?
+              %section
+                %header
+                  %h1 MY RECENT PROJECTS
+                  %h2 Last updated yesterday
+                %article
+                  %ul
+                    - @projects.each do |project|
                       %li
+                        - if project.private
+                          %span.badge.type PRV
+                        - else
+                          %span.badge.type PUB
                         = link_to project.name, project.urlbase
-            %section
-              %header
-                %h1 MY PRIVATE PROJECTS
-                %h2 Last updated June 6
-              %article
-                %ul
-                  - @projects.each do |project|
-                    - if project.private
-                      %li
-                        = link_to project.name, project.urlbase
-            %section
-              %header
-                %h1 MY LATEST GLITTERPOSTS
-                %h2 Last updated yesterday
-              %article
-                %ul
-                /
-                  - @projects.each do |project|
-                    - unless project.private
-                      %li
-                        = link_to project.name, project.urlbase
+
           - else
             %section
               %header

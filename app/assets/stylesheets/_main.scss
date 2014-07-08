@@ -1,0 +1,147 @@
+*{
+	font-family: $font;
+	margin: 0;
+	padding: 0;
+}
+
+$nprogress-color: red;
+@import 'nprogress';
+
+// smaller phones
+
+@media screen and (min-width: 0em){
+
+	body{
+		background-color: $geometry_gray;
+		.wrapper{
+
+			article{
+				@include center;
+				@include span(1);
+				color:$map_blue;
+
+				header{
+					margin-top: 2.25em;
+					border-bottom: solid 0.15em red;
+					h1{
+						font-weight: 300;
+						padding: 0.25em;
+						text-align: left;
+						color: $map_blue;
+						background-color: $dark_geometry_gray;
+						img{
+							width: 1.2em;
+							height: auto;
+							float: left;
+							margin: auto 0.15em;
+						}
+						span{
+							font-weight: 700;
+						}
+					}
+					h1.generated{
+						a{
+							color: $map_blue;
+							text-decoration: none;
+						}
+						a:hover{
+							text-decoration: underline;
+						}
+					}
+					h2{
+						text-align: left;
+						padding: 0.5em;
+						font-size: 0.85em;
+						font-weight: 300;
+						background-color: white;
+						a{
+							text-decoration: underline;
+							color: $map_blue;
+						}
+					}
+				}
+
+				section{
+					background-color: white;
+					padding: 0.25em;
+					div{
+						@include cf();
+						background-color: $geometry_gray;
+						padding: 0.25em;
+						div.option{
+							@include col(2/3);
+							min-height: 30vh;
+							padding-top: 2em;
+							form{
+								padding-top: 0;
+							}
+						}
+					}
+				}
+			}
+		  aside{
+		  	display: none;
+		  }
+		}
+	}
+
+}
+
+
+// potrait tablets
+
+@media screen and (min-width: 60.063em){
+
+	body{
+		.wrapper{
+			article {
+				@include span(3/4);
+				header{
+					h1.generated{
+						font-size: 1.5em;
+					}		
+				}
+			}
+
+			aside{
+				@include span(1/4);
+			}
+		}
+	}
+}
+
+// desktops and bigger tablets
+
+@media screen and (min-width: 64.063em){
+
+	body{
+		.wrapper{
+			article{
+				@include span(1/2);
+				header{
+					margin-top: 2.25em;
+				}
+			}
+		}
+	}
+}
+
+span.badge{
+	@include border-radius(0.1em);
+	padding: 0.2em;
+	font-size: 0.8em;
+	font-weight: 700;
+}
+.author{
+	background-color: $light_green;
+	color: green;
+}
+.pr{
+	@extend .author;
+}
+.type{
+	box-shadow:inset 0 0 0.1em 0 $map_blue;
+	color: gray;
+}
+
+

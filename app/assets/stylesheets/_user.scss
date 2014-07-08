@@ -1,6 +1,3 @@
-@import '_var';
-
-
 @media screen and (min-width: 0em){
 	body{
 		article.user{
@@ -9,7 +6,7 @@
 				div{
 					padding:0;
 					img{
-						max-width: 100%;
+						width: 100%;
 						height: auto;
 					}
 				}

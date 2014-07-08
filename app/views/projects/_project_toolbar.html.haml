@@ -10,13 +10,13 @@
       = link_to 'Log', File.join(@project.urlbase, 'commits')
   %div
     %p
-      = link_to 'Contributors', File.join(@project.urlbase, 'contributors')
+      Contributors
   %div
     %p
-      = link_to 'Issues', File.join(@project.urlbase, 'issues')
+      Issues
   %div
     %p
-      = link_to 'Milestones', File.join(@project.urlbase, 'milestones')
+      Milestones
 
 
 %section.action
@@ -43,4 +43,4 @@
         = link_to 'Follow' , File.join(@project.urlbase, 'follow') , "data-method" => "POST"
   %div
     %p
-      = link_to 'Blame', File.join(request.original_url, 'issues/new')
+      Blame

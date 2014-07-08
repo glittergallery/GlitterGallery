@@ -7,17 +7,32 @@
     
   %article.project
     %header
-      %h1.generated 
-        = @project.name
+      %h1.generated
+        = avatar @project.user.email
+        %p
+          = link_to @user.username, "/#{@user.username}"
+          = "/"
+          %span 
+            = link_to @project.name, "/#{@user.username}/#{@project.name}"
       %h2 
-        FIXME - Descriptions are private, so they won't show up here.
-        /= @project.desc
+        - if @project.private == true
+          %span.badge.type PRV
+        -else
+          %span.badge.type PUB
+        - if @project.id == @project.parent
+          %span.badge.author PARENT
+        - else FORK
 
+        /= @project.desc
     = render 'project_toolbar'
+    = render 'shared/messages'
     = render 'images'
-  
+
     - if @project.private and params[:xid] != @project.uniqueurl
-      = link_to 'Unique link', @project.urlbase
+      %section
+        %div
+          %form{ action: @project.urlbase}
+            %input{type: "submit", value: "Generate Unique Link"}
 
 
     %section.comments

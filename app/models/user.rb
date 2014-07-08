@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :validatable
+         :recoverable, :validatable, :rememberable
   has_many :identities
   has_many :projects
   has_many :comments
@@ -14,7 +14,6 @@ class User < ActiveRecord::Base
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
    
-  
   before_save { |user| user.email = email.downcase }
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 

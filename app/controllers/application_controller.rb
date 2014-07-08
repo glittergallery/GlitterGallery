@@ -4,10 +4,17 @@ class ApplicationController < ActionController::Base
   include Escape
   include SessionsHelper
   protect_from_forgery
-  before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_action :configure_devise_permitted_parameters, if: :devise_controller?
+  before_action :return_current_user_projects
 
   
   private
+
+  def return_current_user_projects
+    if user_signed_in?
+      @projects = current_user.projects
+    end
+  end
   
   # When new files are added to project, check them into its non bare git repo.
   # FIXME - we might want to do the push to bare repos here during the commit itself,
@@ -95,12 +102,24 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) << :username    
+  def configure_devise_permitted_parameters
+    registration_params = [:email, :password, :password_confirmation]
+
+    if params[:action] == 'update'
+      devise_parameter_sanitizer.for(:account_update) { 
+        |u| u.permit(registration_params << :name << :current_password)
+      }
+    elsif params[:action] == 'create'
+      devise_parameter_sanitizer.for(:sign_up) { 
+        |u| u.permit(registration_params << :username) 
+      }
+    end
   end
 
   def after_sign_in_path_for(resource)
     dashboard_path
   end
+
+
 
 end

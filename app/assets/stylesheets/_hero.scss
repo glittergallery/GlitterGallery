@@ -1,5 +1,3 @@
-@import '_var';
-
 @media screen and (min-width: 0em){
 		.wrapper{
 			article.hero{
@@ -32,9 +30,17 @@
 								text-align: center;
 								box-shadow: none;
 								border-style: none;
-								//background-color: $geometry_gray;
 								border-bottom: solid 0.125em $map_blue;
 							}
+							.remember{
+								margin: 0 auto;
+								width: 80%;
+								text-align: left;
+								label{
+									display: inline;
+								}
+							}
+
 							input[type="submit"]{
 								@include center;
 								width: 80%;
