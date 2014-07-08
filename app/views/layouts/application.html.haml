@@ -1,6 +1,3 @@
-- if user_signed_in?
-  - @projects = current_user.projects
-
 !!! 5
 %html
   %head
@@ -27,7 +24,7 @@
           %img{src: "/logo.svg"}/
         .right
           -if user_signed_in?
-            = avatar current_user.email
+            = link_to avatar(current_user.email), (File.join '/', current_user.username)
             %span.username
               = link_to current_user.username, (File.join '/', current_user.username)
               = link_to 'logout', destroy_user_session_path, :method => :delete, :class => 'logout'
@@ -55,21 +52,21 @@
                       %span.count
                         = current_user.projects.count
                       My Projects
-              -#
-                %li
-                  %a{href: followed_projects_path(:username => current_user.username)}
-                    %span.count
-                      = current_user.followed_projects.count
-                    Following
-                %li
-                  %a{href: "/#{current_user.username}/projects"}
-                    %span.count
-                      /projects whose notifs haven't been read
-                      /= current_user.starred_projects.count
-                    Unread
-                %li
-                  %a{href: "/projects/settings"}
-                    Settings
+              
+                  %li
+                    %a{href: followed_projects_path(:username => current_user.username)}
+                      %span.count
+                        = current_user.followed_projects.count
+                      Following
+                  %li
+                    %a{href: "/#{current_user.username}/projects"}
+                      %span.count
+                        /projects whose notifs haven't been read
+                        /= current_user.starred_projects.count
+                      Unread
+                  %li
+                    %a{href: "/projects/settings"}
+                      Settings
             -#
               %section
                 %header GLITTERPOSTS

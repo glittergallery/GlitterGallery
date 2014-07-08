@@ -5,9 +5,16 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   protect_from_forgery
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
+  before_action :return_current_user_projects
 
   
   private
+
+  def return_current_user_projects
+    if user_signed_in?
+      @projects = current_user.projects
+    end
+  end
   
   # When new files are added to project, check them into its non bare git repo.
   # FIXME - we might want to do the push to bare repos here during the commit itself,

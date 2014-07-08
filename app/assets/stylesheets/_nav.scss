@@ -85,9 +85,10 @@
 					a{
 						text-decoration: none;
 						color: $geometry_gray;
+						font-weight: 700;
 					}
 					a:hover{
-						font-weight: 700;
+						color: red;
 					}
 					img{
 						padding-left: 2em;
