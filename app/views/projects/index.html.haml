@@ -1,0 +1,24 @@
+%article.project
+  %header
+    %h1 Exciting Projects
+    %h2 Stuff people are brewing, meant to inspire. 
+
+  = render 'shared/messages'
+
+  - unless @projects.empty?
+    %section.album
+      %div
+        - @projects.each do |project|
+          %div
+            %p
+              %img{ src: "/usercover.jpg"}
+              = link_to project.name, project.urlbase
+              %br
+              Last updated #{distance_of_time_in_words_to_now project.updated_at} ago
+
+  - else
+    %section
+      .guide
+        %p Uh oh, looks like everyone's gotten lazy ;)
+        %form{action: "/projects/new"}
+          %input{type: "submit", value: "Be the first one to inspire!"}

@@ -9,6 +9,10 @@ class ProjectsController < ApplicationController
     @projects = current_user.projects
   end
   
+  def index
+    @projects = Project.where.not(id: current_user.id)
+  end
+
   def destroy
     @project = Project.find params[:id]
     if current_user.id == @project.user_id

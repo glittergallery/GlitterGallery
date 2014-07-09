@@ -1,7 +1,7 @@
 - content_for :title do
   = current_user.username.titleize
 
-%article.user
+%article.user{ data: "settings"}
   %header
     %h1
       = avatar current_user.email
@@ -9,22 +9,9 @@
     %h2
       = '@' + current_user.username
 
-  %section.toolbar
-    %div.active
-      %p
-        = link_to 'Userpage', "/#{current_user.username}"
-    %div
-      %p
-        = link_to 'Projects', File.join("/#{current_user.username}", 'projects')
-    %div
-      %p
-        = link_to 'Glitterposts', File.join("/#{current_user.username}", 'glitterposts')
-    %div
-      %p
-        = link_to 'Activity', File.join("/#{current_user.username}", 'activity')
-    %div
-      %p
-        = link_to 'Badges', File.join("/#{current_user.username}", 'badges')
+  - @user = current_user
+  = render 'users/user_toolbar'
+  = render 'shared/messages'
 
   %section
     %div
@@ -47,8 +34,9 @@
               = link_to 'Profile', edit_user_registration_path
             %li.active
               = link_to 'Identities', identities_path
-            %li
-              = link_to 'SSH Keys', identities_path
-            %li
-              = link_to 'Projects', identities_path
+            -#
+              %li
+                = link_to 'SSH Keys', identities_path
+              %li
+                = link_to 'Projects', identities_path
 

@@ -25,10 +25,12 @@
           Forked from parent/project
     = render 'project_toolbar'
     = render 'shared/messages'
-    %section.album.image
-      %div
+    %section.album
+      %div.photo
         %p
           = image_tag @imageurl.gsub("public","")
+        %form{ action: File.join(params[:image_name], "update")}
+          %input{ type: "submit", value: "Update"}
 
     %section.comments
       = render partial: "comments/comment", collection: @comments

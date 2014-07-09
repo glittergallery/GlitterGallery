@@ -5,7 +5,7 @@
   - content_for :title do
     = @project.name.titleize
     
-  %article.project
+  %article.project{ data: "current" }
     %header
       %h1.generated
         = avatar @project.user.email

@@ -1,7 +1,7 @@
 - content_for :title do
   = @user.username.titleize
 
-%article.user
+%article.user{ data: "userpage"}
   %header
     %h1
       = avatar @user.email

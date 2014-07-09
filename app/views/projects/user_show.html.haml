@@ -1,11 +1,14 @@
 - content_for :title do
   = @user.username.titleize
 
-%article.project
+%article.project{ data: "projects"}
   %header
     %h1
       = avatar @user.email
-      #{@user.username}'s Projects
+      - unless @user == current_user
+        #{@user.username}'s Projects
+      - else
+        My projects
     %h2
       = '@' + @user.username
       

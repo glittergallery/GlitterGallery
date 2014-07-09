@@ -15,8 +15,7 @@ Glitter::Application.routes.draw do
 
   
   post 'glitterposts/:id/edit' => 'glitterposts#update'
-
-
+  get '/inspire' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
   get '/:username' => 'users#show'
   get '/:username/projects' => 'projects#user_show'
