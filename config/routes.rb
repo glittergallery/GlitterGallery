@@ -33,6 +33,8 @@ Glitter::Application.routes.draw do
   post '/:username/:project/follow' => 'projects#follow'
   get '/:username/:project/fork' => 'projects#fork'
   get '/:username/:project/forkyou' => 'projects#forkyou'
+  get '/:username/:project/issues/new' => 'projects#issues_new'
+  get '/:username/:project/issues' => 'projects#issues_list'
   get '/:username/:project/pull' => 'projects#pull_request'
   get '/:username/:project/pull/:pull_id' => 'projects#pull'
   get '/:username/:project/pull/:pull_id/merge' => 'projects#merge'

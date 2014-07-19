@@ -1,0 +1,72 @@
+- unless private_check
+  = render 'permissions_error'
+- else
+
+  - content_for :title do
+    = @project.name.titleize
+    
+  %article.project{ data: "issues" }
+    %header
+      %h1.generated
+        = avatar @project.user.email
+        %p
+          = link_to @user.username, "/#{@user.username}"
+          = "/"
+          %span 
+            = link_to @project.name, "/#{@user.username}/#{@project.name}"
+      %h2 
+        - if @project.private == true
+          %span.badge.type PRV
+        -else
+          %span.badge.type PUB
+        - if @project.id == @project.parent
+          %span.badge.author PARENT
+        - else FORK
+
+        /= @project.desc
+    = render 'project_toolbar'
+    = render 'shared/messages'
+
+    -# WIP List issues
+
+    %section
+      %div
+        %div.option.feed
+          %div
+            %header 
+              Broken page at root            
+            %article
+              %p A broken page was reported by me, look at it?
+            %footer
+              %p about an hour ago
+
+          %div
+            %header 
+              Broken page at root            
+            %article
+              %p A broken page was reported by me, look at it?
+            %footer
+              %p about an hour ago
+
+          %div
+            %header 
+              Broken page at root            
+            %article
+              %p A broken page was reported by me, look at it?
+            %footer
+              %p about an hour ago
+
+
+        %aside
+          %h1
+            Issues
+          %nav
+            %ul
+              %li.active
+                RFE
+              %li
+                Idea
+              %li
+                Critical
+              %li
+                Newbie Friendly

@@ -8,30 +8,30 @@
   %div{ data: "log" }
     %p
       = link_to 'Log', File.join(@project.urlbase, 'commits')
-  -#    
+  -#
     %div{ data: "contributors" }
       %p
         Contributors
-    %div{ data: "issues" }
-      %p
-        Issues
-    %div{ data: "milestones" }
-      %p
-        Milestones
+  %div{ data: "milestones" }
+    %p
+      Milestones
+  %div{ data: "issues" }
+    %p
+      = link_to "Issues", File.join(@project.urlbase, 'issues')
 
 
 %section.action
   - if user_signed_in? and @project.user.id == current_user.id
+    -#
+      %div{ data: "doodle" }
+        %p
+          Doodle
     %div{ data: "upload" }
       %p
         = link_to 'Upload', File.join(@project.urlbase, 'newfile')
     %div{ data: "settings" }
       %p
         = link_to "Settings", File.join(@project.urlbase, 'settings')
-    -#
-      %div{ data: "doodle" }
-        %p
-          Doodle
   - else
     %div{ data: "follow" }
       %p
@@ -43,6 +43,6 @@
       %div{ data: "star" }
         %p
           = link_to 'Star' , File.join(request.original_url, 'star')
-      %div{ data: "blame" }
-        %p
-          Blame
+  %div{ data: "blame" }
+    %p
+      = link_to "Blame", File.join(@project.urlbase, 'issues/new')

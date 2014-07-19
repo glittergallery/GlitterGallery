@@ -1,0 +1,56 @@
+- unless private_check
+  = render 'permissions_error'
+- else
+
+  - content_for :title do
+    = @project.name.titleize
+    
+  %article.project{ data: "blame" }
+    %header
+      %h1.generated
+        = avatar @project.user.email
+        %p
+          = link_to @user.username, "/#{@user.username}"
+          = "/"
+          %span 
+            = link_to @project.name, "/#{@user.username}/#{@project.name}"
+      %h2 
+        - if @project.private == true
+          %span.badge.type PRV
+        -else
+          %span.badge.type PUB
+        - if @project.id == @project.parent
+          %span.badge.author PARENT
+        - else FORK
+
+        /= @project.desc
+    = render 'project_toolbar'
+    = render 'shared/messages'
+
+    %section
+      %div
+        %div.option
+          %form
+            %div
+              %label Issue Header
+              %input{ type: "text", placeholder: "Title", autofocus: "true"}
+
+              %label Issue Description
+              %textarea{ placeholder: "Description"}
+            %div
+              %input{ type: "submit", value: "Report Issue"} 
+
+        %aside
+          %h1
+            New Issue
+          %nav
+            %ul
+              %li.active
+                RFE
+              %li
+                Idea
+              %li
+                Critical
+              %li
+                Newbie Friendly
+
