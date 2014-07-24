@@ -1,0 +1,53 @@
+- unless private_check
+  = render 'permissions_error'
+- else
+
+  - content_for :title do
+    = @project.name.titleize
+
+
+  %article.project
+    %header
+      %h1.generated
+        = avatar @project.user.email
+        %p
+          = link_to @user.username, "/#{@user.username}"
+          = "/"
+          %span 
+            = link_to @project.name, "/#{@user.username}/#{@project.name}"
+      %h2 
+        - if @project.id == @project.parent
+          %span.badge.author
+            PARENT
+        - else
+          Forked from parent/project
+          
+    = render 'projects/project_toolbar'
+    = render 'shared/messages'
+
+  
+    - if @project.private and params[:xid] != @project.uniqueurl
+      = link_to 'Unique link', @project.urlbase
+  
+    %section
+      = link_to("Create a new Issue",File.join(@project.urlbase, 'issues/new'))
+      - unless @issues.empty?
+        %ul
+        - for issue in @issues
+          %li
+            %h3
+              = issue.title
+            %p
+              = issue.type_text
+            %p
+              = issue.status_text
+            %p 
+              = "by #{issue.user.username}"    
+
+            %p
+              = issue.description
+
+      - else
+        %div
+          %p No issues yet!
+
