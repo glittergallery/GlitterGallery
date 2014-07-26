@@ -1,0 +1,21 @@
+- content_for :title do
+  = "Create an issue for #{@project.name}"
+
+%article
+  %header
+    %h1 New issue
+    %h2 Submit an issue to this project to let the owner know what's wrong!
+    
+  = render 'shared/messages'
+
+  %section
+    %div
+      = form_for(@issue, :url => url_for(params)) do |f|
+        %label Title
+        = f.text_field :title, placeholder: "Title", autofocus: true
+        %label Text(Markdown Supported)
+        = f.text_area :description, placeholder: "Description"
+        %label Type
+        = f.select(:type, options_for_select([['Bug',0],['Improvement',1]]))
+        = f.submit "Submit"       
+
