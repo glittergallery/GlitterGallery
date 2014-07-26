@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :notifications, :through => :notification_statuses
   has_many :project_followers, :foreign_key => "follower_id"
   has_many :followed_projects, :through => :project_followers, :source => :following, :foreign_key => "follower_id"
+  has_many :issues
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
    

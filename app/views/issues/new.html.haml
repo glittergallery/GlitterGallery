@@ -1,0 +1,47 @@
+- unless private_check
+  = render 'permissions_error'
+- else
+  - content_for :title do
+    = "Create an issue for #{@project.name}"
+
+  %article{ data: "blame"}
+    %header
+      %h1.generated
+        = avatar @project.user.email
+        %p
+          %span 
+            = link_to @project.name, "/#{@user.username}/#{@project.name}"
+          = "- New Issue" 
+
+      %h2 Bugs, RFE's, questions about the project.
+      
+    = render 'shared/messages'
+    = render 'projects/project_toolbar'
+
+    %section
+      %div
+        %div.option
+          = form_for(@issue, :url => url_for(params)) do |f|
+            %label Title
+            = f.text_field :title, placeholder: "Title", autofocus: true
+            %label Description
+            = f.text_area :description, placeholder: "(Markdown Enabled)..."
+            %label Type
+            = f.select(:type, options_for_select([['Bug',0],['Improvement',1]]))
+            = f.submit "Report Issue"  
+
+        %aside
+          %h1
+            New Issue
+          %nav
+            %ul
+              %li.active
+                RFE
+              %li
+                Idea
+              %li
+                Critical
+              %li
+                Newbie Friendly   
+
+

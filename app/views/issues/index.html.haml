@@ -1,0 +1,69 @@
+- unless private_check
+  = render 'permissions_error'
+- else
+
+  - content_for :title do
+    = @project.name.titleize
+
+
+  %article.project{ data: "issues" }
+    %header
+      %h1.generated
+        = avatar @project.user.email
+        %p
+          = link_to @user.username, "/#{@user.username}"
+          = "/"
+          %span 
+            = link_to @project.name, "/#{@user.username}/#{@project.name}"
+      %h2 
+        - if @project.id == @project.parent
+          %span.badge.author
+            PARENT
+        - else
+          Forked from parent/project
+          
+    = render 'projects/project_toolbar'
+    = render 'shared/messages'
+  
+    %section
+      %div
+        %div.option.feed
+          %div
+            - unless @issues.empty?
+              %form{action: "issues/new"}
+                %input{type: "submit", value: "New Issue"}
+              - for issue in @issues
+                %header
+                  %span.badge.author
+                    = issue.status_text
+                  %span.badge.author
+                    = issue.type_text
+                  = issue.title
+                %article
+                  %p
+                    = issue.description
+                %footer
+                  %p 
+                    = "by #{issue.user.username}"
+                    = distance_of_time_in_words_to_now issue.created_at
+                    ago.
+
+            - else
+              %div.guide
+                %p Report issues or request improvements to notify the author.
+                %form{action: "issues/new"}
+                  %input{type: "submit", value: "Report Issue"}
+        %aside
+          %h1
+            Issues
+          %nav
+            %ul
+              %li.active
+                RFE
+              %li
+                Idea
+              %li
+                Critical
+              %li
+                Newbie Friendly
+

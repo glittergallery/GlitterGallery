@@ -301,14 +301,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def issues_new
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
-  end
-
-  def issues_list
-  end
-
   #def pull_request
   # this one will make an entry into the pull request table
   # ID, project info, desc, upto_commitID, status <merge, close, open>
