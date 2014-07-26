@@ -20,7 +20,7 @@ class Issue < ActiveRecord::Base
 	end
 
 	def self.status_keys
-		return {0 => "Open",1 => "Closed"}
+		return {0 => "OPEN",1 => "CLOSED"}
 	end
 
 	def status_text

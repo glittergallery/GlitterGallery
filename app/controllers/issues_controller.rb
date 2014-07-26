@@ -13,6 +13,11 @@ class IssuesController < ApplicationController
 
   def show
     @issue = Issue.find params[:id]
+    @comments = Comment.where(polycomment_type: "issue", polycomment_id: @issue.id)
+    @comments = @comments.paginate(page: params[:page], per_page: 10)
+    @comments = pg @comments, 10 
+    @comment = Comment.new
+    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   def create

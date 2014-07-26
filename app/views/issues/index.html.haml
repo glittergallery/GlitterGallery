@@ -28,17 +28,21 @@
     %section
       %div
         %div.option.feed
-          %div
-            - unless @issues.empty?
+          %header
+            %h1
+              #{"Issues with " + @project.name}
+          - unless @issues.empty?
+            -# 
               %form{action: "issues/new"}
                 %input{type: "submit", value: "New Issue"}
-              - for issue in @issues
+            - for issue in @issues
+              %div
                 %header
-                  %span.badge.author
-                    = issue.status_text
-                  %span.badge.author
-                    = issue.type_text
-                  = issue.title
+                  %h2
+                    #{"#81"}
+                    = link_to issue.title, '#'
+                    %span.badge.author
+                      = issue.type_text
                 %article
                   %p
                     = issue.description
@@ -48,12 +52,23 @@
                     = distance_of_time_in_words_to_now issue.created_at
                     ago.
 
-            - else
-              %div.guide
-                %p Report issues or request improvements to notify the author.
-                %form{action: "issues/new"}
-                  %input{type: "submit", value: "Report Issue"}
+          - else
+            %div.guide
+              %p Report issues or request improvements to notify the author.
+              %form{action: "issues/new"}
+                %input{type: "submit", value: "Report Issue"}
         %aside
+          %h1
+            Status
+          %nav
+            %ul
+              %li.active
+                Open
+              %li
+                Closed
+              %li
+                Merged
+
           %h1
             Issues
           %nav
