@@ -21,7 +21,9 @@
     .wrapper
       %nav
         .left
-          %img{src: "/logo.svg"}/
+          %img{src: "/logo.svg"}
+          #mobile-header
+            %a#responsive-menu-button{href: "#sidr-main"} Menu
         .right
           -if user_signed_in?
             = link_to avatar(current_user.email), (File.join '/', current_user.username)
@@ -32,8 +34,8 @@
             %span.username
               = link_to 'Login', new_user_session_path, :class => 'login'
 
-            
-      %aside.map
+           
+      %aside.map#navigation
         .asidewrapper
           -if user_signed_in?
             %section
