@@ -38,7 +38,7 @@
           %nav
             %ul
               %li.active
-                Close
+                = link_to("Close",File.join(@issue.show_url,'close'),:method=>"post")
               %li
                 Merge
 

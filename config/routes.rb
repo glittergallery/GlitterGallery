@@ -44,7 +44,7 @@ Glitter::Application.routes.draw do
   get '/:username/:project/issues' => 'issues#index'
   post '/:username/:project/issues/new' => 'issues#create'
   get '/:username/:project/issue/:sub_id' => 'issues#show'
-  delete '/:username/:project/issue/:sub_id/delete' => 'issues#delete'
+  post '/:username/:project/issue/:sub_id/close' => 'issues#close'
 
   get '/:username/:project/:xid' => 'projects#show'
   get '/:username/:project/:xid/commits' => 'projects#commits'
@@ -70,7 +70,7 @@ Glitter::Application.routes.draw do
   get '/:username/:project/:xid/issue/:sub_id' => 'issues#show'
   get '/:username/:project/:xid/issues/new' => 'issues#new'
   post '/:username/:project/:xid/issues/new' => 'issues#create'
-  delete '/:username/:project/:xid/issue/:id/delete' => 'issues#delete'
+  post '/:username/:project/:xid/issue/:id/close' => 'issues#close'
 
   
   resources :projects do

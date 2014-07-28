@@ -2,7 +2,13 @@ class IssuesController < ApplicationController
   def index
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
-    @issues = @project.issues
+    @activetab = 0
+    @issuestoshow = @project.issues.where(:status => 0)
+    if params[:state] == 'closed'
+      @activetab = 1
+      @issuestoshow = @project.issues.where(:status => 1)
+    end
+
   end
 
   def new
@@ -37,8 +43,20 @@ class IssuesController < ApplicationController
     end
   end
 
-  def delete
-
+  def close
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
+    @issue = Issue.find_from_project(@project,params[:sub_id])
+    if (current_user == @project.user) || (current_user == @issue.user)
+      @issue.status = 1
+      @issue.save
+      flash[:notice] = "Issue Closed"
+      redirect_to(@project.issues_url)
+    else
+      flash[:alert] = "You dont' have permission to close this issue"
+      redirect_to(@project.issues_url)
+    end
+    
   end
   private
 

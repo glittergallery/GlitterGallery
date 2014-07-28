@@ -31,11 +31,11 @@
           %header
             %h1
               #{"Issues with " + @project.name}
-          - unless @issues.empty?
+          - unless @issuestoshow.empty?
             -# 
               %form{action: "issues/new"}
                 %input{type: "submit", value: "New Issue"}
-            - for issue in @issues
+            - for issue in @issuestoshow
               %div
                 %header
                   %h2
@@ -54,6 +54,7 @@
 
           - else
             %div.guide
+              %p No Issues to show!
               %p Report issues or request improvements to notify the author.
               %form{action: "issues/new"}
                 %input{type: "submit", value: "Report Issue"}
@@ -62,10 +63,10 @@
             Status
           %nav
             %ul
-              %li.active
-                Open
-              %li
-                Closed
+              %li{:class => "#{'active' if @activetab == 0}"}
+                = link_to("Open",@project.issues_url)
+              %li{:class => "#{'active' if @activetab == 1}"}
+                = link_to("Closed",@project.issues_url+"?state=closed")
               %li
                 Merged
 
