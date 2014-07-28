@@ -29,4 +29,13 @@ class Issue < ActiveRecord::Base
 	def type_text
 		return Issue.type_keys[self.type]
 	end
+	def show_url
+		return File.join(project.urlbase,'issue',sub_id.to_s)
+	end
+	def sub_id
+		(project.issue_ids.index(id) + 1).to_i
+	end
+	def self.find_from_project(project,sub_id)
+		Issue.find(project.issue_ids[sub_id.to_i - 1])
+	end
 end

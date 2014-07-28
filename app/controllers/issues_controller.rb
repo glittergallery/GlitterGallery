@@ -12,7 +12,9 @@ class IssuesController < ApplicationController
   end
 
   def show
-    @issue = Issue.find params[:id]
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
+    @issue = Issue.find_from_project(@project,params[:sub_id])
     @comments = Comment.where(polycomment_type: "issue", polycomment_id: @issue.id)
     @comments = @comments.paginate(page: params[:page], per_page: 10)
     @comments = pg @comments, 10 

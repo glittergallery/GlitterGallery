@@ -39,8 +39,8 @@
               %div
                 %header
                   %h2
-                    #{"#81"}
-                    = link_to issue.title, '#'
+                    = "\##{issue.sub_id}"
+                    = link_to issue.title, issue.show_url
                     %span.badge.author
                       = issue.type_text
                 %article
