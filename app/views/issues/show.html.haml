@@ -1,0 +1,47 @@
+- unless private_check
+  = render 'permissions_error'
+- else
+  - content_for :title do
+    = "Create an issue for #{@project.name}"
+
+  %article{ data: "issues"}
+    %header
+      %h1.generated
+        = avatar @project.user.email
+        %p
+          %span 
+            = link_to @project.name, "/#{@user.username}/#{@project.name}"
+          = "- Issue #81" 
+      %h2 
+        - if @project.private == true
+          %span.badge.type PRV
+        -else
+          %span.badge.type PUB
+        - if @project.id == @project.parent
+          %span.badge.author PARENT
+        - else FORK
+
+    = render 'shared/messages'
+    = render 'projects/project_toolbar'
+
+    %section
+      %div
+        %div.option
+          %header
+            %h1
+              = @issue.title
+            %h2.issue
+              = @issue.description
+        %aside
+          %h1
+            Actions
+          %nav
+            %ul
+              %li.active
+                = link_to("Close",File.join(@issue.show_url,'close'),:method=>"post")
+              %li
+                Merge
+
+    %section.comments
+      = render partial: "comments/comment", collection: @comments
+      = render partial: "comments/new", locals: {type: 'issue', id: @issue.id.to_s, ajax: @ajax, comment: @comment}

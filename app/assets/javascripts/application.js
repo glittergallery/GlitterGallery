@@ -20,3 +20,4 @@
 //= require nprogress
 //= require nprogress-turbolinks
 //= require main
+//= require jquery.sidr.min

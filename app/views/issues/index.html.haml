@@ -6,7 +6,7 @@
     = @project.name.titleize
 
 
-  %article.project
+  %article.project{ data: "issues" }
     %header
       %h1.generated
         = avatar @project.user.email
@@ -24,30 +24,62 @@
           
     = render 'projects/project_toolbar'
     = render 'shared/messages'
-
-  
-    - if @project.private and params[:xid] != @project.uniqueurl
-      = link_to 'Unique link', @project.urlbase
   
     %section
-      = link_to("Create a new Issue",File.join(@project.urlbase, 'issues/new'))
-      - unless @issues.empty?
-        %ul
-        - for issue in @issues
-          %li
-            %h3
-              = issue.title
-            %p
-              = issue.type_text
-            %p
-              = issue.status_text
-            %p 
-              = "by #{issue.user.username}"    
+      %div
+        %div.option.feed
+          %header
+            %h1
+              #{"Issues with " + @project.name}
+          - unless @issuestoshow.empty?
+            -# 
+              %form{action: "issues/new"}
+                %input{type: "submit", value: "New Issue"}
+            - for issue in @issuestoshow
+              %div
+                %header
+                  %h2
+                    = "\##{issue.sub_id}"
+                    = link_to issue.title, issue.show_url
+                    %span.badge.author
+                      = issue.type_text
+                %article
+                  %p
+                    = issue.description
+                %footer
+                  %p 
+                    = "by #{issue.user.username}"
+                    = distance_of_time_in_words_to_now issue.created_at
+                    ago.
 
-            %p
-              = issue.description
+          - else
+            %div.guide
+              %p No Issues to show!
+              %p Report issues or request improvements to notify the author.
+              %form{action: "issues/new"}
+                %input{type: "submit", value: "Report Issue"}
+        %aside
+          %h1
+            Status
+          %nav
+            %ul
+              %li{:class => "#{'active' if @activetab == 0}"}
+                = link_to("Open",@project.issues_url)
+              %li{:class => "#{'active' if @activetab == 1}"}
+                = link_to("Closed",@project.issues_url+"?state=closed")
+              %li
+                Merged
 
-      - else
-        %div
-          %p No issues yet!
+          %h1
+            Issues
+          %nav
+            %ul
+              %li.active
+                RFE
+              %li
+                Idea
+              %li
+                Critical
+              %li
+                Newbie Friendly
 

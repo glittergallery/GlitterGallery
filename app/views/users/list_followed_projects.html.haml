@@ -1,20 +1,35 @@
-%article.user
+- content_for :title do
+  = @user.username.titleize
+
+%article.project{ data: "following-projects"}
   %header
     %h1
-      = @user.username
+      = avatar @user.email
+      -unless @user == current_user
+        Projects #{@user.username} is following
+      - else
+        Projects I'm following
     %h2
       = '@' + @user.username
 
-  = render 'user_toolbar'
+  = render 'users/user_toolbar'
+  = render 'shared/messages'
 
-  %section.bio
-    %div
-      / FIXME - substitute with cover photo
-      = avatar @user.email
+  - unless @followedprojects.empty?
+    %section.album
+      %div
+        - @followedprojects.each do |project|
+          %div
+            %p
+              %img{ src: "/usercover.jpg"}
+              = link_to project.name, project.urlbase
+              %br
+              Last updated #{distance_of_time_in_words_to_now project.updated_at} ago
 
-  %section
-    %div
-      - @followedprojects.each do |project|
-        %p
-        = link_to "#{project.user.username}/#{project.name}", project.urlbase
+  - else
+    %section
+      .guide
+        %p Start following exciting projects to keep up with them.
+        %form{action: "/inspire"}
+          %input{type: "submit", value: "Find projects!"}
 

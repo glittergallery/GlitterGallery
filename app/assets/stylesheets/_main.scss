@@ -71,9 +71,27 @@ $nprogress-color: red;
 						div.option{
 							@include col(2/3);
 							min-height: 30vh;
-							padding-top: 2em;
 							form{
 								padding-top: 0;
+							}
+							header{
+								margin-top: 0;
+								border-bottom: solid 0.15em $dark_geometry_gray;
+								h2{
+									font-weight: 700;
+									a{
+										text-decoration: none;
+									}
+									a:hover{
+										text-decoration: underline;
+									}
+								}
+								h2.issue{
+									font-weight: 300;
+								}
+							}
+							div{
+								margin-bottom: 0.25em;
 							}
 						}
 					}
@@ -123,6 +141,10 @@ $nprogress-color: red;
 				}
 			}
 		}
+	}
+
+	#mobile-header{
+		display: none;
 	}
 }
 

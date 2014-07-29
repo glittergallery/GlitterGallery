@@ -2,45 +2,47 @@
 
 
 %section.toolbar
-  %div.active
+  %div{ data: "current"}
     %p
       = link_to 'Current', File.join(@project.urlbase, @project_path.to_s)
-  %div
+  %div{ data: "log" }
     %p
       = link_to 'Log', File.join(@project.urlbase, 'commits')
-  %div
-    %p
-      Contributors
-  %div
-    %p
-      = link_to 'Issues', File.join(@project.urlbase, 'issues')
-  %div
+  -#
+    %div{ data: "contributors" }
+      %p
+        Contributors
+  %div{ data: "milestones" }
     %p
       Milestones
+  %div{ data: "issues" }
+    %p
+      = link_to "Issues", File.join(@project.urlbase, 'issues')
 
 
 %section.action
   - if user_signed_in? and @project.user.id == current_user.id
-    %div
+    -#
+      %div{ data: "doodle" }
+        %p
+          Doodle
+    %div{ data: "upload" }
       %p
         = link_to 'Upload', File.join(@project.urlbase, 'newfile')
-    %div
-      %p
-        = link_to 'Doodle', File.join(@project.urlbase, 'createsvg'), "data-no-turbolink" => true
-    %div
+    %div{ data: "settings" }
       %p
         = link_to "Settings", File.join(@project.urlbase, 'settings')
-      
   - else
-    %div
-      %p
-        = link_to 'Fork' , File.join(request.original_url, 'forkyou')
-    %div
-      %p
-        = link_to 'Star' , File.join(request.original_url, 'star')
-    %div
+    %div{ data: "follow" }
       %p
         = link_to 'Follow' , File.join(@project.urlbase, 'follow') , "data-method" => "POST"
-  %div
+    -#
+      %div{ data: "fork" }
+        %p
+          = link_to 'Fork' , File.join(request.original_url, 'forkyou')
+      %div{ data: "star" }
+        %p
+          = link_to 'Star' , File.join(request.original_url, 'star')
+  %div{ data: "blame" }
     %p
-      Blame
+      = link_to "Blame", File.join(@project.urlbase, 'issues/new')

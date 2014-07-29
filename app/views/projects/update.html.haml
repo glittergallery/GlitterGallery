@@ -1,26 +1,34 @@
-- unless private_check and owner_check
+- unless private_check
   = render 'permissions_error'
 - else
 
-  - filename = params[:image_name]
   - content_for :title do
-    = 'Update file'
+    = @project.name.titleize
 
-  - content_for :pagetitle do
-    = link_to @project.name.titleize, @project.urlbase
-    \/
-    = link_to filename, File.join(@project.urlbase, 'master', filename)
-    \/
-    = 'Update'
+  %article.project{ data: "update" }
+    %header
+      %h1.generated
+        = avatar @project.user.email
+        %p
+          = link_to @user.username, "/#{@user.username}"
+          = "/"
+          %span 
+            = link_to @project.name, "/#{@user.username}/#{@project.name}"
+      %h2 
+        - if @project.id == @project.parent
+          %span.badge.author
+            PARENT
+        - else
+          Forked from parent/project
 
-  = render 'project_toolbar'
-  = render 'shared/messages'
+    = render 'project_toolbar'
+    = render 'shared/messages'
 
-  %br
-
-  = form_tag file_update_project_path(@project), multipart: true do
-    = file_field_tag "file" 
-    = text_field_tag "message","commit message"
-    = hidden_field_tag "image_name", params[:image_name]
-    = submit_tag 
+    %section
+      %div
+        = form_tag file_update_project_path(@project), multipart: true do
+          = file_field_tag "file" 
+          = text_field_tag "message","commit message"
+          = hidden_field_tag "image_name", params[:image_name]
+          = submit_tag 
 

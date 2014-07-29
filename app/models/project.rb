@@ -32,6 +32,10 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def issues_url
+    File.join(urlbase,'issues')
+  end
+
   def barerepo
     Rugged::Repository.new(self.barerepopath)
   end

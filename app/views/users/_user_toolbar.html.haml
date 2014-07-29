@@ -1,16 +1,22 @@
 %section.toolbar
-  %div.active
+  %div{ data: "userpage" }
     %p
       = link_to 'Userpage', "/#{@user.username}"
-  %div
+  - if user_signed_in? and @user.id == current_user.id
+    %div{ data: "notifications" }
+      %p
+        = link_to 'Notifications', File.join('/', 'notifications')
+  - else
+    %div{ data: "activity" }
+      %p
+        Activity
+  %div{ data: "projects" }
     %p
       = link_to 'Projects', File.join("/#{@user.username}", 'projects')
-  %div
-    %p
-      = link_to 'Glitterposts', File.join("/#{@user.username}", 'glitterposts')
-  %div
-    %p
-      = link_to 'Activity', File.join("/#{@user.username}", 'activity')
-  %div
-    %p
-      = link_to 'Badges', File.join("/#{@user.username}", 'badges')
+  -#
+    %div{ data: "glitterposts" }
+      %p
+        Glitterposts
+    %div{ data: "badges" }
+      %p
+        Badges
