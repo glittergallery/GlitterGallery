@@ -69,9 +69,8 @@ class Project < ActiveRecord::Base
 
   private
   def set_path
-    #TODO - let basedir for repos be set in app config
     user = User.find(self.user_id)
-    self.path = File.join 'public', 'data', 'repos', user.email.to_s, name
+    self.path = File.join Glitter::Application.config.repo_dir, 'repos', user.email.to_s, name
     logger.debug "setting path - path: #{self.path}"
     self.save
   end
