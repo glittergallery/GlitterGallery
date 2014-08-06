@@ -8,6 +8,7 @@ class Project < ActiveRecord::Base
   has_many :issues  
 
   validates :name, :presence => true, uniqueness: { scope: :user }
+  validates :user, :presence => true
 
   def last_updated
     repo = Grit::Repo.init_bare_or_open(File.join(path , '.git'))
