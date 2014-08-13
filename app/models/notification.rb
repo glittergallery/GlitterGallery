@@ -10,6 +10,13 @@ class Notification < ActiveRecord::Base
 	# Object_id - ID of the object
 	# Victims - the people to be notified 
 
+	after_create :send_emails
+	def send_emails
+		for victim in self.victims
+			NotifMailer.notif_email(self,victim).deliver
+		end
+	end
+
 	def messageverb
 		if action == 0
 			return " commented on "

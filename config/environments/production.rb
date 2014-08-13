@@ -78,5 +78,8 @@ Glitter::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
+  # TODO - Let users define this in the Config file
+  config.action_mailer.default_url_options = {:host => "glittergallery-ropaku.rhcloud.com"}
+
 
 end
