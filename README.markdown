@@ -35,6 +35,8 @@ Email us and let us know you're interested, and what you can do, and we'll figur
 
 Sarup Banskota (sarup@glittergallery.net)
 
+Rohit Paul Kuruvilla (rohitpaulk@live.com)
+
 Maírín Duffy (duffy@fedoraproject.org)
 
 Emily Dirsh (emily@glittergallery.net)
