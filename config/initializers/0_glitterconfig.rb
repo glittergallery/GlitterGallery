@@ -35,3 +35,11 @@ Glitter::Application.config.action_mailer.smtp_settings={
     password:             ENV["MAIL_PASSWORD"],
     authentication:       ENV["MAIL_AUTHENTICATION"],
     enable_starttls_auto: true  }
+if Rails.env.development?
+	Glitter::Application.config.repo_dir="public/data"
+elsif Rails.env.test?
+	Glitter::Application.config.repo_dir="public/testdata"
+elsif Rails.env.production?
+	Glitter::Application.config.repo_dir="public/data"
+end
+

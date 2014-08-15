@@ -42,4 +42,10 @@ RSpec.configure do |config|
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
+
+  config.after(:all) do
+    if Rails.env.test? || Rails.env.cucumber?
+      FileUtils.rm_rf(File.join(Rails.root,Glitter::Application.config.repo_dir))      
+    end
+  end
 end
