@@ -71,6 +71,11 @@ class IdentitiesController < ApplicationController
     end
   end
 
+  def failed_to_authenticate
+    flash[:alert] = "Authentication Failed! If this isn't the first time you're seeing this error, please let us know at http://github.com/GlitterGallery"
+    redirect_to root_url
+  end
+
   
   
 end

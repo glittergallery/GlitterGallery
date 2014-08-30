@@ -5,6 +5,7 @@ Glitter::Application.routes.draw do
     root to: "devise/sessions#new"
   end
   match 'auth/:provider/callback' => "identities#create", :via => [:get,:post]
+  match 'auth/failure' => "identities#failed_to_authenticate", :via => [:get,:post]
   
 
   resources :projects
