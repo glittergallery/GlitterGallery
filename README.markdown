@@ -25,6 +25,8 @@ GlitterGallery runs on OpenShift, so it's really easy to run your own version.
 1. Pull: `git pull -s recursive -X theirs glitter master`
 1. Push: `git push`
 
+For more details such as setting up email/social authentication take a look at the [wiki](https://github.com/glittergallery/GlitterGallery/wiki/Usage-Instructions)
+
 ### Get involved
 
 Email us and let us know you're interested, and what you can do, and we'll figure out something you can help with. Or just fork it and hack on it! Up to you! More contribution points on the [wiki](http://github.com/glittergallery/GlitterGallery/wiki)!
