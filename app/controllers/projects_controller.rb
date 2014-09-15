@@ -8,9 +8,9 @@ class ProjectsController < ApplicationController
     @project = Project.new
     @projects = current_user.projects
   end
-  
+
   def index
-    @projects = Project.where.not(id: current_user.id)
+    @projects = Project.where.not(id: current_user.id).where("updated_at > ?", 7.days.ago)
   end
 
   def destroy
@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
       project.save
       redirect_to project.urlbase
     else
-      flash[:alert] = "Didn't save project!"      
+      flash[:alert] = "Didn't save project!"
       redirect_to new_project_path
     end
   end
@@ -65,15 +65,15 @@ class ProjectsController < ApplicationController
       @invite_uri = "#{Rails.root}/uploads/#{Rails.env}/projects/#{params[:id]}/invite.xml" # If not in production.
     end
     @images = []
-    barerepo = @project.barerepo    
+    barerepo = @project.barerepo
     unless barerepo.empty?
       headcommit = barerepo.head.target
-      headtree = barerepo.lookup(headcommit.tree_id)      
+      headtree = barerepo.lookup(headcommit.tree_id)
       headtree.each do |blob|
         link = File.join(@project.urlbase,'master',blob[:name])
         @images.push({
            :link => link,:name => blob[:name],:url => @project.imageurl(blob[:name])
-        })        
+        })
       end
     end
     @comments = Comment.where(polycomment_type: "project", polycomment_id: @project.id)
@@ -130,7 +130,7 @@ class ProjectsController < ApplicationController
     @imageurl = File.join @project.satellitedir, params[:image_name]
     @comments = Comment.where(polycomment_type: "file", polycomment_id: params[:image_name])
     @comments = @comments.paginate(page: params[:page], per_page: 10)
-    @comments = pg @comments, 10 
+    @comments = pg @comments, 10
     @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1
   end
@@ -171,7 +171,7 @@ class ProjectsController < ApplicationController
     render :layout => false, :content_type => content_type
   end
 
-  # Let's users upload a new file to the project through a 
+  # Let's users upload a new file to the project through a
   # different page. Original functionality used to exist in the
   # project show page, moved to a separate page now.
 
@@ -187,12 +187,12 @@ class ProjectsController < ApplicationController
 
 
   # Let's users upload new files to the project. The new files are
-  # also commited to the backend git repository. They're added to the non_bare 
+  # also commited to the backend git repository. They're added to the non_bare
   # repo, and pushed to the bare_repo.
   # FIXME - work on the push from non_bare to bare repo method.
   # FIXME - allow uploads of only supported images.
 
-  def file_upload 
+  def file_upload
     @project = Project.find params[:id]
     tmp = params[:file].tempfile
     file = File.join @project.satellitedir, params[:file].original_filename
@@ -209,7 +209,7 @@ class ProjectsController < ApplicationController
   # Update files using this function. Updated files get commited to the non_bare repo
   # and then pushed to the bare repo.
   # FIXME - allow uploads of only supported images.
-  def file_update  
+  def file_update
     @project = Project.find params[:id]
     tmp = params[:file].tempfile
     file = File.join @project.satellitedir, params[:image_name]
@@ -231,7 +231,7 @@ class ProjectsController < ApplicationController
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
     file = File.join(@project.satellitedir, params[:image_name])
-    FileUtils.rm(file) if File.exists?(file)    
+    FileUtils.rm(file) if File.exists?(file)
     satellite_delete(@project.satelliterepo,params[:image_name])
     @project.pushtobare
     flash[:notice] = "#{params[:image_name]} has been deleted!"
@@ -244,7 +244,7 @@ class ProjectsController < ApplicationController
   def fork
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
-    @forked_project = Project.new :name => @project.name, 
+    @forked_project = Project.new :name => @project.name,
                                   :parent => @project.id
     @forked_project.user_id = current_user.id
 
@@ -276,13 +276,13 @@ class ProjectsController < ApplicationController
   def forkyou
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
-    # what if X is trying to fork a project that was forked by Y from X? 
+    # what if X is trying to fork a project that was forked by Y from X?
     @forked_project = Project.new :name => @project.name,
                                   :parent => @project.id
     @forked_project.user_id = current_user.id
 
     if @forked_project.save
-      @forked_project.urlbase = File.join "/#{current_user.username}", @forked_project.name.to_s    
+      @forked_project.urlbase = File.join "/#{current_user.username}", @forked_project.name.to_s
       if @project.private
         @forked_project.private = true
         @forked_project.uniqueurl = @project.uniqueurl
@@ -391,7 +391,7 @@ class ProjectsController < ApplicationController
 
     @pull.status = 'merged'
     @pull.save
-    
+
     flash[:notice] = "Pull request #{@pull.id} has successfully been merged!"
 
     @pulls = PullRequest.where("parent=?",@project.id)
@@ -399,7 +399,7 @@ class ProjectsController < ApplicationController
       if pull.id < @pull.id and pull.fork == @pull.fork and pull.status == 'open'
 
         FileUtils.rm_r(@forked_project.path + pull.id.to_s)
-        
+
         pull.status = 'automatically merged'
         pull.save
       end
@@ -460,7 +460,7 @@ class ProjectsController < ApplicationController
     if file
       message = params[:message]
       satellite_commit @project.satelliterepo, filename, Base64.decode64(params[:sketch]), message
-      @project.pushtobare        
+      @project.pushtobare
       flash[:notice] = "#{filename} has been updated! Shiny!"
     else
       flash[:alert] = "Unable to update #{filename}. The server ponies are sad."
