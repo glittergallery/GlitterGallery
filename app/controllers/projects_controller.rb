@@ -10,7 +10,7 @@ class ProjectsController < ApplicationController
   end
 
   def index
-    @projects = Project.where.not(id: current_user.id).where("updated_at > ?", 7.days.ago)
+    @projects = Project.where("private IS NOT TRUE AND user_id <> ?", current_user.id)
   end
 
   def destroy
