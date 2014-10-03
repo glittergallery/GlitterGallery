@@ -28,20 +28,6 @@
             = f.text_area :description, placeholder: "(Markdown Enabled)..."
             %label Type
             = f.select(:type, options_for_select([['Bug',0],['Improvement',1]]))
-            = f.submit "Report Issue"  
-
-        %aside
-          %h1
-            New Issue
-          %nav
-            %ul
-              %li.active
-                RFE
-              %li
-                Idea
-              %li
-                Critical
-              %li
-                Newbie Friendly   
+            = f.submit "Report Issue"   
 
 

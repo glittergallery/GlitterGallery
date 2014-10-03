@@ -8,13 +8,6 @@
   %div{ data: "log" }
     %p
       = link_to 'Log', File.join(@project.urlbase, 'commits')
-  -#
-    %div{ data: "contributors" }
-      %p
-        Contributors
-  %div{ data: "milestones" }
-    %p
-      Milestones
   %div{ data: "issues" }
     %p
       = link_to "Issues", File.join(@project.urlbase, 'issues')
