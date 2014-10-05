@@ -1,11 +1,13 @@
 %article
-	%header
-		%h1 Notifications
-		%h2 What's been going on in GlitterGallery
-	%content
-		%ul
-			- for notification in @unseennotifications
-				%li 
-					= link_to(notification.actor.username + notification.messageverb + notification.objectname,notification_path(notification))
+  %header
+    %h1 Notifications
+    %h2 What's been going on in GlitterGallery
+  %content
+    %ul
+      - if @unseennotifications.empty?
+        %p No notifications!
+      - else
+        - for notification in @unseennotifications
+          %li
+            = link_to(notification.actor.username + notification.messageverb + notification.objectname,notification_path(notification))
 
-				
