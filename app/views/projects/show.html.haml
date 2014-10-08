@@ -4,7 +4,7 @@
 
   - content_for :title do
     = @project.name.titleize
-    
+
   %article.project{ data: "current" }
     %header
       %h1.generated
@@ -12,9 +12,9 @@
         %p
           = link_to @user.username, "/#{@user.username}"
           = "/"
-          %span 
+          %span
             = link_to @project.name, "/#{@user.username}/#{@project.name}"
-      %h2 
+      %h2
         - if @project.private == true
           %span.badge.type PRV
         -else
@@ -36,8 +36,10 @@
 
 
     %section.comments
-      = render partial: "comments/comment", collection: @comments
-      = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
+      %section.showcomments
+        = render partial: "comments/comment", collection: @comments.reverse
+      %section.newcomment
+        = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
 
 
 
