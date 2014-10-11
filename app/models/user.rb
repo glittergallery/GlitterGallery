@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
                                    :class_name => "Relationship"
   has_many :followings, :through => :relationships, :source => :following
   has_many :followers, :through => :reverse_relationships, :source => :follower
+  has_many :project_followers, :dependent => :destroy, :foreign_key => "follower_id"
+  has_many :followed_projects, :through => :project_followers, :source => :followed_project
   has_many :issues
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
