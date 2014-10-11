@@ -9,8 +9,13 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :notification_statuses
   has_many :notifications, :through => :notification_statuses
-  has_many :project_followers, :foreign_key => "follower_id"
-  has_many :followed_projects, :through => :project_followers, :source => :following, :foreign_key => "follower_id"
+  has_many :relationships, :dependent => :destroy,
+                           :foreign_key => "follower_id"
+  has_many :reverse_relationships, :dependent => :destroy,
+                                   :foreign_key => "following_id",
+                                   :class_name => "Relationship"
+  has_many :followings, :through => :relationships, :source => :following
+  has_many :followers, :through => :reverse_relationships, :source => :follower
   has_many :issues
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
