@@ -3,7 +3,7 @@ class Project < ActiveRecord::Base
   after_destroy :deletefiles
   
   belongs_to :user
-  has_many :project_followers
+  has_many :project_followers, :dependent => :destroy, :foreign_key => "project_id" 
   has_many :followers, :through => :project_followers, :class_name => "User", :foreign_key => "follower_id"
   has_many :issues  
 

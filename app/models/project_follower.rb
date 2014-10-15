@@ -1,4 +1,4 @@
 class ProjectFollower < ActiveRecord::Base
-	belongs_to :following, :class_name => "Project" 
-	belongs_to :follower, :class_name => "User"
+	belongs_to :followed_project, :foreign_key => "project_id", :class_name => "Project" 
+	belongs_to :follower, :foreign_key => "follower_id", :class_name => "User"
 end
