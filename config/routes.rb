@@ -18,6 +18,8 @@ Glitter::Application.routes.draw do
   post 'glitterposts/:id/edit' => 'glitterposts#update'
   get '/inspire' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
+  get '/:username/follow' => 'relationships#follow'
+  get '/:username/unfollow' => 'relationships#unfollow'
   get '/:username' => 'users#show'
   get '/:username/projects' => 'projects#user_show'
   get '/:username/projects/following' => 'users#list_followed_projects', :as => :followed_projects
