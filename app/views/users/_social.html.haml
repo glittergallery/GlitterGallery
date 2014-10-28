@@ -1,0 +1,23 @@
+%div
+  .active
+    -if not current_user.nil? and current_user.follow?(@user) 
+      %a{href: "/#{@user.username}/unfollow", "data-remote" => true}
+        %p Unfollow
+        %p
+          = @user.username
+    -else
+      %a{href: "/#{@user.username}/follow", "data-remote" => true}
+        %p follow
+        %p
+          = @user.username
+
+  %div
+    %p
+      %a{href: "#"} #{@user.followers.count}
+    %p
+      %a{href: "#"} Followers
+  %div
+    %p
+      %a{href: "#"} #{@user.followings.count}
+    %p
+      %a{href: "#"} Following
