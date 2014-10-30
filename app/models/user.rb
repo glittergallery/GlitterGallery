@@ -39,6 +39,10 @@ class User < ActiveRecord::Base
   def password_required?
     (identities.empty? || !password.blank?) && super
   end
+
+  def follow?(user)
+    relationships.find_by_following_id(user)
+  end
 private   
 
     
