@@ -9,5 +9,8 @@
       - else
         - for notification in @unseennotifications
           %li
+          -if notification.action == 3 and notification.objectname == current_user.username
+            = link_to(notification.actor.username + notification.messageverb + "you",notification_path(notification))
+          -else
             = link_to(notification.actor.username + notification.messageverb + notification.objectname,notification_path(notification))
 
