@@ -265,6 +265,13 @@ class ProjectsController < ApplicationController
         git = Grit::Git.new @forked_project.path
         git.native(clone,{}, File.join(@project.path, '.git'),@forked_project.path)
 
+        unless @forked_project.private
+          notification = Notification.new(:actor => current_user, :action => 2, :object_type => 0, :object_id => project.id)
+          notification.victims << current_user.followers
+          notification.victims << @project.user unless notification.victims.include?(@project.user)
+          notification.save!
+        end
+
         redirect_to @forked_project.urlbase
 
       else
