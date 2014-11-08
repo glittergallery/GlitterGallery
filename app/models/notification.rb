@@ -5,7 +5,7 @@ class Notification < ActiveRecord::Base
 
 	# This class has the following information - 
 	# Actor - the person responsible for the action
-	# Action - [0: Commented, 1: Followed Project, 2: Forked, 3: Followed User]
+	# Action - [0: Commented, 1: Followed Project, 2: Forked, 3: Followed User, 4: Created Project]
 	# Object_type [0: Project, 1: Comment, 2: User]
 	# Object_id - ID of the object
 	# Victims - the people to be notified 
@@ -22,7 +22,9 @@ class Notification < ActiveRecord::Base
 			return " commented on "
 		elsif action == 1 or action == 3
 			return " followed "
-		end		
+		elsif action == 4
+			return " created "
+		end
 	end
 
 	def objectname
@@ -31,6 +33,8 @@ class Notification < ActiveRecord::Base
 			return Project.find(comment.polycomment_id).name
 		elsif action == 3
 			return User.find(object_id).username
+		elsif action == 4
+			return Project.find(object_id).name
 		end
 	end
 	
@@ -39,6 +43,8 @@ class Notification < ActiveRecord::Base
 			# TODO - It'd be better if we could link directly to a comment, using a hash in the url.			
 			comment = Comment.find(object_id)
 			return Project.find(comment.polycomment_id).urlbase
+		elsif action == 4
+			return Project.find(object_id).urlbase
 		else
 			return "/#{actor.username}"
 		end
