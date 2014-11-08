@@ -46,8 +46,8 @@ class ProjectsController < ApplicationController
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
     unless @user == current_user
-      if ProjectFollower.where(:follower => current_user, :following => @project).empty?
-        ProjectFollower.create(:follower => current_user, :following => @project)
+      if ProjectFollower.where(:follower => current_user, :followed_project => @project).empty?
+        ProjectFollower.create(:follower => current_user, :followed_project => @project)
       end
       flash[:notice] = "You're now following #{@user.username}/#{@project.name}"
     else
