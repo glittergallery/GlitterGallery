@@ -43,5 +43,7 @@
                 Merge
 
     %section.comments
-      = render partial: "comments/comment", collection: @comments
-      = render partial: "comments/new", locals: {type: 'issue', id: @issue.id.to_s, ajax: @ajax, comment: @comment}
+      %section.showcomments
+        = render partial: "comments/comment", collection: @comments
+      %section.newcomment
+        = render partial: "comments/new", locals: {type: 'issue', id: @issue.id.to_s, ajax: @ajax, comment: @comment}
