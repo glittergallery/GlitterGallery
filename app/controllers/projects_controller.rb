@@ -35,6 +35,11 @@ class ProjectsController < ApplicationController
     if project.save
       project.parent = project.id
       project.save
+      unless project.private
+        notification = Notification.new(:actor => current_user, :action => 4, :object_type => 0, :object_id => project.id)
+        notification.victims << current_user.followers
+        notification.save!
+      end
       redirect_to project.urlbase
     else
       flash[:alert] = "Didn't save project!"
