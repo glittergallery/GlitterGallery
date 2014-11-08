@@ -22,6 +22,8 @@ class Notification < ActiveRecord::Base
 			return " commented on "
 		elsif action == 1 or action == 3
 			return " followed "
+		elsif action == 2
+			return " forked "
 		elsif action == 4
 			return " created "
 		end
@@ -33,7 +35,7 @@ class Notification < ActiveRecord::Base
 			return Project.find(comment.polycomment_id).name
 		elsif action == 3
 			return User.find(object_id).username
-		elsif action == 4
+		elsif action == 2 or action == 4
 			return Project.find(object_id).name
 		end
 	end
@@ -43,7 +45,7 @@ class Notification < ActiveRecord::Base
 			# TODO - It'd be better if we could link directly to a comment, using a hash in the url.			
 			comment = Comment.find(object_id)
 			return Project.find(comment.polycomment_id).urlbase
-		elsif action == 4
+		elsif action == 2 or action == 4
 			return Project.find(object_id).urlbase
 		else
 			return "/#{actor.username}"
