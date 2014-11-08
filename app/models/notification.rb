@@ -39,7 +39,7 @@ class Notification < ActiveRecord::Base
 			return "Issue ##{issue.id} of #{issue.project.name}"
 		elsif action == 3
 			return User.find(object_id).username
-		elsif action == 2 or action == 4
+		elsif action == 1 or action == 2 or action == 4
 			return Project.find(object_id).name
 		end
 	end
@@ -52,7 +52,7 @@ class Notification < ActiveRecord::Base
 		elsif action == 5
 			comment = Comment.find(object_id)
 			return Issue.find(comment.polycomment_id).show_url
-		elsif action == 2 or action == 4
+		elsif action == 1 or action == 2 or action == 4
 			return Project.find(object_id).urlbase
 		else
 			return "/#{actor.username}"
