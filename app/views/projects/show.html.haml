@@ -16,9 +16,9 @@
             = link_to @project.name, "/#{@user.username}/#{@project.name}"
       %h2
         - if @project.private == true
-          %span.badge.type PRV
+          %span.badge.type{:title => "Private Project"} PRV 
         -else
-          %span.badge.type PUB
+          %span.badge.type{:title => "Public Project"} PUB
         - if @project.id == @project.parent
           %span.badge.author PARENT
         - else FORK

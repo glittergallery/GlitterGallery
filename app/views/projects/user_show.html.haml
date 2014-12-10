@@ -1,6 +1,7 @@
 - content_for :title do
   = @user.username.titleize
 
+
 %article.project{ data: "projects"}
   %header
     %h1
@@ -14,6 +15,7 @@
       
   = render 'users/user_toolbar'
   = render 'shared/messages'
+ 
 
   - unless @projects.empty?
     %section.album
@@ -21,7 +23,7 @@
         - @projects.each do |project|
           %div
             %p
-              %img{ src: "/usercover.jpg"}
+              %img{:src => "/usercover.jpg", :title => "Project Cover"}
               = link_to project.name, project.urlbase
               %br
               Last updated #{distance_of_time_in_words_to_now project.updated_at} ago
