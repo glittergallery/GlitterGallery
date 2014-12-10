@@ -35,6 +35,11 @@ class ProjectsController < ApplicationController
     if project.save
       project.parent = project.id
       project.save
+      unless project.private
+        notification = Notification.new(:actor => current_user, :action => 4, :object_type => 0, :object_id => project.id)
+        notification.victims << current_user.followers
+        notification.save!
+      end
       redirect_to project.urlbase
     else
       flash[:alert] = "Didn't save project!"
@@ -46,8 +51,15 @@ class ProjectsController < ApplicationController
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
     unless @user == current_user
-      if ProjectFollower.where(:follower => current_user, :following => @project).empty?
-        ProjectFollower.create(:follower => current_user, :following => @project)
+      if ProjectFollower.where(:follower => current_user, :followed_project => @project).empty?
+        ProjectFollower.create(:follower => current_user, :followed_project => @project)
+        Notification.create(
+          :actor => current_user,
+          :action => 1,
+          :object_type => 0,
+          :object_id => @project.id,
+          :victims => [@project.user]
+        )
       end
       flash[:notice] = "You're now following #{@user.username}/#{@project.name}"
     else
@@ -259,6 +271,13 @@ class ProjectsController < ApplicationController
 
         git = Grit::Git.new @forked_project.path
         git.native(clone,{}, File.join(@project.path, '.git'),@forked_project.path)
+
+        unless @forked_project.private
+          notification = Notification.new(:actor => current_user, :action => 2, :object_type => 0, :object_id => project.id)
+          notification.victims << current_user.followers
+          notification.victims << @project.user unless notification.victims.include?(@project.user)
+          notification.save!
+        end
 
         redirect_to @forked_project.urlbase
 

@@ -17,17 +17,22 @@ class CommentsController < ApplicationController
       @comments = @comments.paginate(page: 1, per_page: 10)
       
       if params[:comment][:polycomment_type] == 'project'
+        action = 0
         project = Project.find(params[:comment][:polycomment_id])
-        unless project.user == current_user
-          Notification.create(
-            :actor => current_user,
-            :action => 0, #Commented
-            :object_type => 1, # Comment
-            :object_id => @comment.id,
-            :victims => [project.user]
-          )
-        end
-      end      
+      elsif params[:comment][:polycomment_type] == 'issue'
+        action = 5
+        issue = Issue.find(@comment.polycomment_id)
+        project = issue.project
+      end
+      victims = project.followers + [project.user]
+      victims.delete(@comment.user)
+      Notification.create(
+        :actor => current_user,
+        :action => action, #Commented on either Project or Issue
+        :object_type => 1, # Comment
+        :object_id => @comment.id,
+        :victims => victims
+      )
 
       respond_to do |format|
         format.html { redirect_to :back }
