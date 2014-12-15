@@ -12,12 +12,16 @@
           = @user.username
 
   %div
-    %p
-      %a{href: "#"} #{@user.followers.count}
-    %p
-      %a{href: "#"} Followers
+    %a{href: "#"} 
+      %p
+        #{@user.followers.count}
+    %a{href: "#"}
+      %p
+        Followers
   %div
-    %p
-      %a{href: "#"} #{@user.followings.count}
-    %p
-      %a{href: "#"} Following
+    %a{href: "#"}
+      %p
+        #{@user.followings.count}
+    %a{href: "#"}
+      %p
+        Following
