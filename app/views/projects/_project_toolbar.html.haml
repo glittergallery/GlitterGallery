@@ -2,15 +2,20 @@
 
 
 %section.toolbar
-  %div{ data: "current"}
-    %p
-      = link_to 'Current', File.join(@project.urlbase, @project_path.to_s)
-  %div{ data: "log" }
-    %p
-      = link_to 'Log', File.join(@project.urlbase, 'commits')
-  %div{ data: "issues" }
-    %p
-      = link_to "Issues", File.join(@project.urlbase, 'issues')
+  %a{href: "#{@project.urlbase+@project_path.to_s}"}
+    %div{ data: "current"}
+      %p
+        Current
+  
+  %a{href: "#{@project.urlbase+'/commits'}"}
+    %div{ data: "log" }
+      %p
+        Log
+
+  %a{href: "#{@project.urlbase+'/issues'}"}        
+    %div{ data: "issues" }
+      %p
+        Issues
 
 
 %section.action
@@ -19,23 +24,30 @@
       %div{ data: "doodle" }
         %p
           Doodle
-    %div{ data: "upload" }
-      %p
-        = link_to 'Upload', File.join(@project.urlbase, 'newfile')
-    %div{ data: "settings" }
-      %p
-        = link_to "Settings", File.join(@project.urlbase, 'settings')
-  - else
-    %div{ data: "follow" }
-      %p
-        = link_to 'Follow' , File.join(@project.urlbase, 'follow') , "data-method" => "POST"
+
+    %a{href: "#{@project.urlbase+'/newfile'}"}
+      %div{ data: "upload" }
+        %p
+          Upload
+
+    %a{href: "#{@project.urlbase+'/settings'}"}      
+      %div{ data: "settings" }
+        %p
+          Settings
+
+    %a{href: "#{@project.urlbase+'/follow'}"}      
+      %div{ data: "follow" }
+        Follow
     -#
-      %div{ data: "fork" }
+      %a{href: "#{@project.urlbase+'/forkyou'}"}
+        %div{ data: "fork" }
+          %p
+            Fork
+          %a{href: "#{request.original_url+'/star'}"}
+          %p
+            Star
+
+    %a{href: "#{@project.urlbase+'/issues/new'}"}
+      %div{ data: "blame" }
         %p
-          = link_to 'Fork' , File.join(request.original_url, 'forkyou')
-      %div{ data: "star" }
-        %p
-          = link_to 'Star' , File.join(request.original_url, 'star')
-  %div{ data: "blame" }
-    %p
-      = link_to "Blame", File.join(@project.urlbase, 'issues/new')
+          Blame

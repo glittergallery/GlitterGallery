@@ -1,18 +1,24 @@
 %section.toolbar
-  %div{ data: "userpage" }
-    %p
-      = link_to 'Userpage', "/#{@user.username}"
-  - if user_signed_in? and @user.id == current_user.id
-    %div{ data: "notifications" }
+  
+  %a{href: "/#{@user.username}"}
+    %div{:data => "userpage"}
       %p
-        = link_to 'Notifications', File.join('/', 'notifications')
+        Userpage
+  - if user_signed_in? and @user.id == current_user.id
+
+    %a{href: "/notifications"}
+      %div{:data => "notifications"}
+        %p
+          Notifications
+        
   - else
     %div{ data: "activity" }
       %p
         Activity
-  %div{ data: "projects" }
-    %p
-      = link_to 'Projects', File.join("/#{@user.username}", 'projects')
+  %a{href: "/#{@user.username}/projects"}
+    %div{:data => "projects"}
+      %p
+        Projects
   -#
     %div{ data: "glitterposts" }
       %p

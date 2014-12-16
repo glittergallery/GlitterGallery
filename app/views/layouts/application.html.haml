@@ -164,9 +164,9 @@
                     - @projects.each do |project|
                       %li
                         - if project.private
-                          %span.badge.type PRV
+                          %span.badge.type{:title => "Private Project"} PRV
                         - else
-                          %span.badge.type PUB
+                          %span.badge.type{:title => "Public Project"} PUB
                         = link_to project.name, project.urlbase
 
           - else
