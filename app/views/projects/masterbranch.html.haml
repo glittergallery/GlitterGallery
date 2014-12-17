@@ -27,7 +27,7 @@
     = render 'shared/messages'
     %section.album
       %div.photo
-        %p
+        %p{title: params[:image_name]}
           = image_tag @imageurl.gsub("public","")
         %form{ action: File.join(params[:image_name], "update")}
           %input{ type: "submit", value: "Update"}

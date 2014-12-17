@@ -3,7 +3,7 @@
     %div
       - @images.each do |image|
         %div
-          %p
+          %p{:title => image[:name]}
             = link_to(image_tag(image[:url]),image[:link])
     - if user_signed_in? and current_user.id == @project.user.id
       %div
