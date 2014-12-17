@@ -34,7 +34,7 @@
       %div{ data: "settings" }
         %p
           Settings
-
+  - else
     %a{href: "#{@project.urlbase+'/follow'}"}      
       %div{ data: "follow" }
         Follow
@@ -43,11 +43,13 @@
         %div{ data: "fork" }
           %p
             Fork
-          %a{href: "#{request.original_url+'/star'}"}
+            
+      %a{href: "#{request.original_url+'/star'}"}
+        %div{ data: "fork" }
           %p
             Star
 
-    %a{href: "#{@project.urlbase+'/issues/new'}"}
-      %div{ data: "blame" }
-        %p
-          Blame
+  %a{href: "#{@project.urlbase+'/issues/new'}"}
+    %div{ data: "blame" }
+      %p
+        Blame
