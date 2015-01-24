@@ -14,7 +14,7 @@ gem 'sqlite3'
 gem 'mysql2'
 gem 'haml'
 gem 'grit'
-gem 'rugged', git: 'git://github.com/libgit2/rugged.git', branch: 'development', submodules: true
+gem 'rugged', '~> 0.21'
 gem 'escape'
 gem 'jquery-rails'
 gem 'rake', '0.9.2.2'
@@ -29,8 +29,8 @@ gem 'omniauth-linkedin'
 gem 'omniauth-openid'
 gem "oa-openid", :require => "omniauth/openid"
 gem 'activerecord-session_store'
-gem 'actionpack-action_caching' 
-gem 'rails-observers' 
+gem 'actionpack-action_caching'
+gem 'rails-observers'
 
 
 gem 'sass-rails'
