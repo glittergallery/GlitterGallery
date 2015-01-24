@@ -6,7 +6,7 @@ gem 'rails', '~> 4.0.0'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem "turbolinks", "~> 2.2.1"
+gem 'turbolinks'
 gem 'nprogress-rails'
 gem 'jquery-turbolinks'
 gem 'will_paginate'
@@ -17,7 +17,7 @@ gem 'grit'
 gem 'rugged', '~> 0.21'
 gem 'escape'
 gem 'jquery-rails'
-gem 'rake', '0.9.2.2'
+gem 'rake'
 gem 'sketchily'
 gem 'redcarpet'
 gem 'devise'
@@ -38,7 +38,7 @@ gem 'coffee-rails'
 
 gem 'therubyracer', :platform => :ruby
 
-gem 'uglifier', '>= 1.0.3'
+gem 'uglifier'
 
 
 group :development, :test do
