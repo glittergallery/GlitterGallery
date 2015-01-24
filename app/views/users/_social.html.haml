@@ -1,15 +1,17 @@
 %div
-  .active
-    -if not current_user.nil? and current_user.follow?(@user) 
+  %div.active
+    - if current_user.nil? 
+      %a{href: "/#{@user.username}/follow"}
+        %p Follow
+        %p= @user.username
+    - elsif current_user.follow? @user
       %a{href: "/#{@user.username}/unfollow", "data-remote" => true}
         %p Unfollow
-        %p
-          = @user.username
+        %p= @user.username
     -else
       %a{href: "/#{@user.username}/follow", "data-remote" => true}
         %p Follow
-        %p
-          = @user.username
+        %p= @user.username
 
   %div
     %a{href: "#"} 
