@@ -1,7 +1,7 @@
 - content_for :title do
   = @user.username.titleize
 
-%article.user{ data: "userpage"}
+%article.user
   %header
     %h1
       = avatar @user.email
@@ -20,7 +20,7 @@
 
   %section
     .feed
-      %div
+      %div#activity
         %article
           %p
             = link_to @user.username, (File.join '/', @user.username)
@@ -28,3 +28,13 @@
             %a{href: "/"} GlitterGallery
             = distance_of_time_in_words_to_now @user.created_at
             ago.
+      %div#followers{style: "display: none"}
+        %article
+          - @followers.each do |follower|
+            %p= avatar(follower.email)
+            = follower.username
+      %div#following{style: "display: none"}
+        %article
+          - @followings.each do |following|
+            %p= avatar(following.email)
+            = following.username

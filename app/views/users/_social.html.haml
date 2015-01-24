@@ -1,27 +1,36 @@
 %div
   .active
-    -if not current_user.nil? and current_user.follow?(@user) 
+    -if not current_user.nil? and current_user.follow?(@user)
       %a{href: "/#{@user.username}/unfollow", "data-remote" => true}
         %p Unfollow
-        %p
-          = @user.username
+        %p= @user.username
     -else
       %a{href: "/#{@user.username}/follow", "data-remote" => true}
         %p Follow
-        %p
-          = @user.username
+        %p= @user.username
 
-  %div
-    %a{href: "#"} 
+
+  %div#followers_list
+    %a{href: "#"}
       %p
         #{@user.followers.count}
     %a{href: "#"}
       %p
         Followers
-  %div
+  %div#following_list
     %a{href: "#"}
       %p
         #{@user.followings.count}
     %a{href: "#"}
       %p
         Following
+
+:javascript
+  $("#followers_list").click(function(){
+    $(".feed div").hide();
+    $("#followers").show();
+  });
+  $("#following_list").click(function(){
+    $(".feed div").hide();
+    $("#following").show();
+  });
