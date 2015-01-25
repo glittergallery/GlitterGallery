@@ -1,11 +1,11 @@
 class Project < ActiveRecord::Base
   after_create :set_path, :init
   after_destroy :deletefiles
-  
+
   belongs_to :user
-  has_many :project_followers, :dependent => :destroy, :foreign_key => "project_id" 
+  has_many :project_followers, :dependent => :destroy, :foreign_key => "project_id"
   has_many :followers, :through => :project_followers, :class_name => "User", :foreign_key => "follower_id"
-  has_many :issues  
+  has_many :issues
 
   validates :name, :presence => true, uniqueness: { scope: :user }
   validates :user, :presence => true
@@ -61,11 +61,11 @@ class Project < ActiveRecord::Base
   def pushtobare
     barerepo = Rugged::Repository.new(self.barerepopath)
     satelliterepo = Rugged::Repository.new(self.satelliterepopath)
-    remote = Rugged::Remote.lookup(satelliterepo,'origin')
-    unless remote 
-      remote = Rugged::Remote.add(satelliterepo,'origin',barerepo.path)
+    remote = satelliterepo.remotes['origin']
+    unless remote
+      remote = satelliterepo.remotes.create('origin', barerepo.path)
     end
-    remote.push(["refs/heads/master"])
+    satelliterepo.push(remote, ["refs/heads/master"])
   end
 
   private
