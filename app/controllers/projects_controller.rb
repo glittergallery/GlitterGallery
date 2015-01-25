@@ -1,12 +1,16 @@
-require 'grit'
-
 class ProjectsController < ApplicationController
   before_filter :store_return_to
-  before_filter :authenticate_user!, except: [:show, :commits, :projectcommit, :masterbranch, :file_history, :pulls, :pull]
+  before_filter :authenticate_user!, except: [  :show,
+                                                :commits,
+                                                :projectcommit,
+                                                :masterbranch,
+                                                :file_history,
+                                                :pulls,
+                                                :pull
+                                              ]
 
   def new
     @project = Project.new
-    @projects = current_user.projects
   end
 
   def index
@@ -28,7 +32,7 @@ class ProjectsController < ApplicationController
   def create
     project = Project.new project_params
     project.user_id = current_user.id
-    if params[:commit]=="Private"
+    if params[:commit] == "Private"
       project.private = true
       project.uniqueurl = SecureRandom.hex
     end
@@ -36,7 +40,11 @@ class ProjectsController < ApplicationController
       project.parent = project.id
       project.save
       unless project.private
-        notification = Notification.new(:actor => current_user, :action => 4, :object_type => 0, :object_id => project.id)
+        notification = Notification.new( actor: current_user,
+                                         action: 4,
+                                         object_type: 0,
+                                         object_id: project.id
+                                       )
         notification.victims << current_user.followers
         notification.save!
       end
@@ -147,24 +155,19 @@ class ProjectsController < ApplicationController
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
-  # Given a filename, view it's entire commit history, including author
-  # information, etc. Only one file's history may be viewed at a time, so
-  # please note that this is different from the project's commit history.
-
   def file_history
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
     @bloblist = Array.new
-    walker = Rugged::Walker.new(@project.barerepo)
-    walker.push(@project.barerepo.head.target)
+    walker = Rugged::Walker.new @project.barerepo
+    walker.push @project.barerepo.head.target
     walker.each do |commit|
-      tree = @project.barerepo.lookup(commit.tree_id)
+      tree = @project.barerepo.lookup commit.tree_id
       tree.each do |blob|
         if blob[:name] == params[:image_name]
           blobdata = @project.barerepo.read(blob[:oid]).data
-          image = {
-            :name => blob[:name],
-            :data => blobdata
+          image = { name: blob[:name],
+                    data: blobdata
           }
           @bloblist << [image , commit]
         end
@@ -183,9 +186,6 @@ class ProjectsController < ApplicationController
     render :layout => false, :content_type => content_type
   end
 
-  # Let's users upload a new file to the project through a
-  # different page. Original functionality used to exist in the
-  # project show page, moved to a separate page now.
 
   def newfile
     @user = User.find_by username: params[:username]
@@ -197,12 +197,7 @@ class ProjectsController < ApplicationController
     @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
-
-  # Let's users upload new files to the project. The new files are
-  # also commited to the backend git repository. They're added to the non_bare
-  # repo, and pushed to the bare_repo.
-  # FIXME - work on the push from non_bare to bare repo method.
-  # FIXME - allow uploads of only supported images.
+  # TODO - allow uploads/updates of only supported images.
 
   def file_upload
     @project = Project.find params[:id]
@@ -218,9 +213,6 @@ class ProjectsController < ApplicationController
     redirect_to @project.urlbase
   end
 
-  # Update files using this function. Updated files get commited to the non_bare repo
-  # and then pushed to the bare repo.
-  # FIXME - allow uploads of only supported images.
   def file_update
     @project = Project.find params[:id]
     tmp = params[:file].tempfile
@@ -238,7 +230,6 @@ class ProjectsController < ApplicationController
     redirect_to @project.urlbase
   end
 
-  # Delete files using this function.
   def file_delete
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
@@ -247,182 +238,6 @@ class ProjectsController < ApplicationController
     satellite_delete(@project.satelliterepo,params[:image_name])
     @project.pushtobare
     flash[:notice] = "#{params[:image_name]} has been deleted!"
-    redirect_to @project.urlbase
-  end
-
-  # WIP - Supposed to help in forking a repo that belongs to another user.
-  # Fork works but creates only bare repos.
-
-  def fork
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
-    @forked_project = Project.new :name => @project.name,
-                                  :parent => @project.id
-    @forked_project.user_id = current_user.id
-
-    if @project.private
-      @forked_project.private = true
-      @forked_project.uniqueurl = @project.uniqueurl
-    end
-
-    if @forked_project.save
-      @forked_project_saved = true
-      if @forked_project_saved
-
-        git = Grit::Git.new @forked_project.path
-        git.native(clone,{}, File.join(@project.path, '.git'),@forked_project.path)
-
-        unless @forked_project.private
-          notification = Notification.new(:actor => current_user, :action => 2, :object_type => 0, :object_id => project.id)
-          notification.victims << current_user.followers
-          notification.victims << @project.user unless notification.victims.include?(@project.user)
-          notification.save!
-        end
-
-        redirect_to @forked_project.urlbase
-
-      else
-        redirect_to dashboard_path
-      end
-    else
-      flash[:alert] = "Didn't save project!"
-      redirect_to dashboard_path
-    end
-  end
-
-  # This function will be removed soon, just being used to test fork.
-
-  def forkyou
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
-    # what if X is trying to fork a project that was forked by Y from X?
-    @forked_project = Project.new :name => @project.name,
-                                  :parent => @project.id
-    @forked_project.user_id = current_user.id
-
-    if @forked_project.save
-      @forked_project.urlbase = File.join "/#{current_user.username}", @forked_project.name.to_s
-      if @project.private
-        @forked_project.private = true
-        @forked_project.uniqueurl = @project.uniqueurl
-        @forked_project.urlbase = File.join @forked_project.urlbase, @forked_project.uniqueurl
-      end
-      @forked_project.save
-
-      FileUtils.rm_r(@forked_project.path)
-      FileUtils.cp_r(@project.path,@forked_project.path)
-
-      redirect_to @forked_project.urlbase
-
-    else
-      flash[:alert] = "Didn't save project!"
-      redirect_to dashboard_path
-    end
-  end
-
-  #def pull_request
-  # this one will make an entry into the pull request table
-  # ID, project info, desc, upto_commitID, status <merge, close, open>
-  # when a new request is opened, it will issue it as open
-  # upon merge, it will make it as merge and make them nonclickable again
-  # upon close, it will make it as closed but it may be re-opemed and merged
-  #end
-
-  #Pull request - WIP
-
-  def pull_request
-    @user = User.find_by username: params[:username]
-    @forked_project = Project.find_by user_id: @user.id, name: params[:project]
-    @parent_project = Project.find @forked_project.parent
-    @parent_repo = Grit::Repo.init_bare_or_open(File.join (@parent_project.path) , '.git')
-    @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
-
-    @fork_commits = []
-    @forked_repo.commits.each do |c|
-      @fork_commits << c.id
-    end
-
-    if @parent_repo.commits.first == @forked_repo.commits.first
-      redirect_to @forked_project.urlbase
-      flash[:notice] = "Nothing to pull, the parent project is up to date! :)"
-    end
-
-    unless @parent_repo.commits.first != nil and @fork_commits.include? @parent_repo.commits.first.id
-      redirect_to @forked_project.urlbase
-      flash[:alert] = "Hm, looks like you're left behind and we cannot do an auto merge :-("
-    end
-
-  end
-
-  def handle_pull_request
-    @forked_project = Project.find params[:id]
-    @parent_project = Project.find @forked_project.parent
-    @parent_repo = Grit::Repo.init_bare_or_open(File.join (@parent_project.path) , '.git')
-    @forked_repo = Grit::Repo.init_bare_or_open(File.join (@forked_project.path) , '.git')
-
-    @fork_commits = []
-    @forked_repo.commits.each do |c|
-      @fork_commits << c.id
-    end
-
-    if @parent_repo.commits.first == nil or @fork_commits.include? @parent_repo.commits.first.id
-      request = PullRequest.new :desc => params[:description],
-                                :fork => @forked_project.id,
-                                :parent => @parent_project.id,
-                                :status => 'open'
-      if request.save
-        # we want the directory containing all of the stuff in this request to be copied over.
-        FileUtils.cp_r(@forked_project.path, @forked_project.path + request.id.to_s)
-        redirect_to File.join(@parent_project.urlbase, 'pulls')
-      else
-        flash[:error] = "Damn, something went wrong. Please try again!"
-        redirect_to dashboard_path
-      end
-    end
-  end
-
-  def pulls
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
-    #spit a list of all pulls from the table which have @project.id as parent
-    @pulls = PullRequest.where("parent=?",@project.id)
-  end
-
-  def pull
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
-    @pull = PullRequest.find params[:pull_id]
-    @comment = Comment.new
-    @comments = Comment.where(polycomment_type: "pull", polycomment_id: @pull.id)
-    @comments = pg @comments, 10
-    @ajax = params[:page].nil? || params[:page] == 1
-  end
-
-  def merge
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
-    @pull = PullRequest.find params[:pull_id]
-    @forked_project = Project.find @pull.fork
-
-    FileUtils.rm_r(@project.path)
-    FileUtils.cp_r(@forked_project.path + @pull.id.to_s, @project.path)
-    FileUtils.rm_r(@forked_project.path + @pull.id.to_s)
-
-    @pull.status = 'merged'
-    @pull.save
-
-    flash[:notice] = "Pull request #{@pull.id} has successfully been merged!"
-
-    @pulls = PullRequest.where("parent=?",@project.id)
-    @pulls.each do |pull|
-      if pull.id < @pull.id and pull.fork == @pull.fork and pull.status == 'open'
-
-        FileUtils.rm_r(@forked_project.path + pull.id.to_s)
-
-        pull.status = 'automatically merged'
-        pull.save
-      end
-    end
     redirect_to @project.urlbase
   end
 
@@ -441,49 +256,6 @@ class ProjectsController < ApplicationController
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'closed'
     @pull.save
-    redirect_to @project.urlbase
-  end
-
-  def new_svg
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
-  end
-
-
-  def create_svg
-    @project = Project.find params[:id]
-    filename = params[:filename].squish.downcase.tr(" ","_") + '.svg'
-    file = File.open(File.join(@project.satellitedir, filename), 'w+') {|f| f.write(Base64.decode64(params[:sketch])) }
-    if file
-      satellite_commit @project.satelliterepo, filename, Base64.decode64(params[:sketch]), "Create #{filename}"
-      @project.pushtobare
-      flash[:notice] = "Your new image was added successfully! How sparkly!"
-    else
-      flash[:alert]  = "Your new image didn't get saved! How sad :("
-    end
-    redirect_to @project.urlbase
-  end
-
-
-  def edit_svg
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
-    @filename = params[:image_name]
-    @path = @project.imageurl(@filename)
-  end
-
-  def update_svg
-    @project = Project.find params[:id]
-    filename = params[:filename]
-    file = File.open(File.join(@project.satellitedir, filename), 'w+') {|f| f.write(Base64.decode64(params[:sketch])) }
-    if file
-      message = params[:message]
-      satellite_commit @project.satelliterepo, filename, Base64.decode64(params[:sketch]), message
-      @project.pushtobare
-      flash[:notice] = "#{filename} has been updated! Shiny!"
-    else
-      flash[:alert] = "Unable to update #{filename}. The server ponies are sad."
-    end
     redirect_to @project.urlbase
   end
 

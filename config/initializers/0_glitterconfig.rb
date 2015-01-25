@@ -8,7 +8,7 @@ Glitter::Application.config.thumbnail_geometry="150x110!"
 # (gr)Avatar options
 ## path to default avatar - should start with slash
 Glitter::Application.config.default_avatar='/happypanda.png'
-## size of gravatar to ask for - one dimension in pixels 
+## size of gravatar to ask for - one dimension in pixels
 ## (gravatars are square :))
 Glitter::Application.config.gravatar_size='48'
 
@@ -19,13 +19,13 @@ Glitter::Application.config.auth_methods=[:facebook,:twitter,:open_id,:linkedIn,
 
 # This is the ActionMailer configuration
 #
-# Example Environment variables : 
+# Example Environment variables :
 # MAIL_ADDRESS=smtp.gmail.com
 # MAIL_PORT=587
 # MAIL_DOMAIN=gmail.com
 # MAIL_USERNAME=you@gmail.com
 # MAIL_PASSWORD=yourpassword
-# AUTHENTICATION=plain
+# MAIL_AUTHENTICATION=plain
 Glitter::Application.config.action_mailer.delivery_method = :smtp
 Glitter::Application.config.action_mailer.smtp_settings={
     address:              ENV["MAIL_ADDRESS"],
@@ -42,4 +42,3 @@ elsif Rails.env.test?
 elsif Rails.env.production?
 	Glitter::Application.config.repo_dir="public/data"
 end
-
