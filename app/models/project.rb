@@ -33,9 +33,10 @@ class Project < ActiveRecord::Base
 
   # Project URL
   def urlbase
-    File.join '/#{user.username}',
-              self.name.gsub(' ', "%20"),
-              self.uniqueurl.to_s
+    File.join("/#{user.username}",
+              self.name.gsub(" ", "%20"),
+              self.uniqueurl.to_s).gsub(/\/$/, '')
+              #{}"/#{self.uniqueurl.to_s}" if self.uniqueurl
   end
 
   def issues_url
