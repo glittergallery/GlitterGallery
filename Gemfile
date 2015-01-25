@@ -42,6 +42,10 @@ gem 'uglifier'
 
 
 group :development, :test do
+  # https://github.com/rspec/rspec-rails/issues/1273
+  gem 'minitest'
+  gem 'test-unit'
+
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'better_errors'
