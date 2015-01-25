@@ -48,9 +48,9 @@ class ApplicationController < ActionController::Base
     repo.index.remove file_name
     options = {}
     author = { email: current_user.email,
-      name: current_user.username,
-      time: Time.now
-    }
+               name: current_user.username,
+               time: Time.now
+             }
     options[:author] = author
     options[:committer] = author
     options[:tree] = repo.index.write_tree repo

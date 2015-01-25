@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe ProjectsController do
+describe ProjectsController, type: :controller do
   describe "GET #new" do
     context "user logged in" do
       before do
         @user = FactoryGirl.create(:user)
-        sign_in(@user) 
+        sign_in(@user)
       end
       it "redirects to dashboard" do
         get :new
         expect(response).to render_template("new")
-      end   
+      end
     end
     context "not logged in" do
       it "redirects to login" do
@@ -18,7 +18,7 @@ describe ProjectsController do
         expect(response).to redirect_to(new_user_session_path)
       end
     end
-  end 
+  end
   describe "DELETE #destroy" do
     context "user owns the project" do
       before do
