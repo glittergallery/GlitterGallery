@@ -1,19 +1,13 @@
 module SessionsHelper
 
-  def facebook?
-    true if ENV["FACEBOOK_KEY"] and ENV["FACEBOOK_SECRET"]
-  end
-
-  def github?
-    true if ENV["GITHUB_KEY"] and ENV["GITHUB_SECRET"]
-  end
-
-  def linkedin?
-    true if ENV["LINKEDIN_KEY"] and ENV["LINKEDIN_SECRET"]
-  end
-
-  def twitter?
-    true if ENV["TWITTER_KEY"] and ENV["TWITTER_SECRET"]
+  for platform in %w(facebook github linkedin twitter)
+    define_method "#{platform}?" do
+      if !Rails.env.production?
+        true
+      else
+        true if ENV["#{platform.upcase}_KEY"] and ENV["#{platform.upcase}_SECRET"]
+      end
+    end
   end
 
   def store_return_to
