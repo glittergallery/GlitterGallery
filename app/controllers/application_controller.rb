@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     options[:update_ref] = 'HEAD'
     options[:message] = message
     options[:parents] = repo.empty? ? [] : [repo.head.target].compact
-    Rugged::Commit.create repo,options
+    Rugged::Commit.create repo, options
     repo.index.write
   end
 
@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
     options[:update_ref] = 'HEAD'
     options[:message] = "Deleted #{file_name}"
     options[:parents] = repo.empty? ? [] : [repo.head.target].compact
-    Rugged::Commit.create(repo,options)
+    Rugged::Commit.create repo, options
     repo.index.write
   end
 

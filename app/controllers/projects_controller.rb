@@ -13,14 +13,16 @@ class ProjectsController < ApplicationController
     @project = Project.new
   end
 
+  #TODO Limit to popular/recent projects
   def index
-    @projects = Project.where("private IS NOT TRUE AND user_id <> ?", current_user.id)
+    @projects = Project.where(private: nil)
   end
 
   def destroy
     @project = Project.find params[:id]
     if current_user.id == @project.user_id
-      @project.destroy # There is an after_destroy callback in the Project model that deletes the files.
+      @project.destroy
+      # after_destroy callback in project.rb deletes files.
       flash[:notice] = "It has been destroyed!"
       redirect_to dashboard_path
     else

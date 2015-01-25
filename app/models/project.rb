@@ -19,7 +19,7 @@ class Project < ActiveRecord::Base
               presence: true
 
   def last_updated
-    repo = Rugged::Repository.discover self.satellitedir
+    repo = barerepo
     repo.head.target.time
   end
 
@@ -36,7 +36,6 @@ class Project < ActiveRecord::Base
     File.join("/#{user.username}",
               self.name.gsub(" ", "%20"),
               self.uniqueurl.to_s).gsub(/\/$/, '')
-              #{}"/#{self.uniqueurl.to_s}" if self.uniqueurl
   end
 
   def issues_url
