@@ -8,6 +8,10 @@ class ProjectsController < ApplicationController
                                                 :pulls,
                                                 :pull
                                               ]
+  before_filter :return_context, except: [ :file_upload, :file_update,
+                                           :new, :create, :destroy, :index,
+                                           :user_show
+                                         ]
 
   def new
     @project = Project.new
@@ -15,7 +19,7 @@ class ProjectsController < ApplicationController
 
   #TODO Limit to popular/recent projects
   def index
-    @projects = Project.where(private: nil)
+    @projects = Project.where private: nil
   end
 
   def destroy
@@ -42,6 +46,7 @@ class ProjectsController < ApplicationController
       project.parent = project.id
       project.save
       unless project.private
+        # todo - clean up action ids, numbers makes unreadable
         notification = Notification.new( actor: current_user,
                                          action: 4,
                                          object_type: 0,
@@ -58,18 +63,16 @@ class ProjectsController < ApplicationController
   end
 
   def follow
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     unless @user == current_user
       if ProjectFollower.where(:follower => current_user, :followed_project => @project).empty?
         ProjectFollower.create(:follower => current_user, :followed_project => @project)
         Notification.create(
-          :actor => current_user,
-          :action => 1,
-          :object_type => 0,
-          :object_id => @project.id,
-          :victims => [@project.user]
-        )
+                            :actor => current_user,
+                            :action => 1,
+                            :object_type => 0,
+                            :object_id => @project.id,
+                            :victims => [@project.user]
+                           )
       end
       flash[:notice] = "You're now following #{@user.username}/#{@project.name}"
     else
@@ -79,9 +82,8 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     if Rails.env.production?
+      #todo - make this prettier, that link overshoots 80
       @invite_uri = "sparkleshare://#{ENV['OPENSHIFT_APP_DNS'].downcase}/projects/#{params[:id]}/invite.xml" # If it's in production.
     else
       @invite_uri = "#{Rails.root}/uploads/#{Rails.env}/projects/#{params[:id]}/invite.xml" # If not in production.
@@ -89,16 +91,20 @@ class ProjectsController < ApplicationController
     @images = []
     barerepo = @project.barerepo
     unless barerepo.empty?
-      headcommit = barerepo.head.target
-      headtree = barerepo.lookup(headcommit.tree_id)
+      headtree = barerepo.lookup barerepo.last_commit.tree_id
+      #todo - what if there are trees inside this tree?
       headtree.each do |blob|
-        link = File.join(@project.urlbase,'master',blob[:name])
+        link = File.join @project.urlbase, 'master', blob[:name]
         @images.push({
-           :link => link,:name => blob[:name],:url => @project.imageurl(blob[:name])
-        })
+                       link: link,
+                       name: blob[:name],
+                       url: @project.imageurl(blob[:name])
+                    })
       end
     end
-    @comments = Comment.where(polycomment_type: "project", polycomment_id: @project.id)
+    @comments = Comment.where( polycomment_type: "project", 
+                               polycomment_id: @project.id
+                             )
     @comments = pg @comments, 10
     @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1
@@ -109,35 +115,46 @@ class ProjectsController < ApplicationController
     @projects = @user.projects
   end
 
+  #todo - rename this as log, reflect everywhere
+  #todo - take different logging params, such as:
+  #       oneline (only the commit messages/author)
+  #       status (files added/removed in each commit)
+  #       full (list all files in that commit as they list)
+
   def commits
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     @commits = []
+    tree = "master" || params[:tree]  
     unless @project.barerepo.empty?
-      walker = Rugged::Walker.new(@project.barerepo)
-      walker.push(@project.barerepo.head.target)
+      walker = Rugged::Walker.new @project.barerepo
+      walker.push @project.barerepo.branches[tree].target
       walker.each { |c| @commits.push(c) }
     end
-    @comments = Comment.where(polycomment_type: "commit", polycomment_id: params[:tree_id])
+    @comments = Comment.where( polycomment_type: "commit", 
+                               polycomment_id: params[:tree_id]
+                             )
     @comments = pg @comments, 10
   end
 
+  #todo - rename this as commit, and change url tree/master/commit/oid
   def projectcommit
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     @images = []
     barerepo = @project.barerepo
     unless barerepo.empty?
-      tree = barerepo.lookup(params[:tree_id])
+      tree = barerepo.lookup params[:tree_id]
       tree.each do |blob|
-        link = File.join(@project.urlbase,'master',blob[:name])
+        link = File.join @project.urlbase,'master',blob[:name]
         data = barerepo.read(blob[:oid]).data
         @images.push({
-          :link => link,:data => data,:name => blob[:name]
-        })
+                      link: link,
+                      data: data,
+                      name: blob[:name]
+                    })
       end
     end
-    @comments = Comment.where(polycomment_type: "commit", polycomment_id: params[:tree_id])
+    @comments = Comment.where( 
+                               polycomment_type: "commit", 
+                               polycomment_id: params[:tree_id]
+                             )
     @comment = Comment.new
     @id = params[:tree_id]
   end
@@ -146,20 +163,21 @@ class ProjectsController < ApplicationController
   # Since we aren't doing much branch hopping on the app itself, this
   # is useful for fetching the current state of a file in a project.
 
+  #todo - /tree/master/file_name and generalize for /tree/branch/file_name
+
   def masterbranch
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     @imageurl = File.join @project.satellitedir, params[:image_name]
-    @comments = Comment.where(polycomment_type: "file", polycomment_id: params[:image_name])
-    @comments = @comments.paginate(page: params[:page], per_page: 10)
+    @comments = Comment.where(
+                               polycomment_type: "file", 
+                               polycomment_id: params[:image_name]
+                             )
+    @comments = @comments.paginate page: params[:page], per_page: 10
     @comments = pg @comments, 10
     @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
   def file_history
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     @bloblist = Array.new
     walker = Rugged::Walker.new @project.barerepo
     walker.push @project.barerepo.head.target
@@ -168,35 +186,20 @@ class ProjectsController < ApplicationController
       tree.each do |blob|
         if blob[:name] == params[:image_name]
           blobdata = @project.barerepo.read(blob[:oid]).data
-          image = { name: blob[:name],
+          image = { 
+                    name: blob[:name],
                     data: blobdata
-          }
+                  }
           @bloblist << [image , commit]
         end
       end
     end
   end
 
-  # Sparkleshare integration.
-
-  def invite
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
-    mime_type = Mime::Type.lookup_by_extension('xml')
-    content_type = mime_type.to_s unless mime_type.nil?
-    @git_dir = "/#{@project.user.email}/#{@project.name}"
-    render :layout => false, :content_type => content_type
-  end
-
-
   def newfile
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
   def update
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
   # TODO - allow uploads/updates of only supported images.
@@ -223,7 +226,10 @@ class ProjectsController < ApplicationController
     if params[:file]
         imagefile = params[:file]
         message = params[:message]
-        satellite_commit @project.satelliterepo, params[:image_name], imagefile.read, message
+        satellite_commit @project.satelliterepo, 
+                         params[:image_name], 
+                         imagefile.read,
+                         message
         @project.pushtobare
         flash[:notice] = "#{params[:image_name]} has been updated! Shiny!"
     else
@@ -233,19 +239,15 @@ class ProjectsController < ApplicationController
   end
 
   def file_delete
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
-    file = File.join(@project.satellitedir, params[:image_name])
-    FileUtils.rm(file) if File.exists?(file)
-    satellite_delete(@project.satelliterepo,params[:image_name])
+    file = File.join @project.satellitedir, params[:image_name]
+    FileUtils.rm file if File.exists? file
+    satellite_delete @project.satelliterepo,params[:image_name]
     @project.pushtobare
     flash[:notice] = "#{params[:image_name]} has been deleted!"
     redirect_to @project.urlbase
   end
 
   def open
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'open'
     @pull.save
@@ -253,8 +255,6 @@ class ProjectsController < ApplicationController
   end
 
   def close
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'closed'
     @pull.save
@@ -262,14 +262,17 @@ class ProjectsController < ApplicationController
   end
 
   def settings
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
   private
 
   def project_params
     params.require(:project).permit(:name)
+  end
+
+  def return_context
+    @user = User.find_by username: params[:username]
+    @project = Project.find_by user_id: @user.id, name: params[:project]
   end
 
 end

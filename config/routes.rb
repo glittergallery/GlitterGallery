@@ -50,7 +50,7 @@ Glitter::Application.routes.draw do
   post '/:username/:project/issue/:sub_id/close' => 'issues#close'
 
   get '/:username/:project/:xid' => 'projects#show'
-  get '/:username/:project/:xid/commits' => 'projects#commits'
+  get '/:username/:project/:xid/commits/:tree_id' => 'projects#commits'
   get '/:username/:project/:xid/commit/:tree_id' => 'projects#projectcommit'
   get '/:username/:project/:xid/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
   get '/:username/:project/:xid/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/

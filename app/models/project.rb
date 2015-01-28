@@ -27,7 +27,7 @@ class Project < ActiveRecord::Base
     FileUtils.rm_rf self.path
   end
 
-  def imageurl(imagename)
+  def imageurl imagename
     File.join(self.satellitedir , imagename).gsub('public', '')
   end
 
