@@ -261,6 +261,15 @@ class ProjectsController < ApplicationController
     redirect_to @project.urlbase
   end
 
+  def fork
+    # create project for current_user
+    #   fork.parent = orig_project.parent
+    # fork.clone "orig_project.barerepo"
+    # [?] reference comments from
+    # => * blobs
+    # => * trees
+  end
+
   def settings
   end
 
