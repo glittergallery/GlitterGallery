@@ -16,4 +16,14 @@ class UsersController < ApplicationController
 		@user = User.find_by username: params[:username]
 		@followedprojects = @user.followed_projects
 	end
+
+	def list_followers
+		@user = User.where(:username => params[:username]).first
+		@followers = @user.followers
+	end
+
+	def list_followings
+		@user = User.where(:username => params[:username]).first
+		@followings = @user.followings
+	end
 end

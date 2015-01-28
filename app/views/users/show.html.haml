@@ -29,12 +29,4 @@
             = distance_of_time_in_words_to_now @user.created_at
             ago.
       %div#followers{style: "display: none"}
-        %article
-          - @followers.each do |follower|
-            %p= avatar(follower.email)
-            = follower.username
-      %div#following{style: "display: none"}
-        %article
-          - @followings.each do |following|
-            %p= avatar(following.email)
-            = following.username
+      %div#followings{style: "display: none"}

@@ -1,0 +1,4 @@
+:plain
+	$("#followings").html("#{escape_javascript render(:partial => 'users/followings')}");
+	$(".feed div").hide();
+	$("#followings").show();

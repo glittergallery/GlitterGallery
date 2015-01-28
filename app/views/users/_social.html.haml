@@ -11,26 +11,14 @@
 
 
   %div#followers_list
-    %a{href: "#"}
+    %a{href: "/#{@user.username}/followers", "data-remote" => true}
       %p
         #{@user.followers.count}
-    %a{href: "#"}
       %p
         Followers
-  %div#following_list
-    %a{href: "#"}
+  %div#followings_list
+    %a{href: "/#{@user.username}/followings", "data-remote" => true}
       %p
         #{@user.followings.count}
-    %a{href: "#"}
       %p
         Following
-
-:javascript
-  $("#followers_list").click(function(){
-    $(".feed div").hide();
-    $("#followers").show();
-  });
-  $("#following_list").click(function(){
-    $(".feed div").hide();
-    $("#following").show();
-  });
