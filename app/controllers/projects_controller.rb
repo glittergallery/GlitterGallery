@@ -264,14 +264,14 @@ class ProjectsController < ApplicationController
   def fork
     child = Project.new name: @project.name,
                         user_id: current_user.id,
-                        private: @project.private,
                         uniqueurl: @project.uniqueurl,
                         parent: @project.parent
+    if @project.private
+      child.private = true
+      child.uniqueurl = SecureRandom.hex
+    end
+
     if child.save
-      #system "rm -rf #{child.barerepopath}"
-      #system "rm -rf #{child.satelliterepopath}"
-      #Rugged::Repository.clone_at @project.satelliterepopath, child.satelliterepopath
-      #Rugged::Repository.clone_at child.satelliterepopath, child.barerepopath
       redirect_to child.urlbase
       # todo - notifications
     else
