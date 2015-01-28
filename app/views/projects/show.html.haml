@@ -21,7 +21,8 @@
           %span.badge.type{:title => "Public Project"} PUB
         - if @project.id == @project.parent
           %span.badge.author PARENT
-        - else FORK
+        - else
+          %span.badge.author FORK
 
         /= @project.desc
     = render 'project_toolbar'

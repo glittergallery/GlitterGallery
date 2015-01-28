@@ -262,12 +262,26 @@ class ProjectsController < ApplicationController
   end
 
   def fork
-    # create project for current_user
-    #   fork.parent = orig_project.parent
-    # fork.clone "orig_project.barerepo"
-    # [?] reference comments from
-    # => * blobs
-    # => * trees
+    child = Project.new name: @project.name,
+                        user_id: current_user.id,
+                        private: @project.private,
+                        uniqueurl: @project.uniqueurl
+
+    if child.save
+      child.parent = @project.parent
+      child.save
+      system "rm -rf #{child.barerepopath}"
+      system "rm -rf #{child.satelliterepopath}"
+      Rugged::Repository.clone_at @project.satelliterepopath, child.satelliterepopath
+      Rugged::Repository.clone_at child.satelliterepopath, child.barerepopath
+      redirect_to child.urlbase
+      # todo - notifications
+    else
+      flash[:alert] = "Couldn't fork project, try again."
+      redirect_to @project
+    end
+
+
   end
 
   def settings
