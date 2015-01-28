@@ -63,12 +63,12 @@ class Project < ActiveRecord::Base
   end
 
   # Push the existing contents of the satellite repo to the bare repo
-  def pushtobare
+  def pushtobare 
     barerepo = Rugged::Repository.new self.barerepopath
     satelliterepo = Rugged::Repository.new self.satelliterepopath
-    remote = satelliterepo.remotes['origin']
+    remote = satelliterepo.remotes['bare'] 
     unless remote
-      remote = satelliterepo.remotes.create 'origin', barerepo.path
+      remote = satelliterepo.remotes.create 'bare', barerepo.path
     end
     satelliterepo.push remote, ["refs/heads/master"]
   end
@@ -89,8 +89,15 @@ class Project < ActiveRecord::Base
   def init
     logger.debug "Initing repo path: #{path}"
     unless File.exists? self.path
-      Rugged::Repository.init_at  self.barerepopath, :bare
-      Rugged::Repository.clone_at self.barerepopath, self.satelliterepopath
+      if self.parent == self.id
+        Rugged::Repository.init_at  self.barerepopath, :bare
+        Rugged::Repository.clone_at self.barerepopath, self.satelliterepopath
+      else # it's a fork, therefore:
+        parent = Project.find self.parent
+        Rugged::Repository.init_at self.barerepopath, :bare
+        Rugged::Repository.clone_at parent.satelliterepopath, self.satelliterepopath
+      end
+        self.pushtobare
     end
   end
 

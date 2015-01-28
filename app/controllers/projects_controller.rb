@@ -265,15 +265,13 @@ class ProjectsController < ApplicationController
     child = Project.new name: @project.name,
                         user_id: current_user.id,
                         private: @project.private,
-                        uniqueurl: @project.uniqueurl
-
+                        uniqueurl: @project.uniqueurl,
+                        parent: @project.parent
     if child.save
-      child.parent = @project.parent
-      child.save
-      system "rm -rf #{child.barerepopath}"
-      system "rm -rf #{child.satelliterepopath}"
-      Rugged::Repository.clone_at @project.satelliterepopath, child.satelliterepopath
-      Rugged::Repository.clone_at child.satelliterepopath, child.barerepopath
+      #system "rm -rf #{child.barerepopath}"
+      #system "rm -rf #{child.satelliterepopath}"
+      #Rugged::Repository.clone_at @project.satelliterepopath, child.satelliterepopath
+      #Rugged::Repository.clone_at child.satelliterepopath, child.barerepopath
       redirect_to child.urlbase
       # todo - notifications
     else
