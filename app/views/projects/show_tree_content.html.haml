@@ -28,8 +28,12 @@
     = render 'project_toolbar'
     = render 'shared/messages'
     -# render 'images'
-    = @blobs.each {|b| b[:name]}
-    = @trees.each {|t| t.oid}
+    - @images.each do |b| 
+      = b[:name]
+      %br
+    - @inner_dirs.each do |t|
+      = t[:name]
+      %br
 
     - if @project.private and params[:xid] != @project.uniqueurl
       %section
@@ -37,12 +41,6 @@
           %form{ action: @project.urlbase}
             %input{type: "submit", value: "Generate Unique Link"}
 
-
-    %section.comments
-      %section.showcomments
-        = render partial: "comments/comment", collection: @comments.reverse
-      %section.newcomment
-        = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
 
 
 

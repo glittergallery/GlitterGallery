@@ -81,30 +81,23 @@ class ProjectsController < ApplicationController
     redirect_to @project.urlbase
   end
 
-
-  # /sarup/projectname/tree/branch/directory/subdir/project.rb
-  def show_tree_content branch=nil, tree=nil
+  def tree_at revision, path
     barerepo = @project.barerepo
-    branch = params[:branch] || 'master'
-    traverse_tree = barerepo.lookup barerepo.branches[branch].target.tree.oid
-    destination = params[:destination].split('/') if params[:destination]
-    @blobs = []
-    @trees = []
-    traverse_tree.each do |object|
-      case object[:type]
-      when :blob
-        @blobs << object 
-      when :tree
-        @trees << object
-        first_inner_tree = object.oid if object[:name] == destination.first
-      end
-    end
-    if @trees.count
-      destination = destination.shift 
-      show_tree_content branch, first_inner_tree, destination.shift   
-    end
+    tree = Rugged::Commit.lookup(barerepo, revision).tree
+    tree.path(path)[:oid]
   end
 
+  # /sarup/project/tree/master/x/y/z
+  def show_tree_content 
+    barerepo = @project.barerepo
+    branch = params[:branch] || 'master'
+    # todo - generalize for any branch
+    tree = barerepo.lookup tree_at barerepo.last_commit.oid, params[:destination]
+    @images = []
+    @inner_dirs = []
+    tree.each_blob { |blob| @images << blob }
+    tree.each_tree { |dir| @inner_dirs << dir }
+  end
 
   def show
     @images = []
