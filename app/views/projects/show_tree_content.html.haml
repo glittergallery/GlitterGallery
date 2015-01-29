@@ -1,0 +1,52 @@
+- unless private_check
+  = render 'permissions_error'
+- else
+
+  - content_for :title do
+    = @project.name.titleize
+
+  %article.project{ data: "current" }
+    %header
+      %h1.generated
+        = avatar @project.user.email
+        %p
+          = link_to @user.username, "/#{@user.username}"
+          = "/"
+          %span
+            = link_to @project.name, "/#{@user.username}/#{@project.name}"
+      %h2
+        - if @project.private == true
+          %span.badge.type{:title => "Private Project"} PRV 
+        -else
+          %span.badge.type{:title => "Public Project"} PUB
+        - if @project.id == @project.parent
+          %span.badge.author PARENT
+        - else
+          %span.badge.author FORK
+
+        /= @project.desc
+    = render 'project_toolbar'
+    = render 'shared/messages'
+    -# render 'images'
+    = @blobs.each {|b| b[:name]}
+    = @trees.each {|t| t.oid}
+
+    - if @project.private and params[:xid] != @project.uniqueurl
+      %section
+        %div
+          %form{ action: @project.urlbase}
+            %input{type: "submit", value: "Generate Unique Link"}
+
+
+    %section.comments
+      %section.showcomments
+        = render partial: "comments/comment", collection: @comments.reverse
+      %section.newcomment
+        = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
+
+
+
+
+
+
+

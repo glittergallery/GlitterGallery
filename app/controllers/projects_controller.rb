@@ -81,13 +81,32 @@ class ProjectsController < ApplicationController
     redirect_to @project.urlbase
   end
 
-  def show
-    if Rails.env.production?
-      #todo - make this prettier, that link overshoots 80
-      @invite_uri = "sparkleshare://#{ENV['OPENSHIFT_APP_DNS'].downcase}/projects/#{params[:id]}/invite.xml" # If it's in production.
-    else
-      @invite_uri = "#{Rails.root}/uploads/#{Rails.env}/projects/#{params[:id]}/invite.xml" # If not in production.
+
+  # /sarup/projectname/tree/branch/directory/subdir/project.rb
+  def show_tree_content branch=nil, tree=nil
+    barerepo = @project.barerepo
+    branch = params[:branch] || 'master'
+    traverse_tree = barerepo.lookup barerepo.branches[branch].target.tree.oid
+    destination = params[:destination].split('/') if params[:destination]
+    @blobs = []
+    @trees = []
+    traverse_tree.each do |object|
+      case object[:type]
+      when :blob
+        @blobs << object 
+      when :tree
+        @trees << object
+        first_inner_tree = object.oid if object[:name] == destination.first
+      end
     end
+    if @trees.count
+      destination = destination.shift 
+      show_tree_content branch, first_inner_tree, destination.shift   
+    end
+  end
+
+
+  def show
     @images = []
     barerepo = @project.barerepo
     unless barerepo.empty?
