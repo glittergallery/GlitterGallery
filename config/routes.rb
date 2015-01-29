@@ -23,10 +23,11 @@ Glitter::Application.routes.draw do
   get '/:username' => 'users#show'
   get '/:username/projects' => 'projects#user_show'
   get '/:username/projects/following' => 'users#list_followed_projects', :as => :followed_projects
-  #get '/:username/:project' => 'projects#show'
+  get '/:username/:project' => 'projects#show'
   get '/:username/:project/commits' => 'projects#commits'
   get '/:username/:project/commit/:tree_id' => 'projects#projectcommit'
   get '/:username/:project/tree/:branch/*destination' => 'projects#show_tree_content'
+  get '/:username/:project/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
   get '/:username/:project/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
   get '/:username/:project/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
   get '/:username/:project/createsvg' => 'projects#new_svg'

@@ -87,6 +87,13 @@ class ProjectsController < ApplicationController
     tree.path(path)[:oid]
   end
 
+  def show_blob_content
+    barerepo = @project.barerepo
+    branch = params[:branch] || 'master'
+    @blob = barerepo.blob_at barerepo.last_commit.oid, params[:destination]
+    @bloblink = @project.imageurl params[:destination].split('/').pop
+  end
+
   # /sarup/project/tree/master/x/y/z
   def show_tree_content 
     barerepo = @project.barerepo
