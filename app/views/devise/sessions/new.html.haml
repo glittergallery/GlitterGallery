@@ -25,11 +25,13 @@
 
   %section.social
     %div
-      %form.hide{action: "/auth/github"}
-        %input.github{type: "submit", value: "GitHub"}/
-    %div
-      %form.hide{action: "/auth/facebook"}
-        %input.facebook{type: "submit", value: "Facebook"}/
+      - if github?
+        %form.hide{action: "/auth/github"}
+          %input.github{type: "submit", value: "GitHub"}/
     %div
       %form{action: "/auth/open_id"}
         %input.openid{type: "submit", value: "OpenID"}/
+    %div
+      - if facebook?
+        %form.hide{action: "/auth/facebook"}
+          %input.facebook{type: "submit", value: "Facebook"}/

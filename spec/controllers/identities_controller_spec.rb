@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe IdentitiesController do
+describe IdentitiesController, type: :controller do
   describe "POST #create" do
     before :each do
       request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:facebook]
@@ -32,7 +32,7 @@ describe IdentitiesController do
           post :create, {:provider=>"facebook"}
           expect(response).to redirect_to(dashboard_path)
         end
-      end     
+      end
     end
     context "Identity exists" do
       before do
@@ -44,7 +44,7 @@ describe IdentitiesController do
         expect(response).to redirect_to(dashboard_path)
       end
     end
-  end 
+  end
   describe "GET #index" do
     before do
       @user = FactoryGirl.create(:user)

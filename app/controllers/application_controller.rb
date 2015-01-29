@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
   before_action :return_current_user_projects
 
-  
+
   private
 
   def return_current_user_projects
@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
       @projects = current_user.projects
     end
   end
-  
+
   # When new files are added to project, check them into its non bare git repo.
   # FIXME - we might want to do the push to bare repos here during the commit itself,
   #         alternatively we could assign a separate method to do that.
@@ -26,14 +26,14 @@ class ApplicationController < ActionController::Base
 
   def image_commit(project, imagefile)
     if user_signed_in?
-      satellite_commit project.satelliterepo, imagefile.original_filename, imagefile.read, "Add new file #{imagefile.original_filename}." 
+      satellite_commit project.satelliterepo, imagefile.original_filename, imagefile.read, "Add new file #{imagefile.original_filename}."
       project.pushtobare
     end
   end
 
   # Add magicmockup to project repo
   # FIXME - we aren't using this right now anywhere, because it shows up as an ugly commit
-  #         in the log. Look for a workaround. 
+  #         in the log. Look for a workaround.
 
   def add_the_magic(project)
     if logged_in? and not File.exists? File.join(project.path, "magicmockup.js")
@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
 
   # Returns thumbnail path
   # path type is file or image
-  
+
 
   def thumbnail(pathtype)
     filename = File.basename(pathtype).delete "."
@@ -106,12 +106,12 @@ class ApplicationController < ActionController::Base
     registration_params = [:email, :password, :password_confirmation]
 
     if params[:action] == 'update'
-      devise_parameter_sanitizer.for(:account_update) { 
+      devise_parameter_sanitizer.for(:account_update) {
         |u| u.permit(registration_params << :name << :current_password)
       }
     elsif params[:action] == 'create'
-      devise_parameter_sanitizer.for(:sign_up) { 
-        |u| u.permit(registration_params << :username) 
+      devise_parameter_sanitizer.for(:sign_up) {
+        |u| u.permit(registration_params << :username)
       }
     end
   end
