@@ -5,6 +5,8 @@ Image courtesy Anirudh Menon.
 
 ## GlitterGallery
 
+[![Join the chat at https://gitter.im/glittergallery/GlitterGallery](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/glittergallery/GlitterGallery?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 GlitterGallery _will be_ an amazing way to collaborate on design! 
 
 The goals are to allow designers to easily share their work, gather and parse feedback in a useful way, and version their work just as developers are able to. 
