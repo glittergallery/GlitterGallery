@@ -32,9 +32,8 @@
       %div
         - @images.each do |image|
           %div
-            %svg
-              -# works well for text, breaks on svg
-              = image.text
+            = link_to image[1], image[2]
+            = #link_to image[1], image[1]
 
     - @inner_dirs.each do |t|
       = link_to t[0][:name], t[1]

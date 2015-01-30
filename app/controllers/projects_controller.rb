@@ -99,16 +99,21 @@ class ProjectsController < ApplicationController
     barerepo = @project.barerepo
     branch = params[:branch] || 'master'
     # todo - generalize for any branch -now it'll take anything
-    destination = params[:destination] || "/"
-    tree = barerepo.lookup tree_at barerepo.last_commit.oid, destination
+    @destination = params[:destination] || "/"
+    tree = barerepo.lookup tree_at barerepo.last_commit.oid, @destination
     @images = []
     @inner_dirs = []
     tree.each_blob do |blob| 
-      @images << barerepo.lookup(blob[:oid])
+      if @destination == "/"
+        link = "#{@project.urlbase}/blob/master/#{blob[:name]}"
+      else
+        link = "#{@project.urlbase}/blob/master/#{@destination}/#{blob[:name]}"
+      end
+      @images << [ barerepo.lookup(blob[:oid]), blob[:name], link ]
     end
     tree.each_tree do |dir| 
       #todo - if the url has a / in the end, there are problems
-      dir_parent = destination.split('/').pop
+      dir_parent = @destination.split('/').pop
       if dir_parent
         @inner_dirs << [dir, File.join(dir_parent, dir[:name])]
       else
