@@ -84,7 +84,7 @@ class ProjectsController < ApplicationController
   def tree_at revision, path
     barerepo = @project.barerepo
     tree = Rugged::Commit.lookup(barerepo, revision).tree
-    tree.path(path)[:oid]
+    path == "/" ? tree.oid : tree.path(path)[:oid]
   end
 
   def show_blob_content
@@ -98,12 +98,23 @@ class ProjectsController < ApplicationController
   def show_tree_content 
     barerepo = @project.barerepo
     branch = params[:branch] || 'master'
-    # todo - generalize for any branch
-    tree = barerepo.lookup tree_at barerepo.last_commit.oid, params[:destination]
+    # todo - generalize for any branch -now it'll take anything
+    destination = params[:destination] || "/"
+    tree = barerepo.lookup tree_at barerepo.last_commit.oid, destination
     @images = []
     @inner_dirs = []
-    tree.each_blob { |blob| @images << blob }
-    tree.each_tree { |dir| @inner_dirs << dir }
+    tree.each_blob do |blob| 
+      @images << barerepo.lookup(blob[:oid])
+    end
+    tree.each_tree do |dir| 
+      #todo - if the url has a / in the end, there are problems
+      dir_parent = destination.split('/').pop
+      if dir_parent
+        @inner_dirs << [dir, File.join(dir_parent, dir[:name])]
+      else
+        @inner_dirs << [dir, File.join(branch, dir[:name])]
+      end                            
+    end
   end
 
   def show

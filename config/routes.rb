@@ -26,6 +26,7 @@ Glitter::Application.routes.draw do
   get '/:username/:project' => 'projects#show'
   get '/:username/:project/commits' => 'projects#commits'
   get '/:username/:project/commit/:tree_id' => 'projects#projectcommit'
+  get '/:username/:project/tree/:branch/' => 'projects#show_tree_content'
   get '/:username/:project/tree/:branch/*destination' => 'projects#show_tree_content'
   get '/:username/:project/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
   get '/:username/:project/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/

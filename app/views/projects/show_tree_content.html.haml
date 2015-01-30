@@ -27,12 +27,17 @@
         /= @project.desc
     = render 'project_toolbar'
     = render 'shared/messages'
-    -# render 'images'
-    - @images.each do |b| 
-      = b[:name]
-      %br
+    =# render 'images'
+    %section.album
+      %div
+        - @images.each do |image|
+          %div
+            %svg
+              -# works well for text, breaks on svg
+              = image.text
+
     - @inner_dirs.each do |t|
-      = t[:name]
+      = link_to t[0][:name], t[1]
       %br
 
     - if @project.private and params[:xid] != @project.uniqueurl

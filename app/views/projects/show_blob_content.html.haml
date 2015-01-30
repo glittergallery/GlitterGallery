@@ -30,6 +30,7 @@
     -# render 'images'
     = @blob.oid
     = @bloblink
+    = @blob.text
 
 
     - if @project.private and params[:xid] != @project.uniqueurl
