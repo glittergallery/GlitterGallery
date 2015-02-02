@@ -31,9 +31,9 @@
     %section.album
       %div
         - @images.each do |image|
-          %div
-            = link_to image[1], image[2]
-            = #link_to image[1], image[1]
+          - if File.extname(image[1]) == ".svg"
+            %div
+              = link_to image[1], image[2] 
 
     - @inner_dirs.each do |t|
       = link_to t[0][:name], t[1]
