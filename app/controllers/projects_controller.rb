@@ -91,34 +91,35 @@ class ProjectsController < ApplicationController
     barerepo = @project.barerepo
     branch = params[:branch] || 'master'
     @blob = barerepo.blob_at barerepo.last_commit.oid, params[:destination]
-    @bloblink = @project.imageurl params[:destination].split('/').pop
+    @enc_blob_text = Base64::encode64 @blob.text
   end
 
-  # /sarup/project/tree/master/x/y/z
+  def supported_file_ext
+    [".svg", ".png", ".jpg"]
+  end
+
   def show_tree_content 
     barerepo = @project.barerepo
     branch = params[:branch] || 'master'
     # todo - generalize for any branch -now it'll take anything
     @destination = params[:destination] || "/"
     tree = barerepo.lookup tree_at barerepo.last_commit.oid, @destination
-    @images = []
-    @inner_dirs = []
+    # todo - we can possibly merge @images & @inner_dirs,
+    # but that will trouble during thumbnails for blobs
+    @images = {}
+    @inner_dirs = {}
     tree.each_blob do |blob| 
-      if @destination == "/"
-        link = "#{@project.urlbase}/blob/master/#{blob[:name]}"
-      else
-        link = "#{@project.urlbase}/blob/master/#{@destination}/#{blob[:name]}"
-      end
-      @images << [ barerepo.lookup(blob[:oid]), blob[:name], link ]
+      blob_name = blob[:name]
+      blob_link = "#{@project.urlbase}/blob/master/#{@destination}/#{blob[:name]}"
+      next unless supported_file_ext.include? File.extname(blob[:name]).downcase
+      @images[blob_name] = blob_link.gsub("///","/")
     end
+
     tree.each_tree do |dir| 
-      #todo - if the url has a / in the end, there are problems
-      dir_parent = @destination.split('/').pop
-      if dir_parent
-        @inner_dirs << [dir, File.join(dir_parent, dir[:name])]
-      else
-        @inner_dirs << [dir, File.join(branch, dir[:name])]
-      end                            
+      dir_parent = @destination
+      dir_name = dir[:name]
+      @inner_dirs[dir_name] = File.join @project.urlbase, "tree", branch, 
+                                        dir_parent, dir_name                  
     end
   end
 

@@ -28,16 +28,12 @@
     = render 'project_toolbar'
     = render 'shared/messages'
     =# render 'images'
-    %section.album
-      %div
-        - @images.each do |image|
-          - if File.extname(image[1]) == ".svg"
-            %div
-              = link_to image[1], image[2] 
 
-    - @inner_dirs.each do |t|
-      = link_to t[0][:name], t[1]
-      %br
+    - @images.each do |name, link|
+      %div= link_to name, link
+
+    - @inner_dirs.each do |name, link|
+      %div= link_to name, link
 
     - if @project.private and params[:xid] != @project.uniqueurl
       %section

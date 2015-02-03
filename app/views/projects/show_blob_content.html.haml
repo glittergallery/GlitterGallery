@@ -1,4 +1,3 @@
-- require 'base64'
 - unless private_check
   = render 'permissions_error'
 - else
@@ -28,13 +27,11 @@
         /= @project.desc
     = render 'project_toolbar'
     = render 'shared/messages'
-    -# render 'images'
 
     %section.album
       %div.photo
         %p
-          - enc = Base64::encode64 @blob.text
-          = sketchily_show enc
+          = sketchily_show @enc_blob_text
 
     - if @project.private and params[:xid] != @project.uniqueurl
       %section
