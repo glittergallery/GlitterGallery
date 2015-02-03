@@ -38,3 +38,9 @@
         %div
           %form{ action: @project.urlbase}
             %input{type: "submit", value: "Generate Unique Link"}
+
+    %section.comments
+      %section.showcomments
+        = render partial: "comments/comment", collection: @comments.reverse
+      %section.newcomment
+        = render partial: "comments/new", locals: {type: 'blob', id: @blob.oid, ajax: @ajax, comment: @comment}

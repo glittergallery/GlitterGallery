@@ -92,6 +92,11 @@ class ProjectsController < ApplicationController
     branch = params[:branch] || 'master'
     @blob = barerepo.blob_at barerepo.last_commit.oid, params[:destination]
     @enc_blob_text = Base64::encode64 @blob.text
+    @comments = Comment.where( polycomment_type: "blob", 
+                               polycomment_id: @blob.oid
+                             )
+    @comment = Comment.new
+    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   def supported_file_ext
