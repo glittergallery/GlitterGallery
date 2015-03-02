@@ -27,7 +27,13 @@
         /= @project.desc
     = render 'project_toolbar'
     = render 'shared/messages'
-    = render 'images'
+    =# render 'images'
+
+    - @images.each do |name, link|
+      %div= link_to name, link
+
+    - @inner_dirs.each do |name, link|
+      %div= link_to name, link
 
     - if @project.private and params[:xid] != @project.uniqueurl
       %section
@@ -35,12 +41,6 @@
           %form{ action: @project.urlbase}
             %input{type: "submit", value: "Generate Unique Link"}
 
-
-    %section.comments
-      %section.showcomments
-        = render partial: "comments/comment", collection: @comments.reverse
-      %section.newcomment
-        = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
 
 
 
