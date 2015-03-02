@@ -18,7 +18,7 @@ Here's a [demo](http://glittergallery-ropaku.rhcloud.com/).
 GlitterGallery runs on OpenShift, so it's really easy to run your own version.
 
 1. [Sign up for OpenShift](http://openshift.redhat.com) if you don't already have an account
-1. Create a new ruby-1.9 application and add MySQL
+1. Create a new ruby-2.0 application and add MySQL
 1. Clone the application repo: `git clone <OpenShift git URL>`
 1. Change into the cloned directory
 1. Add the GlitterGallery repo: `git remote add glitter -m master http://github.com/glittergallery/GlitterGallery.git`
