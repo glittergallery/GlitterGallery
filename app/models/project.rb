@@ -64,8 +64,6 @@ class Project < ActiveRecord::Base
 
   # Push the existing contents of the satellite repo to the bare repo
   def pushtobare
-    barerepo = Rugged::Repository.new self.barerepopath
-    satelliterepo = Rugged::Repository.new self.satelliterepopath
     remote = satelliterepo.remotes['bare']
     unless remote
       remote = satelliterepo.remotes.create 'bare', barerepo.path
@@ -97,7 +95,7 @@ class Project < ActiveRecord::Base
         Rugged::Repository.init_at self.barerepopath, :bare
         Rugged::Repository.clone_at parent.satelliterepopath, self.satelliterepopath
       end
-      self.pushtobare
+      self.pushtobare unless satelliterepo.empty?
     end
   end
 
