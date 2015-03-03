@@ -38,13 +38,12 @@ class ProjectsController < ApplicationController
   def create
     project = Project.new project_params
     project.user_id = current_user.id
+    project.parent = project.id
     if params[:commit] == "Private"
       project.private = true
       project.uniqueurl = SecureRandom.hex
     end
     if project.save
-      project.parent = project.id
-      project.save
       unless project.private
         # todo - clean up action ids, numbers makes unreadable
         notification = Notification.new( actor: current_user,
@@ -92,7 +91,7 @@ class ProjectsController < ApplicationController
     branch = params[:branch] || 'master'
     @blob = barerepo.blob_at barerepo.last_commit.oid, params[:destination]
     @enc_blob_text = Base64::encode64 @blob.text
-    @comments = Comment.where( polycomment_type: "blob", 
+    @comments = Comment.where( polycomment_type: "blob",
                                polycomment_id: @blob.oid
                              )
     @comment = Comment.new
@@ -103,7 +102,7 @@ class ProjectsController < ApplicationController
     [".svg", ".png", ".jpg"]
   end
 
-  def show_tree_content 
+  def show_tree_content
     barerepo = @project.barerepo
     branch = params[:branch] || 'master'
     # todo - generalize for any branch -now it'll take anything
@@ -113,18 +112,18 @@ class ProjectsController < ApplicationController
     # but that will trouble during thumbnails for blobs
     @images = {}
     @inner_dirs = {}
-    tree.each_blob do |blob| 
+    tree.each_blob do |blob|
       blob_name = blob[:name]
       blob_link = "#{@project.urlbase}/blob/master/#{@destination}/#{blob[:name]}"
       next unless supported_file_ext.include? File.extname(blob[:name]).downcase
       @images[blob_name] = blob_link.gsub("///","/")
     end
 
-    tree.each_tree do |dir| 
+    tree.each_tree do |dir|
       dir_parent = @destination
       dir_name = dir[:name]
-      @inner_dirs[dir_name] = File.join @project.urlbase, "tree", branch, 
-                                        dir_parent, dir_name                  
+      @inner_dirs[dir_name] = File.join @project.urlbase, "tree", branch,
+                                        dir_parent, dir_name
     end
   end
 
@@ -143,7 +142,7 @@ class ProjectsController < ApplicationController
                     })
       end
     end
-    @comments = Comment.where( polycomment_type: "project", 
+    @comments = Comment.where( polycomment_type: "project",
                                polycomment_id: @project.id
                              )
     @comments = pg @comments, 10
@@ -164,13 +163,13 @@ class ProjectsController < ApplicationController
 
   def commits
     @commits = []
-    tree = "master" || params[:tree]  
+    tree = "master" || params[:tree]
     unless @project.barerepo.empty?
       walker = Rugged::Walker.new @project.barerepo
       walker.push @project.barerepo.branches[tree].target
       walker.each { |c| @commits.push(c) }
     end
-    @comments = Comment.where( polycomment_type: "commit", 
+    @comments = Comment.where( polycomment_type: "commit",
                                polycomment_id: params[:tree_id]
                              )
     @comments = pg @comments, 10
@@ -192,8 +191,8 @@ class ProjectsController < ApplicationController
                     })
       end
     end
-    @comments = Comment.where( 
-                               polycomment_type: "commit", 
+    @comments = Comment.where(
+                               polycomment_type: "commit",
                                polycomment_id: params[:tree_id]
                              )
     @comment = Comment.new
@@ -209,7 +208,7 @@ class ProjectsController < ApplicationController
   def masterbranch
     @imageurl = File.join @project.satellitedir, params[:image_name]
     @comments = Comment.where(
-                               polycomment_type: "file", 
+                               polycomment_type: "file",
                                polycomment_id: params[:image_name]
                              )
     @comments = @comments.paginate page: params[:page], per_page: 10
@@ -227,7 +226,7 @@ class ProjectsController < ApplicationController
       tree.each do |blob|
         if blob[:name] == params[:image_name]
           blobdata = @project.barerepo.read(blob[:oid]).data
-          image = { 
+          image = {
                     name: blob[:name],
                     data: blobdata
                   }
@@ -267,8 +266,8 @@ class ProjectsController < ApplicationController
     if params[:file]
         imagefile = params[:file]
         message = params[:message]
-        satellite_commit @project.satelliterepo, 
-                         params[:image_name], 
+        satellite_commit @project.satelliterepo,
+                         params[:image_name],
                          imagefile.read,
                          message
         @project.pushtobare
