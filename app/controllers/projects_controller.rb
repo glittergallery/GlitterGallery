@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
 
   #TODO Limit to popular/recent projects
   def index
-    @projects = Project.where(private: nil).where.not(user_id: current_user.id)
+    @projects = Project.where.not(private: true, user_id: current_user.id)
   end
 
   def destroy
