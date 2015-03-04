@@ -18,6 +18,11 @@ class Project < ActiveRecord::Base
   validates :user,
               presence: true
 
+  # Returns a list of public projects that belong to other users.
+  def self.inspiring_projects_for user_id
+    Project.where.not(private: true, user_id: user_id)
+  end
+
   def last_updated
     repo = barerepo
     repo.head.target.time

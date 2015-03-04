@@ -6,7 +6,7 @@ module Features
 			fill_in "user_password", :with => password
 			click_button "Login"
 		end
-		def sign_up_with(email,username,password,password_confirmation)
+		def sign_up_with(email,username,password,password_confirmation = password)
 			visit "/"
 			click_link "Sign Up?"
 			fill_in "user_email", :with => email
