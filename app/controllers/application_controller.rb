@@ -15,12 +15,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def generate_thumbnail(path, imagefile, commit_id)
+    image = Magick::Image.read("#{path}/satellite/#{imagefile.original_filename}").first
+    image.scale(50,50).write "#{path}/thumbnails/#{commit_id}"
+  end
+
   def image_commit(project, imagefile)
     if user_signed_in?
-      satellite_commit project.satelliterepo,
+      commit_id = satellite_commit project.satelliterepo,
                        imagefile.original_filename,
                        imagefile.read,
                        "Add new file #{imagefile.original_filename}."
+      generate_thumbnail project.path, imagefile, commit_id
       project.pushtobare
     end
   end
@@ -40,8 +46,9 @@ class ApplicationController < ActionController::Base
     options[:update_ref] = 'HEAD'
     options[:message] = message
     options[:parents] = repo.empty? ? [] : [repo.head.target].compact
-    Rugged::Commit.create repo, options
+    commit_id = Rugged::Commit.create repo, options
     repo.index.write
+    commit_id
   end
 
   def satellite_delete(repo, file_name)

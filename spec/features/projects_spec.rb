@@ -31,4 +31,20 @@ feature "Projects" do
 	  expect(page).to have_no_content("Uh oh, looks like everyone's gotten lazy ;)")
 	  expect(page).to have_content('testproject1')
 	end
+
+	scenario "User uploads file and thumbnail is created" do
+	  sign_up_with("t@test.com","test1","secret12345")
+	  click_button "Create first project!"
+	  fill_in "project_name", :with => "testproject1"
+	  click_button "Public"
+	  click_button "Add first file!"
+	  page.attach_file("file", 'spec/factories/files/happypanda.png')
+	  click_button "Save changes"
+	  expect(page).to have_selector("img[src$='happypanda.png']")
+	  #TODO: move the following checks into another unit test after settling on a place for their functions.
+	  project = Project.last
+	  last_commit = project.barerepo.head.target_id
+	  expect(File.exist?("#{project.path}/thumbnails/#{last_commit}")).to eq(true)
+	end
+
 end
