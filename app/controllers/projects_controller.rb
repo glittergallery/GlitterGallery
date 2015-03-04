@@ -247,10 +247,10 @@ class ProjectsController < ApplicationController
 
   def file_upload
     @project = Project.find params[:id]
-    tmp = params[:file].tempfile
-    file = File.join @project.satellitedir, params[:file].original_filename
-    FileUtils.cp tmp.path, file
     if params[:file]
+      tmp = params[:file].tempfile
+      file = File.join @project.satellitedir, params[:file].original_filename
+      FileUtils.cp tmp.path, file
       image_commit @project, params[:file]
       flash[:notice] = "Your new image was added successfully! How sparkly!"
     else
