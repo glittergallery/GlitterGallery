@@ -100,6 +100,7 @@ class Project < ActiveRecord::Base
         Rugged::Repository.init_at self.barerepopath, :bare
         Rugged::Repository.clone_at parent.satelliterepopath, self.satelliterepopath
       end
+      Dir.mkdir "#{path}/thumbnails"
       self.pushtobare unless satelliterepo.empty?
     end
   end

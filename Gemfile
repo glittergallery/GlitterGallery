@@ -31,6 +31,8 @@ gem 'activerecord-session_store'
 gem 'actionpack-action_caching'
 gem 'rails-observers'
 
+# for producing thumbnails.
+gem 'rmagick', '~> 2.13.4'
 
 gem 'sass-rails'
 gem 'coffee-rails'

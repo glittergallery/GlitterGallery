@@ -204,6 +204,7 @@ GEM
     ref (1.0.5)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
+    rmagick (2.13.4)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
@@ -305,6 +306,7 @@ DEPENDENCIES
   rails-observers
   rake
   redcarpet
+  rmagick (~> 2.13.4)
   rspec-rails
   rugged (~> 0.21)
   sass-rails
