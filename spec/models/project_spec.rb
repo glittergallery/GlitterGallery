@@ -22,6 +22,13 @@ describe Project do
   	expect(Rugged::Repository.new(File.join @project.path , 'satellite' , '.git')).to be_a(Rugged::Repository)
   end
   
+  it "gets list of inspiring projects" do
+	@project = FactoryGirl.create(:project)
+	FactoryGirl.create(:project, :name => 't2', private: true, user: @project.user)
+	expect(Project.inspiring_projects_for(@project.user.id).count).to eq(0)
+	expect(Project.inspiring_projects_for(@project.user.id+1).count).to eq(1)
+  end
+
   describe ".urlbase" do
   	it "is correct" do
   		@user = FactoryGirl.create(:user, :username => "sarup")
