@@ -254,7 +254,7 @@ class ProjectsController < ApplicationController
       image_commit @project, params[:file]
       flash[:notice] = "Your new image was added successfully! How sparkly!"
     else
-      flash[:alert]  = "Your new image didn't get saved! How sad :("
+      flash[:alert]  = "No image selected!"
     end
     redirect_to @project.urlbase
   end
