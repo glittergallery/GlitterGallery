@@ -38,7 +38,7 @@ feature "Projects" do
 	  fill_in "project_name", :with => "testproject1"
 	  click_button "Public"
 	  click_button "Add first file!"
-	  page.attach_file("file", 'spec/factories/files/happypanda.png')
+	  page.attach_file("file[]", 'spec/factories/files/happypanda.png')
 	  click_button "Save changes"
 	  expect(page).to have_selector("img[src$='happypanda.png']")
 	  #TODO: move the following checks into another unit test after settling on a place for their functions.
@@ -47,13 +47,25 @@ feature "Projects" do
 	  expect(File.exist?(project.thumbnail_for(last_commit_id,true))).to eq(true)
 	end
 
-	scenario "User sees logs for a project" do
+	scenario "User uploads multiple files" do
 	  sign_up_with("t@test.com","test1","secret12345")
 	  click_button "Create first project!"
 	  fill_in "project_name", :with => "testproject2"
 	  click_button "Public"
 	  click_button "Add first file!"
-	  page.attach_file("file", 'spec/factories/files/happypanda.png')
+	  page.attach_file("file[]", ['spec/factories/files/happypanda.png','spec/factories/files/naruto.png'])
+	  click_button "Save changes"
+	  expect(page).to have_selector("img[src$='happypanda.png']")
+	  expect(page).to have_selector("img[src$='naruto.png']")
+	end
+
+	scenario "User sees logs for a project" do
+	  sign_up_with("t@test.com","test1","secret12345")		
+	  click_button "Create first project!"
+	  fill_in "project_name", :with => "testproject3"
+	  click_button "Public"
+	  click_button "Add first file!"
+	  page.attach_file("file[]", 'spec/factories/files/happypanda.png')
 	  click_button "Save changes"
 	  click_link "Log"
 	  expect(page).to have_link "Add new file happypanda.png"
