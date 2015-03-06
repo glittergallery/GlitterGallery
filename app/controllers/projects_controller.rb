@@ -268,10 +268,11 @@ class ProjectsController < ApplicationController
     if params[:file]
         imagefile = params[:file]
         message = params[:message]
-        satellite_commit @project.satelliterepo,
+        commit_id = satellite_commit @project.satelliterepo,
                          params[:image_name],
                          imagefile.read,
                          message
+        generate_thumbnail @project, params[:image_name], commit_id
         @project.pushtobare
         flash[:notice] = "#{params[:image_name]} has been updated! Shiny!"
     else

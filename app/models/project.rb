@@ -67,6 +67,13 @@ class Project < ActiveRecord::Base
     File.join self.path , 'satellite'
   end
 
+  # Returns the path of the thumbnail for a specific commit, if add_public is false "public/" is removed from the path(can be used for referencing the image).
+  def thumbnail_for commit_id, add_public = true
+    prefix = path.dup
+    prefix.sub!("public","") unless add_public
+    "#{prefix}/thumbnails/#{commit_id}"
+  end
+
   # Push the existing contents of the satellite repo to the bare repo
   def pushtobare
     remote = satelliterepo.remotes['bare']
@@ -100,7 +107,7 @@ class Project < ActiveRecord::Base
         Rugged::Repository.init_at self.barerepopath, :bare
         Rugged::Repository.clone_at parent.satelliterepopath, self.satelliterepopath
       end
-      Dir.mkdir "#{path}/thumbnails"
+      FileUtils.mkdir_p thumbnail_for("",true)
       self.pushtobare unless satelliterepo.empty?
     end
   end

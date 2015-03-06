@@ -38,6 +38,7 @@
                 = commit.author[:name]             
               %article
                 %p
+                  %img(src="#{@project.thumbnail_for(commit.oid,false)}")
                   = link_to commit.message, File.join(@project.urlbase, 'commit', commit.tree_id)
               %footer
                 %p
