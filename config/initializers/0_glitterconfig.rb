@@ -16,6 +16,7 @@ Glitter::Application.config.gravatar_size='48'
 # The complete list as of now is :facebook,:twitter,:open_id,:linkedIn,:github
 # Don't forget to set the respective Environment variables for the auth methods. For ex, FACEBOOK_KEY and FACEBOOK_SECRET
 Glitter::Application.config.auth_methods=[:facebook,:twitter,:open_id,:linkedIn,:github]
+
 # This is the ActionMailer configuration
 #
 # Example Environment variables :
