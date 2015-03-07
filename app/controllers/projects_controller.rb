@@ -255,7 +255,7 @@ class ProjectsController < ApplicationController
         if ACCEPTED_FILE_FORMATS.include? FileMagic.new(FileMagic::MAGIC_MIME).file(file).to_s.split(';')[0] 
           image_commit @project, f
         else
-          flash[:alert] = "One or more of your images is not of a supported format and was not uploaded! (Please upload only .jpg/.png/.gif/.svg images)"
+          flash[:alert] = "One (or more) of your images is not of a supported format and was not uploaded! (Please upload only .jpg/.png/.gif/.svg images)"
           file_rejected = 1
         end
       end
