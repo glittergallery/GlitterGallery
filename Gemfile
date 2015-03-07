@@ -34,6 +34,9 @@ gem 'rails-observers'
 # for producing thumbnails.
 gem 'rmagick', '~> 2.13.4'
 
+#for checking file format
+gem 'ruby-filemagic'
+
 gem 'sass-rails'
 gem 'coffee-rails'
 
