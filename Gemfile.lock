@@ -225,6 +225,7 @@ GEM
       rspec-mocks (~> 3.1.0)
       rspec-support (~> 3.1.0)
     rspec-support (3.1.2)
+    ruby-filemagic (0.6.3)
     ruby-openid (2.6.0)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
@@ -308,6 +309,7 @@ DEPENDENCIES
   redcarpet
   rmagick (~> 2.13.4)
   rspec-rails
+  ruby-filemagic
   rugged (~> 0.21)
   sass-rails
   sketchily
