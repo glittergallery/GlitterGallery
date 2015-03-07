@@ -246,14 +246,22 @@ class ProjectsController < ApplicationController
 
   def file_upload
     @project = Project.find params[:id]
+    file_rejected = 0
     if params[:file]
       params[:file].each do |f|
         tmp = f.tempfile
         file = File.join @project.satellitedir, f.original_filename
         FileUtils.cp tmp.path, file
-        image_commit @project, f
-        flash[:notice] = "Your new image was added successfully! How sparkly!"
+        if ACCEPTED_FILE_FORMATS.include? FileMagic.new(FileMagic::MAGIC_MIME).file(file).to_s.split(';')[0] 
+          image_commit @project, f
+        else
+          flash[:alert] = "One or more of your images is not of a supported format and was not uploaded! (Please upload only .jpg/.png/.gif/.svg images)"
+          file_rejected = 1
+        end
       end
+    if file_rejected == 0
+      flash[:notice] = "Your new image was added successfully! How sparkly!"  
+    end
     else
       flash[:alert]  = "No image selected!"
     end
