@@ -40,5 +40,5 @@ if Rails.env.development?
 elsif Rails.env.test?
 	Glitter::Application.config.repo_dir="public/testdata"
 elsif Rails.env.production?
-	Glitter::Application.config.repo_dir="public/data"
+	Glitter::Application.config.repo_dir="ENV['OPENSHIFT_DATA_DIR']/data"
 end
