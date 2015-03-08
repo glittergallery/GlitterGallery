@@ -16,11 +16,12 @@
           %span 
             = link_to @project.name, "/#{@user.username}/#{@project.name}"
       %h2 
-        - if @project.id == @project.parent
+        - if @project.id == nil #project is not forked from any other repo
           %span.badge.author
             PARENT
         - else
-          Forked from parent/project
+          %span.badge.author
+            Forked from parent/project
           
     = render 'projects/project_toolbar'
     = render 'shared/messages'

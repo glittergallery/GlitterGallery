@@ -17,9 +17,12 @@
           %span.badge.type{:title => "Private Project"} PRV
         -else
           %span.badge.type{:title => "Public Project"} PUB
-        - if @project.id == @project.parent
-          %span.badge.author PARENT
-        - else FORK
+        - if @project.id == nil  #project is not forked from any other repo
+          %span.badge.author 
+            PARENT
+        - else 
+          %span.badge.author 
+            FORK
 
     = render 'shared/messages'
     = render 'projects/project_toolbar'

@@ -11,6 +11,8 @@ class Project < ActiveRecord::Base
               class_name: "User",
               foreign_key: "follower_id"
   has_many :issues
+  has_many :forks, class_name: "Project", foreign_key: :parent_id
+  belongs_to :parent, class_name: "Project", foreign_key: :parent_id
 
   validates :name,
               presence: true,

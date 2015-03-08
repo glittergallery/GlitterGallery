@@ -38,7 +38,6 @@ class ProjectsController < ApplicationController
   def create
     project = Project.new project_params
     project.user_id = current_user.id
-    project.parent = project.id
     if params[:commit] == "Private"
       project.private = true
       project.uniqueurl = SecureRandom.hex
@@ -305,7 +304,7 @@ class ProjectsController < ApplicationController
     child = Project.new name: @project.name,
                         user_id: current_user.id,
                         uniqueurl: @project.uniqueurl,
-                        parent: @project.parent
+                        parent_id: @project.id
     if @project.private
       child.private = true
       child.uniqueurl = SecureRandom.hex
