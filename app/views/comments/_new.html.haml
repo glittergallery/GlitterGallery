@@ -8,5 +8,6 @@
       = f.hidden_field(:polycomment_type, :value => type)
       = f.hidden_field(:polycomment_id, :value => id)
       = f.hidden_field(:issue, :value => false)
+      = f.hidden_field(:project_name, :value => @project.name)
       = f.text_field :body, :placeholder => 'In my opinion...'
       = f.submit
