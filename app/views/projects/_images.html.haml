@@ -8,7 +8,7 @@
     - if user_signed_in? and current_user.id == @project.user.id
       %div
         = form_tag file_upload_project_path(@project), multipart: true do
-          = file_field_tag "file[]" , multiple: true
+          = file_field_tag "file[]" , multiple: true, validate: { validates_format_of :file[], :with => %r{\.(png|jpg|jpeg|svg|gif)$}i, :message => "Please upload an image of a supported format! (gif/png/jpg/svg)"}
           = submit_tag "Upload file!"
   -else 
     - if user_signed_in?
