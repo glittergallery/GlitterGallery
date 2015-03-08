@@ -34,6 +34,11 @@ gem 'rails-observers'
 # for producing thumbnails.
 gem 'rmagick', '~> 2.13.4'
 
+#for checking file format
+gem 'ruby-filemagic'
+
+#for client side validation
+gem 'client_side_validations', github: "DavyJonesLocker/client_side_validations", branch: "4-2-stable"
 gem 'sass-rails'
 gem 'coffee-rails'
 

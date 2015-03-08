@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/DavyJonesLocker/client_side_validations.git
+  revision: 86b5c93df07b3f04743c86d024fce178bfb073e3
+  branch: 4-2-stable
+  specs:
+    client_side_validations (4.2.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -225,6 +232,7 @@ GEM
       rspec-mocks (~> 3.1.0)
       rspec-support (~> 3.1.0)
     rspec-support (3.1.2)
+    ruby-filemagic (0.6.3)
     ruby-openid (2.6.0)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
@@ -282,6 +290,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   capybara
+  client_side_validations!
   coffee-rails
   devise
   escape
@@ -308,6 +317,7 @@ DEPENDENCIES
   redcarpet
   rmagick (~> 2.13.4)
   rspec-rails
+  ruby-filemagic
   rugged (~> 0.21)
   sass-rails
   sketchily

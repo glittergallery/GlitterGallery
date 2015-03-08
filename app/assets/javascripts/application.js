@@ -21,3 +21,4 @@
 //= require nprogress-turbolinks
 //= require main
 //= require jquery.sidr.min
+//= require rails.validations
