@@ -18,13 +18,13 @@ class CommentsController < ApplicationController
       
       if params[:comment][:polycomment_type] == 'project'
         action = 0
-        project = Project.find(params[:comment][:polycomment_id])
+        @project = Project.find(params[:comment][:polycomment_id])
       elsif params[:comment][:polycomment_type] == 'issue'
         action = 5
         issue = Issue.find(@comment.polycomment_id)
-        project = issue.project
+        @project = issue.project
       end
-      victims = project.followers + [project.user]
+      victims = @project.followers + [@project.user]
       victims.delete(@comment.user)
       Notification.create(
         :actor => current_user,
