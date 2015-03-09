@@ -129,6 +129,10 @@ class ProjectsController < ApplicationController
 
   def show
     @images = []
+    if @project.blank?
+    redirect_to dashboard_path
+    flash[:alert] = 'The project does not exist.'
+    else
     barerepo = @project.barerepo
     unless barerepo.empty?
       headtree = barerepo.lookup barerepo.last_commit.tree_id
@@ -142,12 +146,14 @@ class ProjectsController < ApplicationController
                     })
       end
     end
+
     @comments = Comment.where( polycomment_type: "project",
                                polycomment_id: @project.id
                              )
     @comments = pg @comments, 10
     @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1
+    end
   end
 
   def user_show
