@@ -10,8 +10,6 @@ gem 'turbolinks'
 gem 'nprogress-rails'
 gem 'jquery-turbolinks'
 gem 'will_paginate'
-gem 'sqlite3'
-gem 'mysql2'
 gem 'haml'
 gem 'rugged', '~> 0.21'
 gem 'escape'
@@ -20,13 +18,6 @@ gem 'rake'
 gem 'sketchily'
 gem 'redcarpet'
 gem 'devise'
-gem 'omniauth'
-gem 'omniauth-facebook'
-gem 'omniauth-twitter'
-gem 'omniauth-github'
-gem 'omniauth-linkedin'
-gem 'omniauth-openid'
-gem "oa-openid", :require => "omniauth/openid"
 gem 'activerecord-session_store'
 gem 'actionpack-action_caching'
 gem 'rails-observers'
@@ -41,6 +32,17 @@ gem 'therubyracer', :platform => :ruby
 
 gem 'uglifier'
 
+group :production do
+  gem 'mysql2'
+  gem 'omniauth'
+  gem 'omniauth-facebook'
+  gem 'omniauth-twitter'
+  gem 'omniauth-github'
+  gem 'omniauth-linkedin'
+  gem 'omniauth-openid'
+  gem "oa-openid", :require => "omniauth/openid"
+end
+
 
 group :development, :test do
   # https://github.com/rspec/rspec-rails/issues/1273
@@ -51,6 +53,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'sqlite3'
 end
 
 group :test do
