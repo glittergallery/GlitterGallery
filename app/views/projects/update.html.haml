@@ -24,11 +24,12 @@
     = render 'project_toolbar'
     = render 'shared/messages'
 
-    %section
-      %div
-        = form_tag file_update_project_path(@project), multipart: true do
-          = file_field_tag "file" 
-          = text_field_tag "message","commit message"
-          = hidden_field_tag "image_name", params[:image_name]
-          = submit_tag 
+    - if @project.user_id == @current_user.id
+      %section
+        %div
+          = form_tag file_update_project_path(@project), multipart: true do
+            = file_field_tag "file" 
+            = text_field_tag "message","commit message"
+            = hidden_field_tag "image_name", params[:image_name]
+            = submit_tag 
 
