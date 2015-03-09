@@ -129,10 +129,6 @@ class ProjectsController < ApplicationController
 
   def show
     @images = []
-    if @project.blank?
-    redirect_to dashboard_path
-    flash[:alert] = 'The project does not exist.'
-    else
     barerepo = @project.barerepo
     unless barerepo.empty?
       headtree = barerepo.lookup barerepo.last_commit.tree_id
@@ -140,9 +136,9 @@ class ProjectsController < ApplicationController
       headtree.each do |blob|
         link = File.join @project.urlbase, 'master', blob[:name]
         @images.push({
-                       link: link,
-                       name: blob[:name],
-                       url: @project.imageurl(blob[:name])
+                        link: link,
+                        name: blob[:name],
+                        url: @project.imageurl(blob[:name])
                     })
       end
     end
@@ -153,7 +149,6 @@ class ProjectsController < ApplicationController
     @comments = pg @comments, 10
     @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1
-    end
   end
 
   def user_show
@@ -342,7 +337,12 @@ class ProjectsController < ApplicationController
 
   def return_context
     @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
+    unless @user.blank?
+      @project = Project.find_by user_id: @user.id, name: params[:project]
+    end
+    if @project.blank?
+      render file: "#{Rails.root}/public/404.html", layout: false, status: 404
+    end  
   end
 
 end
