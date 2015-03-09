@@ -6,6 +6,7 @@
 
 # Ignore bundler config
 /.bundle
+.idea/*
 vendor
 
 # Ignore the data files created by user uploads
