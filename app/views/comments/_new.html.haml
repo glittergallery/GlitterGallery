@@ -4,7 +4,7 @@
 - else
 
   %div
-    = form_for(comment, remote: ajax) do |f|
+    = form_for(comment, remote: true) do |f|
       = f.hidden_field(:polycomment_type, :value => type)
       = f.hidden_field(:polycomment_id, :value => id)
       = f.hidden_field(:issue, :value => false)
