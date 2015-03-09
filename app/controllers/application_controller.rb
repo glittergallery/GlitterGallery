@@ -15,9 +15,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def generate_thumbnail(path, imagefile, commit_id)
-    image = Magick::Image.read("#{path}/satellite/#{imagefile.original_filename}").first
-    image.scale(50,50).write "#{path}/thumbnails/#{commit_id}"
+  # Returns an array containing the configured width and height for thumbnails.
+  def thumbnail_size
+    Glitter::Application.config.thumbnail_geometry
+  end
+
+  # Generates a thumbnail for a commit in the appropriate place.
+  def generate_thumbnail(project, imagefile, commit_id)
+    image = Magick::Image.read("#{project.path}/satellite/#{imagefile}").first
+    image.scale(thumbnail_size[0],thumbnail_size[1]).write project.thumbnail_for(commit_id,true)
   end
 
   def image_commit(project, imagefile)
@@ -26,7 +32,7 @@ class ApplicationController < ActionController::Base
                        imagefile.original_filename,
                        imagefile.read,
                        "Add new file #{imagefile.original_filename}."
-      generate_thumbnail project.path, imagefile, commit_id
+      generate_thumbnail project, imagefile.original_filename, commit_id
       project.pushtobare
     end
   end

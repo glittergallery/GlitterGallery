@@ -246,11 +246,13 @@ class ProjectsController < ApplicationController
   def file_upload
     @project = Project.find params[:id]
     if params[:file]
-      tmp = params[:file].tempfile
-      file = File.join @project.satellitedir, params[:file].original_filename
-      FileUtils.cp tmp.path, file
-      image_commit @project, params[:file]
-      flash[:notice] = "Your new image was added successfully! How sparkly!"
+      params[:file].each do |f|
+        tmp = f.tempfile
+        file = File.join @project.satellitedir, f.original_filename
+        FileUtils.cp tmp.path, file
+        image_commit @project, f
+        flash[:notice] = "Your new image was added successfully! How sparkly!"
+      end
     else
       flash[:alert]  = "No image selected!"
     end
@@ -265,10 +267,11 @@ class ProjectsController < ApplicationController
     if params[:file]
         imagefile = params[:file]
         message = params[:message]
-        satellite_commit @project.satelliterepo,
+        commit_id = satellite_commit @project.satelliterepo,
                          params[:image_name],
                          imagefile.read,
                          message
+        generate_thumbnail @project, params[:image_name], commit_id
         @project.pushtobare
         flash[:notice] = "#{params[:image_name]} has been updated! Shiny!"
     else

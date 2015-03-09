@@ -3,7 +3,7 @@
 # ImageMagick geometry to use for thumbnail generation
 # defaults to 100 px width
 # http://www.imagemagick.org/script/command-line-processing.php#geometry
-Glitter::Application.config.thumbnail_geometry="150x110!"
+Glitter::Application.config.thumbnail_geometry=[50,50]
 
 # (gr)Avatar options
 ## path to default avatar - should start with slash
@@ -40,5 +40,5 @@ if Rails.env.development?
 elsif Rails.env.test?
 	Glitter::Application.config.repo_dir="public/testdata"
 elsif Rails.env.production?
-	Glitter::Application.config.repo_dir="public/data"
+	Glitter::Application.config.repo_dir="ENV['OPENSHIFT_DATA_DIR']/data"
 end
