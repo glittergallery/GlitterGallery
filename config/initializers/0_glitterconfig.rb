@@ -42,3 +42,5 @@ elsif Rails.env.test?
 elsif Rails.env.production?
 	Glitter::Application.config.repo_dir="ENV['OPENSHIFT_DATA_DIR']/data"
 end
+
+ACCEPTED_FILE_FORMATS = ["image/jpeg","image/png","image/svg+xml","image/gif"]
