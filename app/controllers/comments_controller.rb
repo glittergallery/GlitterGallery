@@ -21,7 +21,7 @@ class CommentsController < ApplicationController
       elsif params[:comment][:polycomment_type] == 'issue'
         action = 5
       end
-      victims = @project.followers + [@project.user]
+      victims = project.followers + [project.user]
       victims.delete(@comment.user)
       Notification.create(
         :actor => current_user,
