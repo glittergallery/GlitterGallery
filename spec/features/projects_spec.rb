@@ -100,6 +100,18 @@ feature "Projects" do
       expect(find(:xpath,'/html/body/div/article/section/div/ul/ul/ul/li[2]')).to have_link("test4")
     end
   end
+  
+  scenario "User uploads multiple images" do
+    sign_up_with("t@test.com","test1","secret12345")
+    click_button "Create first project!"
+    fill_in "project_name", :with => "testproject1"
+    click_button "Public"
+    click_button "Add first file!"
+    page.attach_file("file[]", ['spec/factories/files/happypanda.png','spec/factories/files/naruto.png'])
+    click_button "Save changes"
+    expect(page).to have_selector("img[src$='happypanda.png']")
+    expect(page).to have_selector("img[src$='naruto.png']")
+  end
 
   describe "After image upload" do
 

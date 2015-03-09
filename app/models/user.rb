@@ -31,6 +31,10 @@ class User < ActiveRecord::Base
     self.username = omniauth['info']['nickname'] if username.blank?
     identities.build(provider: omniauth['provider'], uid: omniauth['uid'])
   end
+  
+  def to_param
+    "#{self.username}"
+  end
 
   # This is a method within devise - we're overwriting it by saying that
   # we will require a password only if
