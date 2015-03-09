@@ -257,7 +257,6 @@ class ProjectsController < ApplicationController
         else
           alert_message = "One (or more) of your images is not of a supported format and was not uploaded! (Please upload only "
           ACCEPTED_FILE_FORMATS.each do |format|
-              p format.to_s
               alert_message = alert_message + "." + format[6..-1] + ", "
           end
           alert_message[alert_message.length-2] = ""
