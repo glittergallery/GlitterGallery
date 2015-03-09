@@ -17,7 +17,7 @@
           %span.badge.type{:title => "Private Project"} PRV
         -else
           %span.badge.type{:title => "Public Project"} PUB
-        - if @project.id == nil  #project is not forked from any other repo
+        - if @project.parent == nil  #project is not forked from any other repo
           %span.badge.author 
             PARENT
         - else 
