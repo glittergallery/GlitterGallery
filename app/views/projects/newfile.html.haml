@@ -30,7 +30,7 @@
       %div
         - if current_user.id == @project.user.id
           = form_tag file_upload_project_path(@project), multipart: true do
-            = file_field_tag "file" 
+            = file_field_tag "file[]", multiple: true 
             = submit_tag 
         - else
           - if user_signed_in?

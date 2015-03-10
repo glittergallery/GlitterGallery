@@ -1,3 +1,6 @@
+[![security](https://hakiri.io/github/glittergallery/GlitterGallery/master.svg)](https://hakiri.io/github/glittergallery/GlitterGallery/master)
+[![tests](https://travis-ci.org/glittergallery/GlitterGallery.svg?branch=master)](https://travis-ci.org/glittergallery/GlitterGallery)
+
 ![Homestrip 1/2](http://thirstyforcola.files.wordpress.com/2013/05/front.jpg)
 ![Homestrip - 2/2](http://thirstyforcola.files.wordpress.com/2013/05/back.jpg)
 
@@ -18,7 +21,7 @@ Here's a [demo](http://glittergallery-ropaku.rhcloud.com/).
 GlitterGallery runs on OpenShift, so it's really easy to run your own version.
 
 1. [Sign up for OpenShift](http://openshift.redhat.com) if you don't already have an account
-1. Create a new ruby-1.9 application and add MySQL
+1. Create a new ruby-2.0 application and add MySQL
 1. Clone the application repo: `git clone <OpenShift git URL>`
 1. Change into the cloned directory
 1. Add the GlitterGallery repo: `git remote add glitter -m master http://github.com/glittergallery/GlitterGallery.git`
@@ -30,8 +33,6 @@ For more details such as setting up email/social authentication take a look at t
 ### Get involved
 
 Email us and let us know you're interested, and what you can do, and we'll figure out something you can help with. Or just fork it and hack on it! Up to you! More contribution points on the [wiki](http://github.com/glittergallery/GlitterGallery/wiki)!
-
-[![Stories in Ready](https://badge.waffle.io/glittergallery/glittergallery.png?label=ready)](https://waffle.io/glittergallery/glittergallery)
 
 ### Authors
 
