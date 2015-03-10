@@ -206,6 +206,8 @@ class ProjectsController < ApplicationController
   #todo - /tree/master/file_name and generalize for /tree/branch/file_name
 
   def masterbranch
+    unauthorized! if cannot? :update_image, @project
+
     @imageurl = File.join @project.satellitedir, params[:image_name]
     @comments = Comment.where(
                                polycomment_type: "file",
@@ -240,6 +242,7 @@ class ProjectsController < ApplicationController
   end
 
   def update
+    render :masterbranch if authorize! :update_image, @project
   end
 
   # TODO - allow uploads/updates of only supported images.

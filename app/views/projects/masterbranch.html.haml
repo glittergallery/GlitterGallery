@@ -29,6 +29,7 @@
       %div.photo
         %p{title: params[:image_name]}
           = image_tag @imageurl.gsub("public","")
+        
         - if can? :update_image, @project
           %form{ action: File.join(params[:image_name], "update")}
             %input{ type: "submit", value: "Update"}
