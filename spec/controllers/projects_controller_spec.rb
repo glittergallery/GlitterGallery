@@ -87,5 +87,9 @@ describe ProjectsController, type: :controller do
       get :show, :username => @project.user.username, :project => @project.name
       expect(response).to render_template("show")
     end
+    it "renders 404 if not found" do
+      get :show, { id: 'not_existing_page_321' }
+      expect(response.status).to eq(404)
+    end
   end
 end
