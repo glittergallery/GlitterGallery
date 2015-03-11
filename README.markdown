@@ -14,7 +14,7 @@ The goals are to allow designers to easily share their work, gather and parse fe
 
 GlitterGallery will be somewhat biased to support SVGs from Inkscape, and to work with the magicmockup rapid prototyping program. That doesn't mean it won't work with other filetypes, though!
 
-Here's a [demo](http://glittergallery-ropaku.rhcloud.com/).
+Here's a [demo](http://demo.glittergallery.net/).
 
 ### Run GlitterGallery
 
