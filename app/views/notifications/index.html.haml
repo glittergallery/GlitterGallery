@@ -13,11 +13,7 @@
   = render 'users/user_toolbar'
   = render 'shared/messages'
 
-%article
-  %header
-    %h1 Notifications
-    %h2 What's been going on in GlitterGallery
-  %content
+  %section
     %ul
       - if @unseennotifications.empty?
         %p No notifications!
