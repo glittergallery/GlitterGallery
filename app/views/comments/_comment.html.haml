@@ -9,9 +9,7 @@
       = raw markdown.render comment.body
   %footer
     %p
-      /check if it's resource owner                     
-      /-if current_user.id == comment.user.id
-      = link_to "Issue?", "path_to_do_so"
+      = link_to "Issue?", "#{@project.urlbase}/issues/new?desc=#{comment.body}"
 
       -if user_signed_in? and current_user.id == comment.user.id
         = link_to "Delete?", 

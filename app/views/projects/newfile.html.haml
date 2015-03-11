@@ -5,21 +5,9 @@
   - content_for :title do
     = @project.name.titleize
 
-  %article.project{ data: "upload"}
-    %header
-      %h1.generated
-        = avatar @project.user.email
-        %p
-          = link_to @user.username, "/#{@user.username}"
-          = "/"
-          %span 
-            = link_to @project.name, "/#{@user.username}/#{@project.name}"
-      %h2 
-        - if @project.id == @project.parent
-          %span.badge.author
-            PARENT
-        - else
-          Forked from parent/project
+  
+  %article.project{ data: "upload" }
+    = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
   
@@ -30,7 +18,7 @@
       %div
         - if current_user.id == @project.user.id
           = form_tag file_upload_project_path(@project), multipart: true do
-            = file_field_tag "file" 
+            = file_field_tag "file[]", multiple: true 
             = submit_tag 
         - else
           - if user_signed_in?

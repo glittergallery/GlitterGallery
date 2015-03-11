@@ -5,10 +5,16 @@
   - content_for :title do
     = @project.name.titleize
 
-  %article.project{ data: "settings" }
+
+  %article.project{ data: "current" }
     = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
+
+    %section.album
+      %div.photo
+        %p
+          = sketchily_show @enc_blob_text
 
     - if @project.private and params[:xid] != @project.uniqueurl
       %section
@@ -16,18 +22,8 @@
           %form{ action: @project.urlbase}
             %input{type: "submit", value: "Generate Unique Link"}
 
-    %section
-      %div
-        %div.option
-          -if user_signed_in? && @project.user_id == current_user.id
-            = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
-        %aside
-          %h1
-            Project Settings
-          %nav
-            %ul
-              %li.active
-                %a{href: ""}Delete
-
-
-
+    %section.comments
+      %section.showcomments
+        = render partial: "comments/comment", collection: @comments.reverse
+      %section.newcomment
+        = render partial: "comments/new", locals: {type: 'blob', id: @blob.oid, ajax: @ajax, comment: @comment}

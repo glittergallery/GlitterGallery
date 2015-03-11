@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141011185537) do
+ActiveRecord::Schema.define(version: 20150308191151) do
 
   create_table "comments", force: true do |t|
     t.text     "body"
@@ -83,8 +83,8 @@ ActiveRecord::Schema.define(version: 20141011185537) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "path"
-    t.integer  "parent"
-    t.boolean  "private"
+    t.integer  "parent_id"
+    t.boolean  "private",    default: false
     t.string   "uniqueurl"
     t.string   "urlbase"
   end

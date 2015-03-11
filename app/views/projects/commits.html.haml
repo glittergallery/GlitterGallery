@@ -7,21 +7,7 @@
 
 
   %article.project{ data: "log" }
-    %header
-      %h1.generated
-        = avatar @project.user.email
-        %p
-          = link_to @user.username, "/#{@user.username}"
-          = "/"
-          %span 
-            = link_to @project.name, "/#{@user.username}/#{@project.name}"
-      %h2 
-        - if @project.id == @project.parent
-          %span.badge.author
-            PARENT
-        - else
-          Forked from parent/project
-          
+    = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
 
@@ -38,6 +24,7 @@
                 = commit.author[:name]             
               %article
                 %p
+                  %img(src="#{@project.thumbnail_for(commit.oid,false)}")
                   = link_to commit.message, File.join(@project.urlbase, 'commit', commit.tree_id)
               %footer
                 %p

@@ -2,7 +2,6 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
 require 'capybara/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -16,7 +15,7 @@ OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
   :info => {
     :email => "sbanskota08@gmail.com",
     :nickname => "sarupbanskota"
-  }  
+  }
 })
 
 RSpec.configure do |config|
@@ -43,9 +42,12 @@ RSpec.configure do |config|
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
 
-  config.after(:all) do
+  config.after(:each) do
     if Rails.env.test? || Rails.env.cucumber?
-      FileUtils.rm_rf(File.join(Rails.root,Glitter::Application.config.repo_dir))      
+      FileUtils.rm_rf(File.join(Rails.root,Glitter::Application.config.repo_dir))
     end
   end
+
+  # Run tests in a random order.
+  config.order = "random"
 end

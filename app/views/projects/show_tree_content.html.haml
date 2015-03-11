@@ -5,10 +5,18 @@
   - content_for :title do
     = @project.name.titleize
 
-  %article.project{ data: "settings" }
+
+  %article.project{ data: "current" }
     = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
+    =# render 'images'
+
+    - @images.each do |name, link|
+      %div= link_to name, link
+
+    - @inner_dirs.each do |name, link|
+      %div= link_to name, link
 
     - if @project.private and params[:xid] != @project.uniqueurl
       %section
@@ -16,18 +24,10 @@
           %form{ action: @project.urlbase}
             %input{type: "submit", value: "Generate Unique Link"}
 
-    %section
-      %div
-        %div.option
-          -if user_signed_in? && @project.user_id == current_user.id
-            = link_to "Delete project", project_path(@project.id), method: :delete, confirm: "Are you sure?"
-        %aside
-          %h1
-            Project Settings
-          %nav
-            %ul
-              %li.active
-                %a{href: ""}Delete
+
+
+
+
 
 
 

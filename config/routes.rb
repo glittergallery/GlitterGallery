@@ -28,6 +28,9 @@ Glitter::Application.routes.draw do
   get '/:username/:project' => 'projects#show'
   get '/:username/:project/commits' => 'projects#commits'
   get '/:username/:project/commit/:tree_id' => 'projects#projectcommit'
+  get '/:username/:project/tree/:branch/' => 'projects#show_tree_content'
+  get '/:username/:project/tree/:branch/*destination' => 'projects#show_tree_content'
+  get '/:username/:project/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
   get '/:username/:project/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
   get '/:username/:project/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
   get '/:username/:project/createsvg' => 'projects#new_svg'
@@ -35,7 +38,7 @@ Glitter::Application.routes.draw do
   get '/:username/:project/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
   get '/:username/:project/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
   delete '/:username/:project/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
-  post '/:username/:project/follow' => 'projects#follow'
+  get '/:username/:project/follow' => 'projects#follow'
   get '/:username/:project/fork' => 'projects#fork'
   get '/:username/:project/forkyou' => 'projects#forkyou'
   get '/:username/:project/pull' => 'projects#pull_request'
@@ -52,7 +55,7 @@ Glitter::Application.routes.draw do
   post '/:username/:project/issue/:sub_id/close' => 'issues#close'
 
   get '/:username/:project/:xid' => 'projects#show'
-  get '/:username/:project/:xid/commits' => 'projects#commits'
+  get '/:username/:project/:xid/commits/:tree_id' => 'projects#commits'
   get '/:username/:project/:xid/commit/:tree_id' => 'projects#projectcommit'
   get '/:username/:project/:xid/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
   get '/:username/:project/:xid/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/

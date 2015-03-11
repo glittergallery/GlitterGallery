@@ -1,7 +1,7 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 #source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
 
-gem 'rails', '~> 4.0.0'
+gem 'rails', '~> 4.1.0'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -13,7 +13,6 @@ gem 'will_paginate'
 gem 'sqlite3'
 gem 'mysql2'
 gem 'haml'
-gem 'grit'
 gem 'rugged', '~> 0.21'
 gem 'escape'
 gem 'jquery-rails'
@@ -32,6 +31,8 @@ gem 'activerecord-session_store'
 gem 'actionpack-action_caching'
 gem 'rails-observers'
 
+# for producing thumbnails.
+gem 'rmagick', '~> 2.13.4'
 
 gem 'sass-rails'
 gem 'coffee-rails'
