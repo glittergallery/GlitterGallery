@@ -1,10 +1,10 @@
 class RelationshipsController < ApplicationController
-	before_filter :authenticate_user!
+	before_filter :authenticate_user!, :except => [:follow]
 
 	def follow
 		@user = User.where(username: params[:username]).first
-		if @user.nil? or current_user == @user or @user.followers.include?(current_user)
-			redirect_to "/"
+		if @user.nil? or current_user == @user or @user.followers.include?(current_user) or !user_signed_in?
+			render :js => "window.location = '/'"
 		else
 			@user.followers << current_user
 			@user.save!
