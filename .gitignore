@@ -17,6 +17,7 @@ vendor
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+/.idea
 
 #Ignore swapfiles created by vim
 *~
