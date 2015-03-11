@@ -20,6 +20,8 @@ Glitter::Application.routes.draw do
   get '/dashboard' => 'dashboard#index', :as => :dashboard
   get '/:username/follow' => 'relationships#follow'
   get '/:username/unfollow' => 'relationships#unfollow'
+  get '/:username/followers' => 'users#list_followers'
+  get '/:username/followings' => 'users#list_followings'
   get '/:username' => 'users#show'
   get '/:username/projects' => 'projects#user_show'
   get '/:username/projects/following' => 'users#list_followed_projects', :as => :followed_projects
@@ -36,7 +38,7 @@ Glitter::Application.routes.draw do
   get '/:username/:project/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
   get '/:username/:project/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
   delete '/:username/:project/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
-  post '/:username/:project/follow' => 'projects#follow'
+  get '/:username/:project/follow' => 'projects#follow'
   get '/:username/:project/fork' => 'projects#fork'
   get '/:username/:project/forkyou' => 'projects#forkyou'
   get '/:username/:project/pull' => 'projects#pull_request'
