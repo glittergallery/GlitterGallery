@@ -252,11 +252,11 @@ class ProjectsController < ApplicationController
         tmp = f.tempfile
         file = File.join @project.satellitedir, f.original_filename
         FileUtils.cp tmp.path, file
-        if ACCEPTED_FILE_FORMATS.include? FileMagic.new(FileMagic::MAGIC_MIME).file(file).to_s.split(';')[0] 
+        if Glitter::Application.config.accepted_file_formats.include? FileMagic.new(FileMagic::MAGIC_MIME).file(file).to_s.split(';')[0] 
           image_commit @project, f
         else
           alert_message = "One (or more) of your images is not of a supported format and was not uploaded! (Please upload only "
-          ACCEPTED_FILE_FORMATS.each do |format|
+          Glitter::Application.config.accepted_file_formats.each do |format|
               alert_message = alert_message + "." + format[6..-1] + ", "
           end
           alert_message[alert_message.length-2] = ""
