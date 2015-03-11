@@ -2,3 +2,5 @@
 	$("#followers").html("#{escape_javascript render(:partial => 'users/followers')}");
 	$(".feed div").hide();
 	$("#followers").show();
+	$("#follow, #followings_list").removeClass('active');
+	$("#followers_list").addClass('active');
