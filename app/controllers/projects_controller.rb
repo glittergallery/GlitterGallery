@@ -136,12 +136,13 @@ class ProjectsController < ApplicationController
       headtree.each do |blob|
         link = File.join @project.urlbase, 'master', blob[:name]
         @images.push({
-                       link: link,
-                       name: blob[:name],
-                       url: @project.imageurl(blob[:name])
+                        link: link,
+                        name: blob[:name],
+                        url: @project.imageurl(blob[:name])
                     })
       end
     end
+
     @comments = Comment.where( polycomment_type: "project",
                                polycomment_id: @project.id
                              )
@@ -336,7 +337,12 @@ class ProjectsController < ApplicationController
 
   def return_context
     @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
+    unless @user.blank?
+      @project = Project.find_by user_id: @user.id, name: params[:project]
+    end
+    if @project.blank?
+      render file: "#{Rails.root}/public/404.html", layout: false, status: 404
+    end  
   end
 
 end
