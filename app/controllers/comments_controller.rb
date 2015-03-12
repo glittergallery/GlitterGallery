@@ -15,13 +15,13 @@ class CommentsController < ApplicationController
       @comments = Comment.where(polycomment_type: params[:comment][:polycomment_type],
                               polycomment_id: params[:comment][:polycomment_id])
       @comments = @comments.paginate(page: 1, per_page: 10)
-      project = Project.find_by(name: params[:comment][:project_name])
+      @project = Project.find_by(name: params[:comment][:project_name])
       if params[:comment][:polycomment_type] == 'project'
         action = 0
       elsif params[:comment][:polycomment_type] == 'issue'
         action = 5
       end
-      victims = project.followers + [project.user]
+      victims = @project.followers + [@project.user]
       victims.delete(@comment.user)
       Notification.create(
         :actor => current_user,
