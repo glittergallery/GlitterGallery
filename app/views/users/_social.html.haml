@@ -1,5 +1,5 @@
 %div
-  .active
+  .active#follow
     -if not current_user.nil? and current_user.follow?(@user)
       %a{href: "/#{@user.username}/unfollow", "data-remote" => true}
         %p Unfollow
