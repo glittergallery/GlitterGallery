@@ -1,0 +1,6 @@
+- unless project.root?
+  %span.parent_project
+    from
+    = link_to project.parent.user.username, "/#{project.parent.user.username}"
+    = "/"
+    = link_to project.parent.name, project.parent.urlbase

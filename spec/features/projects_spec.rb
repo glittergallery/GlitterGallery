@@ -21,28 +21,65 @@ feature "Projects" do
     expect(find('.project header')).to have_content('testproject1')
   end
 
-  scenario "User creates a public project and other user can see it" do
-    sign_up_with("t@test.com","test1","secret12345")
-    click_button "Create first project!"
-    fill_in "project_name", :with => "testproject1"
-    click_button "Public"
-    click_link "logout"
-    sign_up_with("t2@test.com","test2","secret12345")
-    visit "/inspire"
-    expect(page).to have_no_content("Uh oh, looks like everyone's gotten lazy ;)")
-    expect(page).to have_content('testproject1')
-  end
+  describe "Multiple users interaction" do
+    before :each do
+      sign_up_with("t@test.com","test1","secret12345")
+      click_button "Create first project!"
+      fill_in "project_name", :with => "public_project"
+      click_button "Public"
+      click_link "New Project"
+      fill_in "project_name", :with => "private_project"
+      click_link "logout"
+      sign_up_with("t2@test.com","test2","secret12345")
+    end
 
-  scenario "User uploads multiple images" do
-    sign_up_with("t@test.com","test1","secret12345")
-    click_button "Create first project!"
-    fill_in "project_name", :with => "testproject1"
-    click_button "Public"
-    click_button "Add first file!"
-    page.attach_file("file[]", ['spec/factories/files/happypanda.png','spec/factories/files/naruto.png'])
-    click_button "Save changes"
-    expect(page).to have_selector("img[src$='happypanda.png']")
-    expect(page).to have_selector("img[src$='naruto.png']")
+    scenario "Users see public projects of others as inspiring" do
+      visit "/inspire"
+      expect(page).to have_no_content("Uh oh, looks like everyone's gotten lazy ;)")
+      expect(page).to have_content('public_project')
+      expect(page).to have_no_content("private_project")
+    end
+
+    scenario "User sees other users projects" do
+      visit "/test1/projects"
+      expect(page).to have_content("public_project")
+      expect(page).to have_no_content("private_project")
+    end
+
+    scenario "User forks other users projects" do
+      visit "/test1/public_project"
+      click_link "Fork"
+      expect(page.current_path).to eq("/test2/public_project")
+      expect(find('.parent_project')).to have_content('from test1 / public_project')
+      click_link "logout"
+      sign_up_with("t3@test.com","test3","secret12345")
+      visit "/test2/public_project"
+      click_link "Fork"
+      expect(page.current_path).to eq("/test3/public_project")
+      expect(find('.parent_project')).to have_content('from test2 / public_project')
+      visit "/test2/projects"
+      expect(find(".album")).to have_content("public_project from test1 / public_project")
+    end
+
+    scenario "User sees network of a project" do
+      visit "test1/public_project"
+      click_link "Fork"
+      click_link "logout"
+      sign_up_with("t3@test.com","test3","secret12345")
+      visit "/test2/public_project"
+      click_link "Fork"
+      click_link "logout"
+      sign_up_with("t4@test.com","test4","secret12345")
+      visit "/test2/public_project"
+      click_link "Fork"
+      click_link "Network"
+      expect(find(:xpath,'/html/body/div/article/section/div/ul/li')).to have_link("test1")
+      expect(find(:xpath,'/html/body/div/article/section/div/ul/ul')).to have_no_content("test1")
+      expect(find(:xpath,'/html/body/div/article/section/div/ul/ul/li')).to have_link("test2")
+      expect(find(:xpath,'/html/body/div/article/section/div/ul/ul/ul')).to have_no_content("test2")
+      expect(find(:xpath,'/html/body/div/article/section/div/ul/ul/ul/li[1]')).to have_link("test3")
+      expect(find(:xpath,'/html/body/div/article/section/div/ul/ul/ul/li[2]')).to have_link("test4")
+    end
   end
 
   describe "After image upload" do

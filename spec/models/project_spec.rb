@@ -15,14 +15,14 @@ describe Project do
 
   it "sets path after creation" do
     @project = FactoryGirl.create(:project)
-    expect(@project.path).to_not eq(nil)
+    expect(@project.data_path).to_not eq(nil)
   end
 
   it "creates repositories after creation" do
     @project = FactoryGirl.create(:project)
-    expect(File.exists?(@project.path)).to be true
-    expect(Rugged::Repository.new(File.join @project.path , 'repo.git')).to be_a(Rugged::Repository)
-    expect(Rugged::Repository.new(File.join @project.path , 'satellite' , '.git')).to be_a(Rugged::Repository)
+    expect(File.exists?(@project.data_path)).to be true
+    expect(Rugged::Repository.new(File.join @project.data_path , 'repo.git')).to be_a(Rugged::Repository)
+    expect(Rugged::Repository.new(File.join @project.data_path , 'satellite' , '.git')).to be_a(Rugged::Repository)
   end
 
   it "gets list of inspiring projects" do

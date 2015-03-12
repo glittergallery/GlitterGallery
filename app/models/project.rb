@@ -14,9 +14,11 @@ class Project < ActiveRecord::Base
 
   validates :name,
               presence: true,
-              uniqueness: { scope: :user }
+              uniqueness: { scope: :user, message: "is in use."}
   validates :user,
               presence: true
+
+  has_ancestry
 
   # Returns a list of public projects that belong to other users.
   def self.inspiring_projects_for user_id
@@ -29,7 +31,7 @@ class Project < ActiveRecord::Base
   end
 
   def deletefiles
-    FileUtils.rm_rf self.path
+    FileUtils.rm_rf data_path
   end
 
   def imageurl imagename
@@ -56,20 +58,20 @@ class Project < ActiveRecord::Base
   end
 
   def barerepopath
-    File.join self.path , 'repo.git'
+    File.join data_path , 'repo.git'
   end
 
   def satelliterepopath
-    File.join self.path , 'satellite' , '.git'
+    File.join data_path , 'satellite' , '.git'
   end
 
   def satellitedir
-    File.join self.path , 'satellite'
+    File.join data_path , 'satellite'
   end
 
   # Returns the path of the thumbnail for a specific commit, if add_public is false "public/" is removed from the path(can be used for referencing the image).
   def thumbnail_for commit_id, add_public = true
-    prefix = path.dup
+    prefix = data_path.dup
     prefix.sub!("public","") unless add_public
     "#{prefix}/thumbnails/#{commit_id}"
   end
@@ -87,9 +89,9 @@ class Project < ActiveRecord::Base
 
   def set_path
     user = User.find self.user_id
-    self.path = File.join Glitter::Application.config.repo_dir,
+    self.data_path = File.join Glitter::Application.config.repo_dir,
                           'repos', user.email.to_s, name
-    logger.debug "setting path - path: #{self.path}"
+    logger.debug "setting path - path: #{data_path}"
     self.save
   end
 
@@ -97,13 +99,12 @@ class Project < ActiveRecord::Base
   # Bare Repository Path : public/data/repos/user_id/project_id/repo.git
   # Satellite Repository Path : public/data/repos/user_id/project_id/satellite/.git
   def init
-    logger.debug "Initing repo path: #{path}"
-    unless File.exists? self.path
-      if self.parent.nil? or self.parent == self.id
+    logger.debug "Initing repo path: #{data_path}"
+    unless File.exists? data_path
+      if self.parent.nil?
         Rugged::Repository.init_at  self.barerepopath, :bare
         Rugged::Repository.clone_at self.barerepopath, self.satelliterepopath
       else # it's a fork, therefore:
-        parent = Project.find self.parent
         Rugged::Repository.init_at self.barerepopath, :bare
         Rugged::Repository.clone_at parent.satelliterepopath, self.satelliterepopath
       end

@@ -15,6 +15,11 @@
     %div{ data: "issues" }
       %p
         Issues
+  
+  %a{href: "#{@project.urlbase+'/network'}"}
+    %div{ data: "network" }
+      %p
+        Network
 
 
 %section.action
@@ -37,18 +42,18 @@
     %a{href: "#{@project.urlbase+'/follow'}"}      
       %div{ data: "follow" }
         Follow
+
+    %a{href: "#{@project.urlbase+'/fork'}"}
+      %div{ data: "fork" }
+        %p
+          Fork
     -#
-      %a{href: "#{@project.urlbase+'/forkyou'}"}
-        %div{ data: "fork" }
-          %p
-            Fork
-            
       %a{href: "#{request.original_url+'/star'}"}
         %div{ data: "fork" }
           %p
             Star
 
-  %a{href: "#{@project.urlbase+'/issues/new'}"}
-    %div{ data: "blame" }
-      %p
-        Blame
+    %a{href: "#{@project.urlbase+'/issues/new'}"}
+      %div{ data: "blame" }
+        %p
+          Blame

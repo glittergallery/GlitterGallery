@@ -38,7 +38,6 @@ class ProjectsController < ApplicationController
   def create
     project = Project.new project_params
     project.user_id = current_user.id
-    project.parent = project.id
     if params[:commit] == "Private"
       project.private = true
       project.uniqueurl = SecureRandom.hex
@@ -161,6 +160,11 @@ class ProjectsController < ApplicationController
   #       oneline (only the commit messages/author)
   #       status (files added/removed in each commit)
   #       full (list all files in that commit as they list)
+
+  # GET /username/project/network
+  def network
+    @root = @project.root
+  end
 
   def commits
     @commits = []
@@ -309,7 +313,7 @@ class ProjectsController < ApplicationController
     child = Project.new name: @project.name,
                         user_id: current_user.id,
                         uniqueurl: @project.uniqueurl,
-                        parent: @project.parent
+                        parent: @project
     if @project.private
       child.private = true
       child.uniqueurl = SecureRandom.hex
@@ -319,8 +323,8 @@ class ProjectsController < ApplicationController
       redirect_to child.urlbase
       # todo - notifications
     else
-      flash[:alert] = "Couldn't fork project, try again."
-      redirect_to @project
+      flash[:alert] = "Couldn't fork project. #{child.errors.full_messages.to_sentence}"
+      redirect_to @project.urlbase
     end
 
 
