@@ -18,16 +18,17 @@ module ApplicationHelper
   # Returns gravatar
   def avatar(email = nil)
     default = Rails.application.config.default_avatar
+    if Rails.env.development?
+        gravatar_default = "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(default)}"
+      else
+        gravatar_default = "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(root_url + default)}"
+    end
     if email.nil?
       tag :image, src: default
     else
       gravatar_id = Digest::MD5.hexdigest(email.downcase)
       gravatar_size = Rails.application.config.gravatar_size
-      if Rails.env.development?
-        tag :image, src: "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(default)}"
-      else
-        tag :image, src: "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(root_url + default)}"
-      end  
+      tag :image, src: gravatar_default  
     end
   end
 end
