@@ -15,7 +15,11 @@
       
   = render 'users/user_toolbar'
   = render 'shared/messages'
- 
+
+  - if @user != current_user && @projects.blank?
+    %section
+      .guide
+        %p No Projects available for #{@user.username}
 
   - unless @projects.empty?
     %section.album
