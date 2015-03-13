@@ -3,4 +3,8 @@
     from
     = link_to project.parent.user.username, "/#{project.parent.user.username}"
     = "/"
-    = link_to project.parent.name, project.parent.urlbase
+    - if project.parent.deleted?
+      %span.deleted_node
+        = project.parent.name
+    - else
+      = link_to project.parent.name, project.parent.urlbase

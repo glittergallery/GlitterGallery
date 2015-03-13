@@ -78,10 +78,14 @@
 }
 
 .parent_project {
-  color: grey;
+  color: #808080;
   font-size: 0.7em;
 }
 
 .current_node {
   font-weight: bold;
+}
+
+.deleted_node {
+  color: #7F0000;
 }

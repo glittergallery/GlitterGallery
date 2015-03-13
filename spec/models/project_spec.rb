@@ -13,6 +13,29 @@ describe Project do
     expect(FactoryGirl.build(:project,:user => nil)).to_not be_valid
   end
 
+  it "has a unique name per user" do
+    project = FactoryGirl.create(:project)
+    expect(FactoryGirl.build(:project, user: project.user)).to_not be_valid
+  end
+
+  it "allows same name for different users" do
+    FactoryGirl.create(:project)
+    user = FactoryGirl.create(:user, email: "test@test.com", username: "test1")
+    expect(FactoryGirl.build(:project, user: user)).to be_valid
+  end
+
+  it "allows same name per user after the first is deleted" do
+    project = FactoryGirl.create(:project)
+    user = project.user
+    project.destroy
+    expect(FactoryGirl.build(:project, user: user)).to be_valid
+  end
+
+  it "is soft deleted" do
+    project = FactoryGirl.create(:project)
+    expect {project.destroy}.to change { Project.count } and not change{ Project.with_deleted.count }
+  end
+
   it "sets path after creation" do
     @project = FactoryGirl.create(:project)
     expect(@project.data_path).to_not eq(nil)

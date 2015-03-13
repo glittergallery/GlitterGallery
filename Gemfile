@@ -40,6 +40,9 @@ gem 'delayed_job_active_record', '~> 4.0.3'
 # For having a fork network view.
 gem 'ancestry', '~> 2.1.0'
 
+# For soft-deleting projects.
+gem "paranoia", "~> 2.0"
+
 gem 'sass-rails'
 gem 'coffee-rails'
 

@@ -14,16 +14,25 @@ class Project < ActiveRecord::Base
 
   validates :name,
               presence: true,
-              uniqueness: { scope: :user, message: "is in use."}
+              uniqueness: { scope: :user, 
+                            conditions: -> { where(deleted_at: nil) },
+                            message: "is used by one of your projects."}
   validates :user,
               presence: true
 
-  has_ancestry
+  has_ancestry # Tree structure.
+  acts_as_paranoid # Soft delete.
+
+  # Don't do any change to the children when the parent is deleted.
+  # After all the parent is only soft deleted.
+  def apply_orphan_strategy
+    true
+  end
 
   # Returns a list of public projects that belong to other users.
   def self.inspiring_projects_for user_id
     Project.where.not(private: true, user_id: user_id)
-  end
+  end  
 
   def last_updated
     repo = barerepo

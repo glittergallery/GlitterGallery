@@ -342,10 +342,13 @@ class ProjectsController < ApplicationController
   def return_context
     @user = User.find_by username: params[:username]
     unless @user.blank?
-      @project = Project.find_by user_id: @user.id, name: params[:project]
+      @project = Project.with_deleted.find_by user_id: @user.id, name: params[:project]
     end
     if @project.blank?
       render file: "#{Rails.root}/public/404.html", layout: false, status: 404
+    elsif @project.deleted?
+      flash[:alert] = "The project you requested had been deleted."
+      redirect_to "/#{@user.username}" #TODO: After fixing the routes, use user_path.
     end  
   end
 

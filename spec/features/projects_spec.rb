@@ -21,6 +21,19 @@ feature "Projects" do
     expect(find('.project header')).to have_content('testproject1')
   end
 
+  scenario "User deletes a project and can't see it" do
+    sign_up_with("t@test.com","test1","secret12345")
+    click_button "Create first project!"
+    fill_in "project_name", :with => "t1"
+    click_button "Public"
+    find('.project').click_link "Settings"
+    click_link "Delete project"
+    expect(page.current_path).to eq("/dashboard")
+    expect(page).to have_content("Welcome aboard! Without wasting any further time, let's get you started!")
+    visit "/test1/t1"
+    expect(page).to have_content("The project you requested had been deleted.")
+  end
+
   describe "Multiple users interaction" do
     before :each do
       sign_up_with("t@test.com","test1","secret12345")
@@ -61,9 +74,13 @@ feature "Projects" do
       expect(find(".album")).to have_content("public_project from test1 / public_project")
     end
 
-    scenario "User sees network of a project" do
+    scenario "User sees network of a project including deleted ones" do
       visit "test1/public_project"
       click_link "Fork"
+      click_link "logout"
+      sign_in_with("t@test.com","secret12345")
+      visit "/test1/public_project/settings"
+      click_link "Delete project"
       click_link "logout"
       sign_up_with("t3@test.com","test3","secret12345")
       visit "/test2/public_project"
@@ -74,8 +91,10 @@ feature "Projects" do
       click_link "Fork"
       click_link "Network"
       expect(find(:xpath,'/html/body/div/article/section/div/ul/li')).to have_link("test1")
+      expect(find(:xpath,'/html/body/div/article/section/div/ul/li')).to have_no_link("public_project")
       expect(find(:xpath,'/html/body/div/article/section/div/ul/ul')).to have_no_content("test1")
       expect(find(:xpath,'/html/body/div/article/section/div/ul/ul/li')).to have_link("test2")
+      expect(find(:xpath,'/html/body/div/article/section/div/ul/ul/li')).to have_link("public_project")
       expect(find(:xpath,'/html/body/div/article/section/div/ul/ul/ul')).to have_no_content("test2")
       expect(find(:xpath,'/html/body/div/article/section/div/ul/ul/ul/li[1]')).to have_link("test3")
       expect(find(:xpath,'/html/body/div/article/section/div/ul/ul/ul/li[2]')).to have_link("test4")

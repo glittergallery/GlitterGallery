@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150310094212) do
+ActiveRecord::Schema.define(version: 20150312234604) do
 
   create_table "comments", force: true do |t|
     t.text     "body"
@@ -103,9 +103,11 @@ ActiveRecord::Schema.define(version: 20150310094212) do
     t.string   "uniqueurl"
     t.string   "urlbase"
     t.string   "ancestry"
+    t.datetime "deleted_at"
   end
 
   add_index "projects", ["ancestry"], name: "index_projects_on_ancestry"
+  add_index "projects", ["deleted_at"], name: "index_projects_on_deleted_at"
   add_index "projects", ["name", "user_id"], name: "index_projects_on_name_and_user_id", unique: true
 
   create_table "pull_requests", force: true do |t|
