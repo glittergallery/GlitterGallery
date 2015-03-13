@@ -23,12 +23,12 @@ module ApplicationHelper
     else
       gravatar_id = Digest::MD5.hexdigest(email.downcase)
       gravatar_size = Rails.application.config.gravatar_size
-      if Rails.env.development?
-        gravatar_default = "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(default)}"
+      if Rails.env.development? 
+        gravatar_default = default
       else
-        gravatar_default = "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(root_url + default)}"
-      end
-      tag :image, src: gravatar_default  
+        gravatar_default = root_url + default  
+      end      
+      tag :image, src: "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(gravatar_default)}"  
     end
   end
 end
