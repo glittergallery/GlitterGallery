@@ -11,11 +11,13 @@ class Notification < ActiveRecord::Base
 	# Victims - the people to be notified 
 
 	after_create :send_emails
+
 	def send_emails
 		for victim in self.victims
 			NotifMailer.notif_email(self,victim).deliver
 		end
 	end
+  	handle_asynchronously :send_emails
 
 	def messageverb
 		if action == 0 or action == 5
