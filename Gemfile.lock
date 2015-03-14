@@ -282,7 +282,7 @@ DEPENDENCIES
   activerecord-session_store
   better_errors
   binding_of_caller
-  cancancan (= 1.10.1)
+  cancancan (~> 1.10)
   capybara
   coffee-rails
   devise
@@ -296,7 +296,7 @@ DEPENDENCIES
   launchy
   minitest
   mysql2
-  nprogress-rails (= 0.1.6.5)
+  nprogress-rails
   oa-openid
   omniauth
   omniauth-facebook
@@ -316,6 +316,6 @@ DEPENDENCIES
   sqlite3
   test-unit
   therubyracer
-  turbolinks (= 2.5.3)
+  turbolinks
   uglifier
-  will_paginate (= 3.0.7)
+  will_paginate

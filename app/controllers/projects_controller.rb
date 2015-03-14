@@ -206,7 +206,6 @@ class ProjectsController < ApplicationController
   #todo - /tree/master/file_name and generalize for /tree/branch/file_name
 
   def masterbranch
-    authorize! :update_image, @project
 
     @imageurl = File.join @project.satellitedir, params[:image_name]
     @comments = Comment.where(
@@ -248,6 +247,8 @@ class ProjectsController < ApplicationController
   # TODO - allow uploads/updates of only supported images.
 
   def file_upload
+    authorize! :update_image, @project
+
     @project = Project.find params[:id]
     if params[:file]
       params[:file].each do |f|
@@ -264,6 +265,8 @@ class ProjectsController < ApplicationController
   end
 
   def file_update
+    authorize! :update_image, @project
+
     @project = Project.find params[:id]
     tmp = params[:file].tempfile
     file = File.join @project.satellitedir, params[:image_name]
@@ -285,6 +288,8 @@ class ProjectsController < ApplicationController
   end
 
   def file_delete
+    authorize! :update_image, @project
+    
     file = File.join @project.satellitedir, params[:image_name]
     FileUtils.rm file if File.exists? file
     satellite_delete @project.satelliterepo,params[:image_name]
