@@ -43,6 +43,9 @@ class CommentsController < ApplicationController
 
   def destroy
     @delete = Comment.find(params[:id])
+    
+    authorize! :delete, @delete
+
     if @delete.user_id == current_user.id
       @delete.destroy
       redirect_to :back
