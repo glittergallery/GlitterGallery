@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_filter :logged_in,  only: [:new, :create]
+  before_filter :authenticate_user!, only: [:new, :create]
 
   def new
     @comment = Comment.new
@@ -56,11 +56,6 @@ class CommentsController < ApplicationController
   end
 
   private
-
-    def logged_in
-      redirect_to root_url unless !current_user.nil?
-    end
-
     def comment_params
       params.require(:comment).permit(:polycomment_id,:polycomment_type,:issue,:body)
     end
