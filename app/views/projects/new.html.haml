@@ -10,7 +10,7 @@
 
   %section
     %div
-      = form_for @project do |f|
+      = form_for @project, validate: true do |f|
         %label Give it a name.
         = f.text_field :name, placeholder: "Fancy project name", autofocus: true
         %label Private projects get unique links.

@@ -247,13 +247,27 @@ class ProjectsController < ApplicationController
 
   def file_upload
     @project = Project.find params[:id]
+    file_rejected = 0
     if params[:file]
       params[:file].each do |f|
         tmp = f.tempfile
         file = File.join @project.satellitedir, f.original_filename
         FileUtils.cp tmp.path, file
-        image_commit @project, f
-        flash[:notice] = "Your new image was added successfully! How sparkly!"
+        if Glitter::Application.config.accepted_file_formats.include? FileMagic.new(FileMagic::MAGIC_MIME).file(file).to_s.split(';')[0] 
+          image_commit @project, f
+        else
+          alert_message = "One (or more) of your images is not of a supported format and was not uploaded! (Please upload only "
+          Glitter::Application.config.accepted_file_formats.each do |format|
+              alert_message = alert_message + "." + format[6..-1] + ", "
+          end
+          alert_message[alert_message.length-2] = ""
+          alert_message = alert_message + " images)"
+          flash[:alert] = alert_message
+          file_rejected = 1
+        end
+      end
+      if file_rejected == 0
+        flash[:notice] = "Your new image was added successfully! How sparkly!"  
       end
     else
       flash[:alert]  = "No image selected!"
