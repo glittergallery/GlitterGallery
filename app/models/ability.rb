@@ -8,6 +8,10 @@ class Ability
 		can :update_image, Project do |project|
 			project.try(:user_id) == user.id
 		end
+
+		can [:update, :delete], Comment do |comment|
+			comment.try(:user_id) == user.id
+		end
 	
 	end
 end

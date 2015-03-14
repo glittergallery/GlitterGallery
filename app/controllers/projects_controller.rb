@@ -12,6 +12,7 @@ class ProjectsController < ApplicationController
                                            :new, :create, :destroy, :index,
                                            :user_show
                                          ]
+  before_filter :find_project, only: [:file_update, :file_upload, :destroy]
 
   def new
     @project = Project.new
@@ -23,7 +24,6 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @project = Project.find params[:id]
     if current_user.id == @project.user_id
       @project.destroy
       # after_destroy callback in project.rb deletes files.
@@ -249,7 +249,6 @@ class ProjectsController < ApplicationController
   def file_upload
     authorize! :update_image, @project
 
-    @project = Project.find params[:id]
     if params[:file]
       params[:file].each do |f|
         tmp = f.tempfile
@@ -266,8 +265,6 @@ class ProjectsController < ApplicationController
 
   def file_update
     authorize! :update_image, @project
-
-    @project = Project.find params[:id]
     tmp = params[:file].tempfile
     file = File.join @project.satellitedir, params[:image_name]
     FileUtils.cp tmp.path, file
@@ -337,6 +334,10 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def find_project
+    @project = Project.find params[:id]
+  end
 
   def project_params
     params.require(:project).permit(:name)
