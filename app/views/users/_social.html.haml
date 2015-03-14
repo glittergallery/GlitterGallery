@@ -1,10 +1,6 @@
 %div
-  %div.active
-    - if current_user.nil? 
-      %a{href: "/#{@user.username}/follow"}
-        %p Follow
-        %p= @user.username
-    - elsif current_user.follow? @user
+  .active
+    -if not current_user.nil? and current_user.follow?(@user)
       %a{href: "/#{@user.username}/unfollow", "data-remote" => true}
         %p Unfollow
         %p= @user.username
@@ -13,17 +9,16 @@
         %p Follow
         %p= @user.username
 
-  %div
-    %a{href: "#"} 
+
+  %div#followers_list
+    %a{href: "/#{@user.username}/followers", "data-remote" => true}
       %p
         #{@user.followers.count}
-    %a{href: "#"}
       %p
         Followers
-  %div
-    %a{href: "#"}
+  %div#followings_list
+    %a{href: "/#{@user.username}/followings", "data-remote" => true}
       %p
         #{@user.followings.count}
-    %a{href: "#"}
       %p
         Following

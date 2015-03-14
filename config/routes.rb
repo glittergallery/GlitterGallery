@@ -20,6 +20,8 @@ Glitter::Application.routes.draw do
   get '/dashboard' => 'dashboard#index', :as => :dashboard
   get '/:username/follow' => 'relationships#follow'
   get '/:username/unfollow' => 'relationships#unfollow'
+  get '/:username/followers' => 'users#list_followers'
+  get '/:username/followings' => 'users#list_followings'
   get '/:username' => 'users#show'
   get '/:username/projects' => 'projects#user_show'
   get '/:username/projects/following' => 'users#list_followed_projects', :as => :followed_projects
