@@ -3,6 +3,7 @@ class NotificationsController < ApplicationController
 
 	def index
 		@unseennotifications = NotificationStatus.where(:victim => current_user,:seen => [false,nil]).map(&:notification)
+		@user = current_user
 	end
 
 	def show
