@@ -19,10 +19,11 @@
           %span.badge.type{:title => "Private Project"} PRV 
         -else
           %span.badge.type{:title => "Public Project"} PUB
-        - if @project.id == @project.parent
+        - if @project.root?
           %span.badge.author PARENT
         - else
           %span.badge.author FORK
+          = render partial: 'forked_from', locals: {project: @project}
 
         /= @project.desc
     = render 'project_toolbar'

@@ -31,8 +31,17 @@ gem 'activerecord-session_store'
 gem 'actionpack-action_caching'
 gem 'rails-observers'
 
-# for producing thumbnails.
+# For producing thumbnails.
 gem 'rmagick', '~> 2.13.4'
+
+# For sending mails in background.
+gem 'delayed_job_active_record', '~> 4.0.3'
+
+# For having a fork network view.
+gem 'ancestry', '~> 2.1.0'
+
+# For soft-deleting projects.
+gem "paranoia", "~> 2.0"
 
 gem 'sass-rails'
 gem 'coffee-rails'

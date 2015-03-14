@@ -23,7 +23,23 @@ module ProjectsHelper
       true
     else false
     end
-
   end
 
+  def nested_projects roots,project
+    content_tag :ul, :class => "nested_projects" do
+      roots.each do |root|
+        user_link = link_to(root.user.username,"/#{root.user.username}")
+        project_link = link_to(root.name,root.urlbase)
+        str = "#{user_link} / #{project_link}".html_safe
+        if root.id == project.id
+          concat(content_tag(:li, str, class: "current_node"))
+        elsif root.deleted?
+          concat(content_tag(:li, "#{user_link} / #{content_tag(:span,"#{root.name}",class: "deleted_node")}".html_safe))
+        else
+          concat(content_tag(:li, str))
+        end
+        concat(nested_projects(root.children,project)) if root.has_children?
+      end
+    end
+  end
 end
