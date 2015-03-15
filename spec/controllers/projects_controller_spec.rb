@@ -95,10 +95,8 @@ describe ProjectsController, type: :controller do
 
   describe "GET #update" do
     context "user owns the project image" do
-      before do
-        @project = FactoryGirl.create(:project)
-        sign_in(@project.user)
-      end
+      sign_in!(:project, true, :project[:user])
+      
       it "can update the project image" do
         expect(@project).to be_a Project
       end
