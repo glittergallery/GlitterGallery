@@ -1,10 +1,10 @@
-- unless project.root?
+- unless @project.root?
   %span.parent_project
     from
-    = link_to project.parent.user.username, "/#{project.parent.user.username}"
+    = link_to @project.parent.user.username, "/#{@project.parent.user.username}"
     = "/"
-    - if project.parent.deleted?
+    - if @project.parent.deleted?
       %span.deleted_node
-        = project.parent.name
+        = @project.parent.name
     - else
-      = link_to project.parent.name, project.parent.urlbase
+      = link_to @project.parent.name, @project.parent.urlbase
