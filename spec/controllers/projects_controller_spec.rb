@@ -4,7 +4,7 @@ require "cancan/matchers"
 describe ProjectsController, type: :controller do
   describe "GET #new" do
     context "user logged in" do
-      before_do(:user)
+      before_do(:user, false) #Macro
 
       it "redirects to dashboard" do
         get :new
@@ -21,7 +21,7 @@ describe ProjectsController, type: :controller do
 
   describe "DELETE #destroy" do
     context "user owns the project" do
-      before_do(:project)
+      before_do(:project, false) #Macro
 
       it "deletes the project" do
         delete :destroy, id: @fact_obj.id
@@ -44,7 +44,7 @@ describe ProjectsController, type: :controller do
 
   describe "POST #create" do
     context "public project" do
-      before_do(:user)
+      before_do(:user, false) #Macro
 
       it "creates project" do
         post :create, :project => {:name => "testproject"}, :params => {:commit => "Public"}
@@ -59,7 +59,8 @@ describe ProjectsController, type: :controller do
       end
     end
     context "private project" do
-      before_do(:user)
+      before_do(:user, false) #Macro
+
       it "creates project" do
         post :create, :project => {:name => "testproject"}, :params => {:commit => "Private"}
         @fact_obj.reload
@@ -75,7 +76,7 @@ describe ProjectsController, type: :controller do
   end
 
   describe "GET #show" do
-    before_do(:project)
+    before_do(:project, false) #Macro
 
     it "renders show template" do
       get :show, :username => @fact_obj.user.username, :project => @fact_obj.name
@@ -85,7 +86,7 @@ describe ProjectsController, type: :controller do
 
   describe "GET #update" do
     context "user owns the project image" do
-      before_do(:project)
+      before_do(:project, false) #Macro
     
       it "can update the project image" do
         expect(@fact_obj).to be_a Project
