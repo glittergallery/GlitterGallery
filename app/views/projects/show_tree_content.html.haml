@@ -23,6 +23,7 @@
           %span.badge.author PARENT
         - else
           %span.badge.author FORK
+          = render partial: 'forked_from', locals: {project: @project}
 
         /= @project.desc
     = render 'project_toolbar'

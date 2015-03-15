@@ -72,3 +72,20 @@
 	}
 
 }
+
+.nested_projects {
+  margin-left: 30px;
+}
+
+.parent_project {
+  color: #808080;
+  font-size: 0.7em;
+}
+
+.current_node {
+  font-weight: bold;
+}
+
+.deleted_node {
+  color: #7F0000;
+}
