@@ -4,10 +4,8 @@ require "cancan/matchers"
 describe ProjectsController, type: :controller do
   describe "GET #new" do
     context "user logged in" do
-      before do
-        @user = FactoryGirl.create(:user)
-        sign_in(@user)
-      end
+      before_do(:user)
+
       it "redirects to dashboard" do
         get :new
         expect(response).to render_template("new")
@@ -23,13 +21,11 @@ describe ProjectsController, type: :controller do
 
   describe "DELETE #destroy" do
     context "user owns the project" do
-      before do
-        @project = FactoryGirl.create(:project)
-        sign_in(@project.user)
-      end
+      before_do(:project)
+
       it "deletes the project" do
-        delete :destroy, id: @project.id
-        expect(Project.where(:id => @project.id)).to be_empty
+        delete :destroy, id: @fact_obj.id
+        expect(Project.where(:id => @fact_obj.id)).to be_empty
         expect(response).to redirect_to(dashboard_path)
       end
     end
@@ -48,57 +44,51 @@ describe ProjectsController, type: :controller do
 
   describe "POST #create" do
     context "public project" do
-      before do
-        @user = FactoryGirl.create(:user)
-        sign_in(@user)
-      end
+      before_do(:user)
+
       it "creates project" do
         post :create, :project => {:name => "testproject"}, :params => {:commit => "Public"}
-        @user.reload
-        expect(@user.projects).to_not be_empty
-        expect(@user.projects.first.name).to eq("testproject")
-        expect(response).to redirect_to(@user.projects.first.urlbase)
+        @fact_obj.reload
+        expect(@fact_obj.projects).to_not be_empty
+        expect(@fact_obj.projects.first.name).to eq("testproject")
+        expect(response).to redirect_to(@fact_obj.projects.first.urlbase)
       end
       it "redirects to project url" do
         post :create, :project => {:name => "testproject"}, :params => {:commit => "Public"}
-        expect(response).to redirect_to(@user.projects.first.urlbase)
+        expect(response).to redirect_to(@fact_obj.projects.first.urlbase)
       end
     end
     context "private project" do
-      before do
-        @user = FactoryGirl.create(:user)
-        sign_in(@user)
-      end
+      before_do(:user)
       it "creates project" do
         post :create, :project => {:name => "testproject"}, :params => {:commit => "Private"}
-        @user.reload
-        expect(@user.projects).to_not be_empty
-        expect(@user.projects.first.name).to eq("testproject")
-        expect(response).to redirect_to(@user.projects.first.urlbase)
+        @fact_obj.reload
+        expect(@fact_obj.projects).to_not be_empty
+        expect(@fact_obj.projects.first.name).to eq("testproject")
+        expect(response).to redirect_to(@fact_obj.projects.first.urlbase)
       end
       it "redirects to project url" do
         post :create, :project => {:name => "testproject"}, :params => {:commit => "Public"}
-        expect(response).to redirect_to(@user.projects.first.urlbase)
+        expect(response).to redirect_to(@fact_obj.projects.first.urlbase)
       end
     end
   end
 
   describe "GET #show" do
-    before do
-      @project = FactoryGirl.create(:project)
-    end
+    before_do(:project)
+
     it "renders show template" do
-      get :show, :username => @project.user.username, :project => @project.name
+      get :show, :username => @fact_obj.user.username, :project => @fact_obj.name
       expect(response).to render_template("show")
     end
   end
 
   describe "GET #update" do
     context "user owns the project image" do
-      sign_in!(:project, true, :project[:user])
-      
+      before_do(:project)
+    
       it "can update the project image" do
-        expect(@project).to be_a Project
+        expect(@fact_obj).to be_a Project
       end
     end
 

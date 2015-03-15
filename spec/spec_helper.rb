@@ -3,7 +3,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rspec'
-require File.expand_path("../../spec/macros", __FILE__)
+require File.dirname(__FILE__) + "/before_macro"
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -50,7 +50,7 @@ RSpec.configure do |config|
   end
 
   #including macros
-  config.include(BeforeActions)
+  config.extend(BeforeMacro)
 
   # Run tests in a random order.
   config.order = "random"
