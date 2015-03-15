@@ -15,11 +15,13 @@
           %span 
             = link_to @project.name, "/#{@user.username}/#{@project.name}"
       %h2 
-        - if @project.id == @project.parent
+        - if @project.root?
           %span.badge.author
             PARENT
         - else
-          Forked from parent/project
+          %span.badge.author FORK
+          = render partial: 'forked_from', locals: {project: @project}
+
     = render 'project_toolbar'
     = render 'shared/messages'
   
