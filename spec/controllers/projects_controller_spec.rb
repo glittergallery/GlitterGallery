@@ -1,4 +1,5 @@
 require 'spec_helper'
+require "cancan/matchers"
 
 describe ProjectsController, type: :controller do
   describe "GET #new" do
@@ -19,6 +20,7 @@ describe ProjectsController, type: :controller do
       end
     end
   end
+
   describe "DELETE #destroy" do
     context "user owns the project" do
       before do
@@ -43,6 +45,7 @@ describe ProjectsController, type: :controller do
       end
     end
   end
+
   describe "POST #create" do
     context "public project" do
       before do
@@ -79,6 +82,7 @@ describe ProjectsController, type: :controller do
       end
     end
   end
+
   describe "GET #show" do
     before do
       @project = FactoryGirl.create(:project)
@@ -88,4 +92,31 @@ describe ProjectsController, type: :controller do
       expect(response).to render_template("show")
     end
   end
+
+  describe "GET #update" do
+    context "user owns the project image" do
+      before do
+        @project = FactoryGirl.create(:project)
+        sign_in(@project.user)
+      end
+      it "can update the project image" do
+        expect(@project).to be_a Project
+      end
+    end
+
+    context "user doesn't own the project image" do
+      before do
+        @project = FactoryGirl.create(:project)
+        @user = sign_in(FactoryGirl.create(:user, :username => "some other user",:email => "abcd@gmail.com"))
+      end
+      it "can not update the project image" do
+        expect(@user).not_to eq(@project.user)
+        expect(response.status).to eq(200)
+      end
+    end
+
+  end
+
+
+
 end
