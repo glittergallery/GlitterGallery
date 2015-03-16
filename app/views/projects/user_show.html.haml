@@ -29,8 +29,7 @@
             %p
               %img{:src => "/usercover.jpg", :title => "Project Cover"}
               = link_to project.name, project.urlbase
-              - @project = project
-              = render 'forked_from', :project => @project
+              = render 'forked_from', project: project
               %br
               Last updated #{distance_of_time_in_words_to_now project.updated_at} ago
   - else
