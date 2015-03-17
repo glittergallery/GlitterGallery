@@ -1,0 +1,15 @@
+- unless private_check
+  = render 'permissions_error'
+- else
+
+  - content_for :title do
+    = @project.name.titleize
+
+  %article.project{ data: "network" }
+    = render 'project_header'
+    = render 'project_toolbar'
+    = render 'shared/messages'
+
+    %section
+      %div
+        = nested_projects([@root],@project)

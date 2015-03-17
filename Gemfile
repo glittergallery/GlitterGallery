@@ -1,7 +1,7 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 #source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
 
-gem 'rails', '~> 4.0.0'
+gem 'rails', '~> 4.1.0'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -32,7 +32,18 @@ gem 'actionpack-action_caching'
 gem 'rails-observers'
 gem "cancancan", '~> 1.10'
 # for producing thumbnails.
+
+# For producing thumbnails.
 gem 'rmagick', '~> 2.13.4'
+
+# For sending mails in background.
+gem 'delayed_job_active_record', '~> 4.0.3'
+
+# For having a fork network view.
+gem 'ancestry', '~> 2.1.0'
+
+# For soft-deleting projects.
+gem "paranoia", "~> 2.0"
 
 gem 'sass-rails'
 gem 'coffee-rails'

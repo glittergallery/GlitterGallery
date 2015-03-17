@@ -13,16 +13,39 @@ describe Project do
     expect(FactoryGirl.build(:project,:user => nil)).to_not be_valid
   end
 
+  it "has a unique name per user" do
+    project = FactoryGirl.create(:project)
+    expect(FactoryGirl.build(:project, user: project.user)).to_not be_valid
+  end
+
+  it "allows same name for different users" do
+    FactoryGirl.create(:project)
+    user = FactoryGirl.create(:user, email: "test@test.com", username: "test1")
+    expect(FactoryGirl.build(:project, user: user)).to be_valid
+  end
+
+  it "allows same name per user after the first is deleted" do
+    project = FactoryGirl.create(:project)
+    user = project.user
+    project.destroy
+    expect(FactoryGirl.build(:project, user: user)).to be_valid
+  end
+
+  it "is soft deleted" do
+    project = FactoryGirl.create(:project)
+    expect {project.destroy}.to change { Project.count } and not change{ Project.with_deleted.count }
+  end
+
   it "sets path after creation" do
     @project = FactoryGirl.create(:project)
-    expect(@project.path).to_not eq(nil)
+    expect(@project.data_path).to_not eq(nil)
   end
 
   it "creates repositories after creation" do
     @project = FactoryGirl.create(:project)
-    expect(File.exists?(@project.path)).to be true
-    expect(Rugged::Repository.new(File.join @project.path , 'repo.git')).to be_a(Rugged::Repository)
-    expect(Rugged::Repository.new(File.join @project.path , 'satellite' , '.git')).to be_a(Rugged::Repository)
+    expect(File.exists?(@project.data_path)).to be true
+    expect(Rugged::Repository.new(File.join @project.data_path , 'repo.git')).to be_a(Rugged::Repository)
+    expect(Rugged::Repository.new(File.join @project.data_path , 'satellite' , '.git')).to be_a(Rugged::Repository)
   end
 
   it "gets list of inspiring projects" do

@@ -7,7 +7,11 @@ Glitter::Application.config.thumbnail_geometry=[50,50]
 
 # (gr)Avatar options
 ## path to default avatar - should start with slash
-Glitter::Application.config.default_avatar='/happypanda.png'
+if Rails.env.development?
+    Glitter::Application.config.default_avatar='https://raw.githubusercontent.com/glittergallery/GlitterGallery/master/public/happypanda.png'
+else
+    Glitter::Application.config.default_avatar='/happypanda.png'
+end    
 ## size of gravatar to ask for - one dimension in pixels
 ## (gravatars are square :))
 Glitter::Application.config.gravatar_size='48'
@@ -40,5 +44,5 @@ if Rails.env.development?
 elsif Rails.env.test?
 	Glitter::Application.config.repo_dir="public/testdata"
 elsif Rails.env.production?
-	Glitter::Application.config.repo_dir="ENV['OPENSHIFT_DATA_DIR']/data"
+	Glitter::Application.config.repo_dir="public/data"
 end

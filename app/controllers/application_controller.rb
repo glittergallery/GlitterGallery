@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
 
   # Generates a thumbnail for a commit in the appropriate place.
   def generate_thumbnail(project, imagefile, commit_id)
-    image = Magick::Image.read("#{project.path}/satellite/#{imagefile}").first
+    image = Magick::Image.read("#{project.data_path}/satellite/#{imagefile}").first
     image.scale(thumbnail_size[0],thumbnail_size[1]).write project.thumbnail_for(commit_id,true)
   end
 

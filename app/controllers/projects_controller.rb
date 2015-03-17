@@ -38,7 +38,6 @@ class ProjectsController < ApplicationController
   def create
     project = Project.new project_params
     project.user_id = current_user.id
-    project.parent = project.id
     if params[:commit] == "Private"
       project.private = true
       project.uniqueurl = SecureRandom.hex
@@ -136,12 +135,13 @@ class ProjectsController < ApplicationController
       headtree.each do |blob|
         link = File.join @project.urlbase, 'master', blob[:name]
         @images.push({
-                       link: link,
-                       name: blob[:name],
-                       url: @project.imageurl(blob[:name])
+                        link: link,
+                        name: blob[:name],
+                        url: @project.imageurl(blob[:name])
                     })
       end
     end
+
     @comments = Comment.where( polycomment_type: "project",
                                polycomment_id: @project.id
                              )
@@ -160,6 +160,11 @@ class ProjectsController < ApplicationController
   #       oneline (only the commit messages/author)
   #       status (files added/removed in each commit)
   #       full (list all files in that commit as they list)
+
+  # GET /username/project/network
+  def network
+    @root = @project.root
+  end
 
   def commits
     @commits = []
@@ -313,7 +318,7 @@ class ProjectsController < ApplicationController
     child = Project.new name: @project.name,
                         user_id: current_user.id,
                         uniqueurl: @project.uniqueurl,
-                        parent: @project.parent
+                        parent: @project
     if @project.private
       child.private = true
       child.uniqueurl = SecureRandom.hex
@@ -323,8 +328,8 @@ class ProjectsController < ApplicationController
       redirect_to child.urlbase
       # todo - notifications
     else
-      flash[:alert] = "Couldn't fork project, try again."
-      redirect_to @project
+      flash[:alert] = "Couldn't fork project. #{child.errors.full_messages.to_sentence}"
+      redirect_to @project.urlbase
     end
 
 
@@ -345,7 +350,15 @@ class ProjectsController < ApplicationController
 
   def return_context
     @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
+    unless @user.blank?
+      @project = Project.with_deleted.find_by user_id: @user.id, name: params[:project]
+    end
+    if @project.blank?
+      render file: "#{Rails.root}/public/404.html", layout: false, status: 404
+    elsif @project.deleted?
+      flash[:alert] = "The project you requested had been deleted."
+      redirect_to "/#{@user.username}" #TODO: After fixing the routes, use user_path.
+    end  
   end
 
 end
