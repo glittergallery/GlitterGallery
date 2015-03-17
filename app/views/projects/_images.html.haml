@@ -5,14 +5,14 @@
         %div
           %p{:title => image[:name]}
             = link_to(image_tag(image[:url]),image[:link])
-    - if user_signed_in? and current_user.id == @project.user.id
+    - if can? :update_image, @project
       %div
         = form_tag file_upload_project_path(@project), multipart: true do
           = file_field_tag "file[]" , multiple: true
           = submit_tag "Upload file!"
   -else 
     - if user_signed_in?
-      - if current_user.id == @project.user.id
+      - if can? :update_image, @project
         .guide
           %p Submit your design work on this project to start collaborating.
           %form{action: File.join(@project.name, "newfile")}
@@ -27,4 +27,3 @@
         %p You'll need to sign in to work on these cool projects!
         %form{action: "/users/sign_in"}
           %input{type: "submit", value: "Sign in!"}
-

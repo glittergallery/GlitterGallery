@@ -1,4 +1,6 @@
 class IssuesController < ApplicationController
+  before_filter :authenticate_user!, except: [:index, :show]
+  
   def index
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]

@@ -3,6 +3,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rspec'
+require File.dirname(__FILE__) + "/support/macros/before_actions.rb"
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -47,6 +48,9 @@ RSpec.configure do |config|
       FileUtils.rm_rf(File.join(Rails.root,Glitter::Application.config.repo_dir))
     end
   end
+
+  #including macros
+  config.extend Macros::BeforeActions
 
   # Run tests in a random order.
   config.order = "random"

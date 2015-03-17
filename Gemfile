@@ -30,6 +30,8 @@ gem "oa-openid", :require => "omniauth/openid"
 gem 'activerecord-session_store'
 gem 'actionpack-action_caching'
 gem 'rails-observers'
+gem "cancancan", '~> 1.10'
+# for producing thumbnails.
 
 # For producing thumbnails.
 gem 'rmagick', '~> 2.13.4'

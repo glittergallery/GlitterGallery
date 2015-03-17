@@ -12,6 +12,7 @@ class ProjectsController < ApplicationController
                                            :new, :create, :destroy, :index,
                                            :user_show
                                          ]
+  before_filter :find_project, only: [:file_update, :file_upload, :destroy]
 
   def new
     @project = Project.new
@@ -23,7 +24,6 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @project = Project.find params[:id]
     if current_user.id == @project.user_id
       @project.destroy
       # after_destroy callback in project.rb deletes files.
@@ -211,6 +211,7 @@ class ProjectsController < ApplicationController
   #todo - /tree/master/file_name and generalize for /tree/branch/file_name
 
   def masterbranch
+
     @imageurl = File.join @project.satellitedir, params[:image_name]
     @comments = Comment.where(
                                polycomment_type: "file",
@@ -245,12 +246,14 @@ class ProjectsController < ApplicationController
   end
 
   def update
+    authorize! :update_image, @project
   end
 
   # TODO - allow uploads/updates of only supported images.
 
   def file_upload
-    @project = Project.find params[:id]
+    authorize! :update_image, @project
+
     if params[:file]
       params[:file].each do |f|
         tmp = f.tempfile
@@ -266,13 +269,13 @@ class ProjectsController < ApplicationController
   end
 
   def file_update
-    @project = Project.find params[:id]
+    authorize! :update_image, @project
     tmp = params[:file].tempfile
     file = File.join @project.satellitedir, params[:image_name]
     FileUtils.cp tmp.path, file
     if params[:file]
         imagefile = params[:file]
-        message = params[:message]
+        message   = params[:message]
         commit_id = satellite_commit @project.satelliterepo,
                          params[:image_name],
                          imagefile.read,
@@ -287,6 +290,8 @@ class ProjectsController < ApplicationController
   end
 
   def file_delete
+    authorize! :update_image, @project
+    
     file = File.join @project.satellitedir, params[:image_name]
     FileUtils.rm file if File.exists? file
     satellite_delete @project.satelliterepo,params[:image_name]
@@ -334,6 +339,10 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def find_project
+    @project = Project.find params[:id]
+  end
 
   def project_params
     params.require(:project).permit(:name)
