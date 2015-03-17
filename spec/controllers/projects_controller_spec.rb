@@ -87,25 +87,50 @@ describe ProjectsController, type: :controller do
   describe "GET #update" do
     context "user owns the project image" do
       before_do(:project, false) #Macro
-    
+      
       it "can update the project image" do
+        get :update, { :id => @fact_obj.id, :username => @fact_obj.user.username, :project => @fact_obj.name }
+
+        expect(response).to render_template("update")
         expect(@fact_obj).to be_a Project
       end
     end
 
-    context "user doesn't own the project image" do
-      before do
-        @project = FactoryGirl.create(:project)
-        @user = sign_in(FactoryGirl.create(:user, :username => "some other user",:email => "abcd@gmail.com"))
-      end
+    context "user doesnt own the proejct" do
+      before_do(:project, true) #Macro
+     
       it "can not update the project image" do
-        expect(@user).not_to eq(@project.user)
-        expect(response.status).to eq(200)
+        
+        get :update, { :id => @fact_obj.id, :username => @fact_obj.user.username, :project => @fact_obj.name }
+
+        expect(@new_user).not_to eq(@fact_obj.user)
+        expect(403).to eq(response.response_code)
       end
     end
 
   end
 
+  describe "POST #file_upload" do
+    context "user owns the project" do
+      before_do(:project, false) #Macro
 
+      it "can updload a new file to a project" do
+       
+       post :file_upload, id: @fact_obj.id , project: { file: Rack::Test::UploadedFile.new(File.expand_path("spec/factories/files/happypanda.png"), "image/png") }
+      
+      expect(@fact_obj).to be_a Project
+      end
+    end
 
+    context "user doesnt own the project" do
+      before_do(:project, true) #Macro
+
+      it "can not update the project image" do
+        post :file_upload, id: @fact_obj.id , project: { file: Rack::Test::UploadedFile.new(File.expand_path("spec/factories/files/happypanda.png"), "image/png") }
+        expect(@new_user).not_to eq(@fact_obj.user)
+        expect(403).to eq(response.response_code)
+      end
+    end
+  end
+  
 end

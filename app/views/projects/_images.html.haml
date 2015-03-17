@@ -12,7 +12,7 @@
           = submit_tag "Upload file!"
   -else 
     - if user_signed_in?
-      - if current_user.id == @project.user.id
+      - if can? :update_image, @project
         .guide
           %p Submit your design work on this project to start collaborating.
           %form{action: File.join(@project.name, "newfile")}

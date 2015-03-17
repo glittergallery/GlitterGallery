@@ -270,7 +270,7 @@ class ProjectsController < ApplicationController
     FileUtils.cp tmp.path, file
     if params[:file]
         imagefile = params[:file]
-        message = params[:message]
+        message   = params[:message]
         commit_id = satellite_commit @project.satelliterepo,
                          params[:image_name],
                          imagefile.read,
