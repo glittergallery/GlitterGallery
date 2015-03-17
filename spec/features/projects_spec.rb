@@ -59,6 +59,19 @@ feature "Projects" do
       expect(page).to have_no_content("private_project")
     end
 
+    scenario "User follows and unfollows other users projects" do
+      visit "/test1/public_project"
+      click_link "Follow"
+      expect(find(".action")).to have_link("Unfollow")
+      visit "/test2/followed/projects"
+      expect(page).to have_link("public_project")
+      click_link "public_project"
+      click_link "Unfollow"
+      expect(find(".action")).to have_link("Follow")
+      visit "/test2/followed/projects"
+      expect(page).to have_no_content("public_project")
+    end
+
     scenario "User forks other users projects" do
       visit "/test1/public_project"
       click_link "Fork"
@@ -100,7 +113,7 @@ feature "Projects" do
       expect(find(:xpath,'/html/body/div/article/section/div/ul/ul/ul/li[2]')).to have_link("test4")
     end
   end
-  
+
   scenario "User uploads multiple images" do
     sign_up_with("t@test.com","test1","secret12345")
     click_button "Create first project!"

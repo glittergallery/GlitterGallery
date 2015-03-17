@@ -39,9 +39,14 @@
         %p
           Settings
   - else
-    %a{href: "#{@project.urlbase+'/follow'}"}
-      %div{ data: "follow" }
-        Follow
+    - unless ProjectFollower.following? current_user, @project
+      = link_to follow_user_project_path(@project.user,@project), method: :post do
+        %div{ data: "follow" }
+          Follow
+    - else
+      = link_to unfollow_user_project_path(@project.user,@project), method: :delete do
+        %div{ data: "unfollow" }
+          Unfollow
 
     = link_to fork_user_project_path(@project.user,@project), method: :post do
       %div{ data: "fork" }

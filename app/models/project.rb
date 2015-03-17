@@ -41,7 +41,7 @@ class Project < ActiveRecord::Base
   end
 
   def followed_by?(user)
-    ProjectFollower.where(follower: user, followed_project: self).exists?
+    ProjectFollower.following? user, self
   end
 
   def last_updated

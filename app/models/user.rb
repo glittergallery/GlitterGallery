@@ -50,6 +50,11 @@ class User < ActiveRecord::Base
     relationships.find_by_following_id(user)
   end
 
+  # Makes the user follow a project
+  def follow_project(project)
+    ProjectFollower.make_follow self, project
+  end
+
   def notify_on_follow(user)
     @notification = Notification.create actor: user,
                                         action: 3, # Follow

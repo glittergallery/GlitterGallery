@@ -10,7 +10,11 @@ class ProjectsController < ApplicationController
                                               ]
 
   before_filter :return_context, except: [ :file_update,
-                                           :new, :create, :destroy, :index
+                                           :new,
+                                           :create,
+                                           :destroy,
+                                           :index,
+                                           :followed_index
                                          ]
 
   def new
@@ -63,25 +67,30 @@ class ProjectsController < ApplicationController
     end
   end
 
+  # GET /id/followed/projects
+  def followed_index
+    @user = User.find_by username: params[:id]
+    @projects = @user.followed_projects
+  end
+
+  # POST /user_id/id/follow
   def follow
     if @user != current_user
-      unless @project.followed_by?(current_user)
-        ProjectFollower.create(
-          follower: current_user,
-          followed_project: @project
-        )
-        Notification.create(
-          actor: current_user,
-          action: 1,
-          object_type: 0,
-          object_id: @project.id,
-          victims: [@project.user]
-        )
-      end
+      ProjectFollower.make_follow current_user,@project
       flash[:notice] = "You're now following #{@user.username}/#{@project.name}"
     else
       flash[:notice] = "You're the owner of this project, " \
-                       'you automatically receive updates.'
+                       "you automatically receive updates."
+    end
+    redirect_to @project.urlbase
+  end
+
+  # DELETE /user_id/id/unfollow
+  def unfollow
+    if ProjectFollower.remove_follow current_user, @project
+      flash[:notice] = "You've successfully unfollowed #{@user.username}/#{@project.name}"
+    else
+      flash[:notice] = "You were not following #{@user.username}/#{@project.name}"
     end
     redirect_to @project.urlbase
   end

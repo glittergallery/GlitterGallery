@@ -19,7 +19,6 @@ Glitter::Application.routes.draw do
   post 'glitterposts/:id/edit' => 'glitterposts#update'
   get '/inspire' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
-  get '/:username/projects/following' => 'users#list_followed_projects', :as => :followed_projects
   get '/:username/:project/tree/:branch/' => 'projects#show_tree_content'
   get '/:username/:project/tree/:branch/*destination' => 'projects#show_tree_content'
   get '/:username/:project/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
@@ -29,7 +28,6 @@ Glitter::Application.routes.draw do
   get '/:username/:project/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
   get '/:username/:project/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
   delete '/:username/:project/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
-  post '/:username/:project/follow' => 'projects#follow'
   get '/:username/:project/forkyou' => 'projects#forkyou'
   get '/:username/:project/pull' => 'projects#pull_request'
   get '/:username/:project/pull/:pull_id' => 'projects#pull'
@@ -50,6 +48,9 @@ Glitter::Application.routes.draw do
       post 'follow' => 'relationships#follow'
       delete 'unfollow' => 'relationships#unfollow'
       get 'projects' => 'projects#index'
+      scope 'followed', as: :followed do
+        get 'projects' => 'projects#followed_index'
+      end
     end
     resources :projects, except: [:index], path: '/' do
       member do
@@ -59,6 +60,8 @@ Glitter::Application.routes.draw do
           get :commits
           get 'commit/:tree_id' => 'projects#projectcommit'
           post :fork
+          post :follow
+          delete :unfollow
           get :settings
           get :network
           post :file_upload
