@@ -19,23 +19,17 @@ Glitter::Application.routes.draw do
   post 'glitterposts/:id/edit' => 'glitterposts#update'
   get '/inspire' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
-  get '/:username/projects' => 'projects#user_show'
   get '/:username/projects/following' => 'users#list_followed_projects', :as => :followed_projects
-  get '/:username/:project' => 'projects#show'
-  get '/:username/:project/commits' => 'projects#commits'
-  get '/:username/:project/commit/:tree_id' => 'projects#projectcommit'
   get '/:username/:project/tree/:branch/' => 'projects#show_tree_content'
   get '/:username/:project/tree/:branch/*destination' => 'projects#show_tree_content'
   get '/:username/:project/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
   get '/:username/:project/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
   get '/:username/:project/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
   get '/:username/:project/createsvg' => 'projects#new_svg'
-  get '/:username/:project/newfile' => 'projects#newfile'
   get '/:username/:project/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
   get '/:username/:project/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
   delete '/:username/:project/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
   post '/:username/:project/follow' => 'projects#follow'
-  get '/:username/:project/fork' => 'projects#fork'
   get '/:username/:project/forkyou' => 'projects#forkyou'
   get '/:username/:project/pull' => 'projects#pull_request'
   get '/:username/:project/pull/:pull_id' => 'projects#pull'
@@ -43,15 +37,42 @@ Glitter::Application.routes.draw do
   get '/:username/:project/pull/:pull_id/close' => 'projects#close'
   get '/:username/:project/pull/:pull_id/open' => 'projects#open'
   get '/:username/:project/pulls' => 'projects#pulls'
-  get '/:username/:project/settings' => 'projects#settings'
-  get '/:username/:project/network' => 'projects#network'
   get '/:username/:project/issues/new' => 'issues#new'
   get '/:username/:project/issues' => 'issues#index'
   post '/:username/:project/issues/new' => 'issues#create'
   get '/:username/:project/issue/:sub_id' => 'issues#show'
   post '/:username/:project/issue/:sub_id/close' => 'issues#close'
 
-  get '/:username/:project/:xid' => 'projects#show'
+
+
+  resources :users, only: [:show], path: '/' do
+    member do
+      post 'follow' => 'relationships#follow'
+      delete 'unfollow' => 'relationships#unfollow'
+      get 'projects' => 'projects#index'
+    end
+    resources :projects, except: [:index], path: '/' do
+      member do
+        scope "(:xid)" do
+          get 'projects/:id/invite.xml' => 'projects#invite'
+          get :newfile
+          get :commits
+          get 'commit/:tree_id' => 'projects#projectcommit'
+          post :fork
+          get :settings
+          get :network
+          post :file_upload
+          post :file_update
+          post :handle_pull_request
+          post :create_svg, :as => :create_svg
+          post :edit_svg, :as => :edit_svg
+          post :update_svg, :as => :update_svg
+        end
+      end
+    end
+  end
+
+  get '/:user_id/:id/:xid' => 'projects#show'
   get '/:username/:project/:xid/commits/:tree_id' => 'projects#commits'
   get '/:username/:project/:xid/commit/:tree_id' => 'projects#projectcommit'
   get '/:username/:project/:xid/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
@@ -76,23 +97,5 @@ Glitter::Application.routes.draw do
   get '/:username/:project/:xid/issues/new' => 'issues#new'
   post '/:username/:project/:xid/issues/new' => 'issues#create'
   post '/:username/:project/:xid/issue/:id/close' => 'issues#close'
-
-  resources :users, only: [:show], path: '/' do
-    member do
-      post 'follow' => 'relationships#follow'
-      delete 'unfollow' => 'relationships#unfollow'
-    end
-    resources :projects, except: [:index], path: '/' do
-      member do
-        get 'projects/:id/invite.xml' => 'projects#invite'
-        post :file_upload
-        post :file_update
-        post :handle_pull_request
-        post :create_svg, :as => :create_svg
-        post :edit_svg, :as => :edit_svg
-        post :update_svg, :as => :update_svg
-      end
-    end
-  end
 
 end

@@ -26,6 +26,11 @@ class Project < ActiveRecord::Base
     true
   end
 
+  # We're using name in routes.
+  def to_param
+    "#{self.name}"
+  end
+
   # Returns a list of public projects that belong to other users.
   def self.inspiring_projects_for(user_id)
     Project.where.not(private: true, user_id: user_id)

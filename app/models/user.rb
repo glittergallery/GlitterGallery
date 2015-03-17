@@ -31,7 +31,8 @@ class User < ActiveRecord::Base
     self.username = omniauth['info']['nickname'] if username.blank?
     identities.build(provider: omniauth['provider'], uid: omniauth['uid'])
   end
-  
+
+  # We're using username in routes.
   def to_param
     "#{self.username}"
   end

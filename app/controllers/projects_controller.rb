@@ -8,9 +8,9 @@ class ProjectsController < ApplicationController
                                               :pulls,
                                               :pull
                                               ]
-  before_filter :return_context, except: [:file_upload, :file_update,
-                                          :new, :create, :destroy, :index,
-                                          :user_show
+
+  before_filter :return_context, except: [ :file_update,
+                                           :new, :create, :destroy, :index
                                          ]
 
   def new
@@ -19,7 +19,13 @@ class ProjectsController < ApplicationController
 
   # TODO: Limit to popular/recent projects
   def index
-    @projects = Project.inspiring_projects_for current_user.id
+    if params[:id]
+      @user = User.find_by username: params[:id]
+      @projects = @user.projects
+      render :user_index
+    else
+      @projects = Project.inspiring_projects_for current_user.id
+    end
   end
 
   def destroy
@@ -137,10 +143,10 @@ class ProjectsController < ApplicationController
       headtree.each do |blob|
         link = File.join @project.urlbase, 'master', blob[:name]
         @images.push({
-                        link: link,
-                        name: blob[:name],
-                        url: @project.imageurl(blob[:name])
-                    })
+          link: link,
+          name: blob[:name],
+          url: @project.imageurl(blob[:name])
+        })
       end
     end
 
@@ -151,11 +157,6 @@ class ProjectsController < ApplicationController
     @comments = pg @comments, 10
     @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1
-  end
-
-  def user_show
-    @user = User.find_by username: params[:username]
-    @projects = @user.projects
   end
 
   # TODO: rename this as log, reflect everywhere
@@ -254,7 +255,6 @@ class ProjectsController < ApplicationController
   # TODO: allow uploads/updates of only supported images.
 
   def file_upload
-    @project = Project.find params[:id]
     if params[:file]
       params[:file].each do |f|
         tmp = f.tempfile
@@ -337,14 +337,13 @@ class ProjectsController < ApplicationController
   end
 
   def return_context
-    @user = User.find_by username: params[:username]
+    @user = User.find_by username: params[:user_id]
     render_404 && return if @user.blank?
     @project = Project.with_deleted.find_by user_id: @user.id,
-                                            name: params[:project]
+                                            name: params[:id]
     render_404 && return if @project.blank?
     return unless @project.deleted?
     flash[:alert] = 'The project you requested had been deleted.'
-    redirect_to "/#{@user.username}" # TODO: use named route
+    redirect_to user_path(@user)
   end
-
 end

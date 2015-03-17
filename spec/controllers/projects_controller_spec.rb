@@ -84,7 +84,7 @@ describe ProjectsController, type: :controller do
       @project = FactoryGirl.create(:project)
     end
     it "renders show template" do
-      get :show, :username => @project.user.username, :project => @project.name
+      get :show, :user_id => @project.user.username, :id => @project.name
       expect(response).to render_template("show")
     end
     it "renders 404 if not found" do

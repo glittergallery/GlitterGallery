@@ -5,17 +5,17 @@
     %div{ data: "current"}
       %p
         Current
-  
+
   %a{href: "#{@project.urlbase+'/commits'}"}
     %div{ data: "log" }
       %p
         Log
 
-  %a{href: "#{@project.urlbase+'/issues'}"}        
+  %a{href: "#{@project.urlbase+'/issues'}"}
     %div{ data: "issues" }
       %p
         Issues
-  
+
   %a{href: "#{@project.urlbase+'/network'}"}
     %div{ data: "network" }
       %p
@@ -34,16 +34,16 @@
         %p
           Upload
 
-    %a{href: "#{@project.urlbase+'/settings'}"}      
+    %a{href: "#{@project.urlbase+'/settings'}"}
       %div{ data: "settings" }
         %p
           Settings
   - else
-    %a{href: "#{@project.urlbase+'/follow'}"}      
+    %a{href: "#{@project.urlbase+'/follow'}"}
       %div{ data: "follow" }
         Follow
 
-    %a{href: "#{@project.urlbase+'/fork'}"}
+    = link_to fork_user_project_path(@project.user,@project), method: :post do
       %div{ data: "fork" }
         %p
           Fork
