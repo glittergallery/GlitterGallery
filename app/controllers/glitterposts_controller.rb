@@ -6,14 +6,14 @@ class GlitterpostsController < ApplicationController
   end
 
   def create
-  	@glitterpost = Glitterpost.new(params[:glitterpost])
-  	@glitterpost.user_id = current_user.id
-  	if @glitterpost.save
-  		redirect_to @glitterpost
-  	else
-      flash[:alert] = "Something went wrong, try glitterposting again."
-  		render 'new'
-  	end
+    @glitterpost = Glitterpost.new(params[:glitterpost])
+    @glitterpost.user_id = current_user.id
+    if @glitterpost.save
+      redirect_to @glitterpost
+    else
+      flash[:alert] = 'Something went wrong, try glitterposting again.'
+      render 'new'
+    end
   end
 
   def edit
@@ -30,23 +30,24 @@ class GlitterpostsController < ApplicationController
   end
 
   def index
-  	@glitterposts = Glitterpost.all
+    @glitterposts = Glitterpost.all
   end
-  
+
 
   def show
-  	@glitterpost = Glitterpost.find(params[:id])
-    @comments = Comment.where(polycomment_type: "glitterpost", polycomment_id: @glitterpost.id)
+    @glitterpost = Glitterpost.find(params[:id])
+    @comments = Comment.where(
+      polycomment_type: 'glitterpost',
+      polycomment_id: @glitterpost.id
+    )
     @comments = pg @comments, 10
     @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1
-    
   end
 
   def destroy
-  	@glitterpost = Glitterpost.find(params[:id])
-  	@glitterpost.destroy
-  	redirect_to glitterposts_path
+    @glitterpost = Glitterpost.find(params[:id])
+    @glitterpost.destroy
+    redirect_to glitterposts_path
   end
-
 end

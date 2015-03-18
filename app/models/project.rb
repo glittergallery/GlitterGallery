@@ -1,24 +1,21 @@
 class Project < ActiveRecord::Base
   after_create :set_path, :init
   after_destroy :deletefiles
+  before_save :set_uniqueurl
 
   belongs_to :user
-  has_many :project_followers,
-              dependent: :destroy,
-              foreign_key: "project_id"
-  has_many :followers,
-              through: :project_followers,
-              class_name: "User",
-              foreign_key: "follower_id"
+  has_many :project_followers, dependent: :destroy,
+                               foreign_key: 'project_id'
+  has_many :followers, through: :project_followers,
+                       class_name: 'User',
+                       foreign_key: 'follower_id'
   has_many :issues
 
-  validates :name,
-              presence: true,
-              uniqueness: { scope: :user, 
-                            conditions: -> { where(deleted_at: nil) },
-                            message: "is used by one of your projects."}
-  validates :user,
-              presence: true
+  validates :name, presence: true,
+                   uniqueness: { scope: :user,
+                                 conditions: -> { where(deleted_at: nil) },
+                                 message: 'is used by one of your projects.' }
+  validates :user, presence: true
 
   has_ancestry # Tree structure.
   acts_as_paranoid # Soft delete.
@@ -30,9 +27,17 @@ class Project < ActiveRecord::Base
   end
 
   # Returns a list of public projects that belong to other users.
-  def self.inspiring_projects_for user_id
+  def self.inspiring_projects_for(user_id)
     Project.where.not(private: true, user_id: user_id)
-  end  
+  end
+
+  def set_uniqueurl
+    self.uniqueurl ||= SecureRandom.hex if private
+  end
+
+  def followed_by?(user)
+    ProjectFollower.where(follower: user, followed_project: self).exists?
+  end
 
   def last_updated
     repo = barerepo
@@ -43,15 +48,15 @@ class Project < ActiveRecord::Base
     FileUtils.rm_rf data_path
   end
 
-  def imageurl imagename
-    File.join(self.satellitedir , imagename).gsub('public', '')
+  def imageurl(imagename)
+    File.join(satellitedir , imagename).gsub('public', '')
   end
 
   # Project URL
   def urlbase
     File.join("/#{user.username}",
-              self.name.gsub(" ", "%20"),
-              self.uniqueurl.to_s).gsub(/\/$/, '')
+              name.gsub(' ', '%20'),
+              uniqueurl.to_s).gsub(/\/$/, '')
   end
 
   def issues_url
@@ -59,11 +64,11 @@ class Project < ActiveRecord::Base
   end
 
   def barerepo
-    Rugged::Repository.new self.barerepopath
+    Rugged::Repository.new barerepopath
   end
 
   def satelliterepo
-    Rugged::Repository.new self.satelliterepopath
+    Rugged::Repository.new satelliterepopath
   end
 
   def barerepopath
@@ -78,48 +83,56 @@ class Project < ActiveRecord::Base
     File.join data_path , 'satellite'
   end
 
-  # Returns the path of the thumbnail for a specific commit, if add_public is false "public/" is removed from the path(can be used for referencing the image).
-  def thumbnail_for commit_id, add_public = true
+  # Returns the path of the thumbnail for a specific commit,
+  # if add_public is false "public/" is removed from the path.
+  def thumbnail_for(commit_id, add_public = true)
     prefix = data_path.dup
-    prefix.sub!("public","") unless add_public
+    prefix.sub!('public', '') unless add_public
     "#{prefix}/thumbnails/#{commit_id}"
   end
 
   # Push the existing contents of the satellite repo to the bare repo
   def pushtobare
     remote = satelliterepo.remotes['bare']
-    unless remote
-      remote = satelliterepo.remotes.create 'bare', barerepo.path
+    remote = satelliterepo.remotes.create 'bare', barerepo.path unless remote
+    satelliterepo.push remote, ['refs/heads/master']
+  end
+
+  def create_fork_project
+    child = Project.new name: name,
+                        uniqueurl: uniqueurl,
+                        parent: self
+    if private
+      child.private = true
+      child.uniqueurl = SecureRandom.hex
     end
-    satelliterepo.push remote, ["refs/heads/master"]
+    child
   end
 
   private
 
   def set_path
-    user = User.find self.user_id
+    user = User.find user_id
     self.data_path = File.join Glitter::Application.config.repo_dir,
-                          'repos', user.email.to_s, name
+                               'repos', user.email.to_s, name
     logger.debug "setting path - path: #{data_path}"
-    self.save
+    save
   end
 
   # Path : public/data/repos/user_id/project_id
-  # Bare Repository Path : public/data/repos/user_id/project_id/repo.git
-  # Satellite Repository Path : public/data/repos/user_id/project_id/satellite/.git
+  # Bare repo Path : public/data/repos/user_id/project_id/repo.git
+  # Satellite repo Path : public/data/repos/user_id/project_id/satellite/.git
   def init
-    logger.debug "Initing repo path: #{data_path}"
-    unless File.exists? data_path
-      if self.parent.nil?
-        Rugged::Repository.init_at  self.barerepopath, :bare
-        Rugged::Repository.clone_at self.barerepopath, self.satelliterepopath
-      else # it's a fork, therefore:
-        Rugged::Repository.init_at self.barerepopath, :bare
-        Rugged::Repository.clone_at parent.satelliterepopath, self.satelliterepopath
-      end
-      FileUtils.mkdir_p thumbnail_for("",true)
-      self.pushtobare unless satelliterepo.empty?
-    end
-  end
+    return if File.exists? data_path
 
+    if parent.nil?
+      Rugged::Repository.init_at  barerepopath, :bare
+      Rugged::Repository.clone_at barerepopath, satelliterepopath
+    else # it's a fork, therefore:
+      Rugged::Repository.init_at barerepopath, :bare
+      Rugged::Repository.clone_at parent.satelliterepopath, satelliterepopath
+    end
+    FileUtils.mkdir_p thumbnail_for('', true)
+    pushtobare unless satelliterepo.empty?
+  end
 end
