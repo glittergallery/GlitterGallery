@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def render_404
+    render file: "#{Rails.root}/public/404.html", layout: false, status: 404
+  end
+
   def return_current_user_projects
     @projects = current_user.projects if user_signed_in?
   end

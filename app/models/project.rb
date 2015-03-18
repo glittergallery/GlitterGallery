@@ -89,6 +89,17 @@ class Project < ActiveRecord::Base
     satelliterepo.push remote, ['refs/heads/master']
   end
 
+  def create_fork_project
+    child = Project.new name: name,
+                        uniqueurl: uniqueurl,
+                        parent: self
+    if private
+      child.private = true
+      child.uniqueurl = SecureRandom.hex
+    end
+    child
+  end
+
   private
 
   def set_path
@@ -103,7 +114,6 @@ class Project < ActiveRecord::Base
   # Bare repo Path : public/data/repos/user_id/project_id/repo.git
   # Satellite repo Path : public/data/repos/user_id/project_id/satellite/.git
   def init
-    logger.debug "Initing repo path: #{data_path}"
     return if File.exists? data_path
 
     if parent.nil?

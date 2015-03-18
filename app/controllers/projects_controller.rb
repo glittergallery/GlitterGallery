@@ -320,15 +320,8 @@ class ProjectsController < ApplicationController
   end
 
   def fork
-    child = Project.new name: @project.name,
-                        user_id: current_user.id,
-                        uniqueurl: @project.uniqueurl,
-                        parent: @project
-    if @project.private
-      child.private = true
-      child.uniqueurl = SecureRandom.hex
-    end
-
+    child = @project.create_fork_project
+    child.user = current_user
     if child.save
       redirect_to child.urlbase
       # TODO: notifications
@@ -337,8 +330,6 @@ class ProjectsController < ApplicationController
                       "#{child.errors.full_messages.to_sentence}"
       redirect_to @project.urlbase
     end
-
-
   end
 
   def settings
@@ -352,17 +343,13 @@ class ProjectsController < ApplicationController
 
   def return_context
     @user = User.find_by username: params[:username]
-    unless @user.blank?
-      @project = Project.with_deleted.find_by user_id: @user.id,
-                                              name: params[:project]
-    end
-    if @project.blank?
-      render file: "#{Rails.root}/public/404.html", layout: false, status: 404
-    elsif @project.deleted?
-      flash[:alert] = 'The project you requested had been deleted.'
-      # TODO: After fixing the routes, use user_path.
-      redirect_to "/#{@user.username}"
-    end
+    render_404 if @user.blank?
+    @project = Project.with_deleted.find_by user_id: @user.id,
+                                            name: params[:project]
+    render_404 if @project.blank?
+    return unless @project.deleted?
+    flash[:alert] = 'The project you requested had been deleted.'
+    redirect_to "/#{@user.username}" # TODO: use named route
   end
 
 end
