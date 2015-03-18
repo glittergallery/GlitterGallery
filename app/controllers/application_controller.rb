@@ -98,4 +98,15 @@ class ApplicationController < ActionController::Base
     dashboard_path
   end
 
+  #used to deliver notification on various events
+  def notify_users(action, object_type, object_id, victims)
+    Notification.create(
+          :actor => current_user,
+          :action => action, 
+          :object_type => object_type,
+          :object_id => object_id,
+          :victims => victims
+        )    
+  end
+
 end

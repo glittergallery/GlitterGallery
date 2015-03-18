@@ -9,35 +9,28 @@ class CommentsController < ApplicationController
   # tell what the comments are for
 
   def create
-    @comment = Comment.new comment_params
-    @comment.user = current_user                      
-    if @comment.save
-      @comments = Comment.where(polycomment_type: params[:comment][:polycomment_type],
-                              polycomment_id: params[:comment][:polycomment_id])
-      @comments = @comments.paginate(page: 1, per_page: 10)
-      @project = Project.find_by(name: params[:comment][:project_name])
-      if params[:comment][:polycomment_type] == 'project'
-        action = 0
-      elsif params[:comment][:polycomment_type] == 'issue'
-        action = 5
+    if polycomment_exists
+      @comment = Comment.new comment_params
+      @comment.user = current_user                      
+      if @comment.save
+        @comments = find_comments
+        @project = Project.find_by(name: params[:comment][:project_name])
+        if params[:comment][:polycomment_type] == 'project'
+          action = 0
+        elsif params[:comment][:polycomment_type] == 'issue'
+          action = 5
+        end
+        victims = @project.followers + [@project.user]
+        victims.delete(@comment.user)
+        notify_users(action, 1, @comment.id, victims)   
+        respond_to do |format|
+          format.html { redirect_to :back }
+          format.js {}
+        end            
+      else
+        redirect_to :back
+        flash[:alert] = 'Something went wrong, try reposting your comment.'
       end
-      victims = @project.followers + [@project.user]
-      victims.delete(@comment.user)
-      Notification.create(
-        :actor => current_user,
-        :action => action, #Commented on either Project or Issue
-        :object_type => 1, # Comment
-        :object_id => @comment.id,
-        :victims => victims
-      )
-
-      respond_to do |format|
-        format.html { redirect_to :back }
-        format.js {}
-      end            
-    else
-      redirect_to :back
-      flash[:alert] = 'Something went wrong, try reposting your comment.'
     end
   end
 
@@ -60,6 +53,18 @@ class CommentsController < ApplicationController
 
     def comment_params
       params.require(:comment).permit(:polycomment_id,:polycomment_type,:issue,:body)
+    end
+
+    def polycomment_exists
+      polycomment = params[:comment][:polycomment_type]
+      value = params[:comment][:polycomment_id]
+      !polycomment.classify.constantize.where(id: value).nil? #returns false if object is nil
+    end
+
+    def find_comments
+      @comments = Comment.where(polycomment_type: params[:comment][:polycomment_type],
+                              polycomment_id: params[:comment][:polycomment_id])
+      @comments = @comments.paginate(page: 1, per_page: 10)
     end
 
 end
