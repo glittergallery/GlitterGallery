@@ -67,6 +67,7 @@ group :test do
   gem 'capybara'
   gem 'guard-rspec'
   gem 'launchy'
+  gem 'rubocop', require: false
 end
 
 # To use ActiveModel has_secure_password
