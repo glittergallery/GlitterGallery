@@ -1,5 +1,8 @@
 language: ruby
 rvm:
   - 2.2.0
-before_script: RAILS_ENV=test bundle exec rake --trace db:migrate
-script: RAILS_ENV=test bundle exec rspec
+before_script:
+  - RAILS_ENV=test bundle exec rake --trace db:migrate
+script:
+  - bundle exec rubocop app/
+  - RAILS_ENV=test bundle exec rspec
