@@ -1,7 +1,12 @@
 class IssuesController < ApplicationController
-  def index
+  before_action :get_context
+
+  def get_context
     @user = User.find_by username: params[:username]
     @project = Project.find_by user_id: @user.id, name: params[:project]
+  end
+
+  def index
     @activetab = 0
     @issuestoshow = @project.issues.where(status: 0)
     return unless params[:state] == 'closed'
@@ -10,14 +15,10 @@ class IssuesController < ApplicationController
   end
 
   def new
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     @issue = Issue.new
   end
 
   def show
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     @issue = Issue.find_from_project(@project, params[:sub_id])
     @comments = Comment.where(
       polycomment_type: 'issue',
@@ -30,8 +31,6 @@ class IssuesController < ApplicationController
   end
 
   def create
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     @issue = Issue.new(issue_params)
     @issue.user = current_user
     @issue.project = @project
@@ -45,8 +44,6 @@ class IssuesController < ApplicationController
   end
 
   def close
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
     @issue = Issue.find_from_project(@project, params[:sub_id])
     if (current_user == @project.user) || (current_user == @issue.user)
       @issue.status = 1
