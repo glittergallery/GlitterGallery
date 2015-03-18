@@ -8,27 +8,28 @@ class User < ActiveRecord::Base
   has_many :projects
   has_many :comments
   has_many :notification_statuses
-  has_many :notifications, :through => :notification_statuses
-  has_many :relationships, :dependent => :destroy,
-                           :foreign_key => "follower_id"
-  has_many :reverse_relationships, :dependent => :destroy,
-                                   :foreign_key => "following_id",
-                                   :class_name => "Relationship"
-  has_many :followings, :through => :relationships, :source => :following
-  has_many :followers, :through => :reverse_relationships, :source => :follower
-  has_many :project_followers, :dependent => :destroy, :foreign_key => "follower_id"
-  has_many :followed_projects, :through => :project_followers, :source => :followed_project
+  has_many :notifications, through: :notification_statuses
+  has_many :relationships, dependent: :destroy,
+                           foreign_key: 'follower_id'
+  has_many :reverse_relationships, dependent: :destroy,
+                                   foreign_key: 'following_id',
+                                   class_name: 'Relationship'
+  has_many :followings, through: :relationships, source: :following
+  has_many :followers, through: :reverse_relationships, source: :follower
+  has_many :project_followers, dependent: :destroy, foreign_key: 'follower_id'
+  has_many :followed_projects, through: :project_followers,
+                               source: :followed_project
   has_many :issues
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-   
+
   before_save { |user| user.email = email.downcase }
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
-  def applyomniauth(omniauth)           
+  def applyomniauth(omniauth)
     self.email = omniauth['info']['email'] if email.blank?
     self.username = omniauth['info']['nickname'] if username.blank?
-    identities.build(:provider => omniauth['provider'], :uid => omniauth['uid'])
+    identities.build(provider: omniauth['provider'], uid: omniauth['uid'])
   end
 
   # This is a method within devise - we're overwriting it by saying that
@@ -43,7 +44,4 @@ class User < ActiveRecord::Base
   def follow?(user)
     relationships.find_by_following_id(user)
   end
-private   
-
-    
 end
