@@ -238,14 +238,14 @@ class ProjectsController < ApplicationController
     walker.each do |commit|
       tree = @project.barerepo.lookup commit.tree_id
       tree.each do |blob|
-        if blob[:name] == params[:image_name]
-          blobdata = @project.barerepo.read(blob[:oid]).data
-          image = {
-                    name: blob[:name],
-                    data: blobdata
-                  }
-          @bloblist << [image , commit]
-        end
+        next unless  blob[:name] == params[:image_name]
+
+        blobdata = @project.barerepo.read(blob[:oid]).data
+        image = {
+                  name: blob[:name],
+                  data: blobdata
+                }
+        @bloblist << [image , commit]
       end
     end
   end

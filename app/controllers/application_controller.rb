@@ -30,16 +30,15 @@ class ApplicationController < ActionController::Base
   end
 
   def image_commit(project, imagefile)
-    if user_signed_in?
-      commit_id = satellite_commit(
-        project.satelliterepo,
-        imagefile.original_filename,
-        imagefile.read,
-        "Add new file #{imagefile.original_filename}."
-      )
-      generate_thumbnail project, imagefile.original_filename, commit_id
-      project.pushtobare
-    end
+    return unless user_signed_in?
+    commit_id = satellite_commit(
+      project.satelliterepo,
+      imagefile.original_filename,
+      imagefile.read,
+      "Add new file #{imagefile.original_filename}."
+    )
+    generate_thumbnail project, imagefile.original_filename, commit_id
+    project.pushtobare
   end
 
   # TODO: refactor satellite_commit and satellite_delete

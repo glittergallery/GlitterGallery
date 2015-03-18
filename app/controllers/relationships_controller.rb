@@ -3,7 +3,8 @@ class RelationshipsController < ApplicationController
 
   def follow
     @user = User.where(username: params[:username]).first
-    if @user.nil? || current_user == @user || @user.followers.include?(current_user)
+    if @user.nil? || current_user == @user \
+      || @user.followers.include?(current_user)
       redirect_to '/'
     else
       @user.followers << current_user

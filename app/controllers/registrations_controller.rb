@@ -3,10 +3,8 @@ class RegistrationsController < Devise::RegistrationsController
 
   def build_resource(*args)
     super
-    if session[:omniauth]
-      omniauth = session[:omniauth]
-      @user.applyomniauth(omniauth)
-      @user.valid?
-    end
+    return unless session[:omniauth]
+    @user.applyomniauth(session[:omniauth])
+    @user.valid?
   end
 end

@@ -4,10 +4,9 @@ class IssuesController < ApplicationController
     @project = Project.find_by user_id: @user.id, name: params[:project]
     @activetab = 0
     @issuestoshow = @project.issues.where(status: 0)
-    if params[:state] == 'closed'
-      @activetab = 1
-      @issuestoshow = @project.issues.where(status: 1)
-    end
+    return unless params[:state] == 'closed'
+    @activetab = 1
+    @issuestoshow = @project.issues.where(status: 1)
   end
 
   def new

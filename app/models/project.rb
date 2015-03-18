@@ -104,17 +104,16 @@ class Project < ActiveRecord::Base
   # Satellite repo Path : public/data/repos/user_id/project_id/satellite/.git
   def init
     logger.debug "Initing repo path: #{data_path}"
-    unless File.exists? data_path
-      if parent.nil?
-        Rugged::Repository.init_at  barerepopath, :bare
-        Rugged::Repository.clone_at barerepopath, satelliterepopath
-      else # it's a fork, therefore:
-        Rugged::Repository.init_at barerepopath, :bare
-        Rugged::Repository.clone_at parent.satelliterepopath, satelliterepopath
-      end
-      FileUtils.mkdir_p thumbnail_for('', true)
-      pushtobare unless satelliterepo.empty?
-    end
-  end
+    return if File.exists? data_path
 
+    if parent.nil?
+      Rugged::Repository.init_at  barerepopath, :bare
+      Rugged::Repository.clone_at barerepopath, satelliterepopath
+    else # it's a fork, therefore:
+      Rugged::Repository.init_at barerepopath, :bare
+      Rugged::Repository.clone_at parent.satelliterepopath, satelliterepopath
+    end
+    FileUtils.mkdir_p thumbnail_for('', true)
+    pushtobare unless satelliterepo.empty?
+  end
 end
