@@ -36,7 +36,7 @@ class IssuesController < ApplicationController
     @issue.project = @project
     @issue.status = 0
     if @issue.save
-      redirect_to(@project.urlbase)
+      check_redirect @project.urlbase
     else
       flash[:alert] = "Couldn't create an issue"
       redirect_to(dashboard_path)
@@ -49,10 +49,10 @@ class IssuesController < ApplicationController
       @issue.status = 1
       @issue.save
       flash[:notice] = 'Issue Closed'
-      redirect_to(@project.issues_url)
+      check_redirect @project.issues_url
     else
       flash[:alert] = "You don't have permission to close this issue"
-      redirect_to(@project.issues_url)
+      check_redirect @project.issues_url
     end
 
   end

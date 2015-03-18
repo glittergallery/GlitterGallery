@@ -108,5 +108,15 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(_)
     dashboard_path
   end
-
+ 
+  #raises error if match against regular expression patterns fails
+  def check_redirect(url)
+     begin
+       if path = URI.parse(url).path
+         redirect_to path
+       end
+     rescue URI::InvalidURIError
+       redirect_to '/'
+     end
+  end
 end
