@@ -6,4 +6,11 @@ class Identity < ActiveRecord::Base
   def self.allowedmethods
     Glitter::Application.config.auth_methods
   end
+
+  def self.from_omniauth(omniauth)
+    where(
+      provider: omniauth['provider'],
+      uid: omniauth['uid']
+    ).first
+  end
 end
