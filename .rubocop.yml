@@ -1,0 +1,5 @@
+AllCops:
+  StyleGuideCopsOnly: true
+
+Metrics/MethodLength:
+  Max: 20
