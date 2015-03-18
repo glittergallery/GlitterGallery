@@ -4,7 +4,7 @@ module ApplicationHelper
 
   # This is used to generate image tags based on raw data. Currently used only when we are displaying
   # history of images. In the normal project#show - standard image linking is used.
-  def data_image_tag(image,width,height)
+  def data_image_tag(image, width, height)
     extension = image[:name].split('.').last
     if extension == "svg"
       "<img src='data:image/svg+xml;utf8,#{image[:data]}' width='#{width}' height='#{height}'/>".html_safe
@@ -23,12 +23,12 @@ module ApplicationHelper
     else
       gravatar_id = Digest::MD5.hexdigest(email.downcase)
       gravatar_size = Rails.application.config.gravatar_size
-      if Rails.env.development? 
+      if Rails.env.development?
         gravatar_default = default
       else
-        gravatar_default = root_url + default  
-      end      
-      tag :image, src: "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(gravatar_default)}"  
+        gravatar_default = root_url + default
+      end
+      tag :image, src: "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(gravatar_default)}"
     end
   end
 end
