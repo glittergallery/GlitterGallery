@@ -8,6 +8,7 @@ class NotificationsController < ApplicationController
     ).map(&:notification)
     @user = current_user
   end
+
   def show
     notificationstatus = NotificationStatus.where(
       victim: current_user,
