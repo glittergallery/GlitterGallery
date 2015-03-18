@@ -11,12 +11,7 @@ class RelationshipsController < ApplicationController
 			respond_to do |format|
 				format.js { render template: "relationships/update_social" }
 			end
-			@notification = Notification.new  actor: current_user, 
-																				action: 3, 
-																				object_type: 2, 
-																				object_id: @user.id
-			@notification.victims << @user
-			@notification.save!
+      notify_users 3, 2, @user.id, [@user]
 		end
 	end
 

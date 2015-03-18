@@ -45,13 +45,7 @@ class ProjectsController < ApplicationController
     if project.save
       unless project.private
         # todo - clean up action ids, numbers makes unreadable
-        notification = Notification.new( actor: current_user,
-                                         action: 4,
-                                         object_type: 0,
-                                         object_id: project.id
-                                       )
-        notification.victims << current_user.followers
-        notification.save!
+        notify_users 4, 0, project.id, current_user.followers
       end
       redirect_to project.urlbase
     else
@@ -64,13 +58,7 @@ class ProjectsController < ApplicationController
     unless @user == current_user
       if ProjectFollower.where(:follower => current_user, :followed_project => @project).empty?
         ProjectFollower.create(:follower => current_user, :followed_project => @project)
-        Notification.create(
-                            :actor => current_user,
-                            :action => 1,
-                            :object_type => 0,
-                            :object_id => @project.id,
-                            :victims => [@project.user]
-                           )
+        notify_users 1, 0, @project.id, [@project.user]
       end
       flash[:notice] = "You're now following #{@user.username}/#{@project.name}"
     else
