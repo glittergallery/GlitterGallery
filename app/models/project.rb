@@ -28,7 +28,7 @@ class Project < ActiveRecord::Base
 
   # We're using name in routes.
   def to_param
-    "#{self.name}"
+    name
   end
 
   # Returns a list of public projects that belong to other users.

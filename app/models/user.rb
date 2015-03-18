@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
 
   # We're using username in routes.
   def to_param
-    "#{self.username}"
+    username
   end
 
   # This is a method within devise - we're overwriting it by saying that

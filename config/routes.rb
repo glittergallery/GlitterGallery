@@ -19,27 +19,27 @@ Glitter::Application.routes.draw do
   post 'glitterposts/:id/edit' => 'glitterposts#update'
   get '/inspire' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
-  get '/:username/:project/tree/:branch/' => 'projects#show_tree_content'
-  get '/:username/:project/tree/:branch/*destination' => 'projects#show_tree_content'
-  get '/:username/:project/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
-  get '/:username/:project/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
-  get '/:username/:project/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
-  get '/:username/:project/createsvg' => 'projects#new_svg'
-  get '/:username/:project/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
-  get '/:username/:project/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
-  delete '/:username/:project/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
-  get '/:username/:project/forkyou' => 'projects#forkyou'
-  get '/:username/:project/pull' => 'projects#pull_request'
-  get '/:username/:project/pull/:pull_id' => 'projects#pull'
-  get '/:username/:project/pull/:pull_id/merge' => 'projects#merge'
-  get '/:username/:project/pull/:pull_id/close' => 'projects#close'
-  get '/:username/:project/pull/:pull_id/open' => 'projects#open'
-  get '/:username/:project/pulls' => 'projects#pulls'
-  get '/:username/:project/issues/new' => 'issues#new'
-  get '/:username/:project/issues' => 'issues#index'
-  post '/:username/:project/issues/new' => 'issues#create'
-  get '/:username/:project/issue/:sub_id' => 'issues#show'
-  post '/:username/:project/issue/:sub_id/close' => 'issues#close'
+  get '/:user_id/:id/tree/:branch/' => 'projects#show_tree_content'
+  get '/:user_id/:id/tree/:branch/*destination' => 'projects#show_tree_content'
+  get '/:user_id/:id/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
+  get '/:user_id/:id/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
+  get '/:user_id/:id/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
+  get '/:user_id/:id/createsvg' => 'projects#new_svg'
+  get '/:user_id/:id/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
+  get '/:user_id/:id/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
+  delete '/:user_id/:id/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
+  get '/:user_id/:id/forkyou' => 'projects#forkyou'
+  get '/:user_id/:id/pull' => 'projects#pull_request'
+  get '/:user_id/:id/pull/:pull_id' => 'projects#pull'
+  get '/:user_id/:id/pull/:pull_id/merge' => 'projects#merge'
+  get '/:user_id/:id/pull/:pull_id/close' => 'projects#close'
+  get '/:user_id/:id/pull/:pull_id/open' => 'projects#open'
+  get '/:user_id/:id/pulls' => 'projects#pulls'
+  get '/:user_id/:id/issues/new' => 'issues#new'
+  get '/:user_id/:id/issues' => 'issues#index'
+  post '/:user_id/:id/issues/new' => 'issues#create'
+  get '/:user_id/:id/issue/:sub_id' => 'issues#show'
+  post '/:user_id/:id/issue/:sub_id/close' => 'issues#close'
 
 
 
@@ -76,29 +76,29 @@ Glitter::Application.routes.draw do
   end
 
   get '/:user_id/:id/:xid' => 'projects#show'
-  get '/:username/:project/:xid/commits/:tree_id' => 'projects#commits'
-  get '/:username/:project/:xid/commit/:tree_id' => 'projects#projectcommit'
-  get '/:username/:project/:xid/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
-  get '/:username/:project/:xid/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
-  get '/:username/:project/:xid/createsvg' => 'projects#new_svg'
-  get '/:username/:project/:xid/newfile' => 'projects#newfile'
-  get '/:username/:project/:xid/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
-  get '/:username/:project/:xid/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
-  delete '/:username/:project/:xid/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
-  post '/:username/:project/:xid/follow' => 'projects#follow'
-  get '/:username/:project/:xid/fork' => 'projects#fork'
-  get '/:username/:project/:xid/forkyou' => 'projects#forkyou'
-  get '/:username/:project/:xid/pull' => 'projects#pull_request'
-  get '/:username/:project/:xid/pull/:pull_id' => 'projects#pull'
-  get '/:username/:project/:xid/pull/:pull_id/merge' => 'projects#merge'
-  get '/:username/:project/:xid/pull/:pull_id/close' => 'projects#close'
-  get '/:username/:project/:xid/pull/:pull_id/open' => 'projects#open'
-  get '/:username/:project/:xid/pulls' => 'projects#pulls'
-  get '/:username/:project/:xid/settings' => 'projects#settings'
-  get '/:username/:project/:xid/issues' => 'issues#index'
-  get '/:username/:project/:xid/issue/:sub_id' => 'issues#show'
-  get '/:username/:project/:xid/issues/new' => 'issues#new'
-  post '/:username/:project/:xid/issues/new' => 'issues#create'
-  post '/:username/:project/:xid/issue/:id/close' => 'issues#close'
+  get '/:user_id/:id/:xid/commits/:tree_id' => 'projects#commits'
+  get '/:user_id/:id/:xid/commit/:tree_id' => 'projects#projectcommit'
+  get '/:user_id/:id/:xid/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
+  get '/:user_id/:id/:xid/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
+  get '/:user_id/:id/:xid/createsvg' => 'projects#new_svg'
+  get '/:user_id/:id/:xid/newfile' => 'projects#newfile'
+  get '/:user_id/:id/:xid/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
+  get '/:user_id/:id/:xid/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
+  delete '/:user_id/:id/:xid/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
+  post '/:user_id/:id/:xid/follow' => 'projects#follow'
+  get '/:user_id/:id/:xid/fork' => 'projects#fork'
+  get '/:user_id/:id/:xid/forkyou' => 'projects#forkyou'
+  get '/:user_id/:id/:xid/pull' => 'projects#pull_request'
+  get '/:user_id/:id/:xid/pull/:pull_id' => 'projects#pull'
+  get '/:user_id/:id/:xid/pull/:pull_id/merge' => 'projects#merge'
+  get '/:user_id/:id/:xid/pull/:pull_id/close' => 'projects#close'
+  get '/:user_id/:id/:xid/pull/:pull_id/open' => 'projects#open'
+  get '/:user_id/:id/:xid/pulls' => 'projects#pulls'
+  get '/:user_id/:id/:xid/settings' => 'projects#settings'
+  get '/:user_id/:id/:xid/issues' => 'issues#index'
+  get '/:user_id/:id/:xid/issue/:sub_id' => 'issues#show'
+  get '/:user_id/:id/:xid/issues/new' => 'issues#new'
+  post '/:user_id/:id/:xid/issues/new' => 'issues#create'
+  post '/:user_id/:id/:xid/issue/:id/close' => 'issues#close'
 
 end

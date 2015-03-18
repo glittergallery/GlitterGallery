@@ -16,7 +16,7 @@ class RelationshipsController < ApplicationController
       @user.save!
       @user.notify_on_follow(current_user)
       respond_to do |format|
-        #TODO: it might be better to show flash messages on successful and
+        # TODO: it might be better to show flash messages on successful and
         # unsuccessful requests.
         format.js { render template: 'relationships/update_social' }
         format.html { redirect_to user_path(@user) }
@@ -25,10 +25,12 @@ class RelationshipsController < ApplicationController
   end
 
   def unfollow
-    relation = Relationship.find_by(follower_id: current_user.id, following_id: @user.id)
+    relation = Relationship.find_by(follower_id: current_user.id,
+                                    following_id: @user.id
+                                    )
     relation.destroy if relation
     respond_to do |format|
-      format.js { render template: "relationships/update_social" }
+      format.js { render template: 'relationships/update_social' }
       format.html { redirect_to user_path(@user) }
     end
   end

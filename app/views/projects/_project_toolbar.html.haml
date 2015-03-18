@@ -39,7 +39,7 @@
         %p
           Settings
   - else
-    - unless ProjectFollower.following? current_user, @project
+    - unless @project.followed_by? current_user
       = link_to follow_user_project_path(@project.user,@project), method: :post do
         %div{ data: "follow" }
           Follow

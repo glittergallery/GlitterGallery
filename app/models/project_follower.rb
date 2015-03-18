@@ -4,30 +4,30 @@ class ProjectFollower < ActiveRecord::Base
   after_create :notify
 
   # Returns true if user is following project, false otherwise.
-	def self.following? user, project
-	  !self.where(:follower => user, :followed_project => project).empty?
-	end
+  def self.following?(user, project)
+    !find_by(follower: user, followed_project: project).nil?
+  end
 
   # Makes user a follower of project.
-	def self.make_follow user, project
-	  self.find_or_create_by(:follower => user, :followed_project => project)
-	end
+  def self.make_follow(user, project)
+    find_or_create_by(follower: user, followed_project: project)
+  end
 
-	# Unfollows a user from a project, returns true if successful, false otherwise.
-	def self.remove_follow user, project
-	  rel = self.find_by(follower: user, followed_project: project)
-	  return false unless rel
-	  !!rel.destroy
-	end
+  # Makes user unfollow a project. Returns true if successful, false otherwise.
+  def self.remove_follow(user, project)
+    rel = find_by(follower: user, followed_project: project)
+    return false unless rel
+    !rel.destroy.nil?
+  end
 
   # Create notification.
-	def notify
-	  Notification.create(
+  def notify
+    Notification.create(
       actor: follower,
       action: 1,
       object_type: 0,
       object_id: followed_project.id,
       victims: [followed_project.user]
     )
-	end
+  end
 end
