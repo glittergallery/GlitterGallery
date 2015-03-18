@@ -38,13 +38,9 @@ class ProjectsController < ApplicationController
   def create
     project = Project.new project_params
     project.user_id = current_user.id
-    if params[:commit] == 'Private'
-      project.private = true
-      project.uniqueurl = SecureRandom.hex
-    end
+    project.private = true if params[:commit] == 'Private'
     if project.save
       unless project.private
-        # TODO: clean up action ids, numbers makes unreadable
         notification = Notification.new(
           actor: current_user,
           action: 4,
@@ -63,8 +59,7 @@ class ProjectsController < ApplicationController
 
   def follow
     if @user != current_user
-      if ProjectFollower.where(follower: current_user,
-                               followed_project: @project).empty?
+      unless @project.followed_by?(current_user)
         ProjectFollower.create(
           follower: current_user,
           followed_project: @project
@@ -343,10 +338,10 @@ class ProjectsController < ApplicationController
 
   def return_context
     @user = User.find_by username: params[:username]
-    render_404 if @user.blank?
+    render_404 && return if @user.blank?
     @project = Project.with_deleted.find_by user_id: @user.id,
                                             name: params[:project]
-    render_404 if @project.blank?
+    render_404 && return if @project.blank?
     return unless @project.deleted?
     flash[:alert] = 'The project you requested had been deleted.'
     redirect_to "/#{@user.username}" # TODO: use named route

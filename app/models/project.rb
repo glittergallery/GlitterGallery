@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   after_create :set_path, :init
   after_destroy :deletefiles
+  before_save :set_uniqueurl
 
   belongs_to :user
   has_many :project_followers, dependent: :destroy,
@@ -28,6 +29,14 @@ class Project < ActiveRecord::Base
   # Returns a list of public projects that belong to other users.
   def self.inspiring_projects_for(user_id)
     Project.where.not(private: true, user_id: user_id)
+  end
+
+  def set_uniqueurl
+    self.uniqueurl ||= SecureRandom.hex if private
+  end
+
+  def followed_by?(user)
+    ProjectFollower.where(follower: user, followed_project: self).exists?
   end
 
   def last_updated

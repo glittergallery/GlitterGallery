@@ -5,6 +5,8 @@ class Notification < ActiveRecord::Base
                      class_name: 'User',
                      foreign_key: 'victim_id'
 
+  # TODO: clean up action ids, numbers makes unreadable
+
   # This class has the following information -
   # Actor - the person responsible for the action
   # Action -
