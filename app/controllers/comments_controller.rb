@@ -13,16 +13,15 @@ class CommentsController < ApplicationController
       @comment = Comment.new comment_params
       @comment.user = current_user                      
       if @comment.save
-        @comments = find_comments
+        @comments = find_project_comments
         @project = Project.find_by(name: params[:comment][:project_name])
         if params[:comment][:polycomment_type] == 'project'
           action = 0
         elsif params[:comment][:polycomment_type] == 'issue'
           action = 5
         end
-        victims = @project.followers + [@project.user]
-        victims.delete(@comment.user)
-        notify_users(action, 1, @comment.id, victims)   
+        victims = @project.followers + [@project.user] - [@comment.user]
+        notify_users action, 1, @comment.id, victims   
         respond_to do |format|
           format.html { redirect_to :back }
           format.js {}
@@ -31,6 +30,8 @@ class CommentsController < ApplicationController
         redirect_to :back
         flash[:alert] = 'Something went wrong, try reposting your comment.'
       end
+    else
+      redirect_to root_url
     end
   end
 
@@ -55,13 +56,19 @@ class CommentsController < ApplicationController
       params.require(:comment).permit(:polycomment_id,:polycomment_type,:issue,:body)
     end
 
+    #to check if polycomment object exists or not
     def polycomment_exists
-      polycomment = params[:comment][:polycomment_type]
-      value = params[:comment][:polycomment_id]
-      !polycomment.classify.constantize.where(id: value).nil? #returns false if object is nil
+      if params[:comment][:polycomment_type] == "blob" || "commit" || "file"
+        return true
+      else
+        polycomment = params[:comment][:polycomment_type]
+        value = params[:comment][:polycomment_id]
+        !polycomment.classify.constantize.where(id: value).nil? #returns false if object is nil
+      end
     end
-
-    def find_comments
+    
+    #return all the comments associated with polycomment object
+    def find_project_comments
       @comments = Comment.where(polycomment_type: params[:comment][:polycomment_type],
                               polycomment_id: params[:comment][:polycomment_id])
       @comments = @comments.paginate(page: 1, per_page: 10)
