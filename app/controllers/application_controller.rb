@@ -45,17 +45,8 @@ class ApplicationController < ActionController::Base
 
   def satellite_commit(repo, file, _contents, message)
     repo.index.add file
-    options = {}
-    author = { email: current_user.email,
-               name: current_user.username,
-               time: Time.now
-             }
-    options[:author] = author
-    options[:committer] = author
-    options[:tree] = repo.index.write_tree repo
-    options[:update_ref] = 'HEAD'
-    options[:message] = message
-    options[:parents] = repo.empty? ? [] : [repo.head.target].compact
+    author = current_user.git_author_params
+    options = rugged_commit_options(author, repo, message)
     commit_id = Rugged::Commit.create repo, options
     repo.index.write
     commit_id
@@ -63,19 +54,21 @@ class ApplicationController < ActionController::Base
 
   def satellite_delete(repo, file_name)
     repo.index.remove file_name
-    options = {}
-    author = { email: current_user.email,
-               name: current_user.username,
-               time: Time.now
-             }
-    options[:author] = author
-    options[:committer] = author
-    options[:tree] = repo.index.write_tree repo
-    options[:update_ref] = 'HEAD'
-    options[:message] = "Deleted #{file_name}"
-    options[:parents] = repo.empty? ? [] : [repo.head.target].compact
+    author = current_user.git_author_params
+    options = rugged_commit_options(author, repo, "Deleted #{file_name}")
     Rugged::Commit.create repo, options
     repo.index.write
+  end
+
+  def rugged_commit_options(author, repo, message)
+    {
+      author: author,
+      committer: author,
+      tree: repo.index.write_tree(repo),
+      update_ref: 'HEAD',
+      message: message,
+      parents: repo.empty? ? [] : [repo.head.target].compact
+    }
   end
 
   def pg(things, num)

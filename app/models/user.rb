@@ -53,4 +53,12 @@ class User < ActiveRecord::Base
                                         victims: [self]
     @notification.save!
   end
+
+  def git_author_params
+    {
+      email: email,
+      name: username,
+      time: Time.now
+    }
+  end
 end
