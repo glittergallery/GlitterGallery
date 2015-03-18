@@ -44,4 +44,13 @@ class User < ActiveRecord::Base
   def follow?(user)
     relationships.find_by_following_id(user)
   end
+
+  def notify_on_follow(user)
+    @notification = Notification.create actor: user,
+                                        action: 3, # Follow
+                                        object_type: 2, # User
+                                        object_id: id,
+                                        victims: [self]
+    @notification.save!
+  end
 end

@@ -1,35 +1,33 @@
 class RelationshipsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
+  before_action :identify_user
+
+  def identify_user
+    @user = User.where(username: params[:username]).first
+    # Check for nil user and user trying to follow/unfollow herself
+    redirect_to '/' if @user.nil? || current_user == @user
+  end
 
   def follow
-    @user = User.where(username: params[:username]).first
-    if @user.nil? || current_user == @user \
-      || @user.followers.include?(current_user)
+    if @user.followers.include?(current_user)
       redirect_to '/'
     else
       @user.followers << current_user
       @user.save!
+      @user.notify_on_follow(current_user)
       respond_to do |format|
         format.js { render template: 'relationships/update_social' }
       end
-      @notification = Notification.new  actor: current_user,
-                                        action: 3,
-                                        object_type: 2,
-                                        object_id: @user.id
-      @notification.victims << @user
-      @notification.save!
     end
   end
 
   def unfollow
-    @user = User.where(username: params[:username]).first
-    if !@user.nil? && current_user != @user
-      relation = Relationship.where(
-        follower_id: current_user.id,
-        following_id: @user.id
-      ).first
-      relation.destroy
-    end
+    relation = Relationship.where(
+      follower_id: current_user.id,
+      following_id: @user.id
+    ).first
+    relation.destroy
+
     respond_to do |format|
       format.js { render template: 'relationships/update_social' }
     end
