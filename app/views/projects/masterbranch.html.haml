@@ -16,8 +16,9 @@
       %div.photo
         %p{title: params[:image_name]}
           = image_tag @imageurl.gsub("public","")
-        %form{ action: File.join(params[:image_name], "update")}
-          %input{ type: "submit", value: "Update"}
+        - if @project.user_id == @current_user.id
+          %form{ action: File.join(params[:image_name], "update")}
+            %input{ type: "submit", value: "Update"}
 
     %section.comments
       = render partial: "comments/comment", collection: @comments
