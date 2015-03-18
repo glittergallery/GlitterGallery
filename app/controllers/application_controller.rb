@@ -10,9 +10,7 @@ class ApplicationController < ActionController::Base
   private
 
   def return_current_user_projects
-    if user_signed_in?
-      @projects = current_user.projects
-    end
+    @projects = current_user.projects if user_signed_in?
   end
 
   # Returns an array containing the configured width and height for thumbnails.
@@ -22,24 +20,31 @@ class ApplicationController < ActionController::Base
 
   # Generates a thumbnail for a commit in the appropriate place.
   def generate_thumbnail(project, imagefile, commit_id)
-    image = Magick::Image.read("#{project.data_path}/satellite/#{imagefile}").first
-    image.scale(thumbnail_size[0],thumbnail_size[1]).write project.thumbnail_for(commit_id,true)
+    image = Magick::Image.read(
+      "#{project.data_path}/satellite/#{imagefile}"
+    ).first
+    image.scale(
+      thumbnail_size[0],
+      thumbnail_size[1]
+    ).write project.thumbnail_for(commit_id, true)
   end
 
   def image_commit(project, imagefile)
     if user_signed_in?
-      commit_id = satellite_commit project.satelliterepo,
-                       imagefile.original_filename,
-                       imagefile.read,
-                       "Add new file #{imagefile.original_filename}."
+      commit_id = satellite_commit(
+        project.satelliterepo,
+        imagefile.original_filename,
+        imagefile.read,
+        "Add new file #{imagefile.original_filename}."
+      )
       generate_thumbnail project, imagefile.original_filename, commit_id
       project.pushtobare
     end
   end
 
-  #TODO - refactor satellite_commit and satellite_delete
+  # TODO: refactor satellite_commit and satellite_delete
 
-  def satellite_commit(repo, file, contents, message)
+  def satellite_commit(repo, file, _contents, message)
     repo.index.add file
     options = {}
     author = { email: current_user.email,
@@ -75,7 +80,7 @@ class ApplicationController < ActionController::Base
   end
 
   def pg(things, num)
-    return things.paginate(page: params[:page], per_page: num) unless things.nil?
+    things.paginate(page: params[:page], per_page: num) unless things.nil?
   end
 
   protected
@@ -84,17 +89,17 @@ class ApplicationController < ActionController::Base
     registration_params = [:email, :password, :password_confirmation]
 
     if params[:action] == 'update'
-      devise_parameter_sanitizer.for(:account_update) {
-        |u| u.permit(registration_params << :name << :current_password)
-      }
+      devise_parameter_sanitizer.for(:account_update) do |u|
+        u.permit(registration_params << :name << :current_password)
+      end
     elsif params[:action] == 'create'
-      devise_parameter_sanitizer.for(:sign_up) {
-        |u| u.permit(registration_params << :username)
-      }
+      devise_parameter_sanitizer.for(:sign_up) do |u|
+        u.permit(registration_params << :username)
+      end
     end
   end
 
-  def after_sign_in_path_for(resource)
+  def after_sign_in_path_for(_)
     dashboard_path
   end
 
