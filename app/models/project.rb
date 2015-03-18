@@ -30,7 +30,6 @@ class Project < ActiveRecord::Base
   def self.inspiring_projects_for(user_id)
     Project.where.not(private: true, user_id: user_id)
   end
-<<<<<<< HEAD
 
   def set_uniqueurl
     self.uniqueurl ||= SecureRandom.hex if private
@@ -39,8 +38,6 @@ class Project < ActiveRecord::Base
   def followed_by?(user)
     ProjectFollower.where(follower: user, followed_project: self).exists?
   end
-=======
->>>>>>> resolved #151
 
   def last_updated
     repo = barerepo
