@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150312234604) do
+ActiveRecord::Schema.define(version: 20150318141041) do
 
   create_table "comments", force: true do |t|
     t.text     "body"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20150312234604) do
     t.integer  "type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sub_id"
   end
 
   create_table "notification_statuses", force: true do |t|

@@ -1,5 +1,7 @@
 class Issue < ActiveRecord::Base
-  # This is to avoid conflict with the :type attribute
+	after_create :set_sub_id
+
+	# This is to avoid conflict with the :type attribute
   self.inheritance_column = nil
 
   belongs_to :user
@@ -49,4 +51,9 @@ class Issue < ActiveRecord::Base
   def self.find_from_project(project, sub_id)
     Issue.find(project.issue_ids[sub_id.to_i - 1])
   end
+
+	def set_sub_id
+		current_id = project.issues.count
+		update_attribute(:sub_id, current_id)
+	end
 end
