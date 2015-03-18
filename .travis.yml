@@ -6,5 +6,5 @@ rvm:
 before_script:
   - RAILS_ENV=test bundle exec rake --trace db:migrate
 script:
-  - bundle exec rubocop --only-guide-cops app/
+  - bundle exec rubocop --only-guide-cops app/models app/controllers app/mailers
   - RAILS_ENV=test bundle exec rspec
