@@ -17,20 +17,8 @@ class CommentsController < ApplicationController
       )
       @comments = @comments.paginate(page: 1, per_page: 10)
       project = Project.find_by(name: params[:comment][:project_name])
-      if params[:comment][:polycomment_type] == 'project'
-        action = 0
-      elsif params[:comment][:polycomment_type] == 'issue'
-        action = 5
-      end
-      victims = project.followers + [project.user]
-      victims.delete(@comment.user)
-      Notification.create(
-        actor: current_user,
-        action: action, # Commented on either Project or Issue
-        object_type: 1, # Comment
-        object_id: @comment.id,
-        victims: victims
-      )
+
+      notify_followers(project, @comment)
 
       respond_to do |format|
         format.html { redirect_to :back }
@@ -40,6 +28,23 @@ class CommentsController < ApplicationController
       redirect_to :back
       flash[:alert] = 'Something went wrong, try reposting your comment.'
     end
+  end
+
+  def notify_followers(project, comment)
+    if comment.polycomment_type == 'project'
+      action = 0
+    elsif comment.polycomment_type == 'issue'
+      action = 5
+    end
+    victims = project.followers + [project.user]
+    victims.delete(comment.user)
+    Notification.create(
+      actor: current_user,
+      action: action, # Commented on either Project or Issue
+      object_type: 1, # Comment
+      object_id: comment.id,
+      victims: victims
+    )
   end
 
   def destroy
