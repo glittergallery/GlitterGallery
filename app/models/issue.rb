@@ -26,6 +26,10 @@ class Issue < ActiveRecord::Base
     { 0 => 'OPEN', 1 => 'CLOSED' }
   end
 
+  def friendly_text
+    "Issue ##{id} of #{project.name}"
+  end
+
   def status_text
     Issue.status_keys[status]
   end

@@ -30,41 +30,38 @@ class Notification < ActiveRecord::Base
   handle_asynchronously :send_emails
 
   def messageverb
-    if action == 0 || action == 5
-      return ' commented on '
-    elsif action || 1 || action || 3
-      return ' followed '
-    elsif action == 2
-      return ' forked '
-    elsif action == 4
-      return ' created '
+    case action
+    when 0, 5
+      ' commented on '
+    when 1, 3
+      ' followed '
+    when 2
+      ' forked '
+    when 4
+      ' created '
     end
   end
 
   def objectname
-    if action == 0
-      comment = Comment.find(object_id)
-      return Project.find(comment.polycomment_id).name
-    elsif action == 5
-      comment = Comment.find(object_id)
-      issue = Issue.find(comment.polycomment_id)
-      return "Issue ##{issue.id} of #{issue.project.name}"
-    elsif action == 3
+    case action
+    when 0
+      return Project.find(Comment.find(object_id).polycomment_id).name
+    when 5
+      return Issue.find(Comment.find(object_id).polycomment_id).friendly_text
+    when 3
       return User.find(object_id).username
-    elsif action == 1 || action == 2 || action == 4
+    when 1, 2, 4
       return Project.find(object_id).name
     end
   end
 
   def url
-    if action == 0
-      # TODO: link directly to a comment using a hash in the url.
-      comment = Comment.find(object_id)
-      return Project.find(comment.polycomment_id).urlbase
-    elsif action == 5
-      comment = Comment.find(object_id)
-      return Issue.find(comment.polycomment_id).show_url
-    elsif action == 1 || action == 2 || action == 4
+    case action
+    when 0 # TODO: link directly to a comment
+      return Project.find(Comment.find(object_id).polycomment_id).urlbase
+    when 5
+      return Issue.find(Comment.find(object_id).polycomment_id).show_url
+    when 1, 2, 4
       return Project.find(object_id).urlbase
     else
       return "/#{actor.username}"
