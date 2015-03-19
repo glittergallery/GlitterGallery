@@ -9,8 +9,7 @@ class ProjectsController < ApplicationController
                                               :pull
                                               ]
 
-  before_filter :return_context, except: [:file_update,
-                                          :new,
+  before_filter :return_context, except: [:new,
                                           :create,
                                           :destroy,
                                           :index,
@@ -115,36 +114,6 @@ class ProjectsController < ApplicationController
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
-  def supported_file_ext
-    ['.svg', '.png', '.jpg']
-  end
-
-  def show_tree_content
-    barerepo = @project.barerepo
-    branch = params[:branch] || 'master'
-    # TODO: generalize for any branch -now it'll take anything
-    @destination = params[:destination] || '/'
-    tree = barerepo.lookup tree_at barerepo.last_commit.oid, @destination
-    # TODO: we can possibly merge @images & @inner_dirs,
-    #       but that will trouble during thumbnails for blobs
-    @images = {}
-    @inner_dirs = {}
-    tree.each_blob do |blob|
-      blob_name = blob[:name]
-      blob_link = "#{@project.urlbase}/blob/master/" +
-                  "#{@destination}/#{blob[:name]}"
-      next unless supported_file_ext.include? File.extname(blob[:name]).downcase
-      @images[blob_name] = blob_link.gsub('///', '/')
-    end
-
-    tree.each_tree do |dir|
-      dir_parent = @destination
-      dir_name = dir[:name]
-      @inner_dirs[dir_name] = File.join @project.urlbase, 'tree', branch,
-                                        dir_parent, dir_name
-    end
-  end
-
   def show
     @images = []
     barerepo = @project.barerepo
@@ -170,54 +139,75 @@ class ProjectsController < ApplicationController
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
-  # TODO: rename this as log, reflect everywhere
-  # TODO: take different logging params, such as:
-  #       oneline (only the commit messages/author)
-  #       status (files added/removed in each commit)
-  #       full (list all files in that commit as they list)
 
   # GET /username/project/network
   def network
     @root = @project.root
   end
 
+  # TODO: rename this as log, reflect everywhere
+  # TODO: take different logging params, such as:
+  #       oneline (only the commit messages/author)
+  #       status (files added/removed in each commit)
+  #       full (list all files in that commit as they list)
+
+  # GET /commits/branch
   def commits
-    @commits = []
-    tree = 'master' || params[:tree]
-    unless @project.barerepo.empty?
-      walker = Rugged::Walker.new @project.barerepo
-      walker.push @project.barerepo.branches[tree].target
-      walker.each { |c| @commits.push(c) }
+    branch = params[:branch] || 'master'
+    if @project.barerepo.empty?
+      flash[:notice] = 'This project has no commits.'
+    else
+      @commits = Rugged::Walker.new @project.barerepo
+      @commits.push @project.barerepo.branches[branch].target
     end
-    @comments = Comment.where(
-      polycomment_type: 'commit',
-      polycomment_id: params[:tree_id]
-    )
-    @comments = pg @comments, 10
   end
 
-  # TODO: rename this as commit, and change url tree/master/commit/oid
-  def projectcommit
+  # GET /commit/commit_id
+  def commit
     @images = []
+    commit = @project.commit params[:commit_id]
+    redirect_to(user_project_path(@project.user, @project)) unless commit
     barerepo = @project.barerepo
-    unless barerepo.empty?
-      tree = barerepo.lookup params[:tree_id]
-      tree.each do |blob|
-        link = File.join @project.urlbase, 'master', blob[:name]
-        data = barerepo.read(blob[:oid]).data
-        @images.push({
-          link: link,
-          data: data,
-          name: blob[:name]
-        })
-      end
+    barerepo.diff(commit.parents.first, commit).deltas.each do |delta|
+      link = File.join @project.urlbase, 'master', delta.new_file[:path]
+      data = barerepo.read(delta.new_file[:oid]).data
+      @images.push({
+        link: link,
+        data: data,
+        name: delta.new_file[:path]
+      })
     end
     @comments = Comment.where(
       polycomment_type: 'commit',
-      polycomment_id: params[:tree_id]
+      polycomment_id: commit.oid
     )
     @comment = Comment.new
-    @id = params[:tree_id]
+    @id = commit.oid
+    @tree = commit.tree_id
+  end
+
+  # GET /tree/tree_id
+  def tree
+    @images = []
+    tree = @project.tree params[:tree_id]
+    redirect_to(user_project_path(@project.user, @project)) unless tree
+    barerepo = @project.barerepo
+    tree.each do |blob|
+      link = File.join @project.urlbase, 'master', blob[:name]
+      data = barerepo.read(blob[:oid]).data
+      @images.push({
+        link: link,
+        data: data,
+        name: blob[:name]
+      })
+    end
+    @comments = Comment.where(
+      polycomment_type: 'commit',
+      polycomment_id: tree.oid
+    )
+    @comment = Comment.new
+    @id = tree.oid
+    render 'commit'
   end
 
   # Given a filename, view the state of the file in master.
@@ -267,12 +257,11 @@ class ProjectsController < ApplicationController
 
   def file_upload
     if params[:file]
-      params[:file].each do |f|
-        tmp = f.tempfile
-        file = File.join @project.satellitedir, f.original_filename
-        FileUtils.cp tmp.path, file
-        image_commit @project, f
-        flash[:notice] = 'Your new image was added successfully! How sparkly!'
+      if images_commit @project, params[:file]
+        sentence = view_context.pluralize(params[:file].size, 'image')
+        flash[:notice] = "Successfully added #{sentence}! How sparkly!"
+      else
+        flash[:alert] = "An error prevented your #{sentence} from being saved"
       end
     else
       flash[:alert] = 'No image selected!'
@@ -281,7 +270,6 @@ class ProjectsController < ApplicationController
   end
 
   def file_update
-    @project = Project.find params[:id]
     tmp = params[:file].tempfile
     file = File.join @project.satellitedir, params[:image_name]
     FileUtils.cp tmp.path, file

@@ -148,17 +148,55 @@ feature "Projects" do
 
     scenario "User sees logs for a project" do
       click_link "Log"
-      expect(page).to have_link "Add new file happypanda.png"
+      expect(page).to have_link "Add 1 image: happypanda.png"
       last_commit_id = Project.last.barerepo.head.target_id
       expect(page).to have_selector("img[src$='#{last_commit_id}']")
     end
 
     scenario "User comments on a specific commit" do
       click_link "Log"
-      click_link "Add new file happypanda.png"
+      click_link "Add 1 image: happypanda.png"
       fill_in "comment_body", :with => "test comment"
       click_button "Create Comment"
       expect(find('.comments')).to have_content("test comment")
+    end
+
+    describe "After more images upload" do
+      before :each do
+        page.attach_file("file[]",['spec/factories/files/naruto.png','spec/factories/files/1.png'])
+        click_button "Upload file!"
+        click_link "Log"
+      end
+
+      scenario "User sees multiple images uploaded together as one commit" do
+        expect(page).to have_content("Add 2 images: 1.png and naruto.png")
+      end
+
+      scenario "User sees only files changed in a commit" do
+        click_link "Add 2 images: 1.png and naruto.png"
+        expect(page).to have_content("naruto.png")
+        expect(page).to have_content("1.png")
+        expect(page).to have_no_content("happypanda.png")
+        click_link "Log"
+        click_link "Add 1 image: happypanda.png"
+        expect(page).to have_content("happypanda.png")
+        expect(page).to have_no_content("naruto.png")
+        expect(page).to have_no_content("1.png")
+      end
+
+      scenario "User sees all files at a certain commit through tree" do
+        click_link "Add 1 image: happypanda.png"
+        click_button "Browse files at this commit"
+        expect(page).to have_content("happypanda.png")
+        expect(page).to have_no_content("naruto.png")
+        expect(page).to have_no_content("1.png")
+        click_link "Log"
+        click_link "Add 2 images: 1.png and naruto.png"
+        click_button "Browse files at this commit"
+        expect(page).to have_content("naruto.png")
+        expect(page).to have_content("1.png")
+        expect(page).to have_content("happypanda.png")
+      end
     end
   end
 end

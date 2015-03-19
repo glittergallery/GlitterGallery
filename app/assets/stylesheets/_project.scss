@@ -89,3 +89,10 @@
 .deleted_node {
   color: #7F0000;
 }
+
+.button_to {
+  input[type="submit"]{
+    @include center;
+    width: 40%;
+  }
+}

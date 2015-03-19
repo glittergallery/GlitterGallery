@@ -16,16 +16,11 @@ Glitter::Application.routes.draw do
   resources :notifications, only: [:index,:show]
 
 
-  post 'glitterposts/:id/edit' => 'glitterposts#update'
   get '/inspire' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
-  get '/:user_id/:id/tree/:branch/' => 'projects#show_tree_content'
-  get '/:user_id/:id/tree/:branch/*destination' => 'projects#show_tree_content'
   get '/:user_id/:id/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
   get '/:user_id/:id/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
   get '/:user_id/:id/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
-  get '/:user_id/:id/createsvg' => 'projects#new_svg'
-  get '/:user_id/:id/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
   get '/:user_id/:id/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
   delete '/:user_id/:id/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
   get '/:user_id/:id/forkyou' => 'projects#forkyou'
@@ -55,10 +50,10 @@ Glitter::Application.routes.draw do
     resources :projects, except: [:index], path: '/' do
       member do
         scope "(:xid)" do
-          get 'projects/:id/invite.xml' => 'projects#invite'
           get :newfile
-          get :commits
-          get 'commit/:tree_id' => 'projects#projectcommit'
+          get 'commits(/:branch)' => 'projects#commits', as: :commits
+          get 'commit/:commit_id' => 'projects#commit', as: :commit
+          get 'tree(/:tree_id)' => 'projects#tree', as: :tree
           post :fork
           post :follow
           delete :unfollow
