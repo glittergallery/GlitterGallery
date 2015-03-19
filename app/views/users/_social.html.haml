@@ -1,20 +1,16 @@
 %div
   %div.active
-    - if current_user.nil? 
-      %a{href: "/#{@user.username}/follow"}
+    - if current_user.nil? || !current_user.follow?(@user)
+      =link_to follow_user_path(@user), method: :post, remote: false do
         %p Follow
         %p= @user.username
-    - elsif current_user.follow? @user
-      %a{href: "/#{@user.username}/unfollow", "data-remote" => true}
+    - else
+      =link_to unfollow_user_path(@user), method: :delete, remote: false do
         %p Unfollow
-        %p= @user.username
-    -else
-      %a{href: "/#{@user.username}/follow", "data-remote" => true}
-        %p Follow
         %p= @user.username
 
   %div
-    %a{href: "#"} 
+    %a{href: "#"}
       %p
         #{@user.followers.count}
     %a{href: "#"}

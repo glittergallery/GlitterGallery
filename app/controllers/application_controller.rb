@@ -33,22 +33,32 @@ class ApplicationController < ActionController::Base
     ).write project.thumbnail_for(commit_id, true)
   end
 
-  def image_commit(project, imagefile)
+  def images_commit(project, image_files)
     return unless user_signed_in?
     commit_id = satellite_commit(
       project.satelliterepo,
-      imagefile.original_filename,
-      imagefile.read,
-      "Add new file #{imagefile.original_filename}."
+      image_files,
+      get_message(image_files)
     )
-    generate_thumbnail project, imagefile.original_filename, commit_id
+    generate_thumbnail project, image_files.last.original_filename, commit_id
     project.pushtobare
+  end
+
+  def get_message(image_files)
+    names = image_files.map { |i| i.original_filename}
+    "Add #{view_context.pluralize(image_files.size, 'image')}:" \
+    " #{names.to_sentence}"
   end
 
   # TODO: refactor satellite_commit and satellite_delete
 
-  def satellite_commit(repo, file, _contents, message)
-    repo.index.add file
+  def satellite_commit(repo, files, message)
+    files.each do |f|
+      tmp = f.tempfile
+      file = File.join @project.satellitedir, f.original_filename
+      FileUtils.cp tmp.path, file
+      repo.index.add f.original_filename
+    end
     author = current_user.git_author_params
     options = rugged_commit_options(author, repo, message)
     commit_id = Rugged::Commit.create repo, options

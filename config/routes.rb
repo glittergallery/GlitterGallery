@@ -4,9 +4,10 @@ Glitter::Application.routes.draw do
   devise_scope :user do
     root to: "devise/sessions#new"
   end
+
   match 'auth/:provider/callback' => "identities#create", :via => [:get,:post]
   match 'auth/failure' => "identities#failed_to_authenticate", :via => [:get,:post]
-  
+
 
   resources :projects
   resources :identities, only: [:destroy,:index]
@@ -14,81 +15,85 @@ Glitter::Application.routes.draw do
   resources :glitterposts
   resources :notifications, only: [:index,:show]
 
-  
-  post 'glitterposts/:id/edit' => 'glitterposts#update'
+
   get '/inspire' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
-  get '/:username/follow' => 'relationships#follow'
-  get '/:username/unfollow' => 'relationships#unfollow'
-  get '/:username' => 'users#show'
-  get '/:username/projects' => 'projects#user_show'
-  get '/:username/projects/following' => 'users#list_followed_projects', :as => :followed_projects
-  get '/:username/:project' => 'projects#show'
-  get '/:username/:project/commits' => 'projects#commits'
-  get '/:username/:project/commit/:tree_id' => 'projects#projectcommit'
-  get '/:username/:project/tree/:branch/' => 'projects#show_tree_content'
-  get '/:username/:project/tree/:branch/*destination' => 'projects#show_tree_content'
-  get '/:username/:project/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
-  get '/:username/:project/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
-  get '/:username/:project/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
-  get '/:username/:project/createsvg' => 'projects#new_svg'
-  get '/:username/:project/newfile' => 'projects#newfile'
-  get '/:username/:project/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
-  get '/:username/:project/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
-  delete '/:username/:project/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
-  post '/:username/:project/follow' => 'projects#follow'
-  get '/:username/:project/fork' => 'projects#fork'
-  get '/:username/:project/forkyou' => 'projects#forkyou'
-  get '/:username/:project/pull' => 'projects#pull_request'
-  get '/:username/:project/pull/:pull_id' => 'projects#pull'
-  get '/:username/:project/pull/:pull_id/merge' => 'projects#merge'
-  get '/:username/:project/pull/:pull_id/close' => 'projects#close'
-  get '/:username/:project/pull/:pull_id/open' => 'projects#open'
-  get '/:username/:project/pulls' => 'projects#pulls'
-  get '/:username/:project/settings' => 'projects#settings'
-  get '/:username/:project/network' => 'projects#network'
-  get '/:username/:project/issues/new' => 'issues#new'
-  get '/:username/:project/issues' => 'issues#index'
-  post '/:username/:project/issues/new' => 'issues#create'
-  get '/:username/:project/issue/:sub_id' => 'issues#show'
-  post '/:username/:project/issue/:sub_id/close' => 'issues#close'
+  get '/:user_id/:id/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
+  get '/:user_id/:id/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
+  get '/:user_id/:id/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
+  get '/:user_id/:id/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
+  delete '/:user_id/:id/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
+  get '/:user_id/:id/forkyou' => 'projects#forkyou'
+  get '/:user_id/:id/pull' => 'projects#pull_request'
+  get '/:user_id/:id/pull/:pull_id' => 'projects#pull'
+  get '/:user_id/:id/pull/:pull_id/merge' => 'projects#merge'
+  get '/:user_id/:id/pull/:pull_id/close' => 'projects#close'
+  get '/:user_id/:id/pull/:pull_id/open' => 'projects#open'
+  get '/:user_id/:id/pulls' => 'projects#pulls'
+  get '/:user_id/:id/issues/new' => 'issues#new'
+  get '/:user_id/:id/issues' => 'issues#index'
+  post '/:user_id/:id/issues/new' => 'issues#create'
+  get '/:user_id/:id/issue/:sub_id' => 'issues#show'
+  post '/:user_id/:id/issue/:sub_id/close' => 'issues#close'
 
-  get '/:username/:project/:xid' => 'projects#show'
-  get '/:username/:project/:xid/commits/:tree_id' => 'projects#commits'
-  get '/:username/:project/:xid/commit/:tree_id' => 'projects#projectcommit'
-  get '/:username/:project/:xid/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
-  get '/:username/:project/:xid/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
-  get '/:username/:project/:xid/createsvg' => 'projects#new_svg'
-  get '/:username/:project/:xid/newfile' => 'projects#newfile'
-  get '/:username/:project/:xid/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
-  get '/:username/:project/:xid/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
-  delete '/:username/:project/:xid/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
-  post '/:username/:project/:xid/follow' => 'projects#follow'
-  get '/:username/:project/:xid/fork' => 'projects#fork'
-  get '/:username/:project/:xid/forkyou' => 'projects#forkyou'
-  get '/:username/:project/:xid/pull' => 'projects#pull_request'
-  get '/:username/:project/:xid/pull/:pull_id' => 'projects#pull'
-  get '/:username/:project/:xid/pull/:pull_id/merge' => 'projects#merge'
-  get '/:username/:project/:xid/pull/:pull_id/close' => 'projects#close'
-  get '/:username/:project/:xid/pull/:pull_id/open' => 'projects#open'
-  get '/:username/:project/:xid/pulls' => 'projects#pulls'
-  get '/:username/:project/:xid/settings' => 'projects#settings'
-  get '/:username/:project/:xid/issues' => 'issues#index'
-  get '/:username/:project/:xid/issue/:sub_id' => 'issues#show'
-  get '/:username/:project/:xid/issues/new' => 'issues#new'
-  post '/:username/:project/:xid/issues/new' => 'issues#create'
-  post '/:username/:project/:xid/issue/:id/close' => 'issues#close'
 
-  
-  resources :projects do
+
+  resources :users, only: [:show], path: '/' do
     member do
-      get 'projects/:id/invite.xml' => 'projects#invite'
-      post :file_upload
-      post :file_update
-      post :handle_pull_request
-      post :create_svg, :as => :create_svg
-      post :edit_svg, :as => :edit_svg
-      post :update_svg, :as => :update_svg
+      post 'follow' => 'relationships#follow'
+      delete 'unfollow' => 'relationships#unfollow'
+      get 'projects' => 'projects#index'
+      scope 'followed', as: :followed do
+        get 'projects' => 'projects#followed_index'
+      end
     end
-  end 
+    resources :projects, except: [:index], path: '/' do
+      member do
+        scope "(:xid)" do
+          get :newfile
+          get 'commits(/:branch)' => 'projects#commits', as: :commits
+          get 'commit/:commit_id' => 'projects#commit', as: :commit
+          get 'tree(/:tree_id)' => 'projects#tree', as: :tree
+          post :fork
+          post :follow
+          delete :unfollow
+          get :settings
+          get :network
+          post :file_upload
+          post :file_update
+          post :handle_pull_request
+          post :create_svg, :as => :create_svg
+          post :edit_svg, :as => :edit_svg
+          post :update_svg, :as => :update_svg
+        end
+      end
+    end
+  end
+
+  get '/:user_id/:id/:xid' => 'projects#show'
+  get '/:user_id/:id/:xid/commits/:tree_id' => 'projects#commits'
+  get '/:user_id/:id/:xid/commit/:tree_id' => 'projects#projectcommit'
+  get '/:user_id/:id/:xid/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
+  get '/:user_id/:id/:xid/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
+  get '/:user_id/:id/:xid/createsvg' => 'projects#new_svg'
+  get '/:user_id/:id/:xid/newfile' => 'projects#newfile'
+  get '/:user_id/:id/:xid/master/:image_name/edit' => 'projects#edit_svg', :image_name => /[^\/]*/
+  get '/:user_id/:id/:xid/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
+  delete '/:user_id/:id/:xid/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
+  post '/:user_id/:id/:xid/follow' => 'projects#follow'
+  get '/:user_id/:id/:xid/fork' => 'projects#fork'
+  get '/:user_id/:id/:xid/forkyou' => 'projects#forkyou'
+  get '/:user_id/:id/:xid/pull' => 'projects#pull_request'
+  get '/:user_id/:id/:xid/pull/:pull_id' => 'projects#pull'
+  get '/:user_id/:id/:xid/pull/:pull_id/merge' => 'projects#merge'
+  get '/:user_id/:id/:xid/pull/:pull_id/close' => 'projects#close'
+  get '/:user_id/:id/:xid/pull/:pull_id/open' => 'projects#open'
+  get '/:user_id/:id/:xid/pulls' => 'projects#pulls'
+  get '/:user_id/:id/:xid/settings' => 'projects#settings'
+  get '/:user_id/:id/:xid/issues' => 'issues#index'
+  get '/:user_id/:id/:xid/issue/:sub_id' => 'issues#show'
+  get '/:user_id/:id/:xid/issues/new' => 'issues#new'
+  post '/:user_id/:id/:xid/issues/new' => 'issues#create'
+  post '/:user_id/:id/:xid/issue/:id/close' => 'issues#close'
+
 end

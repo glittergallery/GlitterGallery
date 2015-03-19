@@ -6,11 +6,11 @@ describe UsersController, type: :controller do
       @user = FactoryGirl.create(:user)
     end
     it "renders show template" do
-      get :show, :username => @user.username
+      get :show, :id => @user.username
       expect(response).to render_template("show")
     end
     it "assigns correct user ID" do
-      get :show, :username => @user.username
+      get :show, :id => @user.username
       expect(assigns(:user)).to eq(@user)
     end
   end

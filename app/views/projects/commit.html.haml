@@ -3,19 +3,23 @@
 - else
 
   - content_for :title do
-    = @project.name.titleize
+    = "#{@project.name.titleize} at #{@id}"
 
   %article.project
     = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
-  
+
     - if @project.private and params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
-    
+
+    - if @tree
+      = button_to "Browse files at this commit", tree_user_project_path(@project.user, @project, @project.uniqueurl, @tree), method: :get
+
+
     - @images.each do |image|
       %div
-        = image[:name]
+        = link_to image[:name], image[:link]
       = data_image_tag(image,"100%",nil)
 
     .comment_form

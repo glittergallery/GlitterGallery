@@ -9,16 +9,16 @@
     = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
-  
+
     - if @project.private and params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
-      
+
     %section
       %div
         - if current_user.id == @project.user.id
-          = form_tag file_upload_project_path(@project), multipart: true do
-            = file_field_tag "file[]", multiple: true 
-            = submit_tag 
+          = form_tag file_upload_user_project_path(@project.user,@project), multipart: true do
+            = file_field_tag "file[]", multiple: true
+            = submit_tag
         - else
           - if user_signed_in?
             - unless current_user.id == @project.user.id
