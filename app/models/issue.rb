@@ -44,12 +44,8 @@ class Issue < ActiveRecord::Base
     File.join(project.urlbase, 'issue', sub_id.to_s)
   end
 
-  def sub_id
-    (project.issue_ids.index(id) + 1).to_i
-  end
-
   def self.find_from_project(project, sub_id)
-    Issue.find(project.issue_ids[sub_id.to_i - 1])
+    project.issues.find_by_sub_id(sub_id)
   end
 
   def set_sub_id
