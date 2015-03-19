@@ -7,10 +7,10 @@
             = link_to(image_tag(image[:url]),image[:link])
     - if user_signed_in? and current_user.id == @project.user.id
       %div
-        = form_tag file_upload_project_path(@project), multipart: true do
+        = form_tag file_upload_user_project_path(@project.user,@project,params[:xid]), multipart: true do
           = file_field_tag "file[]" , multiple: true
           = submit_tag "Upload file!"
-  -else 
+  -else
     - if user_signed_in?
       - if current_user.id == @project.user.id
         .guide
@@ -21,7 +21,7 @@
         .guide
           %p Design work is yet to be added to this project. Maybe you want to follow to receive updates?
           = form_tag File.join(@project.urlbase, "follow") do
-            = submit_tag "Follow this project"            
+            = submit_tag "Follow this project"
     - else
       .guide
         %p You'll need to sign in to work on these cool projects!

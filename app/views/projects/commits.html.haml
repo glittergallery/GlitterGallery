@@ -11,21 +11,21 @@
     = render 'project_toolbar'
     = render 'shared/messages'
 
-  
+
     - if @project.private and params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
-  
+
     %section
-      - unless @commits.empty?
+      - if @commits
         %div.feed
           - @commits.each do |commit|
             %div
-              %header 
-                = commit.author[:name]             
+              %header
+                = commit.author[:name]
               %article
                 %p
                   %img(src="#{@project.thumbnail_for(commit.oid,false)}")
-                  = link_to commit.message, File.join(@project.urlbase, 'commit', commit.tree_id)
+                  = link_to commit.message, commit_user_project_path(@project.user,@project,commit.oid)
               %footer
                 %p
                   = distance_of_time_in_words_to_now Time.at(commit.epoch_time)
