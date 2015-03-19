@@ -2,8 +2,8 @@ class IssuesController < ApplicationController
   before_action :get_context
 
   def get_context
-    @user = User.find_by username: params[:username]
-    @project = Project.find_by user_id: @user.id, name: params[:project]
+    @user = User.find_by username: params[:user_id]
+    @project = Project.find_by user_id: @user.id, name: params[:id]
   end
 
   def index

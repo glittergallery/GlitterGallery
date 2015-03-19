@@ -15,10 +15,10 @@
   = render 'users/user_toolbar'
   = render 'shared/messages'
 
-  - unless @followedprojects.empty?
+  - unless @projects.empty?
     %section.album
       %div
-        - @followedprojects.each do |project|
+        - @projects.each do |project|
           %div
             %p
               %img{ src: "/usercover.jpg"}
