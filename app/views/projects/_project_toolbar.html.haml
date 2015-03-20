@@ -1,5 +1,3 @@
-
-
 %section.toolbar
   %a{href: "#{@project.urlbase+@project_path.to_s}"}
     %div{ data: "current"}
@@ -42,16 +40,19 @@
     - unless @project.followed_by? current_user
       = link_to follow_user_project_path(@project.user,@project), method: :post do
         %div{ data: "follow" }
-          Follow
+          %p
+            Follow
     - else
       = link_to unfollow_user_project_path(@project.user,@project), method: :delete do
         %div{ data: "unfollow" }
-          Unfollow
+          %p
+            Unfollow
 
     = link_to fork_user_project_path(@project.user,@project), method: :post do
       %div{ data: "fork" }
         %p
           Fork
+
     -#
       %a{href: "#{request.original_url+'/star'}"}
         %div{ data: "fork" }

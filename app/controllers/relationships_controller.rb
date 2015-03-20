@@ -5,12 +5,15 @@ class RelationshipsController < ApplicationController
   def identify_user
     @user = User.find_by(username: params[:id])
     # Check for nil user and user trying to follow/unfollow herself
-    redirect_to user_path(@user) if @user.nil? || current_user == @user
+    render js: "window.location = '/'" if @user.nil? || !user_signed_in?
   end
 
   def follow
-    if @user.followers.include?(current_user)
-      redirect_to user_path @user
+    if current_user == @user
+      respond_to do |format|
+        format.js { render template: 'relationships/update_social' }
+        format.html { redirect_to user_path(@user) }
+      end
     else
       @user.followers << current_user
       @user.save!

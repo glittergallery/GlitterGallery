@@ -1,0 +1,6 @@
+%article
+  -if @user.followers.empty?
+    %p No one is following #{@user.username} yet.
+  - @user.followers.each do |follower|
+    %p= avatar(follower.email)
+    = follower.username

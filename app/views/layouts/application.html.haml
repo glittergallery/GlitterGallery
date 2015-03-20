@@ -43,7 +43,7 @@
               %ul
                 %li
                   %a{href: "/users/edit"} Settings
-            - unless @projects.empty?
+            - unless @projects.empty? && current_user.followed_projects.empty?
               %section
                 %header PROJECTS
                 %ul
