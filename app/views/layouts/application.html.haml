@@ -43,7 +43,9 @@
               %ul
                 %li
                   %a{href: "/users/edit"} Settings
-            - unless @projects.empty?
+                %li
+                  %a{href: "/notifications"} Notifications
+            - unless @projects.empty? && current_user.followed_projects.empty?
               %section
                 %header PROJECTS
                 %ul

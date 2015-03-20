@@ -42,6 +42,8 @@ Glitter::Application.routes.draw do
     member do
       post 'follow' => 'relationships#follow'
       delete 'unfollow' => 'relationships#unfollow'
+      get 'followers' => 'users#list_followers'
+      get 'followings' => 'users#list_followings'
       get 'projects' => 'projects#index'
       scope 'followed', as: :followed do
         get 'projects' => 'projects#followed_index'

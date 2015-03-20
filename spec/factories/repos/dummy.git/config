@@ -2,8 +2,3 @@
 	repositoryformatversion = 0
 	filemode = true
 	bare = true
-[remote "origin"]
-	url = /home/themonster/Projects/mine/GlitterGallery/spec/factories/repos/dummy.git/
-[remote "bare"]
-	url = public/testdata/repos/sbanskota08@gmail.com/testproject/repo.git
-	fetch = +refs/heads/*:refs/remotes/bare/*
