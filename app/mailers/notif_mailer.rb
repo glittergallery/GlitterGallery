@@ -5,8 +5,8 @@ class NotifMailer < ActionMailer::Base
     @victim = victim
     @notification = notification
 
-    @subjecttext = notification.actor.username + notification.messageverb
-                  + notification.objectname
+    @subjecttext = notification.actor.username + notification.messageverb + \
+                   notification.objectname
     mail(to: @victim.email, subject: @subjecttext)
   end
 end
