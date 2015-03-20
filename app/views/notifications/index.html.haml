@@ -1,8 +1,17 @@
-%article
+- content_for :title do
+  = 'Notifications'
+
+%article.user{ data: "settings"}
   %header
-    %h1 Notifications
-    %h2 What's been going on in GlitterGallery
-  %content
+    %h1 My Notifications
+    %h2
+      = '@' + current_user.username
+
+
+  = render 'users/user_toolbar'
+  = render 'shared/messages'
+
+  %section
     %ul
       - if @unseennotifications.empty?
         %p No notifications!
