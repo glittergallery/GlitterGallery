@@ -1,5 +1,5 @@
 class RelationshipsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:follow]
   before_action :identify_user
 
   def identify_user
