@@ -9,13 +9,33 @@ describe RelationshipsController, type: :controller do
         @user2 = FactoryGirl.create(:user, email: "t@t.com", username: "tester")
       end
 
-      it "allows user to follow other users" do
-        expect {post :follow, :id => @user2.username}.to change {@user2.followers.count}.from(0).to(1)
+      context "HTML requests" do
+	it "allows user to follow other users" do
+	  post :follow, id: @user2.username
+	  expect(response).to redirect_to user_path(@user2)
+	  expect(@user2.followers.count).to eq(1)
+	end
+
+	it "allows user to unfollow other users" do
+	  @user2.followers.append(@user1)
+	  delete :unfollow, id: @user2.username
+	  expect(@user2.followers.count).to eq(0)
+	end
       end
-      
-      it "allows user to unfollow other users" do
-        post :follow, :id => @user2.username
-        expect {delete :unfollow, :id => @user2.username}.to change {@user2.followers.count}.from(1).to(0)
+
+      context "JS requests" do
+	it "allows user to follow other users" do
+	  xhr :post, :follow, id: @user2.username
+	  expect(response.response_code).to eq(200)
+	  expect(@user2.followers.count).to eq(1)
+	end
+
+	it "allows user to unfollow other users" do
+	  @user2.followers.append(@user1)
+	  xhr :delete, :unfollow, id: @user2.username
+	  expect(response.response_code).to eq(200)
+	  expect(@user2.followers.count).to eq(0)
+	end
       end
     end
   end
@@ -26,11 +46,16 @@ describe RelationshipsController, type: :controller do
         @user = FactoryGirl.create(:user)
       end
 
-      it "redirects to root_path" do
-        post :follow, :id => @user.username
-        expect(response.response_code).to eq(200)
+      it "redirects to sign in page for HTML requests" do
+        post :follow, id: @user.username
+        expect(response).to redirect_to new_user_session_path
         expect(@user.followers.count).to be(0)
-        response.body.should include("window.location = '/'")
+      end
+
+      it "responds with a 401 to JS requests" do
+        xhr :post, :follow, id: @user.username
+        expect(response.response_code).to eq(401)
+        expect(@user.followers.count).to be(0)
       end
     end
   end
