@@ -34,7 +34,7 @@
             %span.username
               = link_to 'Login', new_user_session_path, :class => 'login'
 
-           
+
       %aside.map#navigation
         .asidewrapper
           -if user_signed_in?
@@ -43,7 +43,9 @@
               %ul
                 %li
                   %a{href: "/users/edit"} Settings
-            - unless @projects.empty?
+                %li
+                  %a{href: "/notifications"} Notifications
+            - unless @projects.empty? && current_user.followed_projects.empty?
               %section
                 %header PROJECTS
                 %ul
@@ -54,12 +56,12 @@
                       %span.count
                         = current_user.projects.count
                       My Projects
-              
+
                   %li
-                    %a{href: followed_projects_path(:username => current_user.username)}
+                    %a{href: projects_followed_user_path(current_user)}
                       %span.count
                         = current_user.followed_projects.count
-                      Following
+                      Followed Projects
                 -#
                   %li
                     %a{href: "/#{current_user.username}/projects"}
@@ -154,14 +156,14 @@
       %aside.widget
         .asidewrapper
           - if user_signed_in?
-            - unless @projects.empty?
+            - unless current_user.projects.empty?
               %section
                 %header
                   %h1 MY RECENT PROJECTS
                   %h2 Last updated yesterday
                 %article
                   %ul
-                    - @projects.each do |project|
+                    - current_user.projects.each do |project|
                       %li
                         - if project.private
                           %span.badge.type{:title => "Private Project"} PRV
@@ -195,7 +197,7 @@
                     %a{href: "https://github.com/glittergallery/GlitterGallery/issues"} Open Issues
                   %li
                     %a{href: "http://www.glittergallery.net/blog"} GlitterBlog
-                    
+
             %section
               %header
                 %h1 MORE NEWS
@@ -207,4 +209,4 @@
                   %li
                     %a{href: "https://fedoraproject.org/wiki/FAD_DesignTeam_2014"} Fedora Design Team FAD
                   %li
-                    %a{href: "https://lists.fedoraproject.org/pipermail/design-team/"} Fedora Design Archives 
+                    %a{href: "https://lists.fedoraproject.org/pipermail/design-team/"} Fedora Design Archives

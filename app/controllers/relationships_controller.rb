@@ -3,33 +3,38 @@ class RelationshipsController < ApplicationController
   before_action :identify_user
 
   def identify_user
-    @user = User.where(username: params[:username]).first
+    @user = User.find_by(username: params[:id])
     # Check for nil user and user trying to follow/unfollow herself
-    redirect_to '/' if @user.nil? || current_user == @user
+    render js: "window.location = '/'" if @user.nil? || !user_signed_in?
   end
 
   def follow
-    if @user.followers.include?(current_user)
-      redirect_to '/'
+    if current_user == @user
+      respond_to do |format|
+        format.js { render template: 'relationships/update_social' }
+        format.html { redirect_to user_path(@user) }
+      end
     else
       @user.followers << current_user
       @user.save!
       @user.notify_on_follow(current_user)
       respond_to do |format|
+        # TODO: it might be better to show flash messages on successful and
+        # unsuccessful requests.
         format.js { render template: 'relationships/update_social' }
+        format.html { redirect_to user_path(@user) }
       end
     end
   end
 
   def unfollow
-    relation = Relationship.where(
-      follower_id: current_user.id,
-      following_id: @user.id
-    ).first
-    relation.destroy
-
+    relation = Relationship.find_by(follower_id: current_user.id,
+                                    following_id: @user.id
+                                    )
+    relation.destroy if relation
     respond_to do |format|
       format.js { render template: 'relationships/update_social' }
+      format.html { redirect_to user_path(@user) }
     end
   end
 end

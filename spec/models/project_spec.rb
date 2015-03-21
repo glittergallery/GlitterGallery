@@ -1,4 +1,5 @@
 require 'spec_helper'
+include Models::RepositoryHelpers
 
 describe Project do
   it "has a valid factory" do
@@ -90,6 +91,66 @@ describe Project do
     it "is a valid repository" do
       @project = FactoryGirl.create(:project)
       expect(@project.satelliterepo).to be_a(Rugged::Repository)
+    end
+  end
+
+  describe ".tree" do
+    before :each do
+      @project = FactoryGirl.create(:project)
+    end
+
+    context "empty repo" do
+      it "returns false" do
+        expect(@project.tree).to eq(false)
+      end
+    end
+
+    context "nonempty repo" do
+      before :each do
+        initialize_dummy_repo @project
+      end
+
+      it "returns false for invalid tree id" do
+        expect(@project.tree("1a")).to eq(false)
+      end
+
+      it "returns false for wrong tree id" do
+        expect(@project.tree("4eee8aa0ea3fc32a0f3a9de626423ec0f2a4b39a")).to eq(false)
+      end
+
+      it "returns tree object for correct tree id" do
+        expect(@project.tree("4eee8aa0ea3fc32a0f3a9de626423ec0f2a4b39f").type).to eq(:tree)
+      end
+    end
+  end
+
+  describe ".commit" do
+    before :each do
+      @project = FactoryGirl.create(:project)
+    end
+
+    context "empty repo" do
+      it "returns false" do
+        expect(@project.commit).to eq(false)
+      end
+    end
+
+    context "nonempty repo" do
+      before :each do
+        initialize_dummy_repo @project
+      end
+
+      it "returns false for invalid commit id" do
+        expect(@project.commit("1a")).to eq(false)
+      end
+
+      it "returns false for a tree id" do
+        expect(@project.commit("4eee8aa0ea3fc32a0f3a9de626423ec0f2a4b39f")).to eq(false)
+      end
+
+      it "returns tree object for correct commit id" do
+        expect(@project.commit("16047dfc3ba3b4a8a6244dec410c0338b305a3ed").type).to eq(:commit)
+      end
     end
   end
 end

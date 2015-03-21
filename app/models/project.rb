@@ -26,6 +26,11 @@ class Project < ActiveRecord::Base
     true
   end
 
+  # We're using name in routes.
+  def to_param
+    name
+  end
+
   # Returns a list of public projects that belong to other users.
   def self.inspiring_projects_for(user_id)
     Project.where.not(private: true, user_id: user_id)
@@ -36,7 +41,7 @@ class Project < ActiveRecord::Base
   end
 
   def followed_by?(user)
-    ProjectFollower.where(follower: user, followed_project: self).exists?
+    ProjectFollower.following? user, self
   end
 
   def last_updated
@@ -81,6 +86,37 @@ class Project < ActiveRecord::Base
 
   def satellitedir
     File.join data_path , 'satellite'
+  end
+
+  # Returns an object in the repository with the given id.
+  # Returns false if the id is an id of an object of another type,
+  # if the id is invalid or if the repository is empty.
+  def get_object(type, id)
+    repo = barerepo
+    return false if repo.empty?
+    return repo.head.target unless id
+    begin
+      res = repo.lookup id
+    rescue
+      return false
+    end
+    (res.type == type) ? res : false
+  end
+
+  # Returns the tree object with the given id.
+  # If no id is given, it returns the tree at head.
+  # If the given id is invalid or the repo is empty, returns false.
+  def tree(id = nil)
+    res = get_object :tree, id
+    return false unless res
+    (res.type == :tree) ? res : res.tree
+  end
+
+  # Returns the commit object with  the given id.
+  # If no id is given, it returns the commit at head.
+  # If the given id is invalid or the repo is empty, returns false.
+  def commit(id = nil)
+    get_object :commit, id
   end
 
   # Returns the path of the thumbnail for a specific commit,

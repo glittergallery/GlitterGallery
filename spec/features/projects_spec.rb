@@ -59,6 +59,19 @@ feature "Projects" do
       expect(page).to have_no_content("private_project")
     end
 
+    scenario "User follows and unfollows other users projects" do
+      visit "/test1/public_project"
+      click_link "Follow"
+      expect(find(".action")).to have_link("Unfollow")
+      visit "/test2/followed/projects"
+      expect(page).to have_link("public_project")
+      click_link "public_project"
+      click_link "Unfollow"
+      expect(find(".action")).to have_link("Follow")
+      visit "/test2/followed/projects"
+      expect(page).to have_no_content("public_project")
+    end
+
     scenario "User forks other users projects" do
       visit "/test1/public_project"
       click_link "Fork"
@@ -101,6 +114,18 @@ feature "Projects" do
     end
   end
 
+  scenario "User uploads multiple images" do
+    sign_up_with("t@test.com","test1","secret12345")
+    click_button "Create first project!"
+    fill_in "project_name", :with => "testproject1"
+    click_button "Public"
+    click_button "Add first file!"
+    page.attach_file("file[]", ['spec/factories/files/happypanda.png','spec/factories/files/naruto.png'])
+    click_button "Save changes"
+    expect(page).to have_selector("img[src$='happypanda.png']")
+    expect(page).to have_selector("img[src$='naruto.png']")
+  end
+
   describe "After image upload" do
 
     before :each do
@@ -123,17 +148,55 @@ feature "Projects" do
 
     scenario "User sees logs for a project" do
       click_link "Log"
-      expect(page).to have_link "Add new file happypanda.png"
+      expect(page).to have_link "Add 1 image: happypanda.png"
       last_commit_id = Project.last.barerepo.head.target_id
       expect(page).to have_selector("img[src$='#{last_commit_id}']")
     end
 
     scenario "User comments on a specific commit" do
       click_link "Log"
-      click_link "Add new file happypanda.png"
+      click_link "Add 1 image: happypanda.png"
       fill_in "comment_body", :with => "test comment"
       click_button "Create Comment"
       expect(find('.comments')).to have_content("test comment")
+    end
+
+    describe "After more images upload" do
+      before :each do
+        page.attach_file("file[]",['spec/factories/files/naruto.png','spec/factories/files/1.png'])
+        click_button "Upload file!"
+        click_link "Log"
+      end
+
+      scenario "User sees multiple images uploaded together as one commit" do
+        expect(page).to have_content("Add 2 images: 1.png and naruto.png")
+      end
+
+      scenario "User sees only files changed in a commit" do
+        click_link "Add 2 images: 1.png and naruto.png"
+        expect(page).to have_content("naruto.png")
+        expect(page).to have_content("1.png")
+        expect(page).to have_no_content("happypanda.png")
+        click_link "Log"
+        click_link "Add 1 image: happypanda.png"
+        expect(page).to have_content("happypanda.png")
+        expect(page).to have_no_content("naruto.png")
+        expect(page).to have_no_content("1.png")
+      end
+
+      scenario "User sees all files at a certain commit through tree" do
+        click_link "Add 1 image: happypanda.png"
+        click_button "Browse files at this commit"
+        expect(page).to have_content("happypanda.png")
+        expect(page).to have_no_content("naruto.png")
+        expect(page).to have_no_content("1.png")
+        click_link "Log"
+        click_link "Add 2 images: 1.png and naruto.png"
+        click_button "Browse files at this commit"
+        expect(page).to have_content("naruto.png")
+        expect(page).to have_content("1.png")
+        expect(page).to have_content("happypanda.png")
+      end
     end
   end
 end

@@ -1,0 +1,6 @@
+:plain
+  $("#followings").html("#{escape_javascript render(:partial => 'users/followings')}");
+  $(".feed div").hide();
+  $("#followings").show();
+  $("#follow, #followers_list").removeClass('active');
+  $("#followings_list").addClass('active');

@@ -32,6 +32,11 @@ class User < ActiveRecord::Base
     identities.build(provider: omniauth['provider'], uid: omniauth['uid'])
   end
 
+  # We're using username in routes.
+  def to_param
+    username
+  end
+
   # This is a method within devise - we're overwriting it by saying that
   # we will require a password only if
   # A ) There are no linked identities
@@ -43,6 +48,11 @@ class User < ActiveRecord::Base
 
   def follow?(user)
     relationships.find_by_following_id(user)
+  end
+
+  # Makes the user follow a project
+  def follow_project(project)
+    ProjectFollower.make_follow self, project
   end
 
   def notify_on_follow(user)
