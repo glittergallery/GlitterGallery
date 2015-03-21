@@ -1,10 +1,10 @@
 class RelationshipsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:follow]
   before_action :identify_user
 
   def identify_user
     @user = User.find_by(username: params[:id])
-    # Check for nil user and user trying to follow/unfollow herself
+    # Check for nil user and unsigned user trying to follow
     render js: "window.location = '/'" if @user.nil? || !user_signed_in?
   end
 
