@@ -26,7 +26,7 @@ class CommentsController < ApplicationController
         flash[:alert] = 'Something went wrong, try reposting your comment.'
       end
     else
-      redirect_to root_url
+      render status: 404
     end
   end
 
@@ -57,13 +57,12 @@ class CommentsController < ApplicationController
 
     # to check if polycomment object exists or not
     def polycomment_exists
-      if params[:comment][:polycomment_type] == 'blob' || 'commit' || 'file'
+      if %w(blob commit file).include?(params[:comment][:polycomment_type])
         return true
       else
         polycomment = params[:comment][:polycomment_type]
         value = params[:comment][:polycomment_id]
-        # returns false if object is nil
-        !polycomment.classify.constantize.where(id: value).nil?
+        polycomment.classify.constantize.where(id: value).any?
       end
     end
 
