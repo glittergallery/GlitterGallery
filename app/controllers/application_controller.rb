@@ -111,9 +111,16 @@ class ApplicationController < ActionController::Base
 
   # used to deliver notification on various events
   def notify_users(action, object_type, object_id, victims)
+    actions = { 'project_comment' => 0,
+                'follow_project' => 1,
+                'fork' => 2,
+                'follow_user' => 3,
+                'project_create' => 4,
+                'issue_comment' => 5
+              }
     Notification.create(
           actor: current_user,
-          action: action,
+          action: actions[action],
           object_type: object_type,
           object_id: object_id,
           victims: victims

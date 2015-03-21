@@ -51,7 +51,7 @@ class ProjectsController < ApplicationController
     if project.save
       unless project.private
         # TODO: clean up action ids, numbers makes unreadable
-        notify_users 4, 0, project.id, current_user.followers
+        notify_users 'project_create', 0, project.id, current_user.followers
       end
       redirect_to project.urlbase
     else
@@ -70,7 +70,7 @@ class ProjectsController < ApplicationController
   def follow
     if @user != current_user
       current_user.follow_project @project
-      notify_users 1, 0, @project.id, [@project.user]
+      notify_users 'follow_project', 0, @project.id, [@project.user]
       flash[:notice] = "You're now following #{@user.username}/#{@project.name}"
     else
       flash[:notice] = "You're the owner of this project, " \

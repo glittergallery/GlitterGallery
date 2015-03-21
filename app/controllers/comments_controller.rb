@@ -77,9 +77,9 @@ class CommentsController < ApplicationController
 
     def find_action
       if params[:comment][:polycomment_type] == 'project'
-        return 0
+        return 'project_comment'
       elsif params[:comment][:polycomment_type] == 'issue'
-        return 5
+        return 'issue_comment'
       end
     end
 end
