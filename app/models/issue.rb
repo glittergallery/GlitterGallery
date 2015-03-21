@@ -1,6 +1,6 @@
 class Issue < ActiveRecord::Base
   before_save :set_sub_id
-  
+
   # This is to avoid conflict with the :type attribute
   self.inheritance_column = nil
 
