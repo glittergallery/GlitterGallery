@@ -8,6 +8,7 @@ class Issue < ActiveRecord::Base
   belongs_to :project
 
   validates_presence_of :title, :description, :user, :project, :type, :status
+  validates_presence_of :sub_id, unless: :set_sub_id
   validates :sub_id, uniqueness: { scope: :project }
 
   # TODO: make a list of 5 most popular types of issues
