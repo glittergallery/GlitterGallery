@@ -65,6 +65,8 @@ end
 group :test do
   gem 'faker'
   gem 'capybara'
+  gem 'capybara-webkit', '~> 1.4.1'
+  gem 'database_cleaner', '~> 1.4.1'
   gem 'guard-rspec'
   gem 'launchy'
   gem 'rubocop', require: false

@@ -27,8 +27,11 @@ RSpec.configure do |config|
   # config.mock_with :flexmock
   # config.mock_with :rr
 
+  Capybara.javascript_driver = :webkit
+
   config.include Devise::TestHelpers, :type => :controller
   config.include Features::SessionHelpers, type: :feature
+  config.include WaitForAjax, type: :feature
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -46,6 +49,20 @@ RSpec.configure do |config|
     if Rails.env.test? || Rails.env.cucumber?
       FileUtils.rm_rf(File.join(Rails.root,Glitter::Application.config.repo_dir))
     end
+    DatabaseCleaner.clean
+  end
+
+  config.use_transactional_fixtures = false
+
+  config.before :each do
+    if Capybara.current_driver == :rack_test
+      DatabaseCleaner.strategy = :transaction
+    else
+      skip("haven't implemented JS tests on Travis")
+      page.driver.block_unknown_urls
+      DatabaseCleaner.strategy = :truncation
+    end
+    DatabaseCleaner.start
   end
 
   # Run tests in a random order.
