@@ -50,7 +50,7 @@ class Issue < ActiveRecord::Base
 
   def set_sub_id
     return if sub_id
-      sub_id = project.issues.count
+      sub_id = project.issues.count + 1
       update_attribute(:sub_id, sub_id)
   end
 end
