@@ -49,7 +49,7 @@ class Issue < ActiveRecord::Base
   end
 
   def set_sub_id
-    unless ub_id
+    unless sub_id
       sub_id = project.issues.count
       update_attribute(:sub_id, sub_id)
     end
