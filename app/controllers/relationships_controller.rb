@@ -4,7 +4,7 @@ class RelationshipsController < ApplicationController
 
   def identify_user
     @user = User.find_by(username: params[:id])
-    # Check for nil user and user trying to follow/unfollow herself
+    # Check for nil user and unsigned user trying to follow
     render js: "window.location = '/'" if @user.nil? || !user_signed_in?
   end
 
