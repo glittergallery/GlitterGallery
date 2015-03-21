@@ -1,6 +1,6 @@
 class Issue < ActiveRecord::Base
-  after_create :set_sub_id
-
+  before_save :set_sub_id
+  
   # This is to avoid conflict with the :type attribute
   self.inheritance_column = nil
 
@@ -49,7 +49,9 @@ class Issue < ActiveRecord::Base
   end
 
   def set_sub_id
-    current_id = project.issues.count
-    update_attribute(:sub_id, current_id)
+    if !sub_id
+      sub_id = project.issues.count
+      update_attribute(:sub_id, sub_id)
+    end
   end
 end
