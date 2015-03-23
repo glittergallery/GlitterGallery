@@ -58,7 +58,6 @@ RSpec.configure do |config|
     if Capybara.current_driver == :rack_test
       DatabaseCleaner.strategy = :transaction
     else
-      skip("haven't implemented JS tests on Travis")
       page.driver.block_unknown_urls
       DatabaseCleaner.strategy = :truncation
     end

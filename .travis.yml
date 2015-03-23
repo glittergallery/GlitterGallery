@@ -7,4 +7,4 @@ before_script:
   - RAILS_ENV=test bundle exec rake --trace db:migrate
 script:
   - bundle exec rubocop --config .rubocop.yml app/models/ app/controllers/ app/mailers/
-  - RAILS_ENV=test bundle exec rspec
+  - RAILS_ENV=test xvfb-run bundle exec rspec
