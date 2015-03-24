@@ -54,6 +54,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-webkit (1.4.1)
+      capybara (>= 2.3.0, < 2.5.0)
+      json
     celluloid (0.16.0)
       timers (~> 4.0.0)
     coderay (1.1.0)
@@ -64,6 +67,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1)
+    database_cleaner (1.4.1)
     debug_inspector (0.0.2)
     delayed_job (4.0.6)
       activesupport (>= 3.0, < 5.0)
@@ -312,7 +316,9 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   capybara
+  capybara-webkit (~> 1.4.1)
   coffee-rails
+  database_cleaner (~> 1.4.1)
   delayed_job_active_record (~> 4.0.3)
   devise
   escape
