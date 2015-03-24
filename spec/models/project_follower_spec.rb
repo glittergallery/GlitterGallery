@@ -3,10 +3,10 @@ require 'spec_helper'
 describe ProjectFollower do
   before :each do
     @project = FactoryGirl.create(:project)
-    @user = FactoryGirl.create(:user, email: "t@t.com", username: "tester")
+    @user = FactoryGirl.create(:user, email: 't@t.com', username: 'tester')
   end
 
-  it "makes a user follow a project" do
+  it 'makes a user follow a project' do
     ProjectFollower.make_follow @user, @project
     expect(@user.followed_projects.include?(@project)).to eq(true)
   end
@@ -23,7 +23,7 @@ describe ProjectFollower do
     expect(@user.followed_projects.include?(@project)).to eq(false)
   end
 
-  it "checks if a user followed a project" do
+  it 'checks if a user followed a project' do
     expect(ProjectFollower.following?(@user, @project)).to eq(false)
     @user.followed_projects << @project
     @user.save

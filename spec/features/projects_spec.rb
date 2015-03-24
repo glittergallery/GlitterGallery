@@ -121,38 +121,22 @@ feature 'Projects' do
       visit '/test2/public_project'
       click_link 'Fork'
       click_link 'Network'
-      expect(find(
-        :xpath,
-        '/html/body/div/article/section/div/ul/li'
-      )).to have_link('test1')
-      expect(find(
-        :xpath,
-        '/html/body/div/article/section/div/ul/li'
-      )).to have_no_link('public_project')
-      expect(find(
-        :xpath,
-        '/html/body/div/article/section/div/ul/ul'
-      )).to have_no_content('test1')
-      expect(find(
-        :xpath,
-        '/html/body/div/article/section/div/ul/ul/li'
-      )).to have_link('test2')
-      expect(find(
-        :xpath,
-        '/html/body/div/article/section/div/ul/ul/li'
-      )).to have_link('public_project')
-      expect(find(
-        :xpath,
-        '/html/body/div/article/section/div/ul/ul/ul'
-      )).to have_no_content('test2')
-      expect(find(
-        :xpath,
-        '/html/body/div/article/section/div/ul/ul/ul/li[1]'
-      )).to have_link('test3')
-      expect(find(
-        :xpath,
-        '/html/body/div/article/section/div/ul/ul/ul/li[2]'
-      )).to have_link('test4')
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/li'))
+        .to have_link('test1')
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/li'))
+        .to have_no_link('public_project')
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul'))
+        .to have_no_content('test1')
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/li'))
+        .to have_link('test2')
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/li'))
+        .to have_link('public_project')
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul'))
+        .to have_no_content('test2')
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul/li[1]'))
+        .to have_link('test3')
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul/li[2]'))
+        .to have_link('test4')
     end
   end
 
@@ -189,9 +173,8 @@ feature 'Projects' do
       #       test after settling on a place for their functions.
       project = Project.last
       last_commit_id = project.barerepo.head.target_id
-      expect(File.exist?(
-        project.thumbnail_for(last_commit_id, true))
-      ).to eq(true)
+      expect(File.exist? project.thumbnail_for(last_commit_id, true))
+        .to eq(true)
     end
 
     scenario 'User sees logs for a project' do
