@@ -1,13 +1,12 @@
-- unless user_signed_in?
-  = 'You need to login to be able to comment!'
-  = link_to "Login now!", '/login'
-- else
-
+- if user_signed_in?
   %div
-    = form_for(comment, remote: false) do |f|
-      = f.hidden_field(:polycomment_type, :value => type)
-      = f.hidden_field(:polycomment_id, :value => id)
-      = f.hidden_field(:issue, :value => false)
-      = f.hidden_field(:project_name, :value => @project.name)
-      = f.text_field :body, :placeholder => 'In my opinion...'
+    = form_for(comment, remote: true) do |f|
+      = f.hidden_field(:polycomment_type, value: type)
+      = f.hidden_field(:polycomment_id, value: id)
+      = f.hidden_field(:issue, value: false)
+      = f.hidden_field(:project_name, value: @project.name)
+      = f.text_field :body, placeholder: 'In my opinion...'
       = f.submit
+- else
+  'You need to login to be able to comment!'
+  = link_to 'Login now!', '/login'

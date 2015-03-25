@@ -8,7 +8,7 @@
         .meta
           %p
             Created
-            = time_tag project.created_at, :format=>'%B %d, %Y'
+            = time_tag project.created_at, format: '%B %d, %Y'
           %p
             Last updated
             = distance_of_time_in_words_to_now project.updated_at

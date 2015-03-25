@@ -1,14 +1,13 @@
 - unless logged_in?
-  = 'You need to login to be able to add Glitterposts!'
-  = link_to "Login now!", '/login'
+  'You need to login to be able to add Glitterposts!'
+  = link_to 'Login now!', '/login'
 
 - content_for :pagetitle do
-  = "New Glitterpost"
+  "New Glitterpost"
 
 = form_for(:glitterpost, url: glitterposts_path) do |f|
-  = f.label "Title"
+  = f.label 'Title'
   = f.text_field :title
-  = f.label "Emotions go here:"
-  = f.text_area :content 
-  = f.submit  
-  
+  = f.label 'Emotions go here:'
+  = f.text_area :content
+  = f.submit

@@ -10,7 +10,7 @@
     %li
       = link_to 'Back', glitterposts_path
     - if logged_in? && (@glitterpost.user_id == current_user.id)
-      %li  
+      %li
         = link_to 'Edit', edit_glitterpost_path
       %li
         = link_to 'Destroy', glitterpost_path, method: :delete, data: { confirm: 'Are you sure?' }
@@ -23,7 +23,7 @@
     Posted by
     = User.find(@glitterpost.user_id).username
     on
-    = time_tag @glitterpost.created_at, :format => '%B %d, %Y'
+    = time_tag @glitterpost.created_at, format: '%B %d, %Y'
 
   %p
     Last updated
@@ -32,13 +32,16 @@
 
 %hr
 = raw markdown.render @glitterpost.content
-    
+
 
 
 .comment_form
-  = render partial: "comments/new", locals: {type: 'glitterpost', id: @glitterpost.id.to_s, ajax: @ajax, comment: @comment}
+  = render 'comments/new', locals: { type: 'glitterpost',
+    id: @glitterpost.id.to_s,
+    ajax: @ajax,
+    comment: @comment }
 
 %ul.comments
-  = render partial: "comments/comment", collection: @comments
-- if !@comments.nil?
-  = will_paginate @comments, :style => 'color:blue'
+  = render partial: 'comments/comment', collection: @comments
+- unless @comments.nil?
+  = will_paginate @comments, style: 'color:blue'
