@@ -7,7 +7,8 @@
       = avatar current_user.email
       = current_user.username
     %h2
-    '@' = current_user.username
+      = precede '@' do
+        = current_user.username
 
   - @user = current_user
   = render 'users/user_toolbar'
@@ -27,7 +28,7 @@
 
         - @allowedmethods.each do |method|
           %div
-            = link_to(method.to_s.capitalize, '/auth/#{method.to_s}')
+            = link_to(method.to_s.capitalize, "/auth/#{method}")
       %aside
         %h1
           User Settings

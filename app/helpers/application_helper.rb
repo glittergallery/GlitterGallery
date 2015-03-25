@@ -31,4 +31,10 @@ module ApplicationHelper
       tag :image, src: "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{gravatar_size}&d=#{CGI.escape(gravatar_default)}"
     end
   end
+
+  # sets class attribute of body tag
+  def set_body_class
+    log_status = user_signed_in? ? 'logged_in' : 'not_logged_in'
+    "#{controller.controller_name} #{controller.action_name} #{log_status}"
+  end
 end

@@ -1,28 +1,28 @@
 %section.toolbar
-  
-  %a{href: "/#{@user.username}"}
-    %div{:data => "userpage"}
+
+  %a{ href: "/#{@user.username}" }
+    %div{ data: 'userpage' }
       %p
         Userpage
-  - if user_signed_in? and @user.id == current_user.id
+  - if user_signed_in? && @user.id == current_user.id
 
-    %a{href: "/notifications"}
-      %div{:data => "notifications"}
+    %a{ href: '/notifications' }
+      %div{ data: 'notifications' }
         %p
           Notifications
-        
+
   - else
-    %div{ data: "activity" }
+    %div{ data: 'activity' }
       %p
         Activity
-  %a{href: "/#{@user.username}/projects"}
-    %div{:data => "projects"}
+  %a{ href: "/#{@user.username}/projects" }
+    %div{ data: 'projects' }
       %p
         Projects
   -#
-    %div{ data: "glitterposts" }
+    %div{ data: 'glitterposts' }
       %p
         Glitterposts
-    %div{ data: "badges" }
+    %div{ data: 'badges' }
       %p
         Badges
