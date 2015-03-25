@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :project do
-    name "testproject"
+    name 'testproject'
     association :user
   end
 end
