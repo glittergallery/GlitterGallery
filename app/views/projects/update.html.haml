@@ -1,20 +1,18 @@
-- unless private_check
-  = render 'permissions_error'
-- else
-
+- if private_check
   - content_for :title do
     = @project.name.titleize
 
-  %article.project{ data: "update" }
+  %article.project{ data: 'update' }
     = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
 
     %section
       %div
-        = form_tag file_update_user_project_path(@project.user,@project), multipart: true do
-          = file_field_tag "file"
-          = text_field_tag "message","commit message"
-          = hidden_field_tag "image_name", params[:image_name]
+        = form_tag file_update_user_project_path(@project.user, @project), multipart: true do
+          = file_field_tag 'file'
+          = text_field_tag 'message', 'commit message'
+          = hidden_field_tag 'image_name', params[:image_name]
           = submit_tag
-
+- else
+  = render 'permissions_error'

@@ -1,11 +1,4 @@
-- unless private_check and owner_check
-  = render 'permissions_error'
-- else
-
-- unless private_check
-  = render 'permissions_error'
-- else
-
+- if private_check && owner_check
   - content_for :title do
     = @project.name.titleize
 
@@ -13,15 +6,17 @@
     = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
-  
-    - if @project.private and params[:xid] != @project.uniqueurl
+
+    - if @project.private && params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
-  
+
     %section
       %div
-        = form_tag(:controller=>"projects", :action=>"update_svg", :id=>@project.id) do
-          = sketchily_tag :sketch, :url => @path
-          = label_tag "commit message"
-          = text_field_tag "message", "Update #{@filename}"
+        = form_tag(controller: 'projects', action: 'update_svg', id: @project.id) do
+          = sketchily_tag :sketch, url: @path
+          = label_tag 'commit message'
+          = text_field_tag 'message', "Update #{@filename}"
           = hidden_field_tag 'filename', @filename
           = submit_tag
+- else
+  = render 'permissions_error'

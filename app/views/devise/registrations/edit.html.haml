@@ -7,15 +7,19 @@
       = avatar current_user.email
       = current_user.username
     %h2
-      = '@' + current_user.username
+      = precede '@' do
+        = current_user.username
 
   = render 'shared/messages'
   = render 'users/user_toolbar'
 
   %section
     %div
-      %div.option
-        = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+      .option
+        = form_for(resource,
+                           as: resource_name,
+                           url: registration_path(resource_name),
+                           html: { method: :put }) do |f|
           = devise_error_messages!
           %div
             = f.label :name
@@ -29,10 +33,10 @@
           %div
             = f.label :current_password
             %i (we need your current password to confirm your changes)
-            = f.password_field :current_password, autocomplete: "off"
+            = f.password_field :current_password, autocomplete: 'off'
           %div
-            = f.submit "Update"
-        
+            = f.submit 'Update'
+
       %aside
         %h1
           User Settings

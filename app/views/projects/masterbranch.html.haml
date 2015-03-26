@@ -1,9 +1,6 @@
-- unless private_check
-  = render 'permissions_error'
-- else
-
+- if private_check
   - filename = File.basename(@imageurl).to_s
-  
+
   - content_for :title do
     = filename
 
@@ -13,12 +10,17 @@
     = render 'project_toolbar'
     = render 'shared/messages'
     %section.album
-      %div.photo
-        %p{title: params[:image_name]}
-          = image_tag @imageurl.gsub("public","")
-        %form{ action: File.join(params[:image_name], "update")}
-          %input{ type: "submit", value: "Update"}
+      .photo
+        %p{ title: params[:image_name] }
+          = image_tag @imageurl.gsub('public', '')
+        %form{ action: File.join(params[:image_name], 'update') }
+          %input{ type: 'submit', value: 'Update' }
 
     %section.comments
-      = render partial: "comments/comment", collection: @comments
-      = render partial: "comments/new", locals: {type: 'project', id: @project.id.to_s, ajax: @ajax, comment: @comment}
+      = render partial: 'comments/comment', collection: @comments
+      = render partial: 'comments/new', locals: { type: 'project',
+        id: @project.id.to_s,
+        ajax: @ajax,
+        comment: @comment }
+- else
+  = render 'permissions_error'

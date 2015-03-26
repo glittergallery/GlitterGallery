@@ -1,20 +1,18 @@
-- unless private_check and owner_check
-  = render 'permissions_error'
-- else
- 
+- if private_check && owner_check
   - content_for :title do
     New Pull Request
 
   - content_for :pagetitle do
     = link_to @project.name.titleize, @project.urlbase
     \/
-    = 'New Pull Request'
+    New Pull Request
 
   = render 'project_toolbar'
   = render 'shared/messages'
 
   = form_tag handle_pull_request_project_path(@forked_project), multipart: true do
-    = label_tag "description"
-    = text_field_tag "description"
-    = submit_tag 
-
+    = label_tag 'description'
+    = text_field_tag 'description'
+    = submit_tag
+- else
+  = render 'permissions_error'

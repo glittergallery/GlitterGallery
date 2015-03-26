@@ -1,34 +1,31 @@
-- unless private_check
-  = render 'permissions_error'
-- else
-
+- if private_check
   - content_for :title do
     = @project.name.titleize
 
-  %article.project{ data: "upload"}
+  %article.project{ data: 'upload' }
     = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
 
-    - if @project.private and params[:xid] != @project.uniqueurl
+    - if @project.private && params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
 
     %section
       %div
-        - if current_user.id == @project.user.id
-          = form_tag file_upload_user_project_path(@project.user,@project), multipart: true do
-            = file_field_tag "file[]", multiple: true
+        - if user_signed_in? && current_user.id == @project.user.id
+          = form_tag file_upload_user_project_path(@project.user, @project), multipart: true do
+            = file_field_tag 'file[]', multiple: true
             = submit_tag
-        - else
-          - if user_signed_in?
-            - unless current_user.id == @project.user.id
-              .guide
-                %p You can make changes to your fork of this project!
-                %form{action: "forkyou"}
-                  %input{type: "submit", value: "Fork it!"}
-          - else
+        - elsif user_signed_in? && current_user.id != @project.user.id
+          - unless current_user.id == @project.user.id
             .guide
-              %p You'll need to sign in to work on these cool projects!
-              %form{action: "/users/sign_in"}
-                %input{type: "submit", value: "Sign in!"}
-
+              %p You can make changes to your fork of this project!
+              %form{ action: 'forkyou' }
+                %input{ type: 'submit', value: 'Fork it!' }
+        - else
+          .guide
+            %p You'll need to sign in to work on these cool projects!
+            %form{ action: '/users/sign_in' }
+              %input{ type: 'submit', value: 'Sign in!' }
+- else
+  = render 'permissions_error'
