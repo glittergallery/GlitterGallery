@@ -8,4 +8,4 @@ before_script:
 script:
   - bundle exec rubocop --config .rubocop.yml app/models/ app/controllers/ app/mailers/ spec/
   - RAILS_ENV=test xvfb-run bundle exec rspec
-  - bundle exec haml-lint
+  - bundle exec haml-lint app/views/
