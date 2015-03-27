@@ -3,4 +3,5 @@
 %sparkleshare
   %invite
     %address https://#{ENV['OPENSHIFT_APP_DNS'].downcase}/git
-    %remote_path #{@git_dir}
+    %remote_path
+      = @git_dir

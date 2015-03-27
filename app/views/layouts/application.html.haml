@@ -1,19 +1,19 @@
 !!! 5
 %html
   %head
-    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}/
+    %meta{ content: 'width=device-width, initial-scale=1.0', name: 'viewport' }/
     %title
       GlitterGallery!
       - if content_for?(:title)
         |
         = yield :title
 
-    = stylesheet_link_tag :application, :media => "all"
+    = stylesheet_link_tag :application, media: 'all'
 
-    = javascript_include_tag "application"
+    = javascript_include_tag 'application'
     = csrf_meta_tag
 
-  %body{ :class => "#{controller.controller_name} #{controller.action_name} #{user_signed_in? ? 'logged_in' : 'not_logged_in'} #{yield :body_class}" }
+  %body{ class: set_body_class + "#{yield :body_class}" }
 
     = yield :header
 
@@ -21,44 +21,45 @@
     .wrapper
       %nav
         .left
-          %img{src: "/logo.svg"}
+          %img{ src: '/logo.svg' }
           #mobile-header
-            %a#responsive-menu-button{href: "#sidr-main"} Menu
+            %a#responsive-menu-button{ href: '#sidr-main' } Menu
         .right
-          -if user_signed_in?
+          - if user_signed_in?
             = link_to avatar(current_user.email), (File.join '/', current_user.username)
             %span.username
               = link_to current_user.username, (File.join '/', current_user.username)
-              = link_to 'logout', destroy_user_session_path, :method => :delete, :class => 'logout'
+              = link_to 'logout', destroy_user_session_path, method: :delete, class: 'logout'
           - else
             %span.username
-              = link_to 'Login', new_user_session_path, :class => 'login'
+              = link_to 'Login', new_user_session_path, class: 'login'
 
 
       %aside.map#navigation
         .asidewrapper
-          -if user_signed_in?
+          - if user_signed_in?
             %section
-              %header #{current_user.username.upcase}
+              %header
+                = current_user.username.upcase
               %ul
                 %li
-                  %a{href: "/users/edit"} Settings
+                  %a{ href: '/users/edit' } Settings
                 %li
-                  %a{href: "/notifications"} Notifications
+                  %a{ href: '/notifications' } Notifications
             - unless @projects.empty? && current_user.followed_projects.empty?
               %section
                 %header PROJECTS
                 %ul
                   %li
-                    %a{href: "/projects/new"} New Project
+                    %a{ href: '/projects/new' } New Project
                   %li
-                    %a{href: "/#{current_user.username}/projects"}
+                    %a{ href: "/#{current_user.username}/projects" }
                       %span.count
                         = current_user.projects.count
                       My Projects
 
                   %li
-                    %a{href: projects_followed_user_path(current_user)}
+                    %a{ href: projects_followed_user_path(current_user) }
                       %span.count
                         = current_user.followed_projects.count
                       Followed Projects
@@ -140,13 +141,17 @@
               %header DEVELOPER
               %ul
                 %li
-                  %a{href: "http://github.com/glittergallery/GlitterGallery"} Source
+                  %a{ href: 'http://github.com/glittergallery/GlitterGallery' }
+                    Source
                 %li
-                  %a{href: "http://github.com/glittergallery/GlitterGallery/wiki"} Wiki
+                  %a{ href: 'http://github.com/glittergallery/GlitterGallery/wiki' }
+                    Wiki
                 %li
-                  %a{href: "http://github.com/glittergallery/GlitterGallery/issues"} Contribute
+                  %a{ href: 'http://github.com/glittergallery/GlitterGallery/issues' }
+                    Contribute
                 %li
-                  %a{href: "http://github.com/glittergallery/GlitterGallery/issues/new"} Report Issue
+                  %a{ href: 'http://github.com/glittergallery/GlitterGallery/issues/new' }
+                    Report Issue
                   / close left aside
                   / Use article for central content
 
@@ -166,9 +171,9 @@
                     - current_user.projects.each do |project|
                       %li
                         - if project.private
-                          %span.badge.type{:title => "Private Project"} PRV
+                          %span.badge.type{ title: 'Private Project' } PRV
                         - else
-                          %span.badge.type{:title => "Public Project"} PUB
+                          %span.badge.type{ title: 'Public Project' } PUB
                         = link_to project.name, project.urlbase
 
           - else
@@ -179,11 +184,14 @@
               %article
                 %ul
                   %li
-                    %a{href: "https://github.com/fedoradesign/nextweb-assets"} Fedora.next Website Assets
+                    %a{ href: 'https://github.com/fedoradesign/nextweb-assets' }
+                      Fedora.next Website Assets
                   %li
-                    %a{href: "https://github.com/fedoradesign/fedoramagazine-images"} Fedora Magazine Images
+                    %a{ href: 'https://github.com/fedoradesign/fedoramagazine-images' }
+                      Fedora Magazine Images
                   %li
-                    %a{href: "https://github.com/fedoradesign/mockups-getfedora"} New getFedora Mockups
+                    %a{ href: 'https://github.com/fedoradesign/mockups-getfedora' }
+                      New getFedora Mockups
 
             %section
               %header
@@ -192,11 +200,14 @@
               %article
                 %ul
                   %li
-                    %a{href: "http://www.glittergallery.net/status"} GlitterGallery's current status
+                    %a{ href: 'http://www.glittergallery.net/status' }
+                      GlitterGallery's current status
                   %li
-                    %a{href: "https://github.com/glittergallery/GlitterGallery/issues"} Open Issues
+                    %a{ href: 'https://github.com/glittergallery/GlitterGallery/issues' }
+                      Open Issues
                   %li
-                    %a{href: "http://www.glittergallery.net/blog"} GlitterBlog
+                    %a{ href: 'http://www.glittergallery.net/blog' }
+                      GlitterBlog
 
             %section
               %header
@@ -205,8 +216,11 @@
               %article
                 %ul
                   %li
-                    %a{href: "http://planet.fedoraproject.org/design/"} Fedora Design Planet
+                    %a{ href: 'http://planet.fedoraproject.org/design/' }
+                      Fedora Design Planet
                   %li
-                    %a{href: "https://fedoraproject.org/wiki/FAD_DesignTeam_2014"} Fedora Design Team FAD
+                    %a{ href: 'https://fedoraproject.org/wiki/FAD_DesignTeam_2014' }
+                      Fedora Design Team FAD
                   %li
-                    %a{href: "https://lists.fedoraproject.org/pipermail/design-team/"} Fedora Design Archives
+                    %a{ href: 'https://lists.fedoraproject.org/pipermail/design-team/' }
+                      Fedora Design Archives

@@ -1,7 +1,4 @@
-- unless private_check
-  = render 'permissions_error'
-- else
-
+- if private_check
   - content_for :title do
     = @project.name.titleize
     File history
@@ -11,7 +8,7 @@
     \/
     = link_to params[:image_name], File.join(@project.urlbase, 'master', params[:image_name])
     \/
-    = "File history"
+    File history
 
     = render 'project_toolbar'
     = render 'shared/messages'
@@ -23,8 +20,9 @@
     = distance_of_time_in_words_to_now Time.at(commit.epoch_time)
     ago
     %br
-    = data_image_tag(image,"100%",nil)
+    = data_image_tag(image, '100%', nil)
 
     %hr
-    
-  
+
+- else
+  = render 'permissions_error'

@@ -1,72 +1,74 @@
-- unless private_check
-  = render 'permissions_error'
-- else
-
+- if private_check
   - content_for :title do
     = @project.name.titleize
 
 
-  %article.project{ data: "issues" }
+  %article.project{ data: 'issues' }
     %header
       %h1.generated
         = avatar @project.user.email
         %p
           = link_to @user.username, "/#{@user.username}"
-          = "/"
-          %span 
+          :escaped
+            /
+          %span
             = link_to @project.name, "/#{@user.username}/#{@project.name}"
-      %h2 
+      %h2
         - if @project.id == @project.parent
           %span.badge.author
             PARENT
         - else
           Forked from parent/project
-          
+
     = render 'projects/project_toolbar'
     = render 'shared/messages'
-  
+
     %section
       %div
-        %div.option.feed
+        .option.feed
           %header
             %h1
               #{"Issues with " + @project.name}
-          - unless @issuestoshow.empty?
-            -# 
-              %form{action: "issues/new"}
-                %input{type: "submit", value: "New Issue"}
-            - for issue in @issuestoshow
+          - if @issuestoshow.empty?
+            .guide
+              %p No Issues to show!
+              %p Report issues or request improvements to notify the author.
+              %form{ action: 'issues/new' }
+                %input{ type: 'submit', value: 'Report Issue' }
+
+          - else
+            -#
+              %form{ action: 'issues/new' }
+                %input{ type: 'submit', value: 'New Issue' }
+            - @issuestoshow.each do |issue|
               %div
                 %header
                   %h2
-                    = "\##{issue.sub_id}"
-                    = link_to issue.title, issue.show_url
-                    %span.badge.author
-                      = issue.type_text
+                    = precede '#' do
+                      = issue.sub_id
+                      = link_to issue.title, issue.show_url
+                      %span.badge.author
+                        = issue.type_text
                 %article
                   %p
                     = issue.description
                 %footer
-                  %p 
-                    = "by #{issue.user.username}"
+                  %p
+                    by
+                    = issue.user.username
                     = distance_of_time_in_words_to_now issue.created_at
                     ago.
 
-          - else
-            %div.guide
-              %p No Issues to show!
-              %p Report issues or request improvements to notify the author.
-              %form{action: "issues/new"}
-                %input{type: "submit", value: "Report Issue"}
         %aside
           %h1
             Status
           %nav
             %ul
-              %li{:class => "#{'active' if @activetab == 0}"}
-                = link_to("Open",@project.issues_url)
-              %li{:class => "#{'active' if @activetab == 1}"}
-                = link_to("Closed",@project.issues_url+"?state=closed")
+              %li{ class: "#{'active' if @activetab == 0}" }
+                = link_to('Open', @project.issues_url)
+              %li{ class: "#{'active' if @activetab == 1}" }
+                = link_to('Closed', @project.issues_url + '?state=closed')
               %li
                 Merged
-
+- else
+  = render 'permissions_error'

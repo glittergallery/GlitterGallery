@@ -1,23 +1,21 @@
 - unless logged_in?
-  = 'You need to login to be able to edit Glitterposts!'
-  = link_to "Login now!", '/login'
+  'You need to login to be able to edit Glitterposts!'
+  = link_to 'Login now!', '/login'
 
 - content_for :pagetitle do
-  = "Editing Glitterpost"
+  'Editing Glitterpost'
 
 = form_for :glitterpost do |f|
   - if @glitterpost.errors.any?
     %p
-      #{pluralize(@glitterpost.errors.count, "error")} prohibited this post from being saved
+      #{pluralize(@glitterpost.errors.count, 'error')} prohibited this post from being saved
     %ul
     = @glitterpost.errors.full_messages.each do |msg|
       %li
-        = msg 
+        = msg
 
-  = f.label "Title"
+  = f.label 'Title'
   = f.text_field :title
-  = f.label "Emotions go here:"
-  = f.text_area :content 
-  = f.submit  
-  
- 
+  = f.label 'Emotions go here:'
+  = f.text_area :content
+  = f.submit

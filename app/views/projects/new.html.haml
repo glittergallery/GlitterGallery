@@ -4,17 +4,19 @@
 %article
   %header
     %h1 New project
-    %h2 Projects on GlitterGallery can be used to collaborate over important design work with your team.
-    
+    %h2
+      Projects on GlitterGallery can be used to collaborate
+      over important design work with your team.
+
   = render 'shared/messages'
 
   %section
     %div
       = form_for @project do |f|
         %label Give it a name.
-        = f.text_field :name, placeholder: "Fancy project name", autofocus: true
+        = f.text_field :name, placeholder: 'Fancy project name', autofocus: true
         %label Private projects get unique links.
         .decision
-          = f.submit "Public", class: "recommended"
-          = f.submit "Private"
+          = f.submit 'Public', class: 'recommended'
+          = f.submit 'Private'
 

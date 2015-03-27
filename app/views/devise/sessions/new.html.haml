@@ -1,4 +1,4 @@
-%article.hero{ data: "login"}
+%article.hero{ data: 'login' }
   %header
     %h1 GlitterGallery
     %h2 The open source pixelpub where awesome designers hangout.
@@ -8,13 +8,13 @@
   %section
     %div
       = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-        = f.email_field :email, placeholder: "Your email", autofocus: true
-        = f.password_field :password, placeholder: "Your password", autocomplete: "off"
+        = f.email_field :email, placeholder: 'Your email', autofocus: true
+        = f.password_field :password, placeholder: 'Your password', autocomplete: 'off'
         - if devise_mapping.rememberable?
           .remember
             = f.check_box :remember_me, checked: true
-            = f.label "remember me"
-        = f.submit "Login"
+            = f.label 'remember me'
+        = f.submit 'Login'
 
   %section.options
     %div
@@ -26,12 +26,12 @@
   %section.social
     %div
       - if github?
-        %form.hide{action: "/auth/github"}
-          %input.github{type: "submit", value: "GitHub"}/
+        %form.hide{ action: '/auth/github' }
+          %input.github{ type: 'submit', value: 'GitHub' }/
     %div
-      %form{action: "/auth/open_id"}
-        %input.openid{type: "submit", value: "OpenID"}/
+      %form{ action: '/auth/open_id' }
+        %input.openid{ type: 'submit', value: 'OpenID' }/
     %div
       - if facebook?
-        %form.hide{action: "/auth/facebook"}
-          %input.facebook{type: "submit", value: "Facebook"}/
+        %form.hide{ action: '/auth/facebook' }
+          %input.facebook{ type: 'submit', value: 'Facebook' }/

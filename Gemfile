@@ -70,6 +70,7 @@ group :test do
   gem 'guard-rspec'
   gem 'launchy'
   gem 'rubocop', require: false
+  gem 'haml-lint', require: false
 end
 
 # To use ActiveModel has_secure_password

@@ -1,33 +1,36 @@
-- unless private_check
-  = render 'permissions_error'
-- else
+- if private_check
   - content_for :title do
-    = "Create an issue for #{@project.name}"
+    Create an issue for
+    = @project.name
 
-  %article{ data: "blame"}
+  %article{ data: 'blame' }
     %header
       %h1.generated
         = avatar @project.user.email
         %p
-          %span 
+          %span
             = link_to @project.name, "/#{@user.username}/#{@project.name}"
-          = "- New Issue" 
+          :escaped
+            - New Issue
 
       %h2 Bugs, RFE's and questions about the project.
-      
+
     = render 'shared/messages'
     = render 'projects/project_toolbar'
 
     %section
       %div
-        %div.option
-          = form_for(@issue, :url => url_for(params)) do |f|
+        .option
+          = form_for(@issue, url: url_for(params)) do |f|
             %label Title
-            = f.text_field :title, placeholder: "Title", autofocus: true
+            = f.text_field :title, placeholder: 'Title', autofocus: true
             %label Description
-            = f.text_area :description, value: params[:desc], placeholder: "(Markdown Enabled)..."
+            = f.text_area :description, value: params[:desc], placeholder: '(Markdown Enabled)...'
             %label Type
-            = f.select(:type, options_for_select([['Bug',0],['Improvement',1]]))
-            = f.submit "Report Issue"   
+            = f.select(:type, options_for_select([['Bug', 0], ['Improvement', 1]]))
+            = f.submit 'Report Issue'
+
+- else
+  = render 'permissions_error'
 
 
