@@ -16,6 +16,7 @@ class Notification < ActiveRecord::Base
   # 3: Followed User,
   # 4: Created Project,
   # 5: Commented on Issue
+  # 6: Created Issue
   #
   # Object_type [0: Project, 1: Comment, 2: User]
   # Object_id - ID of the object
@@ -39,7 +40,7 @@ class Notification < ActiveRecord::Base
       ' followed '
     when 2
       ' forked '
-    when 4
+    when 4, 6
       ' created '
     end
   end
@@ -54,6 +55,8 @@ class Notification < ActiveRecord::Base
       return User.find(object_id).username
     when 1, 2, 4
       return Project.find(object_id).name
+    when 6
+      return Issue.find(object_id).friendly_text
     end
   end
 
@@ -65,6 +68,8 @@ class Notification < ActiveRecord::Base
       return Issue.find(Comment.find(object_id).polycomment_id).show_url
     when 1, 2, 4
       return Project.find(object_id).urlbase
+    when 6
+      return Issue.find(object_id).show_url
     else
       return "/#{actor.username}"
     end

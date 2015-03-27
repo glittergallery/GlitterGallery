@@ -116,7 +116,8 @@ class ApplicationController < ActionController::Base
                 'fork' => 2,
                 'follow_user' => 3,
                 'project_create' => 4,
-                'issue_comment' => 5
+                'issue_comment' => 5,
+                'issue_create' => 6
               }
     Notification.create(
           actor: current_user,

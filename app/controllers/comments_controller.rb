@@ -14,6 +14,7 @@ class CommentsController < ApplicationController
       if @comment.save
         @comments = find_project_comments
         @project = Project.find_by(name: params[:comment][:project_name])
+        # action = 'project_comment' for projects or 'issue_comment' for issues
         action = find_action
         victims = @project.followers + [@project.user] - [@comment.user]
         notify_users action, 1, @comment.id, victims
