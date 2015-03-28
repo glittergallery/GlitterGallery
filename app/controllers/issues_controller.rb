@@ -36,6 +36,8 @@ class IssuesController < ApplicationController
     @issue.project = @project
     @issue.status = 0
     if @issue.save
+      victims = @project.followers + [@project.user] - [@issue.user]
+      notify_users 'issue_create', 0, @project.id, victims
       redirect_to(@project.urlbase)
     else
       flash[:alert] = "Couldn't create an issue"

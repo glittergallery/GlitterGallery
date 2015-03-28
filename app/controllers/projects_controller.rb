@@ -50,14 +50,8 @@ class ProjectsController < ApplicationController
     project.private = true if params[:commit] == 'Private'
     if project.save
       unless project.private
-        notification = Notification.new(
-          actor: current_user,
-          action: 4,
-          object_type: 0,
-          object_id: project.id
-        )
-        notification.victims << current_user.followers
-        notification.save!
+        # TODO: clean up action ids, numbers makes unreadable
+        notify_users 'project_create', 0, project.id, current_user.followers
       end
       redirect_to project.urlbase
     else
@@ -76,6 +70,7 @@ class ProjectsController < ApplicationController
   def follow
     if @user != current_user
       current_user.follow_project @project
+      notify_users 'follow_project', 0, @project.id, [@project.user]
       flash[:notice] = "You're now following #{@user.username}/#{@project.name}"
     else
       flash[:notice] = "You're the owner of this project, " \
