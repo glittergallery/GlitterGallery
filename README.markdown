@@ -25,6 +25,7 @@ GlitterGallery runs on OpenShift, so it's really easy to run your own version.
 1. Create a new ruby-2.0 application and add MySQL
 1. Clone the application repo: `git clone <OpenShift git URL>`
 1. Change into the cloned directory
+1. Remove useless files: `git rm public/index.html app/views/layouts/application.html.erb -r app/assets/`
 1. Add the GlitterGallery repo: `git remote add glitter -m master http://github.com/glittergallery/GlitterGallery.git`
 1. Pull: `git pull -s recursive -X theirs glitter master`
 1. Push: `git push`
