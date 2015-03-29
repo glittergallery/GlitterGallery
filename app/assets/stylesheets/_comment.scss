@@ -1,33 +1,33 @@
 @media screen and (min-width: 0em){
-	body{
-		.wrapper{
-			article{
-				section.comments{
-					margin-bottom: 1em;
-					div{
-						@include cf();
-						padding: 0.25em 0.25em 0 0.25em;
-						header, h1, article, footer{
-							@include span(1);
-							margin:  0;
-							font-size: 0.8em;
-							background-color: $geometry_gray;
-							border-style: none;
-							p{
-								display: inline;
-								a{
-									text-decoration: none;
-									font-weight: 700;
-									color: $map_blue;
-								}
-								a:hover{
-									text-decoration: underline;
-								}
-							}
-							h1{
-								font-size: 1em;
-							}
-						}
+  body{
+    .wrapper{
+      article{
+        section.comments{
+          margin-bottom: 1em;
+          div{
+            @include cf();
+            padding: 0.25em 0.25em 0 0.25em;
+            header, h1, article, footer{
+              @include span(1);
+              margin:  0;
+              font-size: 0.8em;
+              background-color: $geometry_gray;
+              border-style: none;
+              p{
+                display: inline;
+                a{
+                  text-decoration: none;
+                  font-weight: 700;
+                  color: $map_blue;
+                }
+                a:hover{
+                  text-decoration: underline;
+                }
+              }
+              h1{
+                font-size: 1em;
+              }
+            }
 
             //style for expandable text area
             .comment_submit{
@@ -83,18 +83,18 @@
               }
             }
 
-						footer{
-							color: gray;
-							p{
-								a{
-									color: gray;
-									font-weight: 300;				
-								}
-							}
-						}	
-					}
-				}
-			}
-		}
-	}
+            footer{
+              color: gray;
+              p{
+                a{
+                  color: gray;
+                  font-weight: 300;       
+                }
+              }
+            } 
+          }
+        }
+      }
+    }
+  }
 }

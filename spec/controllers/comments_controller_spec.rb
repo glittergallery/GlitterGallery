@@ -7,7 +7,7 @@ describe CommentsController, type: :controller do
         @project = FactoryGirl.create(:project)
         sign_in(@project.user)
       end
-      it 'Response code is 200' do
+      it 'adds comment to project' do
         xhr :post, :create, comment: { polycomment_type: 'project',
                                        polycomment_id: @project.id,
                                        issue: false,
@@ -26,7 +26,7 @@ describe CommentsController, type: :controller do
       sign_in(@user)
     end
     describe 'POST #create' do
-      it 'redirects to root_url' do
+      it "doesn't create new comment" do
         xhr :post, :create, comment: { polycomment_type: 'project',
                                        polycomment_id: 10_000,
                                        issue: false,
@@ -34,7 +34,47 @@ describe CommentsController, type: :controller do
                                        body: 'Rock paper scissors'
                                      }
         expect(response.response_code).to eq(404)
+        expect(@user.comments).to be_empty
       end
     end
   end
+
+  context 'issue exists' do
+    describe 'POST #create' do
+      before do
+        @issue = FactoryGirl.create(:issue)
+        sign_in(@issue.user)
+      end
+      it 'adds comment to project' do
+        xhr :post, :create, comment: { polycomment_type: 'issue',
+                                       polycomment_id: @issue.id,
+                                       issue: false,
+                                       project_name: @issue.project.name,
+                                       body: 'I am body of comment'
+                                     }
+        expect(@issue.user.comments.first.body).to eq('I am body of comment')
+      end
+    end
+  end
+
+  context "issue doesn't exists" do
+    before do
+      @user = FactoryGirl.create(:user)
+      sign_in(@user)
+    end
+    describe 'POST #create' do
+      it "doesn't create new comment" do
+        xhr :post, :create, comment: { polycomment_type: 'issue',
+                                       polycomment_id: 10_000,
+                                       issue: false,
+                                       project_name: "Dosesn't exists",
+                                       body: 'I never existed'
+                                     }
+        expect(response.response_code).to eq(404)
+        expect(@user.comments).to be_empty
+      end
+    end
+  end
+
+
 end
