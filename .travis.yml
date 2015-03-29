@@ -6,6 +6,6 @@ rvm:
 before_script:
   - RAILS_ENV=test bundle exec rake --trace db:migrate
 script:
-  - bundle exec rubocop --config .rubocop.yml app/models/ app/controllers/ app/mailers/ spec/
+  - bundle exec rubocop --config .rubocop.yml
   - RAILS_ENV=test xvfb-run bundle exec rspec
   - bundle exec haml-lint app/views/

@@ -5,6 +5,8 @@ AllCops:
     - 'lib/**/*'
     - 'bin/**/*'
     - 'Guardfile'
+    - 'vendor/bundle/**/*'
+    - 'bundle/**/*'
   StyleGuideCopsOnly: true
 
 Metrics/MethodLength:

@@ -3,4 +3,3 @@ class AddUserIdToGlitterposts < ActiveRecord::Migration
     add_column :glitterposts, :user_id, :integer
   end
 end
-
