@@ -25,7 +25,7 @@
 
     %section.comments
       %section.showcomments
-        = render partial: "comments/comment", collection: @comments.reverse
+        = render partial: 'comments/comment', collection: @comments.reverse
       %section.newcomment
         = render partial: 'comments/new', locals: { type: 'commit',
         id: @id.to_s,

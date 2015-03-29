@@ -3,4 +3,6 @@
     render partial: 'comments/comment',
     collection: @comments.reverse
   )}");
-  $('#comment_body').val('');
+  $('textarea').val('').trigger('input');
+  $(".comment_submit").css({"margin": "1.25em 0"});
+  $(".expandingArea.active textarea").css({"padding-bottom": "22px"});

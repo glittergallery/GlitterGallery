@@ -25,4 +25,18 @@ source: '#navigation'
 
 });
 
+$( document ).ready(function() {
+  $('div.expandingArea').each(function() {
+    var area = $('textarea', $(this));
+    var span = $('span', $(this));
+    area.bind('input', function() {
+      span.text(area.val());
+      $(".comment_submit").css({"margin": "0.25em 0"});
+      $(".expandingArea.active textarea").css({"padding": "5px", "height": "87%"});
+    });
+    span.text(area.val());
+    $(this).addClass('active');
+  });
+});
+
 
