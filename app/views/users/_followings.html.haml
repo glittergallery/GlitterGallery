@@ -1,10 +1,11 @@
 %article
   - if @followings.empty?
     %p #{@user.username} is not following anyone yet.
+    
   -@followings.each do |following|
+    = avatar(following.email)
     - if following.username == current_user.username
-      = avatar(current_user.email)
       = "You"
     - else
-      = avatar(following.email)
       %a{href: "/#{following.username}"} #{following.username}
+
