@@ -1,12 +1,10 @@
-- markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
-
 %div
   %header
     %h1
       = comment.user.username
   %article
     %p
-      = raw markdown.render comment.body
+      = markdown comment.body
   %footer
     %p
       = link_to 'Issue?', "#{@project.urlbase}/issues/new?desc=#{comment.body}"
@@ -18,5 +16,3 @@
                            data: { confirm: 'Are you sure?' }
     = distance_of_time_in_words_to_now comment.created_at
     ago
-
-

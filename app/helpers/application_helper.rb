@@ -45,4 +45,14 @@ module ApplicationHelper
     log_status = user_signed_in? ? 'logged_in' : 'not_logged_in'
     "#{controller.controller_name} #{controller.action_name} #{log_status}"
   end
+
+  # render markdown text on redcarpet
+  def markdown(text)
+    render_options = { hard_wrap: true, filter_html: true }
+    markdown_options = { autolink: true, no_intra_emphasis: true }
+    markdown = Redcarpet::Markdown.new(
+      Redcarpet::Render::HTML.new(render_options), markdown_options
+    )
+    markdown.render(text).html_safe
+  end
 end

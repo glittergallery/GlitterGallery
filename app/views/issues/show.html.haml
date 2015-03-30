@@ -15,7 +15,7 @@
             %h1
               = @issue.title
             %h2.issue
-              = @issue.description
+              = markdown @issue.description
         %aside
           %h1
             Actions
