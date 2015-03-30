@@ -1,4 +1,12 @@
 AllCops:
+  Exclude:
+    - 'db/schema.rb'
+    - 'config/**/*'
+    - 'lib/**/*'
+    - 'bin/**/*'
+    - 'Guardfile'
+    - 'vendor/bundle/**/*'
+    - 'bundle/**/*'
   StyleGuideCopsOnly: true
 
 Metrics/MethodLength:

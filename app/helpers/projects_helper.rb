@@ -3,16 +3,17 @@ module ProjectsHelper
     @user = User.find_by username: params[:user_id]
     @project = Project.find_by user_id: @user.id, name: params[:id]
     if user_signed_in?
-      unless @project.private && ((params[:xid] != @project.uniqueurl && current_user.id != @project.user_id))
-        true
-      else
+      if @project.private && ((params[:xid] != @project.uniqueurl &&
+         current_user.id != @project.user_id))
         false
+      else
+        true
       end
     else
-      unless @project.private && (params[:xid] != @project.uniqueurl)
-        true
-      else
+      if @project.private && (params[:xid] != @project.uniqueurl)
         false
+      else
+        true
       end
     end
   end
