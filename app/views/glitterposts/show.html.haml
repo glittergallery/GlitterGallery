@@ -1,4 +1,3 @@
-- markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
 - content_for :title do
   = @glitterpost.title.titleize
 
@@ -31,7 +30,7 @@
     ago
 
 %hr
-= raw markdown.render @glitterpost.content
+= markdown @glitterpost.content
 
 
 
