@@ -1,7 +1,7 @@
 - content_for :pagetitle do
-  = "Recently added Glitterposts"
+  "Recently added Glitterposts"
 
-- @glitterposts.each do |post| 
+- @glitterposts.each do |post|
   .meta
     = avatar(User.find(post.user_id).email)
     = link_to post.title, post
@@ -9,5 +9,5 @@
     Posted by
     = User.find(post.user_id).username
     on
-    = time_tag post.created_at, :format => '%B %d, %Y'
+    = time_tag post.created_at, format: '%B %d, %Y'
     %hr

@@ -1,35 +1,35 @@
 - content_for :title do
   = @user.username.titleize
 
-%article.project{ data: "following-projects"}
+%article.project{ data: 'following-projects' }
   %header
     %h1
       = avatar @user.email
-      -unless @user == current_user
-        Projects #{@user.username} is following
-      - else
+      - if @user == current_user
         Projects I'm following
+      - else
+        Projects #{@user.username} is following
     %h2
-      = '@' + @user.username
+      = precede '@' do
+        = current_user.username
 
   = render 'users/user_toolbar'
   = render 'shared/messages'
 
-  - unless @projects.empty?
+  - if @projects.empty?
+    %section
+      .guide
+        %p Start following exciting projects to keep up with them.
+        %form{ action: '/inspire' }
+          %input{ type: 'submit', value: 'Find projects!' }
+
+  - else
     %section.album
       %div
         - @projects.each do |project|
           %div
             %p
-              %img{ src: "/usercover.jpg"}
+              %img{ src: '/usercover.jpg' }
               = link_to project.name, project.urlbase
               %br
               Last updated #{distance_of_time_in_words_to_now project.updated_at} ago
-
-  - else
-    %section
-      .guide
-        %p Start following exciting projects to keep up with them.
-        %form{action: "/inspire"}
-          %input{type: "submit", value: "Find projects!"}
-

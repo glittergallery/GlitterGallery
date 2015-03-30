@@ -1,34 +1,36 @@
-- unless private_check
-  = render 'permissions_error'
-- else
+- if private_check
   - content_for :title do
-    = "Create an issue for #{@project.name}"
+    Show issue for
+    = @project.name
 
-  %article{ data: "issues"}
+  %article{ data: 'issues' }
     %header
       %h1.generated
         = avatar @project.user.email
         %p
-          %span 
+          %span
             = link_to @project.name, "/#{@user.username}/#{@project.name}"
-          = "- Issue #81" 
-      %h2 
+          :escaped
+            - Issue
+          = precede '#' do
+            = @issue.sub_id
+      %h2
         - if @project.private == true
-          %span.badge.type{:title => "Private Project"} PRV
-        -else
-          %span.badge.type{:title => "Public Project"} PUB
+          %span.badge.type{ title: 'Private Project' } PRV
+        - else
+          %span.badge.type{ title: 'Public Project' } PUB
         - if @project.id == @project.parent
           %span.badge.author PARENT
         - else
           %span.badge.author FORK
-          = render partial: 'projects/forked_from', locals: {project: @project}
+          = render partial: 'projects/forked_from', locals: { project: @project }
 
     = render 'shared/messages'
     = render 'projects/project_toolbar'
 
     %section
       %div
-        %div.option
+        .option
           %header
             %h1
               = @issue.title
@@ -40,12 +42,18 @@
           %nav
             %ul
               %li.active
-                = link_to("Close",File.join(@issue.show_url,'close'),:method=>"post")
+                = link_to('Close', File.join(@issue.show_url, 'close'), method: 'post')
               %li
                 Merge
 
     %section.comments
       %section.showcomments
-        = render partial: "comments/comment", collection: @comments
+        = render partial: 'comments/comment', collection: @comments
       %section.newcomment
-        = render partial: "comments/new", locals: {type: 'issue', id: @issue.id.to_s, ajax: @ajax, comment: @comment}
+        = render partial: 'comments/new', locals: { type: 'issue',
+          id: @issue.id.to_s,
+          ajax: @ajax,
+          comment: @comment }
+
+- else
+  = render 'permissions_error'

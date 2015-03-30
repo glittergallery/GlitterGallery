@@ -12,12 +12,15 @@
       = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
         = devise_error_messages!
         = f.label :email
-        = f.email_field :email, autofocus: true, value: (session[:omniauth]['info']['email'] if session[:omniauth])
+        = f.email_field :email,
+            autofocus: true,
+            value: (session[:omniauth]['info']['email'] if session[:omniauth])
         - unless session[:omniauth]
           = f.label :password
-          = f.password_field :password, autocomplete: "off"
+          = f.password_field :password, autocomplete: 'off'
           = f.label :password_confirmation
-          = f.password_field :password_confirmation, autocomplete: "off"
+          = f.password_field :password_confirmation, autocomplete: 'off'
         = f.label :username
-        = f.text_field :username, value: (session[:omniauth]['info']['nickname'] if session[:omniauth])
-        = f.submit "Sign up!"
+        = f.text_field :username,
+            value: (session[:omniauth]['info']['nickname'] if session[:omniauth])
+        = f.submit 'Sign up!'

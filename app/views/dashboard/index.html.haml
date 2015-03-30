@@ -7,28 +7,27 @@
     %h2 The open source pixelpub where awesome designers hangout.
   = render 'shared/messages'
   %section
-    -if current_user.projects.empty?
-      %div.guide
+    - if current_user.projects.empty?
+      .guide
         %p Welcome aboard! Without wasting any further time, let's get you started!
-        %form{action: "/projects/new"}
-          %input{type: "submit", value: "Create first project!"}
+        %form{ action: '/projects/new' }
+          %input{ type: 'submit', value: 'Create first project!' }
     - else
-      %div.guide
-        %p Looks like you're going great, congrats! Get noticed by updating your profile.
-        %form{action: "/users/edit"}
-          %input{type: "submit", value: "Get me started!"}
+      .guide
+        %p Looks like you're going great,
+          congrats! Get noticed by updating your profile.
+        %form{ action: '/users/edit' }
+          %input{ type: 'submit', value: 'Get me started!' }
   -#
     %section
       -if current_user.doodles.empty?
-        %div.guide
+        .guide
           %p Welcome aboard! Without wasting any further time, let's get you started!
-          %form{action: "/doodles/new"}
-            %input{type: "submit", value: "Create first doodle!"}
+          %form{ action: '/doodles/new' }
+            %input{ type: 'submit', value: 'Create first doodle!' }
     %section
       -if current_user.glitterposts.empty?
-        %div.guide
+        .guide
           %p Welcome aboard! Without wasting any further time, let's get you started!
-          %form{action: "/glitterposts/new"}
-            %input{type: "submit", value: "Write first Glitterpost!"}
-
-
+          %form{ action: '/glitterposts/new' }
+            %input{ type: 'submit', value: 'Write first Glitterpost!' }

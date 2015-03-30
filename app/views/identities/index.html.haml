@@ -1,13 +1,14 @@
 - content_for :title do
   = current_user.username.titleize
 
-%article.user{ data: "settings"}
+%article.user{ data: 'settings' }
   %header
     %h1
       = avatar current_user.email
       = current_user.username
     %h2
-      = '@' + current_user.username
+      = precede '@' do
+        = current_user.username
 
   - @user = current_user
   = render 'users/user_toolbar'
@@ -15,16 +16,19 @@
 
   %section
     %div
-      %div.option
-        -for identity in @identities
+      .option
+        - @identities.each do |identity|
           %div
             = identity.provider
             = identity.uid
-            = link_to "Delete", identity_path(identity.id), method:"delete", data: { confirm: "Are you sure?"}
+            = link_to 'Delete',
+                              identity_path(identity.id),
+                              method: 'delete',
+                              data: { confirm: 'Are you sure?' }
 
-        -for method in @allowedmethods
+        - @allowedmethods.each do |method|
           %div
-            =link_to(method.to_s.capitalize,"/auth/#{method.to_s}")
+            = link_to(method.to_s.capitalize, "/auth/#{method}")
       %aside
         %h1
           User Settings
@@ -39,4 +43,3 @@
                 = link_to 'SSH Keys', identities_path
               %li
                 = link_to 'Projects', identities_path
-

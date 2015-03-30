@@ -1,7 +1,4 @@
-- unless private_check
-  = render 'permissions_error'
-- else
-
+- if private_check
   - content_for :title do
     = @project.name.titleize
 
@@ -10,15 +7,16 @@
     = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
-  
-    - if @project.private and params[:xid] != @project.uniqueurl
+
+    - if @project.private && params[:xid] != @project.uniqueurl
       = link_to 'Unique link', @project.urlbase
-    
+
     %section
       %div
-        = form_tag(:controller=>"projects", :action=>"create_svg", :id => @project.id) do
+        = form_tag(controller: 'projects', action: 'create_svg', id: @project.id) do
           = sketchily_tag :sketch
           %label What are you calling your sketch?
           = text_field_tag :filename
           = submit_tag
-
+- else
+  = render 'permissions_error'

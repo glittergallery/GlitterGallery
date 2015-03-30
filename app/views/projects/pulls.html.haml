@@ -1,14 +1,11 @@
-- unless private_check
-  = render 'permissions_error'
-- else
-
+- if private_check
   - content_for :title do
-    = 'Pull Requests'
+    Pull Requests
 
   - content_for :pagetitle do
     = link_to @project.name.titleize, @project.urlbase
     \/
-    = 'Pull Requests'
+    Pull Requests
 
   = render 'project_toolbar'
   %br
@@ -17,17 +14,14 @@
   .center
     - @pulls.each do |pull|
       %h1
-        = link_to "##{pull.id}", File.join(@project.urlbase, 'pull',pull.id.to_s)
+        = link_to "##{pull.id}", File.join(@project.urlbase, 'pull', pull.id.to_s)
       %ul
         %li
           = pull.desc
         %li
           .meta
-            = "First opened #{distance_of_time_in_words_to_now pull.created_at} ago | "
+            = surround 'First opened ', ' ago |' do
+              = distance_of_time_in_words_to_now @pull.created_at
             =  pull.status
-  
-
-
-
-
-
+- else
+  = render 'permissions_error'

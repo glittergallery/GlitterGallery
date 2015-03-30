@@ -2,17 +2,18 @@
   = @user.username.titleize
 
 
-%article.project{ data: "projects"}
+%article.project{ data: 'projects' }
   %header
     %h1
       = avatar @user.email
-      - unless @user == current_user
-        #{@user.username}'s Projects
-      - else
+      - if @user == current_user
         My projects
+      - else
+        #{@user.username}'s Projects
     %h2
-      = '@' + @user.username
-      
+      = precede '@' do
+        = @user.username
+
   = render 'users/user_toolbar'
   = render 'shared/messages'
 
@@ -21,21 +22,20 @@
       .guide
         %p No Projects available for #{@user.username}
 
-  - unless @projects.empty?
+  - if @projects.empty?
+    %section
+      .guide
+        %p Create design projects on GlitterGallery to start collaborating with your circle.
+        %form{ action: '/projects/new' }
+          %input{ type: 'submit', value: 'Create first project!' }
+  - else
     %section.album
       %div
         - @projects.each do |project|
           %div
             %p
-              %img{:src => "/usercover.jpg", :title => "Project Cover"}
+              %img{ src: '/usercover.jpg', title: 'Project Cover' }
               = link_to project.name, project.urlbase
               = render 'forked_from', project: project
               %br
               Last updated #{distance_of_time_in_words_to_now project.updated_at} ago
-  - else
-    %section
-      .guide
-        %p Create design projects on GlitterGallery to start collaborating with your circle.
-        %form{action: "/projects/new"}
-          %input{type: "submit", value: "Create first project!"}
-

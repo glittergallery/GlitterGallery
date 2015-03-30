@@ -1,65 +1,65 @@
 %section.toolbar
-  %a{href: "#{@project.urlbase+@project_path.to_s}"}
-    %div{ data: "current"}
+  %a{ href: "#{@project.urlbase + @project_path.to_s}" }
+    %div{ data: 'current' }
       %p
         Current
 
-  %a{href: "#{@project.urlbase+'/commits'}"}
-    %div{ data: "log" }
+  %a{ href: "#{@project.urlbase + '/commits'}" }
+    %div{ data: 'log' }
       %p
         Log
 
-  %a{href: "#{@project.urlbase+'/issues'}"}
-    %div{ data: "issues" }
+  %a{ href: "#{@project.urlbase + '/issues'}" }
+    %div{ data: 'issues' }
       %p
         Issues
 
-  %a{href: "#{@project.urlbase+'/network'}"}
-    %div{ data: "network" }
+  %a{ href: "#{@project.urlbase + '/network'}" }
+    %div{ data: 'network' }
       %p
         Network
 
 
 %section.action
-  - if user_signed_in? and @project.user.id == current_user.id
+  - if user_signed_in? && @project.user.id == current_user.id
     -#
-      %div{ data: "doodle" }
+      %div{ data: 'doodle' }
         %p
           Doodle
 
-    %a{href: "#{@project.urlbase+'/newfile'}"}
-      %div{ data: "upload" }
+    %a{ href: "#{@project.urlbase + '/newfile'}" }
+      %div{ data: 'upload' }
         %p
           Upload
 
-    %a{href: "#{@project.urlbase+'/settings'}"}
-      %div{ data: "settings" }
+    %a{ href: "#{@project.urlbase + '/settings'}" }
+      %div{ data: 'settings' }
         %p
           Settings
   - else
-    - unless @project.followed_by? current_user
-      = link_to follow_user_project_path(@project.user,@project), method: :post do
-        %div{ data: "follow" }
-          %p
-            Follow
-    - else
-      = link_to unfollow_user_project_path(@project.user,@project), method: :delete do
-        %div{ data: "unfollow" }
+    - if @project.followed_by? current_user
+      = link_to unfollow_user_project_path(@project.user, @project), method: :delete do
+        %div{ data: 'unfollow' }
           %p
             Unfollow
+    - else
+      = link_to follow_user_project_path(@project.user, @project), method: :post do
+        %div{ data: 'follow' }
+          %p
+            Follow
 
-    = link_to fork_user_project_path(@project.user,@project), method: :post do
-      %div{ data: "fork" }
+    = link_to fork_user_project_path(@project.user, @project), method: :post do
+      %div{ data: 'fork' }
         %p
           Fork
 
     -#
-      %a{href: "#{request.original_url+'/star'}"}
-        %div{ data: "fork" }
+      %a{ href: "#{request.original_url + '/star'}" }
+        %div{ data: 'fork' }
           %p
             Star
 
-    %a{href: "#{@project.urlbase+'/issues/new'}"}
-      %div{ data: "blame" }
+    %a{ href: "#{@project.urlbase + '/issues/new'}" }
+      %div{ data: 'blame' }
         %p
           Blame

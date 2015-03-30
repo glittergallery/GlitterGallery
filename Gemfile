@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-#source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
+# source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
 
 gem 'rails', '~> 4.1.0'
 
@@ -26,7 +26,7 @@ gem 'omniauth-twitter'
 gem 'omniauth-github'
 gem 'omniauth-linkedin'
 gem 'omniauth-openid'
-gem "oa-openid", :require => "omniauth/openid"
+gem 'oa-openid', require: 'omniauth/openid'
 gem 'activerecord-session_store'
 gem 'actionpack-action_caching'
 gem 'rails-observers'
@@ -41,12 +41,12 @@ gem 'delayed_job_active_record', '~> 4.0.3'
 gem 'ancestry', '~> 2.1.0'
 
 # For soft-deleting projects.
-gem "paranoia", "~> 2.0"
+gem 'paranoia', '~> 2.0'
 
 gem 'sass-rails'
 gem 'coffee-rails'
 
-gem 'therubyracer', :platform => :ruby
+gem 'therubyracer', platform: :ruby
 
 gem 'uglifier'
 
@@ -70,6 +70,7 @@ group :test do
   gem 'guard-rspec'
   gem 'launchy'
   gem 'rubocop', require: false
+  gem 'haml-lint', require: false
 end
 
 # To use ActiveModel has_secure_password

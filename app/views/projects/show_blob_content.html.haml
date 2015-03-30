@@ -1,28 +1,30 @@
-- unless private_check
-  = render 'permissions_error'
-- else
-
+- if private_check
   - content_for :title do
     = @project.name.titleize
 
-  %article.project{ data: "current" }
+  %article.project{ data: 'current' }
     = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
 
     %section.album
-      %div.photo
+      .photo
         %p
           = sketchily_show @enc_blob_text
 
-    - if @project.private and params[:xid] != @project.uniqueurl
+    - if @project.private && params[:xid] != @project.uniqueurl
       %section
         %div
-          %form{ action: @project.urlbase}
-            %input{type: "submit", value: "Generate Unique Link"}
+          %form{ action: @project.urlbase }
+            %input{ type: 'submit', value: 'Generate Unique Link' }
 
     %section.comments
       %section.showcomments
-        = render partial: "comments/comment", collection: @comments.reverse
+        = render partial: 'comments/comment', collection: @comments.reverse
       %section.newcomment
-        = render partial: "comments/new", locals: {type: 'blob', id: @blob.oid, ajax: @ajax, comment: @comment}
+        = render partial: 'comments/new', locals: { type: 'blob',
+          id: @blob.oid,
+          ajax: @ajax,
+          comment: @comment }
+- else
+  = render 'permissions_error'
