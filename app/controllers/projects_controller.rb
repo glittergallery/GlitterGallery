@@ -270,15 +270,11 @@ class ProjectsController < ApplicationController
   end
 
   def file_update
-    tmp = params[:file].tempfile
-    file = File.join @project.satellitedir, params[:image_name]
-    FileUtils.cp tmp.path, file
     if params[:file]
       imagefile = params[:file]
       message = params[:message]
       commit_id = satellite_commit @project.satelliterepo,
-                                   params[:image_name],
-                                   imagefile.read,
+                                   imagefile,
                                    message
       generate_thumbnail @project, params[:image_name], commit_id
       @project.pushtobare

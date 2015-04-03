@@ -10,8 +10,8 @@
     %section
       %div
         = form_tag file_update_user_project_path(@project.user, @project), multipart: true do
-          = file_field_tag 'file'
-          = text_field_tag 'message', 'commit message'
+          = file_field_tag 'file[]'
+          = text_field_tag 'message', nil, placeholder: 'commit message'
           = hidden_field_tag 'image_name', params[:image_name]
           = submit_tag
 - else
