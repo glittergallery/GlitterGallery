@@ -65,7 +65,7 @@ describe Project do
   it 'gets thumbnails path' do
     @project = FactoryGirl.create(:project)
     commit_id = SecureRandom.hex(20)
-    real_path = "/testdata/repos/#{@project.user.email}/#{@project.name}/" \
+    real_path = "/testdata/repos/#{@project.user.username}/#{@project.name}/" \
                 "thumbnails/#{commit_id}"
     expect(@project.thumbnail_for(commit_id, false)).to eq(real_path)
     real_path = 'public' + real_path
