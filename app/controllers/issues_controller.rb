@@ -39,7 +39,7 @@ class IssuesController < ApplicationController
       if @issue.save
         format.html { redirect_to @issue.show_url }
       else
-        format.html { render "new", :description => "fdfsdf"}
+        format.html { render "new" }
       end
     end
   end
@@ -61,7 +61,7 @@ class IssuesController < ApplicationController
   private
 
   def issue_params
-    params.require(:issue).permit(:title, :description, :type, :tag_list)
+    params.require(:issue).permit(:title, :description, :tag_list)
   end
 
   def find_issue(type)
