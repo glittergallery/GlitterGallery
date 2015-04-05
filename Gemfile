@@ -68,6 +68,7 @@ group :test do
   gem 'capybara-webkit', '~> 1.4.1'
   gem 'database_cleaner', '~> 1.4.1'
   gem 'guard-rspec'
+  gem 'guard-rubocop', '~> 1.2.0'
   gem 'launchy'
   gem 'rubocop', require: false
   gem 'haml-lint', require: false
