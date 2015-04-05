@@ -18,7 +18,7 @@ describe IdentitiesController, type: :controller do
       end
       context 'User exists' do
         before :each do
-          @user = FactoryGirl.create(:user)
+          @user = FactoryGirl.create(:fb_user)
         end
         it "doesn't create new user" do
           post :create, { provider: 'facebook' }

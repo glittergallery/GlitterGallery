@@ -171,16 +171,15 @@ class ProjectsController < ApplicationController
     barerepo.diff(commit.parents.first, commit).deltas.each do |delta|
       link = File.join @project.urlbase, 'master', delta.new_file[:path]
       data = barerepo.read(delta.new_file[:oid]).data
-      @images.push({
-        link: link,
+      @images.push({ link: link,
         data: data,
-        name: delta.new_file[:path]
-      })
+        name: delta.new_file[:path] })
     end
     @comments = Comment.where(
       polycomment_type: 'commit',
       polycomment_id: commit.oid
     )
+    @comments = pg @comments, 10
     @comment = Comment.new
     @id = commit.oid
     @tree = commit.tree_id
@@ -195,16 +194,15 @@ class ProjectsController < ApplicationController
     tree.each do |blob|
       link = File.join @project.urlbase, 'master', blob[:name]
       data = barerepo.read(blob[:oid]).data
-      @images.push({
-        link: link,
+      @images.push({ link: link,
         data: data,
-        name: blob[:name]
-      })
+        name: blob[:name] })
     end
     @comments = Comment.where(
       polycomment_type: 'commit',
       polycomment_id: tree.oid
     )
+    @comments = pg @comments, 10
     @comment = Comment.new
     @id = tree.oid
     render 'commit'
@@ -222,7 +220,6 @@ class ProjectsController < ApplicationController
       polycomment_type: 'file',
       polycomment_id: params[:image_name]
     )
-    @comments = @comments.paginate page: params[:page], per_page: 10
     @comments = pg @comments, 10
     @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1

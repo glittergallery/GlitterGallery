@@ -22,14 +22,10 @@
         = link_to image[:name], image[:link]
       = data_image_tag(image, '100%', nil)
 
-    .comment_form
-      = render partial: 'comments/new', locals: { type: 'commit',
-        id: @id.to_s,
-        ajax: @ajax,
-        comment: @comment }
-
-    %ul.comments
-      = render partial: 'comments/comment', collection: @comments
+    = render partial: 'comments/show_comments', locals: { type: 'commit',
+      id: @id.to_s,
+      ajax: @ajax,
+      comment: @comment }
 
 - else
   = render 'permissions_error'

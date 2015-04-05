@@ -16,11 +16,10 @@
         %form{ action: File.join(params[:image_name], 'update') }
           %input{ type: 'submit', value: 'Update' }
 
-    %section.comments
-      = render partial: 'comments/comment', collection: @comments
-      = render partial: 'comments/new', locals: { type: 'project',
-        id: @project.id.to_s,
-        ajax: @ajax,
-        comment: @comment }
+    = render partial: 'comments/show_comments', locals: { type: 'file',
+      id: params[:image_name],
+      ajax: @ajax,
+      comment: @comment }
+
 - else
   = render 'permissions_error'

@@ -15,10 +15,9 @@ class CommentsController < ApplicationController
         polycomment_type: params[:comment][:polycomment_type],
         polycomment_id: params[:comment][:polycomment_id]
       )
-      @comments = @comments.paginate(page: 1, per_page: 10)
-      project = Project.find_by(name: params[:comment][:project_name])
+      @project = Project.find_by(name: params[:comment][:project_name])
 
-      notify_followers(project, @comment)
+      notify_followers(@project, @comment)
 
       respond_to do |format|
         format.html { redirect_to :back }

@@ -4,24 +4,17 @@
     = @project.name
 
   %article{ data: 'blame' }
-    %header
-      %h1.generated
-        = avatar @project.user.email
-        %p
-          %span
-            = link_to @project.name, "/#{@user.username}/#{@project.name}"
-          :escaped
-            - New Issue
-
-      %h2 Bugs, RFE's and questions about the project.
-
+    = render 'projects/project_header'
     = render 'shared/messages'
     = render 'projects/project_toolbar'
 
     %section
       %div
         .option
-          = form_for(@issue, url: url_for(params)) do |f|
+          = form_for([@project.user, @project, @issue]) do |f|
+            - @issue.errors.full_messages.each do |msg|
+              %p.error_message
+                = msg
             %label Title
             = f.text_field :title, placeholder: 'Title', autofocus: true
             %label Description

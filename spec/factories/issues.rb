@@ -2,5 +2,11 @@
 
 FactoryGirl.define do
   factory :issue do
+    title 'test issue'
+    description 'I am a test'
+    type 0
+    status 0
+    association :project
+    association :user
   end
 end

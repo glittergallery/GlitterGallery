@@ -7,7 +7,7 @@ describe Project do
   end
 
   it 'is invalid without a name' do
-    expect(FactoryGirl.build(:project, name: nil)).to_not be_valid
+    expect(FactoryGirl.build(:project, name: '')).to_not be_valid
   end
 
   it 'is invalid without a user' do

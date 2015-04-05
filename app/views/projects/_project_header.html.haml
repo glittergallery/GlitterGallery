@@ -2,11 +2,11 @@
   %h1.generated
     = avatar @project.user.email
     %p
-      = link_to @user.username, "/#{@user.username}"
+      = link_to @user.username, user_path(@user)
       :escaped
         /
       %span
-        = link_to @project.name, "/#{@user.username}/#{@project.name}"
+        = link_to @project.name, user_project_path(@project.user, @project)
   %h2
     - if @project.private == true
       %span.badge.type{ title: 'Private Project' } PRV

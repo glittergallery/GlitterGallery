@@ -1,20 +1,20 @@
 %section.toolbar
-  %a{ href: "#{@project.urlbase + @project_path.to_s}" }
+  = link_to user_project_path(@project.user, @project) do
     %div{ data: 'current' }
       %p
         Current
 
-  %a{ href: "#{@project.urlbase + '/commits'}" }
+  = link_to project_commits_path(@project) do
     %div{ data: 'log' }
       %p
         Log
 
-  %a{ href: "#{@project.urlbase + '/issues'}" }
+  = link_to project_issues_path(@project) do
     %div{ data: 'issues' }
       %p
         Issues
 
-  %a{ href: "#{@project.urlbase + '/network'}" }
+  = link_to project_network_path(@project) do
     %div{ data: 'network' }
       %p
         Network
@@ -22,42 +22,32 @@
 
 %section.action
   - if user_signed_in? && @project.user.id == current_user.id
-    -#
-      %div{ data: 'doodle' }
-        %p
-          Doodle
 
-    %a{ href: "#{@project.urlbase + '/newfile'}" }
+    = link_to project_newfile_path(@project) do
       %div{ data: 'upload' }
         %p
           Upload
 
-    %a{ href: "#{@project.urlbase + '/settings'}" }
+    = link_to project_settings_path(@project) do
       %div{ data: 'settings' }
         %p
           Settings
   - else
     - if @project.followed_by? current_user
-      = link_to unfollow_user_project_path(@project.user, @project), method: :delete do
+      = link_to project_unfollow_path(@project), method: :delete do
         %div{ data: 'unfollow' }
           %p
             Unfollow
     - else
-      = link_to follow_user_project_path(@project.user, @project), method: :post do
+      = link_to project_follow_path(@project), method: :post do
         %div{ data: 'follow' }
           %p
             Follow
 
-    = link_to fork_user_project_path(@project.user, @project), method: :post do
+    = link_to project_fork_path(@project), method: :post do
       %div{ data: 'fork' }
         %p
           Fork
-
-    -#
-      %a{ href: "#{request.original_url + '/star'}" }
-        %div{ data: 'fork' }
-          %p
-            Star
 
     %a{ href: "#{@project.urlbase + '/issues/new'}" }
       %div{ data: 'blame' }

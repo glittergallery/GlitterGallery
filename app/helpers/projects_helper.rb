@@ -1,7 +1,10 @@
 module ProjectsHelper
   def private_check
     @user = User.find_by username: params[:user_id]
-    @project = Project.find_by user_id: @user.id, name: params[:id]
+    @project = Project.find_by(
+      user_id: @user.id,
+      name: (params[:project_id] || params[:id])
+    )
     if user_signed_in?
       if @project.private && ((params[:xid] != @project.uniqueurl &&
          current_user.id != @project.user_id))

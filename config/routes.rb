@@ -30,11 +30,6 @@ Glitter::Application.routes.draw do
   get '/:user_id/:id/pull/:pull_id/close' => 'projects#close'
   get '/:user_id/:id/pull/:pull_id/open' => 'projects#open'
   get '/:user_id/:id/pulls' => 'projects#pulls'
-  get '/:user_id/:id/issues/new' => 'issues#new'
-  get '/:user_id/:id/issues' => 'issues#index'
-  post '/:user_id/:id/issues/new' => 'issues#create'
-  get '/:user_id/:id/issue/:sub_id' => 'issues#show'
-  post '/:user_id/:id/issue/:sub_id/close' => 'issues#close'
 
 
 
@@ -69,6 +64,12 @@ Glitter::Application.routes.draw do
           post :update_svg, :as => :update_svg
         end
       end
+      resources :issues, path: "(:xid)/issues" do
+        member do
+          put 'close'
+          put 'reopen'
+        end
+      end
     end
   end
 
@@ -96,6 +97,6 @@ Glitter::Application.routes.draw do
   get '/:user_id/:id/:xid/issue/:sub_id' => 'issues#show'
   get '/:user_id/:id/:xid/issues/new' => 'issues#new'
   post '/:user_id/:id/:xid/issues/new' => 'issues#create'
-  post '/:user_id/:id/:xid/issue/:id/close' => 'issues#close'
+  put '/:user_id/:id/:xid/issue/:id/close' => 'issues#close'
 
 end
