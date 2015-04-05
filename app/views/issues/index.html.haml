@@ -52,6 +52,9 @@
                 %article
                   %p
                     = issue.description
+                  %p
+                    Tags: 
+                    = raw issue.tag_list.map { |t| link_to t, "#{@project.issues_url}/#{t}"}.join(', ')
                 %footer
                   %p
                     by
