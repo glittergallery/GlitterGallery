@@ -24,7 +24,7 @@
       - @images.each do |image|
         %div
           %p{ title: image[:name] }
-            = link_to(image_tag(image[:url]), image[:link], id: image[:name])
+            = link_to(image_tag(image[:url]), project_blob_path(@project, image[:name], @branch), id: image[:name])
     - if user_signed_in? && current_user.id == @project.user.id
       %div
         = form_tag file_upload_user_project_path(@project.user,

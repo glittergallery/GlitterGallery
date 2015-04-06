@@ -167,14 +167,10 @@ feature 'Projects' do
       click_button 'Save changes'
     end
 
-    scenario 'User can see uploaded image' do
+    scenario 'User sees uploaded image' do
       expect(page).to have_selector("img[src$='happypanda.png']")
-      # TODO: move the following checks into another unit
-      #       test after settling on a place for their functions.
-      project = Project.last
-      last_commit_id = project.barerepo.head.target_id
-      expect(File.exist? project.thumbnail_for(last_commit_id, true))
-        .to eq(true)
+      click_link 'happypanda.png'
+      expect(find('.photo')).to have_selector('img')
     end
 
     scenario 'User sees logs for a project' do
@@ -182,6 +178,9 @@ feature 'Projects' do
       expect(page).to have_link 'Add 1 image: happypanda.png'
       last_commit_id = Project.last.barerepo.head.target_id
       expect(page).to have_selector("img[src$='#{last_commit_id}']")
+      img_link = find('.feed//article//img')['src']
+      visit img_link
+      expect(page.status_code).to eq(200)
     end
 
     scenario 'User comments on a specific commit' do
@@ -190,6 +189,45 @@ feature 'Projects' do
       fill_in 'comment_body', with: 'test comment'
       click_button 'Create Comment'
       expect(find('.comments')).to have_content('test comment')
+    end
+
+    describe 'After image update' do
+      before :each do
+        click_link 'happypanda.png'
+        @old = find('.photo//img')['src']
+        page.attach_file('file', 'spec/factories/files/1.png')
+        fill_in 'message', with: 'updated commit test'
+        click_button 'Save changes'
+      end
+
+      scenario 'User is redirected to the updated image' do
+        project = Project.last
+        expect(page.current_path).to eq(
+          blob_user_project_path(
+            project.user,
+            project,
+            nil,
+            'master',
+            'happypanda.png'
+          )
+        )
+      end
+
+      scenario 'User sees updated image' do
+        expect(find('.photo')).to have_selector('img')
+        expect(find('.photo//img')['src']).not_to eq(@old)
+      end
+
+      scenario 'User sees a new commit in the logs' do
+        click_link 'Log'
+        # Make sure the most recent commit doesn't contain the first message
+        expect(first('.feed//article')).to \
+          have_no_content 'Add 1 image: happypanda.png'
+        expect(first('.feed//article')).to have_content 'updated commit test'
+        img_link = first('.feed//article//img')['src']
+        visit img_link
+        expect(page.status_code).to eq(200)
+      end
     end
 
     describe 'After more images upload' do

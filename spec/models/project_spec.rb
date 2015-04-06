@@ -164,4 +164,22 @@ describe Project do
       end
     end
   end
+
+  describe '.blob' do
+    before :each do
+      @project = FactoryGirl.create(:project)
+      initialize_dummy_repo @project
+    end
+
+    it 'is falsey for invalid data' do
+      expect(@project.blob('4', '1.png')).to be_falsey
+      expect(@project.blob('16047dfc3ba3b4a8a6244dec410c0338b305a3ed', '453'))
+        .to be_falsey
+    end
+
+    it 'returns a blob for valid data' do
+      expect(@project.blob('16047dfc3ba3b4a8a6244dec410c0338b305a3ed', '1.png')
+        .type).to eq(:blob)
+    end
+  end
 end

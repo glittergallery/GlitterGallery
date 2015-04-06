@@ -1,5 +1,4 @@
 class IssuesController < ApplicationController
-  include ApplicationHelper
   before_action :get_context
 
   def index

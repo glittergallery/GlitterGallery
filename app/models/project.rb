@@ -112,6 +112,98 @@ class Project < ActiveRecord::Base
     (res.type == :tree) ? res : res.tree
   end
 
+  # Returns the blob object at destination for the given commit oid.
+  # Returns nil if given invalid data.
+  def blob(oid, destination)
+    begin
+      res = barerepo.blob_at oid, destination
+    rescue
+      return nil
+    end
+    res
+  end
+
+  # Generates a thumbnail for a commit in the appropriate place.
+  def generate_thumbnail(image_path, commit_id)
+    thumb_size = Glitter::Application.config.thumbnail_geometry
+    image = Magick::Image.read(
+      "#{data_path}/satellite/#{image_path}"
+    ).first
+    image.scale(
+      thumb_size[0],
+      thumb_size[1]
+    ).write thumbnail_for(commit_id, true)
+  end
+
+  # Returns a hash that can be passed to rugged while creating a commit
+  def rugged_commit_options(author, repo, message)
+    {
+      author: author,
+      committer: author,
+      tree: repo.index.write_tree(repo),
+      update_ref: 'HEAD',
+      message: message,
+      parents: repo.empty? ? [] : [repo.head.target].compact
+    }
+  end
+
+  # Creates a commit in the given satellite repo and pushes to the bare one.
+  def satellite_commit(repo, message, author, branch)
+    options = rugged_commit_options(author, repo, message)
+    commit_id = Rugged::Commit.create repo, options
+    repo.index.write
+    pushtobare branch
+    commit_id
+  end
+
+  # Returns a human friendly commit message using the given images.
+  # Example: "Add 2 images: a.png and b.png".
+  def get_message(images)
+    names = images.map { |i| i.original_filename}
+    "Add #{ActionController::Base.helpers.pluralize(images.size, 'image')}"\
+    ": #{names.to_sentence}"
+  end
+
+  # Adds a set of images into the project repository.
+  # Overwrites existing images if the new ones have similar names.
+  def new_images(repo, image_files)
+    image_files.each do |f|
+      tmp = f.tempfile
+      file = File.join satellitedir, f.original_filename
+      FileUtils.cp tmp.path, file
+      repo.index.add f.original_filename
+    end
+  end
+
+  # Adds new images to the project when old_path is not given.
+  # Updates an image if old_path is given(a message should be given too).
+  # Takes care of creating an appropriate commit in the given branch.
+  def add_images(branch, image_files, author, message = nil, old_path = nil)
+    repo = satelliterepo
+    repo.checkout(branch) unless repo.empty?
+    if old_path
+      update_image repo, old_path, image_files.last
+    else
+      new_images repo, image_files
+      message ||= get_message image_files
+    end
+    commit_id = satellite_commit(
+      repo,
+      message,
+      author,
+      branch
+    )
+    generate_thumbnail old_path || image_files.last.original_filename, commit_id
+    repo.checkout('master')
+  end
+
+  # Updates an image in the project repository.
+  def update_image(repo, old_path, new_file)
+    file = File.join satellitedir, old_path
+    FileUtils.cp new_file.tempfile.path, file
+    repo.index.add old_path
+  end
+
   # Returns the commit object with  the given id.
   # If no id is given, it returns the commit at head.
   # If the given id is invalid or the repo is empty, returns false.
@@ -128,10 +220,10 @@ class Project < ActiveRecord::Base
   end
 
   # Push the existing contents of the satellite repo to the bare repo
-  def pushtobare
+  def pushtobare(branch = 'master')
     remote = satelliterepo.remotes['bare']
     remote = satelliterepo.remotes.create 'bare', barerepo.path unless remote
-    satelliterepo.push remote, ['refs/heads/master']
+    satelliterepo.push remote, ["refs/heads/#{branch}"]
   end
 
   def create_fork_project
