@@ -8,10 +8,7 @@ class IssuesController < ApplicationController
 
   def index
     @issuestoshow = find_issue(params[:state])
-    if params[:tag]
-      @activetab = nil
-      @issuestoshow = @project.issues.tagged_with(params[:tag])
-    end
+    @issuestoshow = @issuestoshow.tagged_with(params[:tag]) if params[:tag]
   end
 
   def new
@@ -39,7 +36,7 @@ class IssuesController < ApplicationController
       if @issue.save
         format.html { redirect_to @issue.show_url }
       else
-        format.html { render "new" }
+        format.html { render 'new' }
       end
     end
   end
