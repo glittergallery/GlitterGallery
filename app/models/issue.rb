@@ -1,4 +1,6 @@
 class Issue < ActiveRecord::Base
+  before_save :set_sub_id
+
   # This is to avoid conflict with the :type attribute
   self.inheritance_column = nil
 
@@ -6,6 +8,8 @@ class Issue < ActiveRecord::Base
   belongs_to :project
 
   validates_presence_of :title, :description, :user, :project, :type, :status
+  validates_presence_of :sub_id, unless: :set_sub_id
+  validates :sub_id, uniqueness: { scope: :project }
 
   # TODO: make a list of 5 most popular types of issues
   #       people can raise on design projects.
@@ -42,11 +46,13 @@ class Issue < ActiveRecord::Base
     File.join(project.urlbase, 'issue', sub_id.to_s)
   end
 
-  def sub_id
-    (project.issue_ids.index(id) + 1).to_i
+  def self.find_from_project(project, sub_id)
+    project.issues.find_by_sub_id(sub_id)
   end
 
-  def self.find_from_project(project, sub_id)
-    Issue.find(project.issue_ids[sub_id.to_i - 1])
+  def set_sub_id
+    return if sub_id
+      sub_id = project.issues.count + 1
+      update_attribute(:sub_id, sub_id)
   end
 end
