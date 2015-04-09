@@ -50,8 +50,6 @@ gem 'therubyracer', platform: :ruby
 
 gem 'uglifier'
 
-gem 'acts-as-taggable-on', '~> 3.4'
-
 
 group :development, :test do
   # https://github.com/rspec/rspec-rails/issues/1273

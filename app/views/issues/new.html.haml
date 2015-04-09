@@ -21,17 +21,13 @@
     %section
       %div
         .option
-          = form_for(@issue, url: create_issue_path(@project.user,
-              @project,
-              description: params[:description])) do |f|
-            = f.label :title
+          = form_for(@issue, url: url_for(params)) do |f|
+            %label Title
             = f.text_field :title, placeholder: 'Title', autofocus: true
-            = f.label :description
-            = f.text_area :description,
-                value: params[:description],
-                placeholder: '(Markdown Enabled)...'
-            = f.label :tag_list
-            = f.text_field :tag_list
+            %label Description
+            = f.text_area :description, value: params[:desc], placeholder: '(Markdown Enabled)...'
+            %label Type
+            = f.select(:type, options_for_select([['Bug', 0], ['Improvement', 1]]))
             = f.submit 'Report Issue'
 
 - else

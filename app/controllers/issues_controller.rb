@@ -7,8 +7,11 @@ class IssuesController < ApplicationController
   end
 
   def index
-    @issuestoshow = find_issue(params[:state])
-    @issuestoshow = @issuestoshow.tagged_with(params[:tag]) if params[:tag]
+    @activetab = 0
+    @issuestoshow = @project.issues.where(status: 0)
+    return unless params[:state] == 'closed'
+    @activetab = 1
+    @issuestoshow = @project.issues.where(status: 1)
   end
 
   def new
@@ -32,12 +35,11 @@ class IssuesController < ApplicationController
     @issue.user = current_user
     @issue.project = @project
     @issue.status = 0
-    respond_to do |format|
-      if @issue.save
-        format.html { redirect_to @issue.show_url }
-      else
-        format.html { render 'new' }
-      end
+    if @issue.save
+      redirect_to(@project.urlbase)
+    else
+      flash[:alert] = "Couldn't create an issue"
+      redirect_to(dashboard_path)
     end
   end
 
@@ -58,16 +60,6 @@ class IssuesController < ApplicationController
   private
 
   def issue_params
-    params.require(:issue).permit(:title, :description, :tag_list)
-  end
-
-  def find_issue(type)
-    if type == 'closed'
-      @activetab = 1
-      @project.issues.where(status: 1)
-    else
-      @activetab = 0
-      @project.issues.where(status: 0)
-    end
+    params.require(:issue).permit(:title, :description, :type)
   end
 end

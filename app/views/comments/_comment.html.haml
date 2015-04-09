@@ -9,8 +9,7 @@
       = raw markdown.render comment.body
   %footer
     %p
-      - @comment = comment
-      = link_to 'Issue?', "#{@project.urlbase}/issues/new?description=#{comment.body}"
+      = link_to 'Issue?', "#{@project.urlbase}/issues/new?desc=#{comment.body}"
 
       - if user_signed_in? && current_user.id == comment.user.id
         = link_to 'Delete?',
