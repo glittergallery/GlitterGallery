@@ -30,11 +30,12 @@ Glitter::Application.routes.draw do
   get '/:user_id/:id/pull/:pull_id/close' => 'projects#close'
   get '/:user_id/:id/pull/:pull_id/open' => 'projects#open'
   get '/:user_id/:id/pulls' => 'projects#pulls'
-  get '/:user_id/:id/issues/new' => 'issues#new'
+  get '/:user_id/:id/issues/new' => 'issues#new', as: :new_issue
   get '/:user_id/:id/issues' => 'issues#index'
-  post '/:user_id/:id/issues/new' => 'issues#create'
+  post '/:user_id/:id/issues/create' => 'issues#create', as: :create_issue
   get '/:user_id/:id/issue/:sub_id' => 'issues#show'
   post '/:user_id/:id/issue/:sub_id/close' => 'issues#close'
+  get '/:user_id/:id/issues/:tag', to: 'issues#index'
 
 
 
