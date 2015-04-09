@@ -25,7 +25,7 @@
       #activity
         %article
           %p
-            = link_to @user.username, (File.join '/', @user.username)
+            = link_to @user.username, user_path(@user.username)
             joined
             %a{ href: '/' } GlitterGallery
             = distance_of_time_in_words_to_now @user.created_at
