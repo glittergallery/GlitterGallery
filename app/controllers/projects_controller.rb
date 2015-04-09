@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
       redirect_to dashboard_path
     else
       flash[:error] = "You don't have permission for this command!"
-      redirect_to @project.urlbase
+      check_redirect @project.urlbase
     end
   end
 
@@ -59,7 +59,7 @@ class ProjectsController < ApplicationController
         notification.victims << current_user.followers
         notification.save!
       end
-      redirect_to project.urlbase
+      check_redirect project.urlbase
     else
       flash[:alert] = "Didn't save project!"
       redirect_to new_project_path
@@ -81,7 +81,7 @@ class ProjectsController < ApplicationController
       flash[:notice] = "You're the owner of this project, " \
                        'you automatically receive updates.'
     end
-    redirect_to @project.urlbase
+    check_redirect @project.urlbase
   end
 
   # DELETE /user_id/id/unfollow
@@ -93,7 +93,7 @@ class ProjectsController < ApplicationController
       flash[:notice] = 'You were not following ' \
                        "#{@user.username}/#{@project.name}"
     end
-    redirect_to @project.urlbase
+    check_redirect @project.urlbase
   end
 
   def tree_at(revision, path)
@@ -266,7 +266,7 @@ class ProjectsController < ApplicationController
     else
       flash[:alert] = 'No image selected!'
     end
-    redirect_to @project.urlbase
+    check_redirect @project.urlbase
   end
 
   def file_update
@@ -287,7 +287,7 @@ class ProjectsController < ApplicationController
       flash[:alert] = "Unable to update #{params[:image_name]}. " \
                       'The server ponies are sad.'
     end
-    redirect_to @project.urlbase
+    check_redirect @project.urlbase
   end
 
   def file_delete
@@ -296,33 +296,33 @@ class ProjectsController < ApplicationController
     satellite_delete @project.satelliterepo, params[:image_name]
     @project.pushtobare
     flash[:notice] = "#{params[:image_name]} has been deleted!"
-    redirect_to @project.urlbase
+    check_redirect @project.urlbase
   end
 
   def open
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'open'
     @pull.save
-    redirect_to @project.urlbase
+    check_redirect @project.urlbase
   end
 
   def close
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'closed'
     @pull.save
-    redirect_to @project.urlbase
+    check_redirect @project.urlbase
   end
 
   def fork
     child = @project.create_fork_project
     child.user = current_user
     if child.save
-      redirect_to child.urlbase
+      check_redirect child.urlbase
       # TODO: notifications
     else
       flash[:alert] = "Couldn't fork project. " \
                       "#{child.errors.full_messages.to_sentence}"
-      redirect_to @project.urlbase
+      check_redirect @project.urlbase
     end
   end
 
@@ -343,6 +343,6 @@ class ProjectsController < ApplicationController
     render_404 && return if @project.blank?
     return unless @project.deleted?
     flash[:alert] = 'The project you requested had been deleted.'
-    redirect_to user_path(@user)
+    check_redirect "/#{@user.username}"
   end
 end

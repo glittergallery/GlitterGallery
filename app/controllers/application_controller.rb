@@ -109,4 +109,10 @@ class ApplicationController < ActionController::Base
     dashboard_path
   end
 
+  # raises error if match against regular expression patterns fails
+  def check_redirect(url)
+    redirect_to url if URI.parse(url).path
+    rescue URI::InvalidURIError
+      redirect_to '/'
+  end
 end
