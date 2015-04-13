@@ -44,11 +44,6 @@ class Project < ActiveRecord::Base
     ProjectFollower.following? user, self
   end
 
-  def last_updated
-    repo = barerepo
-    repo.head.target.time
-  end
-
   def deletefiles
     FileUtils.rm_rf data_path
   end
@@ -62,10 +57,6 @@ class Project < ActiveRecord::Base
     File.join("/#{user.username}",
               name.gsub(' ', '%20'),
               uniqueurl.to_s).gsub(/\/$/, '')
-  end
-
-  def issues_url
-    File.join urlbase, 'issues'
   end
 
   def barerepo
@@ -120,6 +111,35 @@ class Project < ActiveRecord::Base
     rescue
       return nil
     end
+    res
+  end
+
+  def branch_commit(id)
+    res = barerepo.branches[id] if id
+    return res.target if res
+    commit id
+  end
+
+  def branch?(branch)
+    return true unless branch
+    !barerepo.branches[branch].nil?
+  end
+
+  # Returns the target tree of the branch specified in id.
+  # If no such branch exists, returns the tree of the given commit id.
+  def branch_tree(id)
+    res = branch_commit id
+    return res.tree if res
+  end
+
+  # Creates a new branch from master.
+  def create_branch(name)
+    begin
+      res = satelliterepo.create_branch(name)
+    rescue
+      return nil
+    end
+    pushtobare name
     res
   end
 

@@ -12,11 +12,10 @@
                 font-size: 1em;
                 margin-bottom: 0.5em;
               }
-              input[type="text"],input[type="email"],input[type="password"],textarea{
+              input[type="text"],input[type="email"],input[type="password"],input[type="file"],textarea,select{
                 margin-bottom: 0.5em;
-                padding: 1em 0;
-                text-indent: 1em;
-                width: 100%;
+                padding: 1em 1em;
+                width: 95%;
                 display: block;
                 border-style: none;
                 @include border-radius(0.25em);

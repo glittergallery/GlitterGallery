@@ -2,10 +2,7 @@
   - if @images.empty?
     - if user_signed_in?
       - if current_user.id == @project.user.id
-        .guide
-          %p Submit your design work on this project to start collaborating.
-          %form{ action: File.join(@project.name, 'newfile') }
-            %input{ type: 'submit', value: 'Add first file!' }
+        = render 'empty_project'
       - else
         .guide
           %p
@@ -24,7 +21,8 @@
       - @images.each do |image|
         %div
           %p{ title: image[:name] }
-            = link_to(image_tag(image[:url]), project_blob_path(@project, image[:name], @branch), id: image[:name])
+            = link_to project_blob_path(@project, image[:name], @branch), id: image[:name] do
+              = image_tag(image[:url])
     - if user_signed_in? && current_user.id == @project.user.id
       %div
         = form_tag file_upload_user_project_path(@project.user,

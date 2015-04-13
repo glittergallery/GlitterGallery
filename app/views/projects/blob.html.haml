@@ -10,8 +10,8 @@
     %section.album
       .photo
         %p
-          = sketchily_show @enc_blob_text
-      - if @branch
+          = data_image_tag(@image, '100%', nil)
+      - if @project.branch?(params[:oid])
         %section
           %h3
             Update
@@ -22,7 +22,7 @@
               = text_field_tag 'message', "Update #{params[:destination]}"
               = file_field_tag 'file'
               = hidden_field_tag 'image_path', params[:destination]
-              = hidden_field_tag 'branch', @branch.name
+              = hidden_field_tag 'branch', params[:oid]
               = submit_tag
 
     - if @project.private && params[:xid] != @project.uniqueurl

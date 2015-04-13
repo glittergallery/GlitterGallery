@@ -4,7 +4,7 @@
       %p
         Current
 
-  = link_to project_commits_path(@project) do
+  = link_to project_commits_path(@project, params[:oid]) do
     %div{ data: 'log' }
       %p
         Log
@@ -18,15 +18,18 @@
     %div{ data: 'network' }
       %p
         Network
-
+  = link_to project_branches_path(@project) do
+    %div{ data: 'branches' }
+      %p
+        Branches
 
 %section.action
   - if user_signed_in? && @project.user.id == current_user.id
-
-    = link_to project_newfile_path(@project) do
-      %div{ data: 'upload' }
-        %p
-          Upload
+    - if @project.branch? params[:oid]
+      = link_to project_newfile_path(@project, params[:oid]) do
+        %div{ data: 'upload' }
+          %p
+            Upload
 
     = link_to project_settings_path(@project) do
       %div{ data: 'settings' }

@@ -18,8 +18,6 @@ Glitter::Application.routes.draw do
 
   get '/inspire' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
-  #get '/:user_id/:id/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
-  #get '/:user_id/:id/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
   get '/:user_id/:id/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
   get '/:user_id/:id/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
   delete '/:user_id/:id/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
@@ -47,13 +45,15 @@ Glitter::Application.routes.draw do
     resources :projects, except: [:index], path: '/' do
       member do
         scope "(:xid)" do
-          get :newfile
-          get 'commits(/:branch)' => 'projects#commits', as: :commits
+          get :branches
+          get 'newfile(/:oid)' => 'projects#newfile', as: :newfile
+          get 'commits(/:oid)' => 'projects#commits', as: :commits
           get 'commit/:commit_id' => 'projects#commit', as: :commit
-          get 'tree(/:tree_id(/*destination))' => 'projects#tree', as: :tree
+          get 'tree(/:oid(/*destination))' => 'projects#tree', as: :tree
           get 'blob/:oid/*destination' => 'projects#blob', as: :blob, :destination => /.+/
           post :fork
           post :follow
+          post :create_branch
           delete :unfollow
           get :settings
           get :network

@@ -17,7 +17,7 @@ describe ProjectsController, type: :routing do
         'projects#tree',
         user_id: 'tester',
         id: 'test',
-        tree_id: 'master',
+        oid: 'master',
         destination: 'icons/small'
       )
     end
@@ -27,7 +27,7 @@ describe ProjectsController, type: :routing do
         'projects#tree',
         user_id: 'tester',
         id: 'test',
-        tree_id: 'master'
+        oid: 'master'
       )
     end
   end
@@ -55,7 +55,7 @@ describe ProjectsController, type: :routing do
         user_id: 'tester',
         id: 'test',
         xid: @secret,
-        tree_id: 'master',
+        oid: 'master',
         destination: 'icons/small'
       )
     end
@@ -66,7 +66,7 @@ describe ProjectsController, type: :routing do
         user_id: 'tester',
         id: 'test',
         xid: @secret,
-        tree_id: 'master'
+        oid: 'master'
       )
     end
   end

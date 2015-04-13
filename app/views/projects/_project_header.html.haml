@@ -17,3 +17,8 @@
     - else
       %span.badge.author FORK
       = render partial: 'forked_from', locals: { project: @project }
+
+  - if params[:oid] && params[:oid] != 'master'
+    %p
+      @
+      = params[:oid]

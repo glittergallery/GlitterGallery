@@ -49,6 +49,21 @@
 						}
 					}
 				}
+				section.list{
+				  div{
+				    padding: 1em;
+				    box-shadow:0 0 0.3em 0 $dark_geometry_gray;
+				    a{
+				      font-size: 1.2em;
+				      color: $map_blue;
+				      background-color: $geometry_gray;
+				    }
+				    a:hover{
+				      background-color: $dark_geometry_gray;
+				      font-weight: 700;
+				    }
+				  }
+				}
 			}
   	}
   }

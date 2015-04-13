@@ -96,32 +96,29 @@ class ProjectsController < ApplicationController
     redirect_to user_project_path @project.user, @project
   end
 
-  def tree_at(revision, path)
-    barerepo = @project.barerepo
-    tree = Rugged::Commit.lookup(barerepo, revision).tree
-    path == '/' ? tree.oid : tree.path(path)[:oid]
-  end
-
   # GET /user/project/blob/branch_or_commit_oid/destination
   def blob
-    barerepo = @project.barerepo
-    oid = params[:oid]
-    @branch = barerepo.branches[oid]
-    oid = barerepo.branches[oid].target.oid if @branch
-    @blob = @project.blob oid, params[:destination]
-    @enc_blob_text = Base64.encode64 @blob.text
+    oid = @project.branch_commit(params[:oid]).oid
+    blob = @project.blob oid, params[:destination]
+    @image = { data: blob.text, name: params[:destination] }
     @comments = Comment.where(
       polycomment_type: 'blob',
-      polycomment_id: @blob.oid
+      polycomment_id: blob.oid
     )
     @comments = pg @comments, 10
     @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
+  # GET /user/project/branches
+  def branches
+    @branches = @project.barerepo.branches
+  end
+
   def show
     @images = []
     barerepo = @project.barerepo
+    @branches = barerepo.branches
     unless barerepo.empty?
       headtree = barerepo.lookup barerepo.last_commit.tree_id
       # TODO: what if there are trees inside this tree?
@@ -154,20 +151,20 @@ class ProjectsController < ApplicationController
   #       status (files added/removed in each commit)
   #       full (list all files in that commit as they list)
 
-  # GET /commits/branch
+  # GET /commits/branch_or_SHA
   def commits
-    branch = params[:branch] || 'master'
     if @project.barerepo.empty?
       flash[:notice] = 'This project has no commits.'
     else
       @commits = Rugged::Walker.new @project.barerepo
-      @commits.push @project.barerepo.branches[branch].target
+      @commits.push @project.branch_commit params[:oid]
     end
   end
 
   # GET /commit/commit_id
   def commit
     @images = []
+    @oid = params[:commit_id]
     commit = @project.commit params[:commit_id]
     redirect_to(user_project_path(@project.user, @project)) unless commit
     barerepo = @project.barerepo
@@ -185,21 +182,31 @@ class ProjectsController < ApplicationController
     @comments = pg @comments, 10
     @comment = Comment.new
     @id = commit.oid
-    @tree = commit.tree_id
+  end
+
+  # POST /user/project/create_branch
+  # TODO: to be visited after adding cancancan.
+  def create_branch
+    @branch = @project.create_branch params[:branch_name]
+    if @branch
+      flash[:notice] = "Successfully created #{params[:branch_name]}!"
+      redirect_to project_tree_path @project, @branch.name
+    else
+      flash[:alert] = 'Something went wrong, the branch was not created!'
+      redirect_to project_branches_path @project
+    end
   end
 
   # GET /tree/tree_id
   def tree
     @images = []
-    tree = @project.tree params[:tree_id]
+    @oid = params[:oid]
+    tree = @project.branch_tree @oid
     redirect_to(user_project_path(@project.user, @project)) unless tree
     barerepo = @project.barerepo
     tree.each do |blob|
-      link = File.join @project.urlbase, 'master', blob[:name]
       data = barerepo.read(blob[:oid]).data
-      @images.push({ link: link,
-        data: data,
-        name: blob[:name] })
+      @images.push({ data: data, name: blob[:name] })
     end
     @comments = Comment.where(
       polycomment_type: 'commit',
@@ -231,6 +238,11 @@ class ProjectsController < ApplicationController
   end
 
   def newfile
+    @cur = params[:oid] || 'master'
+    @all = @project.barerepo.branches
+    return if @project.branch? params[:oid]
+    flash[:alert] = 'You need to be on a valid branch to upload a new file'
+    redirect_to :back
   end
 
   def update
@@ -239,21 +251,24 @@ class ProjectsController < ApplicationController
   # TODO: allow uploads/updates of only supported images.
 
   def file_upload
+    branch = params[:branch] || 'master'
     if params[:file]
       if user_signed_in? && @project.add_images(
-        params[:branch] || 'master',
+        branch,
         params[:file],
         @user.git_author_params
       )
         sentence = view_context.pluralize(params[:file].size, 'image')
         flash[:notice] = "Successfully added #{sentence}! How sparkly!"
+        redirect_to project_tree_path(@project, branch)
       else
         flash[:alert] = "An error prevented your #{sentence} from being saved"
+        redirect_to project_newfile_path(@project, branch)
       end
     else
       flash[:alert] = 'No image selected!'
+      redirect_to project_newfile_path(@project, branch)
     end
-    redirect_to user_project_path @project.user, @project
   end
 
   def file_update
