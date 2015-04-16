@@ -1,0 +1,11 @@
+%section.album
+  %div
+    - @projects.each do |project|
+      %div
+        %p
+          = link_to user_project_path(project.user, project) do
+            %img{ src: '/usercover.jpg' }
+          = link_to project.name, user_project_path(project.user, project)
+          = render 'forked_from', project: project
+          %br
+          Last updated #{distance_of_time_in_words_to_now project.updated_at} ago

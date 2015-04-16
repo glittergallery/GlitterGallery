@@ -1,33 +1,20 @@
-%section.album
-  - if @images.empty?
-    - if user_signed_in?
-      - if current_user.id == @project.user.id
-        = render 'empty_project'
-      - else
-        .guide
-          %p
-            Design work is yet to be added to this project.
-            Maybe you want to follow to receive updates?
-          = form_tag File.join(@project.urlbase, 'follow') do
-            = submit_tag 'Follow this project'
-    - else
-      .guide
-        %p You'll need to sign in to work on these cool projects!
-        %form{ action: '/users/sign_in' }
-          %input{ type: 'submit', value: 'Sign in!' }
-
-  - else
-    %div
-      - @images.each do |image|
-        %div
-          %p{ title: image[:name] }
-            = link_to project_blob_path(@project, image[:name], @branch), id: image[:name] do
-              = image_tag(image[:url])
-    - if user_signed_in? && current_user.id == @project.user.id
+- if @directories.empty? && @images.empty?
+  .guide
+    %p There are no files here.
+- else
+  %div
+    - @directories.each do |dir|
       %div
-        = form_tag file_upload_user_project_path(@project.user,
-          @project,
-          params[:xid]),
-          multipart: true do
-          = file_field_tag 'file[]' , multiple: true
-          = submit_tag 'Upload file!'
+        %p{ title: dir[:name] }
+          = link_to project_tree_path(@project, @oid, dir[:dest]) do
+            %img{ src: '/directory.png' }
+            %span.name
+              = dir[:name]
+
+    - @images.each do |image|
+      %div
+        %p{ title: image[:name] }
+          = link_to project_blob_path(@project, @oid, image[:dest]), id: image[:name] do
+            = data_image_tag(image, '100%', nil)
+            %span.name
+              = image[:name]

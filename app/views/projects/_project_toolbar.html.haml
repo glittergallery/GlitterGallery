@@ -1,5 +1,5 @@
 %section.toolbar
-  = link_to user_project_path(@project.user, @project) do
+  = link_to user_project_path(@project.user, @project, @project.uniqueurl) do
     %div{ data: 'current' }
       %p
         Current
@@ -25,7 +25,7 @@
 
 %section.action
   - if user_signed_in? && @project.user.id == current_user.id
-    - if @project.branch? params[:oid]
+    -# if @project.branch? params[:oid]
       = link_to project_newfile_path(@project, params[:oid]) do
         %div{ data: 'upload' }
           %p

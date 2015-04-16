@@ -12,7 +12,8 @@
 
     %section.list
       - if @branches.count == 0
-        = render 'empty_project'
+        .guide
+          %p The project is empty. There are no branches.
       - else
         - @branches.each do |branch|
           %div

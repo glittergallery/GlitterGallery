@@ -1,0 +1,20 @@
+- if user_signed_in? && @project.branch?(params[:oid])
+  - if current_user.id == @project.user.id
+    %div
+      %h3
+        Add a directory
+      = form_tag project_create_directory_path(@project, @oid, @dest), multipart: true do
+        = text_field_tag 'directory', 'Directory name'
+        = submit_tag 'Add Directory'
+    %div
+      %h3
+        Upload files
+      = form_tag project_file_upload_path(@project, @oid, @dest), multipart: true do
+        = file_field_tag 'file[]', multiple: true
+        = submit_tag
+  - else
+    - unless current_user.id == @project.user.id
+      .guide
+        %p You can make changes to your fork of this project!
+        %form{ action: 'forkyou' }
+          %input{ type: 'submit', value: 'Fork it!' }

@@ -25,6 +25,16 @@
   body{
   	.wrapper{
 			article.project{
+			  div.breadcrumb{
+			    margin-top: 0.1em;
+          font-weight: bold;
+          a{
+            text-decoration: none;
+          }
+          a:hover{
+            text-decoration: underline;
+          }
+			  }
 				section.album{
 					div{
 						@include cf();
@@ -37,6 +47,16 @@
 									max-width: 100%;
 									height: auto;
 								}
+								span.name{
+								  display: block;
+								  box-shadow: 0 0 0.3em 0.2em $dark_geometry_gray;
+								}
+								a{
+								  color: $map_blue;
+								  text-decoration: none;
+								}
+								text-align: center;
+                word-wrap: break-word;
 							}
 						}
 					}

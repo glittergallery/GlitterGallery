@@ -47,4 +47,26 @@ module ProjectsHelper
       end
     end
   end
+
+  def breadcrumb
+    res = link_to(@project.name,
+                  project_tree_path(@project, params[:oid], ''))
+    dest = ''
+    arr = params[:destination].split('/')
+    arr.each_with_index do |dir, i|
+      if i == 0
+        dest = dir
+      else
+        dest = File.join(dest, dir)
+      end
+      res += ' / '
+      if i == arr.size - 1
+        res += dir
+      else
+        res += link_to(dir,
+                       project_tree_path(@project, params[:oid], dest))
+      end
+    end
+    res
+  end
 end

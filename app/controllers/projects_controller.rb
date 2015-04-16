@@ -99,8 +99,9 @@ class ProjectsController < ApplicationController
   # GET /user/project/blob/branch_or_commit_oid/destination
   def blob
     oid = @project.branch_commit(params[:oid]).oid
-    blob = @project.blob oid, params[:destination]
-    @image = { data: blob.text, name: params[:destination] }
+    @dest = params[:destination]
+    blob = @project.blob oid, @dest
+    @image = { data: blob.text, name: @dest }
     @comments = Comment.where(
       polycomment_type: 'blob',
       polycomment_id: blob.oid
@@ -116,26 +117,17 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @images = []
+    @oid = 'master'
     barerepo = @project.barerepo
     @branches = barerepo.branches
-    unless barerepo.empty?
-      headtree = barerepo.lookup barerepo.last_commit.tree_id
-      # TODO: what if there are trees inside this tree?
-      headtree.each do |blob|
-        @images.push({
-          name: blob[:name],
-          url: @project.imageurl(blob[:name])
-        })
-      end
-    end
-
+    @images, @directories = @project.browse_tree
     @comments = Comment.where(
       polycomment_type: 'project',
       polycomment_id: @project.id
     )
     @comments = pg @comments, 10
     @comment = Comment.new
+    @comment_type = 'project'
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
@@ -169,10 +161,8 @@ class ProjectsController < ApplicationController
     redirect_to(user_project_path(@project.user, @project)) unless commit
     barerepo = @project.barerepo
     barerepo.diff(commit.parents.first, commit).deltas.each do |delta|
-      link = File.join @project.urlbase, 'master', delta.new_file[:path]
-      data = barerepo.read(delta.new_file[:oid]).data
-      @images.push({ link: link,
-        data: data,
+      @images.push({
+        data: barerepo.read(delta.new_file[:oid]).data,
         name: delta.new_file[:path] })
     end
     @comments = Comment.where(
@@ -199,23 +189,22 @@ class ProjectsController < ApplicationController
 
   # GET /tree/tree_id
   def tree
-    @images = []
-    @oid = params[:oid]
-    tree = @project.branch_tree @oid
-    redirect_to(user_project_path(@project.user, @project)) unless tree
-    barerepo = @project.barerepo
-    tree.each do |blob|
-      data = barerepo.read(blob[:oid]).data
-      @images.push({ data: data, name: blob[:name] })
-    end
+    @oid = params[:oid] || 'master'
+    @dest = params[:destination]
+    tree = @project.branch_tree @oid, @dest
+    redirect_to(user_project_path(
+      @project.user, @project, @project.uniqueurl
+    )) unless tree
+    @images, @directories = @project.browse_tree tree, params[:destination]
     @comments = Comment.where(
-      polycomment_type: 'commit',
+      polycomment_type: 'tree',
       polycomment_id: tree.oid
     )
+    @comment_type = 'tree'
     @comments = pg @comments, 10
     @comment = Comment.new
     @id = tree.oid
-    render 'commit'
+    render 'show'
   end
 
   def file_history
@@ -237,12 +226,27 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def create_directory
+    branch = params[:branch] || 'master'
+    new_dest = @project.create_directory(
+      branch,
+      params[:destination],
+      params[:directory],
+      @user.git_author_params
+    )
+    if user_signed_in? && new_dest
+      flash[:notice] = "Successfully added #{params[:dir_name]}!"
+      redirect_to project_tree_path(@project, branch, new_dest)
+    else
+      flash[:alert] = 'An error prevented your directory from being created'
+      redirect_to project_newfile_path(@project, branch)
+    end
+  end
+
   def newfile
     @cur = params[:oid] || 'master'
+    @cur = 'master' unless @project.branch? @cur
     @all = @project.barerepo.branches
-    return if @project.branch? params[:oid]
-    flash[:alert] = 'You need to be on a valid branch to upload a new file'
-    redirect_to :back
   end
 
   def update
@@ -255,6 +259,7 @@ class ProjectsController < ApplicationController
     if params[:file]
       if user_signed_in? && @project.add_images(
         branch,
+        params[:destination],
         params[:file],
         @user.git_author_params
       )
@@ -272,19 +277,23 @@ class ProjectsController < ApplicationController
   end
 
   def file_update
-    if @project.add_images(
+    if @project.update_image(
       params[:branch],
-      [params[:file]],
+      params[:destination],
+      params[:file],
       @user.git_author_params,
-      params[:message],
-      params[:image_path]
+      params[:message]
     )
       flash[:notice] = "#{params[:image_path]} has been updated! Shiny!"
     else
       flash[:alert] = "Unable to update #{params[:image_path]}. " \
                       'The server ponies are sad.'
     end
-    redirect_to project_blob_path @project, params[:image_path], params[:branch]
+    redirect_to project_blob_path(
+      @project,
+      params[:branch],
+      params[:destination]
+    )
   end
 
   def file_delete

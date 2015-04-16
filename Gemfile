@@ -58,9 +58,10 @@ group :development, :test do
 
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'better_errors'
   gem 'binding_of_caller'
 end
+
+gem 'better_errors', group: :development
 
 group :test do
   gem 'faker'

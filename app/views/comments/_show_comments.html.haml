@@ -13,5 +13,6 @@
           = f.text_field :body, placeholder: 'In my opinion...'
           = f.submit
     - else
-      'You need to login to be able to comment!'
-      = link_to 'Login now!', '/login'
+      %div
+        'You need to login to be able to comment!'
+        = link_to 'Login now!', new_user_session_path

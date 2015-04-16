@@ -42,10 +42,6 @@ module PathsHelper
     network_user_project_path project.user, project, project.uniqueurl
   end
 
-  def project_newfile_path(project, branch)
-    newfile_user_project_path project.user, project, project.uniqueurl, branch
-  end
-
   def project_fork_path(project)
     fork_user_project_path project.user, project, project.uniqueurl
   end
@@ -66,13 +62,65 @@ module PathsHelper
     create_branch_user_project_path project.user, project, project.uniqueurl
   end
 
-  def project_tree_path(project, oid)
-    tree_user_project_path(project.user, project, project.uniqueurl, oid)
+  def project_tree_path(project,
+    oid = params[:oid],
+    destination = params[:destination])
+    oid ||= 'master'
+    tree_user_project_path(
+      project.user,
+      project,
+      project.uniqueurl,
+      oid,
+      destination
+    )
   end
 
-  def project_blob_path(project, destination, branch)
-    branch ||= 'master'
+  def project_blob_path(
+    project,
+    oid = params[:oid],
+    destination = params[:destination]
+  )
+    oid ||= 'master'
     blob_user_project_path(
+      project.user,
+      project,
+      project.uniqueurl,
+      oid,
+      destination
+    )
+  end
+
+  def project_file_upload_path(project,
+    oid = params[:oid],
+    destination = params[:destination]
+  )
+    file_upload_user_project_path(
+      project.user,
+      project,
+      project.uniqueurl,
+      oid,
+      destination
+    )
+  end
+
+  def project_file_update_path(project,
+    branch = params[:oid],
+    destination = params[:destination]
+  )
+    file_update_user_project_path(
+      project.user,
+      project,
+      project.uniqueurl,
+      branch,
+      destination
+    )
+  end
+
+  def project_create_directory_path(project,
+    branch = params[:oid],
+    destination = params[:destination]
+  )
+    create_directory_user_project_path(
       project.user,
       project,
       project.uniqueurl,

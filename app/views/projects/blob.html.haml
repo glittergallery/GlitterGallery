@@ -6,7 +6,7 @@
     = render 'project_header'
     = render 'project_toolbar'
     = render 'shared/messages'
-
+    = render 'breadcrumb'
     %section.album
       .photo
         %p
@@ -17,12 +17,10 @@
             Update
             = params[:destination]
           %div
-            = form_tag file_update_user_project_path(@project.user, @project), multipart: true do
+            = form_tag project_file_update_path(@project, params[:oid], @dest), multipart: true do
               = label_tag 'message', 'commit message'
               = text_field_tag 'message', "Update #{params[:destination]}"
               = file_field_tag 'file'
-              = hidden_field_tag 'image_path', params[:destination]
-              = hidden_field_tag 'branch', params[:oid]
               = submit_tag
 
     - if @project.private && params[:xid] != @project.uniqueurl
@@ -31,7 +29,7 @@
           %form{ action: user_project_path(@project.user, @project) }
             %input{ type: 'submit', value: 'Generate Unique Link' }
 
-    = render partial: 'comments/show_comments', locals: { type: 'project',
+    = render partial: 'comments/show_comments', locals: { type: 'blob',
       id: @project.id.to_s,
       ajax: @ajax,
       comment: @comment }

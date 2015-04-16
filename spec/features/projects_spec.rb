@@ -156,12 +156,12 @@ feature 'Projects' do
     scenario "User can't create a new branch in an empty project" do
       click_link 'Branches'
       expect(page).to have_no_content 'Create new branch'
-      expect(page).to have_button 'Add first file'
+      expect(page).to have_content \
+        'The project is empty. There are no branches.'
     end
 
     describe 'After creating a branch' do
       before :each do
-        click_button 'Add first file'
         page.attach_file(
           'file[]', 'spec/factories/files/happypanda.png'
         )
@@ -197,11 +197,6 @@ feature 'Projects' do
         expect(page).to have_link 'test_branch'
       end
 
-      scenario 'User sees the current branch selected on file upload' do
-        click_link 'Upload'
-        expect(find_field('branch').value).to eq('test_branch')
-      end
-
       scenario 'User is not able to create a branch with the same name' do
         project = Project.last
         click_link 'Branches'
@@ -219,9 +214,17 @@ feature 'Projects' do
         )
       end
 
+      scenario 'User uploads an image from the tree view' do
+        page.attach_file(
+          'file[]', 'spec/factories/files/1.png'
+        )
+        click_button 'Save changes'
+        expect(page).to have_content 'test_branch'
+        expect(page).to have_content '1.png'
+      end
+
       describe 'After uploading an image to the branch' do
         before :each do
-          click_link 'Upload'
           page.attach_file(
             'file[]', 'spec/factories/files/1.png'
           )
@@ -327,7 +330,6 @@ feature 'Projects' do
     end
 
     scenario 'User uploads multiple images' do
-      click_button 'Add first file!'
       page.attach_file(
         'file[]',
         ['spec/factories/files/happypanda.png',
@@ -335,20 +337,19 @@ feature 'Projects' do
       )
       click_button 'Save changes'
       click_link 'Current'
-      expect(page).to have_selector("img[src$='happypanda.png']")
-      expect(page).to have_selector("img[src$='naruto.png']")
+      expect(page).to have_content 'happypanda.png'
+      expect(page).to have_content 'naruto.png'
     end
 
     describe 'After image upload' do
       before :each do
-        click_button 'Add first file!'
         page.attach_file('file[]', 'spec/factories/files/happypanda.png')
         click_button 'Save changes'
         click_link 'Current'
       end
 
       scenario 'User sees uploaded image' do
-        expect(page).to have_selector("img[src$='happypanda.png']")
+        expect(page).to have_content 'happypanda.png'
         click_link 'happypanda.png'
         expect(find('.photo')).to have_selector('img')
       end
@@ -416,7 +417,7 @@ feature 'Projects' do
             'file[]',
             ['spec/factories/files/naruto.png', 'spec/factories/files/1.png']
           )
-          click_button 'Upload file!'
+          click_button 'Save changes'
           click_link 'Log'
         end
 
@@ -449,6 +450,113 @@ feature 'Projects' do
           expect(page).to have_content('naruto.png')
           expect(page).to have_content('1.png')
           expect(page).to have_content('happypanda.png')
+        end
+      end
+    end
+
+    describe 'After creating a directory' do
+      before :each do
+        fill_in 'directory', with: 'test dir'
+        click_button 'Add Directory'
+      end
+
+      scenario 'User is redirected to the new directory path' do
+        project = Project.last
+        expect(page.current_path).to eq(
+          tree_user_project_path(
+            project.user,
+            project,
+            project.uniqueurl,
+            'master',
+            'test dir'
+          )
+        )
+      end
+
+      scenario 'User sees a new commit in the log with thumbnail' do
+        click_link 'Log'
+        expect(page).to have_content 'Add directory test dir'
+        thumb = first('.feed//img')['src']
+        visit thumb
+        expect(page.status_code).to eq(200)
+      end
+
+      scenario 'User sees the new directory in the project' do
+        page.find('.breadcrumb').click_link 'testproject1'
+        expect(page).to have_link 'test dir'
+      end
+
+      scenario 'User creates a sub directory inside the new directory' do
+        project = Project.last
+        fill_in 'directory', with: 'test sub dir'
+        click_button 'Add Directory'
+        expect(page.current_path).to eq(
+          tree_user_project_path(
+            project.user,
+            project,
+            project.uniqueurl,
+            'master',
+            'test dir/test sub dir'
+          )
+        )
+        expect(page).to have_content 'test sub dir'
+      end
+
+      scenario 'User sees no files in the new directory' do
+        expect(page).to have_content 'There are no files here.'
+        expect(page.find('.album')).to have_no_selector('img')
+      end
+
+      describe 'After uploading a new image to the directory' do
+        before :each do
+          page.attach_file(
+            'file[]',
+            'spec/factories/files/happypanda.png'
+          )
+          click_button 'Save changes'
+        end
+
+        scenario 'User is redirected to the directory path' do
+          project = Project.last
+          expect(page.current_path).to eq(
+            tree_user_project_path(
+              project.user,
+              project,
+              project.uniqueurl,
+              'master',
+              'test dir'
+            )
+          )
+        end
+
+        scenario 'User sees the new image in the directory' do
+          expect(page).to have_no_content 'There are no files here.'
+          expect(page.find('.album')).to have_selector('img')
+          expect(page.find('.album')).to have_content 'happypanda.png'
+        end
+
+        scenario 'User sees a new commit for the added image' do
+          click_link 'Log'
+          expect(page).to have_content 'Add 1 image: happypanda.png'
+          thumb = first('.feed//img')['src']
+          visit thumb
+          expect(page.status_code).to eq(200)
+        end
+
+        scenario 'User does not see the new image outside the directory' do
+          page.find('.breadcrumb').click_link 'testproject1'
+          expect(page).to have_no_content 'happypanda.png'
+        end
+
+        scenario 'User updates the new image' do
+          click_link 'happypanda.png'
+          old = find('.album//img')['src']
+          page.attach_file(
+            'file',
+            'spec/factories/files/naruto.png'
+          )
+          click_button 'Save changes'
+          expect(find('.album//img')['src']).to_not eq(old)
         end
       end
     end
