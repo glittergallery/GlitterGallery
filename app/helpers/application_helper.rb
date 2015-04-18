@@ -8,8 +8,8 @@ module ApplicationHelper
   def data_image_tag(image, width, height)
     extension = image[:name].split('.').last
     if extension == 'svg'
-      "<img src='data:image/svg+xml;utf8,
-        #{image[:data]}' width='#{width}' height='#{height}'/>"
+      "<img src='data:image/svg+xml;base64,
+        #{Base64.encode64(image[:data])}' width='#{width}' height='#{height}'/>"
         .html_safe
     elsif extension == 'jpg'
       "<img src='data:image/jpg;base64,
