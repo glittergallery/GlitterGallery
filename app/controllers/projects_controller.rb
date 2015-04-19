@@ -323,7 +323,7 @@ class ProjectsController < ApplicationController
     child = @project.create_fork_project
     child.user = current_user
     if child.save
-      redirect_to child.urlbase
+      redirect_to user_project_path child.user, child
       # TODO: notifications
     else
       flash[:alert] = "Couldn't fork project. " \
