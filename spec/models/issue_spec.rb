@@ -46,9 +46,9 @@ describe Issue do
   it 'closes and reopens an issue' do
     issue = FactoryGirl.create(:issue)
     issue.close
-    expect(issue.status).to eq(1)
+    expect(issue.status).to eq('closed')
     issue.reopen
-    expect(issue.status).to eq(0)
+    expect(issue.status).to eq('open')
   end
 
   it 'prints type text' do
@@ -62,6 +62,17 @@ describe Issue do
     issue = FactoryGirl.create(:issue)
     real_path = "/#{issue.project.user.username}/#{issue.project.name}/issues/1"
     expect(issue.show_url).to eq(real_path)
+  end
+
+  it 'filters by state' do
+    issue1 = FactoryGirl.create(:issue)
+    project = issue1.project
+    issue2 = FactoryGirl.create(:issue, project: project)
+    expect(project.issues.status('open').count).to eq(2)
+    expect(project.issues.status('closed').count).to eq(0)
+    issue2.update_attributes(status: 1)
+    expect(project.issues.status('closed').count).to eq(1)
+    expect(project.issues.status('closed').count).to eq(1)
   end
 
   describe 'multiple projects' do

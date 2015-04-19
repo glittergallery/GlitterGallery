@@ -2,13 +2,14 @@ class Issue < ActiveRecord::Base
   # This is to avoid conflict with the :type attribute
   self.inheritance_column = nil
 
+  enum status: [:open, :closed]
+
   belongs_to :user
   belongs_to :project
 
   validates_presence_of :title, :description, :user, :project, :type, :status
 
-  scope :closed, -> { where(status: 1) }
-  scope :still_open, -> { where(status: 0) }
+  scope :status, -> (value) { where status: statuses[value] }
 
   # We're using sub_id in routes.
   def to_param
@@ -26,29 +27,18 @@ class Issue < ActiveRecord::Base
   # [0] - OPEN
   # [1] - CLOSED
 
-  # Returns true if the issue is open, false otherwise.
-  def open?
-    status == 0
-  end
-
   # Closes the issue.
   def close
-    self.status = 1
-    save
+    self.closed!
   end
 
   # Reopens the issue.
   def reopen
-    self.status = 0
-    save
+    self.open!
   end
 
   def self.type_keys
     { 0 => 'Bug', 1 => 'Improvement' }
-  end
-
-  def self.status_keys
-    { 0 => 'OPEN', 1 => 'CLOSED' }
   end
 
   def friendly_text
@@ -56,7 +46,7 @@ class Issue < ActiveRecord::Base
   end
 
   def status_text
-    Issue.status_keys[status]
+    status.upcase
   end
 
   def type_text

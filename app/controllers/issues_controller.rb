@@ -2,8 +2,7 @@ class IssuesController < ApplicationController
   before_action :get_context
 
   def index
-    @state = params[:state] || 'still_open'
-    @issues = @project.issues.send(@state)
+    @issues = @project.issues.status(params[:state] || 'open')
   end
 
   def new
