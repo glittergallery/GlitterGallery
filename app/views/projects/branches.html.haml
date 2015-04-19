@@ -25,7 +25,7 @@
         - if user_signed_in? && current_user.id == @project.user.id
           %div
             = form_tag project_create_branch_path(@project) do
-              = text_field_tag 'branch_name', 'Branch name'
+              = text_field_tag 'branch_name', nil, placeholder: 'Branch name'
               = submit_tag 'Create new branch!'
 
 - else

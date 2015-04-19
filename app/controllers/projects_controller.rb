@@ -108,6 +108,7 @@ class ProjectsController < ApplicationController
     )
     @comments = pg @comments, 10
     @comment = Comment.new
+    @id = blob.oid
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
@@ -128,6 +129,7 @@ class ProjectsController < ApplicationController
     @comments = pg @comments, 10
     @comment = Comment.new
     @comment_type = 'project'
+    @id = @project.id.to_s
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
@@ -177,13 +179,18 @@ class ProjectsController < ApplicationController
   # POST /user/project/create_branch
   # TODO: to be visited after adding cancancan.
   def create_branch
-    @branch = @project.create_branch params[:branch_name]
-    if @branch
-      flash[:notice] = "Successfully created #{params[:branch_name]}!"
-      redirect_to project_tree_path @project, @branch.name
-    else
-      flash[:alert] = 'Something went wrong, the branch was not created!'
+    if params[:branch_name].empty?
+      flash[:alert] = 'No name provided for the branch!'
       redirect_to project_branches_path @project
+    else
+      @branch = @project.create_branch params[:branch_name]
+      if @branch
+        flash[:notice] = "Successfully created #{params[:branch_name]}!"
+        redirect_to project_tree_path @project, @branch.name
+      else
+        flash[:alert] = 'Something went wrong, the branch was not created!'
+        redirect_to project_branches_path @project
+      end
     end
   end
 
@@ -227,19 +234,24 @@ class ProjectsController < ApplicationController
   end
 
   def create_directory
-    branch = params[:branch] || 'master'
-    new_dest = @project.create_directory(
-      branch,
-      params[:destination],
-      params[:directory],
-      @user.git_author_params
-    )
-    if user_signed_in? && new_dest
-      flash[:notice] = "Successfully added #{params[:dir_name]}!"
-      redirect_to project_tree_path(@project, branch, new_dest)
+    if params[:directory].empty?
+      flash[:alert] = 'No name provided for the directory!'
+      redirect_to :back
     else
-      flash[:alert] = 'An error prevented your directory from being created'
-      redirect_to project_newfile_path(@project, branch)
+      branch = params[:branch] || 'master'
+      new_dest = @project.create_directory(
+        branch,
+        params[:destination],
+        params[:directory],
+        @user.git_author_params
+      )
+      if user_signed_in? && new_dest
+        flash[:notice] = "Successfully added #{params[:dir_name]}!"
+        redirect_to project_tree_path(@project, branch, new_dest)
+      else
+        flash[:alert] = 'An error prevented your directory from being created'
+        redirect_to :back
+      end
     end
   end
 
@@ -268,11 +280,11 @@ class ProjectsController < ApplicationController
         redirect_to project_tree_path(@project, branch)
       else
         flash[:alert] = "An error prevented your #{sentence} from being saved"
-        redirect_to project_newfile_path(@project, branch)
+        redirect_to :back
       end
     else
       flash[:alert] = 'No image selected!'
-      redirect_to project_newfile_path(@project, branch)
+      redirect_to :back
     end
   end
 

@@ -22,10 +22,6 @@ class Issue < ActiveRecord::Base
   # TYPES
   # [0] - Bug
   # [1] - Improvement
-  #
-  # STATUSES
-  # [0] - OPEN
-  # [1] - CLOSED
 
   # Closes the issue.
   def close

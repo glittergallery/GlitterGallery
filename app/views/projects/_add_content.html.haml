@@ -4,7 +4,7 @@
       %h3
         Add a directory
       = form_tag project_create_directory_path(@project, @oid, @dest), multipart: true do
-        = text_field_tag 'directory', 'Directory name'
+        = text_field_tag 'directory', nil, placeholder: 'Directory name'
         = submit_tag 'Add Directory'
     %div
       %h3

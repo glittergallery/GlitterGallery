@@ -34,7 +34,7 @@
           - if user_signed_in? && current_user.id == @project.user.id
             .guide
               %p Submit your design work on this project to start collaborating.
-              %form{ action: File.join(@project.urlbase, 'newfile') }
+              %form{ action: user_project_path(@project.user, @project) }
                 %input{ type: 'submit', value: 'Add first file!' }
           - elsif user_signed_in? && current_user.id != @project.user.id
             .guide

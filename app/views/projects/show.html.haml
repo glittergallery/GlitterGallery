@@ -19,7 +19,7 @@
 
 
     = render partial: 'comments/show_comments', locals: { type: @comment_type,
-      id: @project.id.to_s,
+      id: @id,
       ajax: @ajax,
       comment: @comment }
 
