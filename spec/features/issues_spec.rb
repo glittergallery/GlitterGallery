@@ -38,7 +38,7 @@ feature 'Issues' do
     describe 'After reporting an issue' do
       before :each do
         fill_in 'issue[title]', with: 'test issue'
-        fill_in 'issue[description]', with: 'this is a test'
+        fill_in 'issue[description]', with: "# head \n\n **bold**"
         click_button 'Report Issue'
       end
 
@@ -55,7 +55,8 @@ feature 'Issues' do
 
       scenario 'User sees the issue' do
         expect(page).to have_content 'test issue'
-        expect(find('.issue')).to have_content 'this is a test'
+        expect(find('.issue')).to have_selector('h1', 'strong')
+        expect(find('.issue')).to have_content('head bold')
       end
 
       scenario 'User reports another issue' do
@@ -95,7 +96,8 @@ feature 'Issues' do
           expect(page).to have_link 'test issue'
           click_link 'test issue'
           expect(page).to have_content 'test issue'
-          expect(find('.issue')).to have_content 'this is a test'
+          expect(find('.issue')).to have_selector('h1', 'strong')
+          expect(find('.issue')).to have_content('head bold')
         end
 
         scenario 'User reopens an issue' do
