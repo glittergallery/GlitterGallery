@@ -7,7 +7,7 @@ describe Project do
   end
 
   it 'is invalid without a name' do
-    expect(FactoryGirl.build(:project, name: nil)).to_not be_valid
+    expect(FactoryGirl.build(:project, name: '')).to_not be_valid
   end
 
   it 'is invalid without a user' do
@@ -65,7 +65,7 @@ describe Project do
   it 'gets thumbnails path' do
     @project = FactoryGirl.create(:project)
     commit_id = SecureRandom.hex(20)
-    real_path = "/testdata/repos/#{@project.user.email}/#{@project.name}/" \
+    real_path = "/testdata/repos/#{@project.user.username}/#{@project.name}/" \
                 "thumbnails/#{commit_id}"
     expect(@project.thumbnail_for(commit_id, false)).to eq(real_path)
     real_path = 'public' + real_path
@@ -162,6 +162,24 @@ describe Project do
         expect(@project.commit('16047dfc3ba3b4a8a6244dec410c0338b305a3ed').type)
           .to eq(:commit)
       end
+    end
+  end
+
+  describe '.blob' do
+    before :each do
+      @project = FactoryGirl.create(:project)
+      initialize_dummy_repo @project
+    end
+
+    it 'is falsey for invalid data' do
+      expect(@project.blob('4', '1.png')).to be_falsey
+      expect(@project.blob('16047dfc3ba3b4a8a6244dec410c0338b305a3ed', '453'))
+        .to be_falsey
+    end
+
+    it 'returns a blob for valid data' do
+      expect(@project.blob('16047dfc3ba3b4a8a6244dec410c0338b305a3ed', '1.png')
+        .type).to eq(:blob)
     end
   end
 end

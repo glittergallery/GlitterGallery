@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
       redirect_to dashboard_path
     else
       flash[:error] = "You don't have permission for this command!"
-      redirect_to @project.urlbase
+      redirect_to user_project_path @project.user, @project
     end
   end
 
@@ -53,7 +53,7 @@ class ProjectsController < ApplicationController
         # TODO: clean up action ids, numbers makes unreadable
         notify_users 'project_create', 0, project.id, current_user.followers
       end
-      redirect_to project.urlbase
+      redirect_to user_project_path project.user, project
     else
       flash[:alert] = "Didn't save project!"
       redirect_to new_project_path
@@ -76,7 +76,7 @@ class ProjectsController < ApplicationController
       flash[:notice] = "You're the owner of this project, " \
                        'you automatically receive updates.'
     end
-    redirect_to @project.urlbase
+    redirect_to user_project_path @project.user, @project
   end
 
   # DELETE /user_id/id/unfollow
@@ -88,49 +88,41 @@ class ProjectsController < ApplicationController
       flash[:notice] = 'You were not following ' \
                        "#{@user.username}/#{@project.name}"
     end
-    redirect_to @project.urlbase
+    redirect_to user_project_path @project.user, @project
   end
 
-  def tree_at(revision, path)
-    barerepo = @project.barerepo
-    tree = Rugged::Commit.lookup(barerepo, revision).tree
-    path == '/' ? tree.oid : tree.path(path)[:oid]
-  end
-
-  def show_blob_content
-    barerepo = @project.barerepo
-    @blob = barerepo.blob_at barerepo.last_commit.oid, params[:destination]
-    @enc_blob_text = Base64.encode64 @blob.text
+  # GET /user/project/blob/branch_or_commit_oid/destination
+  def blob
+    oid = @project.branch_commit(params[:oid]).oid
+    @dest = params[:destination]
+    blob = @project.blob oid, @dest
+    @image = { data: blob.text, name: @dest }
     @comments = Comment.where(
       polycomment_type: 'blob',
-      polycomment_id: @blob.oid
+      polycomment_id: blob.oid
     )
+    @comments = pg @comments, 10
     @comment = Comment.new
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
-  def show
-    @images = []
-    barerepo = @project.barerepo
-    unless barerepo.empty?
-      headtree = barerepo.lookup barerepo.last_commit.tree_id
-      # TODO: what if there are trees inside this tree?
-      headtree.each do |blob|
-        link = File.join @project.urlbase, 'master', blob[:name]
-        @images.push({
-          link: link,
-          name: blob[:name],
-          url: @project.imageurl(blob[:name])
-        })
-      end
-    end
+  # GET /user/project/branches
+  def branches
+    @branches = @project.barerepo.branches
+  end
 
+  def show
+    @oid = 'master'
+    barerepo = @project.barerepo
+    @branches = barerepo.branches
+    @images, @directories = @project.browse_tree
     @comments = Comment.where(
       polycomment_type: 'project',
       polycomment_id: @project.id
     )
     @comments = pg @comments, 10
     @comment = Comment.new
+    @comment_type = 'project'
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
@@ -146,81 +138,68 @@ class ProjectsController < ApplicationController
   #       status (files added/removed in each commit)
   #       full (list all files in that commit as they list)
 
-  # GET /commits/branch
+  # GET /commits/branch_or_SHA
   def commits
-    branch = params[:branch] || 'master'
     if @project.barerepo.empty?
       flash[:notice] = 'This project has no commits.'
     else
       @commits = Rugged::Walker.new @project.barerepo
-      @commits.push @project.barerepo.branches[branch].target
+      @commits.push @project.branch_commit params[:oid]
     end
   end
 
   # GET /commit/commit_id
   def commit
     @images = []
+    @oid = params[:commit_id]
     commit = @project.commit params[:commit_id]
     redirect_to(user_project_path(@project.user, @project)) unless commit
     barerepo = @project.barerepo
     barerepo.diff(commit.parents.first, commit).deltas.each do |delta|
-      link = File.join @project.urlbase, 'master', delta.new_file[:path]
-      data = barerepo.read(delta.new_file[:oid]).data
       @images.push({
-        link: link,
-        data: data,
-        name: delta.new_file[:path]
-      })
+        data: barerepo.read(delta.new_file[:oid]).data,
+        name: delta.new_file[:path] })
     end
     @comments = Comment.where(
       polycomment_type: 'commit',
       polycomment_id: commit.oid
     )
+    @comments = pg @comments, 10
     @comment = Comment.new
     @id = commit.oid
-    @tree = commit.tree_id
+  end
+
+  # POST /user/project/create_branch
+  # TODO: to be visited after adding cancancan.
+  def create_branch
+    @branch = @project.create_branch params[:branch_name]
+    if @branch
+      flash[:notice] = "Successfully created #{params[:branch_name]}!"
+      redirect_to project_tree_path @project, @branch.name
+    else
+      flash[:alert] = 'Something went wrong, the branch was not created!'
+      redirect_to project_branches_path @project
+    end
   end
 
   # GET /tree/tree_id
   def tree
-    @images = []
-    tree = @project.tree params[:tree_id]
-    redirect_to(user_project_path(@project.user, @project)) unless tree
-    barerepo = @project.barerepo
-    tree.each do |blob|
-      link = File.join @project.urlbase, 'master', blob[:name]
-      data = barerepo.read(blob[:oid]).data
-      @images.push({
-        link: link,
-        data: data,
-        name: blob[:name]
-      })
-    end
+    @oid = params[:oid] || 'master'
+    @dest = params[:destination]
+    tree = @project.branch_tree @oid, @dest
+    redirect_to(user_project_path(
+      @project.user, @project, @project.uniqueurl
+    )) unless tree
+    @images, @directories = @project.browse_tree tree, params[:destination]
     @comments = Comment.where(
-      polycomment_type: 'commit',
+      polycomment_type: 'tree',
       polycomment_id: tree.oid
     )
-    @comment = Comment.new
-    @id = tree.oid
-    render 'commit'
-  end
-
-  # Given a filename, view the state of the file in master.
-  # Since we aren't doing much branch hopping on the app itself, this
-  # is useful for fetching the current state of a file in a project.
-
-  # TODO: /tree/master/file_name and generalize for /tree/branch/file_name
-
-  def masterbranch
-    @imageurl = File.join @project.satellitedir, params[:image_name]
-    @comments = Comment.where(
-      polycomment_type: 'file',
-      polycomment_id: params[:image_name]
-    )
-    @comments = @comments.paginate page: params[:page], per_page: 10
+    @comment_type = 'tree'
     @comments = pg @comments, 10
     @comment = Comment.new
-    @ajax = params[:page].nil? || params[:page] == 1
+    @id = tree.oid
+    render 'show'
   end
 
   def file_history
@@ -242,7 +221,27 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def create_directory
+    branch = params[:branch] || 'master'
+    new_dest = @project.create_directory(
+      branch,
+      params[:destination],
+      params[:directory],
+      @user.git_author_params
+    )
+    if user_signed_in? && new_dest
+      flash[:notice] = "Successfully added #{params[:dir_name]}!"
+      redirect_to project_tree_path(@project, branch, new_dest)
+    else
+      flash[:alert] = 'An error prevented your directory from being created'
+      redirect_to project_newfile_path(@project, branch)
+    end
+  end
+
   def newfile
+    @cur = params[:oid] || 'master'
+    @cur = 'master' unless @project.branch? @cur
+    @all = @project.barerepo.branches
   end
 
   def update
@@ -251,38 +250,45 @@ class ProjectsController < ApplicationController
   # TODO: allow uploads/updates of only supported images.
 
   def file_upload
+    branch = params[:branch] || 'master'
     if params[:file]
-      if images_commit @project, params[:file]
+      if user_signed_in? && @project.add_images(
+        branch,
+        params[:destination],
+        params[:file],
+        @user.git_author_params
+      )
         sentence = view_context.pluralize(params[:file].size, 'image')
         flash[:notice] = "Successfully added #{sentence}! How sparkly!"
+        redirect_to project_tree_path(@project, branch)
       else
         flash[:alert] = "An error prevented your #{sentence} from being saved"
+        redirect_to project_newfile_path(@project, branch)
       end
     else
       flash[:alert] = 'No image selected!'
+      redirect_to project_newfile_path(@project, branch)
     end
-    redirect_to @project.urlbase
   end
 
   def file_update
-    tmp = params[:file].tempfile
-    file = File.join @project.satellitedir, params[:image_name]
-    FileUtils.cp tmp.path, file
-    if params[:file]
-      imagefile = params[:file]
-      message = params[:message]
-      commit_id = satellite_commit @project.satelliterepo,
-                                   params[:image_name],
-                                   imagefile.read,
-                                   message
-      generate_thumbnail @project, params[:image_name], commit_id
-      @project.pushtobare
-      flash[:notice] = "#{params[:image_name]} has been updated! Shiny!"
+    if @project.update_image(
+      params[:branch],
+      params[:destination],
+      params[:file],
+      @user.git_author_params,
+      params[:message]
+    )
+      flash[:notice] = "#{params[:image_path]} has been updated! Shiny!"
     else
-      flash[:alert] = "Unable to update #{params[:image_name]}. " \
+      flash[:alert] = "Unable to update #{params[:image_path]}. " \
                       'The server ponies are sad.'
     end
-    redirect_to @project.urlbase
+    redirect_to project_blob_path(
+      @project,
+      params[:branch],
+      params[:destination]
+    )
   end
 
   def file_delete
@@ -291,33 +297,33 @@ class ProjectsController < ApplicationController
     satellite_delete @project.satelliterepo, params[:image_name]
     @project.pushtobare
     flash[:notice] = "#{params[:image_name]} has been deleted!"
-    redirect_to @project.urlbase
+    redirect_to user_project_path @project.user, @project
   end
 
   def open
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'open'
     @pull.save
-    redirect_to @project.urlbase
+    redirect_to user_project_path @project.user, @project
   end
 
   def close
     @pull = PullRequest.find params[:pull_id]
     @pull.status = 'closed'
     @pull.save
-    redirect_to @project.urlbase
+    redirect_to user_project_path @project.user, @project
   end
 
   def fork
     child = @project.create_fork_project
     child.user = current_user
     if child.save
-      redirect_to child.urlbase
+      redirect_to user_project_path child.user, child
       # TODO: notifications
     else
       flash[:alert] = "Couldn't fork project. " \
                       "#{child.errors.full_messages.to_sentence}"
-      redirect_to @project.urlbase
+      redirect_to user_project_path @project.user, @project
     end
   end
 

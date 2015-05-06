@@ -119,7 +119,7 @@ $nprogress-color: red;
 				header{
 					h1.generated{
 						font-size: 1.5em;
-					}   
+					}
 				}
 			}
 
@@ -166,4 +166,9 @@ span.badge{
 .type{
 	box-shadow:inset 0 0 0.1em 0 $map_blue;
 	color: gray;
+}
+.error_message{
+  color:red;
+  font-weight: bold;
+  padding: 0.2em;
 }

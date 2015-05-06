@@ -1,7 +1,7 @@
 :plain
   $('.comments .showcomments').html("#{escape_javascript(
     render partial: 'comments/comment',
-    collection: @comments.reverse
+    collection: @comments
   )}");
   $('textarea').val('').trigger('input');
   $(".comment_submit").css({"margin": "1.25em 0"});

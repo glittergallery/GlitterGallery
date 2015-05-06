@@ -1,18 +1,22 @@
 module ProjectsHelper
   def private_check
     @user = User.find_by username: params[:user_id]
-    @project = Project.find_by user_id: @user.id, name: params[:id]
+    @project = Project.find_by(
+      user_id: @user.id,
+      name: (params[:project_id] || params[:id])
+    )
     if user_signed_in?
-      unless @project.private && ((params[:xid] != @project.uniqueurl && current_user.id != @project.user_id))
-        true
-      else
+      if @project.private && ((params[:xid] != @project.uniqueurl &&
+         current_user.id != @project.user_id))
         false
+      else
+        true
       end
     else
-      unless @project.private && (params[:xid] != @project.uniqueurl)
-        true
-      else
+      if @project.private && (params[:xid] != @project.uniqueurl)
         false
+      else
+        true
       end
     end
   end
@@ -42,5 +46,27 @@ module ProjectsHelper
         concat(nested_projects(root.children, project)) if root.has_children?
       end
     end
+  end
+
+  def breadcrumb
+    res = link_to(@project.name,
+                  project_tree_path(@project, params[:oid], ''))
+    dest = ''
+    arr = params[:destination].split('/')
+    arr.each_with_index do |dir, i|
+      if i == 0
+        dest = dir
+      else
+        dest = File.join(dest, dir)
+      end
+      res += ' / '
+      if i == arr.size - 1
+        res += dir
+      else
+        res += link_to(dir,
+                       project_tree_path(@project, params[:oid], dest))
+      end
+    end
+    res
   end
 end

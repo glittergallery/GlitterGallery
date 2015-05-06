@@ -44,17 +44,8 @@ class Project < ActiveRecord::Base
     ProjectFollower.following? user, self
   end
 
-  def last_updated
-    repo = barerepo
-    repo.head.target.time
-  end
-
   def deletefiles
     FileUtils.rm_rf data_path
-  end
-
-  def imageurl(imagename)
-    File.join(satellitedir , imagename).gsub('public', '')
   end
 
   # Project URL
@@ -62,10 +53,6 @@ class Project < ActiveRecord::Base
     File.join("/#{user.username}",
               name.gsub(' ', '%20'),
               uniqueurl.to_s).gsub(/\/$/, '')
-  end
-
-  def issues_url
-    File.join urlbase, 'issues'
   end
 
   def barerepo
@@ -112,6 +99,199 @@ class Project < ActiveRecord::Base
     (res.type == :tree) ? res : res.tree
   end
 
+  # Returns the blob object at destination for the given commit oid.
+  # Returns nil if given invalid data.
+  def blob(oid, destination)
+    begin
+      res = barerepo.blob_at oid, destination
+    rescue
+      return nil
+    end
+    res
+  end
+
+  def branch_commit(id)
+    res = barerepo.branches[id] if id
+    return res.target if res
+    commit id
+  end
+
+  def branch?(branch)
+    return true unless branch
+    !barerepo.branches[branch].nil?
+  end
+
+  # Returns the target tree of the branch specified in id.
+  # If no such branch exists, returns the tree of the given commit id.
+  # If given a destination, returns the tree at that destination.
+  def branch_tree(id, destination = nil)
+    res = branch_commit id
+    return nil unless res
+    if destination
+      begin
+        item = res.tree.path(destination)
+      rescue
+        return nil
+      end
+      return nil if item[:type] != :tree
+      return barerepo.lookup(item[:oid])
+    else
+      return res.tree
+    end
+  end
+
+  # Takes a tree and the path to that tree.
+  # Returns an array containing 2 elements, the first is an array of blobs
+  # in the tree and the second is an array of the subtrees in the tree.
+  def browse_tree(tree = nil, cur = nil)
+    return [[], []] if barerepo.empty?
+    tree ||= barerepo.head.target.tree
+    images = []
+    directories = []
+    tree.each do |item|
+      next if item[:name][0] == '.'
+      dest = cur.nil? ? item[:name] : File.join(cur, item[:name])
+      if item[:type] == :blob
+        images.push({
+          data: barerepo.read(item[:oid]).data,
+          dest: dest, name: item[:name]
+        })
+      else
+        directories.push({
+          dest: dest, name: item[:name]
+        })
+      end
+    end
+    [images, directories]
+  end
+
+  # Creates a new directory in the given branch and destination.
+  def create_directory(branch, destination, name, author)
+    destination ||= ''
+    repo = satelliterepo
+    repo.checkout(branch) unless repo.empty?
+    file = File.join(name, '.gitignore')
+    file = File.join(destination, file) unless destination.empty?
+    absolute = File.join(satellitedir, file)
+    FileUtils.mkdir_p File.dirname(absolute)
+    FileUtils.touch(absolute)
+    repo.index.add file
+    message = "Add directory #{name}"
+    commit_id = satellite_commit(repo, message, author, branch)
+    fake_thumbnail commit_id
+    repo.checkout('master')
+    File.dirname(file)
+  end
+
+  # Creates a new branch from master.
+  def create_branch(name)
+    begin
+      res = satelliterepo.create_branch(name)
+    rescue
+      return nil
+    end
+    pushtobare name
+    res
+  end
+
+  # Generates a symlink for a commit that's just the creation of a directory.
+  def fake_thumbnail(commit_id)
+    src = File.join(Rails.public_path, 'mini_dir.png')
+    FileUtils.ln_s src, thumbnail_for(commit_id)
+  end
+
+  # Generates a thumbnail for a commit in the appropriate place.
+  def generate_thumbnail(image_path, commit_id)
+    thumb_size = Glitter::Application.config.thumbnail_geometry
+    image = Magick::Image.read(
+      "#{satellitedir}/#{image_path}"
+    ).first
+    image.scale(
+      thumb_size[0],
+      thumb_size[1]
+    ).write thumbnail_for(commit_id, true)
+  end
+
+  # Returns a hash that can be passed to rugged while creating a commit
+  def rugged_commit_options(author, repo, message)
+    {
+      author: author,
+      committer: author,
+      tree: repo.index.write_tree(repo),
+      update_ref: 'HEAD',
+      message: message,
+      parents: repo.empty? ? [] : [repo.head.target].compact
+    }
+  end
+
+  # Creates a commit in the given satellite repo and pushes to the bare one.
+  def satellite_commit(repo, message, author, branch)
+    options = rugged_commit_options(author, repo, message)
+    commit_id = Rugged::Commit.create repo, options
+    repo.index.write
+    pushtobare branch
+    commit_id
+  end
+
+  # Returns a human friendly commit message using the given images.
+  # Example: "Add 2 images: a.png and b.png".
+  def get_message(images)
+    names = images.map { |i| i.original_filename}
+    "Add #{ActionController::Base.helpers.pluralize(images.size, 'image')}"\
+    ": #{names.to_sentence}"
+  end
+
+  # Adds a set of images into the project repository in the given dest.
+  # Overwrites existing images if the new ones have similar names.
+  def new_images(repo, dest, image_files)
+    dest ||= ''
+    image_files.each do |f|
+      tmp = f.tempfile
+      file = File.join satellitedir, dest, f.original_filename
+      FileUtils.cp tmp.path, file
+      if dest.empty?
+        repo.index.add f.original_filename
+      else
+        repo.index.add File.join(dest, f.original_filename)
+      end
+    end
+  end
+
+  # Adds new images to the project in the given destination.
+  # Takes care of creating an appropriate commit in the given branch.
+  def add_images(branch, dest, image_files, author)
+    repo = satelliterepo
+    repo.checkout(branch) unless repo.empty?
+    new_images repo, dest, image_files
+    commit_id = satellite_commit(
+      repo,
+      get_message(image_files),
+      author,
+      branch
+    )
+    f = File.join(dest.to_s, image_files.last.original_filename)
+    generate_thumbnail f, commit_id
+    repo.checkout('master')
+  end
+
+  # Updates an image in the project repository.
+  # Takes care of creating an appropriate commit in the given branch.
+  def update_image(branch, old_path, new_file, author, message)
+    repo = satelliterepo
+    repo.checkout(branch)
+    file = File.join satellitedir, old_path
+    FileUtils.cp new_file.tempfile.path, file
+    repo.index.add old_path
+    commit_id = satellite_commit(
+      repo,
+      message,
+      author,
+      branch
+    )
+    generate_thumbnail old_path, commit_id
+    repo.checkout('master')
+  end
+
   # Returns the commit object with  the given id.
   # If no id is given, it returns the commit at head.
   # If the given id is invalid or the repo is empty, returns false.
@@ -128,10 +308,10 @@ class Project < ActiveRecord::Base
   end
 
   # Push the existing contents of the satellite repo to the bare repo
-  def pushtobare
+  def pushtobare(branch = 'master')
     remote = satelliterepo.remotes['bare']
     remote = satelliterepo.remotes.create 'bare', barerepo.path unless remote
-    satelliterepo.push remote, ['refs/heads/master']
+    satelliterepo.push remote, ["refs/heads/#{branch}"]
   end
 
   def create_fork_project
@@ -150,7 +330,7 @@ class Project < ActiveRecord::Base
   def set_path
     user = User.find user_id
     self.data_path = File.join Glitter::Application.config.repo_dir,
-                               'repos', user.email.to_s, name
+                               'repos', user.username.to_s, name
     logger.debug "setting path - path: #{data_path}"
     save
   end
@@ -160,7 +340,6 @@ class Project < ActiveRecord::Base
   # Satellite repo Path : public/data/repos/user_id/project_id/satellite/.git
   def init
     return if File.exists? data_path
-
     if parent.nil?
       Rugged::Repository.init_at  barerepopath, :bare
       Rugged::Repository.clone_at barerepopath, satelliterepopath

@@ -4,27 +4,7 @@
     = @project.name
 
   %article{ data: 'issues' }
-    %header
-      %h1.generated
-        = avatar @project.user.email
-        %p
-          %span
-            = link_to @project.name, "/#{@user.username}/#{@project.name}"
-          :escaped
-            - Issue
-          = precede '#' do
-            = @issue.sub_id
-      %h2
-        - if @project.private == true
-          %span.badge.type{ title: 'Private Project' } PRV
-        - else
-          %span.badge.type{ title: 'Public Project' } PUB
-        - if @project.id == @project.parent
-          %span.badge.author PARENT
-        - else
-          %span.badge.author FORK
-          = render partial: 'projects/forked_from', locals: { project: @project }
-
+    = render 'projects/project_header'
     = render 'shared/messages'
     = render 'projects/project_toolbar'
 
@@ -42,18 +22,15 @@
           %nav
             %ul
               %li.active
-                = link_to('Close', File.join(@issue.show_url, 'close'), method: 'post')
-              %li
-                Merge
+                - if @issue.open?
+                  = link_to('Close', close_issue_path(@issue), method: 'put')
+                - else
+                  = link_to('Reopen', reopen_issue_path(@issue), method: 'put')
 
-    %section.comments
-      %section.showcomments
-        = render partial: 'comments/comment', collection: @comments
-      %section.newcomment
-        = render partial: 'comments/new', locals: { type: 'issue',
-          id: @issue.id.to_s,
-          ajax: @ajax,
-          comment: @comment }
+    = render partial: 'comments/show_comments', locals: { type: 'issue',
+      id: @issue.id.to_s,
+      ajax: @ajax,
+      comment: @comment }
 
 - else
   = render 'permissions_error'

@@ -18,23 +18,15 @@ Glitter::Application.routes.draw do
 
   get '/inspire' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
-  get '/:user_id/:id/blob/:branch/*destination' => 'projects#show_blob_content', :destination => /.*/
-  get '/:user_id/:id/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
   get '/:user_id/:id/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
   get '/:user_id/:id/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
   delete '/:user_id/:id/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
-  get '/:user_id/:id/forkyou' => 'projects#forkyou'
   get '/:user_id/:id/pull' => 'projects#pull_request'
   get '/:user_id/:id/pull/:pull_id' => 'projects#pull'
   get '/:user_id/:id/pull/:pull_id/merge' => 'projects#merge'
   get '/:user_id/:id/pull/:pull_id/close' => 'projects#close'
   get '/:user_id/:id/pull/:pull_id/open' => 'projects#open'
   get '/:user_id/:id/pulls' => 'projects#pulls'
-  get '/:user_id/:id/issues/new' => 'issues#new'
-  get '/:user_id/:id/issues' => 'issues#index'
-  post '/:user_id/:id/issues/new' => 'issues#create'
-  get '/:user_id/:id/issue/:sub_id' => 'issues#show'
-  post '/:user_id/:id/issue/:sub_id/close' => 'issues#close'
 
 
 
@@ -50,29 +42,38 @@ Glitter::Application.routes.draw do
       end
     end
     resources :projects, except: [:index], path: '/' do
+      resources :issues, path: "(:xid)/issues" do
+        member do
+          put 'close'
+          put 'reopen'
+        end
+      end
       member do
         scope "(:xid)" do
-          get :newfile
-          get 'commits(/:branch)' => 'projects#commits', as: :commits
+          get :branches
+          get 'commits(/:oid)' => 'projects#commits', as: :commits
           get 'commit/:commit_id' => 'projects#commit', as: :commit
-          get 'tree(/:tree_id)' => 'projects#tree', as: :tree
+          get 'tree(/:oid(/*destination))' => 'projects#tree', as: :tree, :destination => /.+/
+          get 'blob/:oid/*destination' => 'projects#blob', as: :blob, :destination => /.+/
+          post 'file_upload/(:branch(/*destination))' => 'projects#file_upload', as: :file_upload, :destination => /.+/
+          post 'file_update/(:branch(/*destination))' => 'projects#file_update', as: :file_update, :destination => /.+/
+          post 'create_directory/(:branch(/*destination))' => 'projects#create_directory', as: :create_directory, :destination => /.+/
           post :fork
           post :follow
+          post :create_branch
           delete :unfollow
           get :settings
           get :network
-          post :file_upload
-          post :file_update
           post :handle_pull_request
           post :create_svg, :as => :create_svg
           post :edit_svg, :as => :edit_svg
           post :update_svg, :as => :update_svg
+          get '/' => 'projects#show'
         end
       end
     end
   end
 
-  get '/:user_id/:id/:xid' => 'projects#show'
   get '/:user_id/:id/:xid/commits/:tree_id' => 'projects#commits'
   get '/:user_id/:id/:xid/commit/:tree_id' => 'projects#projectcommit'
   get '/:user_id/:id/:xid/master/:image_name' => 'projects#masterbranch', :image_name => /[^\/]*/
@@ -96,6 +97,6 @@ Glitter::Application.routes.draw do
   get '/:user_id/:id/:xid/issue/:sub_id' => 'issues#show'
   get '/:user_id/:id/:xid/issues/new' => 'issues#new'
   post '/:user_id/:id/:xid/issues/new' => 'issues#create'
-  post '/:user_id/:id/:xid/issue/:id/close' => 'issues#close'
+  put '/:user_id/:id/:xid/issue/:id/close' => 'issues#close'
 
 end
