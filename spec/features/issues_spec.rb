@@ -55,8 +55,8 @@ feature 'Issues' do
 
       scenario 'User sees the issue' do
         expect(page).to have_content 'test issue'
-        expect(find('.issue')).to have_selector('h1', 'strong')
-        expect(find('.issue')).to have_content('head bold')
+        expect(find('.markdown')).to have_selector('h1', 'strong')
+        expect(find('.markdown')).to have_content('head bold')
       end
 
       scenario 'User reports another issue' do
@@ -96,8 +96,8 @@ feature 'Issues' do
           expect(page).to have_link 'test issue'
           click_link 'test issue'
           expect(page).to have_content 'test issue'
-          expect(find('.issue')).to have_selector('h1', 'strong')
-          expect(find('.issue')).to have_content('head bold')
+          expect(find('.markdown')).to have_selector('h1', 'strong')
+          expect(find('.markdown')).to have_content('head bold')
         end
 
         scenario 'User reopens an issue' do
