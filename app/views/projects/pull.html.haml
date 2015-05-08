@@ -34,14 +34,9 @@
           = link_to 'Re-open', File.join(@pull.id.to_s, 'open')
 
 
-  .comment_form
-    = render partial: 'comments/new', locals: { type: 'pull',
-      id: @pull.id.to_s,
+    = render partial: 'comments/show_comments', locals: { type: action_name,
+      id: @id.to_s,
       ajax: @ajax,
       comment: @comment }
-  %ul.comments
-    = render partial: 'comments/comment', collection: @comments
-  - unless @comments.nil?
-    = will_paginate @comments, style: 'color:blue'
 - else
   = render 'permissions_error'
