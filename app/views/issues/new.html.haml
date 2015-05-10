@@ -18,11 +18,11 @@
             = f.label :title
             = f.text_field :title, placeholder: 'Title', autofocus: true
             = f.label :description
-            = f.text_area :description, value: params[:desc], placeholder: '(Markdown Enabled)...'
+            = f.text_area :description,
+              value: params[:desc],
+              placeholder: '(Markdown Enabled)...'
             = f.label :tag_list
             = f.text_field :tag_list
-            = f.label :type
-            = f.select(:type, options_for_select([['Bug', 0], ['Improvement', 1]]))
             = f.submit 'Report Issue'
 
 - else

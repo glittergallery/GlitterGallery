@@ -3,10 +3,7 @@ class IssuesController < ApplicationController
 
   def index
     @issues = find_issue(params[:state])
-    if params[:tag]
-      @activetab = nil
-      @issues = @project.issues.tagged_with(params[:tag])
-    end
+    @issues = @issues.tagged_with(params[:tag]) if params[:tag]
   end
 
   def new
@@ -42,7 +39,7 @@ class IssuesController < ApplicationController
       if @issue.save
         format.html { redirect_to @issue.show_url }
       else
-        format.html { render "new", :description => "fdfsdf"}
+        format.html { render 'new'}
       end
 >>>>>>> Tagging added to issues
     end
@@ -85,7 +82,7 @@ class IssuesController < ApplicationController
   end
 
   def issue_params
-    params.require(:issue).permit(:title, :description, :type, :tag_list)
+    params.require(:issue).permit(:title, :description, :tag_list)
   end
 
   def find_issue(type)

@@ -7,7 +7,7 @@ class Issue < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
-  validates_presence_of :title, :description, :user, :project, :type, :status
+  validates_presence_of :title, :description, :user, :project, :status
   acts_as_taggable
   validates_presence_of :tag_list
 
@@ -49,10 +49,6 @@ class Issue < ActiveRecord::Base
 
   def status_text
     status.upcase
-  end
-
-  def type_text
-    Issue.type_keys[type]
   end
 
   def show_url
