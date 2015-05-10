@@ -8,6 +8,8 @@ class Issue < ActiveRecord::Base
   belongs_to :project
 
   validates_presence_of :title, :description, :user, :project, :type, :status
+  acts_as_taggable
+  validates_presence_of :tag_list
 
   scope :status, -> (value) { where status: statuses[value] }
 
