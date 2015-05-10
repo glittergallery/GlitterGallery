@@ -27,11 +27,15 @@ feature 'Issues' do
       expect{click_button 'Report Issue'}.to_not change{@project.issues.count}
       expect(page).to have_content "Title can't be blank"
       expect(page).to have_content "Description can't be blank"
+      expect(page).to have_content "Tag list can't be blank"
       fill_in 'issue[title]', with: 'test_issue'
       expect{click_button 'Report Issue'}.to_not change{@project.issues.count}
       expect(page).to have_no_content "Title can't be blank"
       expect(page).to have_content "Description can't be blank"
+      expect(page).to have_content "Tag list can't be blank"
       fill_in 'issue[description]', with: 'this is a test'
+      expect(page).to have_content "Tag list can't be blank"
+      fill_in 'issue[tag_list]', with: 'bug, feature'
       expect{click_button 'Report Issue'}.to change{@project.issues.count}.by(1)
     end
 
@@ -39,6 +43,7 @@ feature 'Issues' do
       before :each do
         fill_in 'issue[title]', with: 'test issue'
         fill_in 'issue[description]', with: 'this is a test'
+        fill_in 'issue[tag_list]', with: 'bug'
         click_button 'Report Issue'
       end
 
@@ -63,6 +68,7 @@ feature 'Issues' do
         click_button 'Report New Issue'
         fill_in 'issue[title]', with: 'another test issue'
         fill_in 'issue[description]', with: 'and this is another test'
+        fill_in 'issue[tag_list]', with: 'bug, feature'
         expect{click_button 'Report Issue'}.to\
           change{@project.issues.count}.by(1)
       end

@@ -13,8 +13,8 @@ describe Issue do
     expect(FactoryGirl.build(:issue, description: '')).to_not be_valid
   end
 
-  it 'is invalid without a type' do
-    expect(FactoryGirl.build(:issue, type: nil)).to_not be_valid
+  it 'is invalid without a tag' do
+    expect(FactoryGirl.build(:issue, tag_list: nil)).to_not be_valid
   end
 
   it 'is invalid without a status' do
@@ -53,9 +53,9 @@ describe Issue do
 
   it 'prints type text' do
     issue = FactoryGirl.create(:issue)
-    expect(issue.type_text).to eq('Bug')
-    issue.update_attributes(type: 1)
-    expect(issue.type_text).to eq('Improvement')
+    expect(issue.tag_list.first).to eq('bug')
+    issue.update_attributes(tag_list: 'improvement')
+    expect(issue.tag_list.first).to eq('improvement')
   end
 
   it 'shows url' do

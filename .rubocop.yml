@@ -1,6 +1,8 @@
 AllCops:
   Exclude:
-    - 'db/**/*'
+    - 'db/schema.rb'
+    - 'db/migrate/20150508103723_add_missing_unique_indices.acts_as_taggable_on_engine.rb'
+    - 'db/migrate/20150508103726_change_collation_for_tag_names.acts_as_taggable_on_engine.rb'
     - 'config/**/*'
     - 'lib/**/*'
     - 'bin/**/*'
