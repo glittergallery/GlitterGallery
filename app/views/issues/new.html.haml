@@ -22,8 +22,10 @@
               value: params[:desc],
               placeholder: '(Markdown Enabled)...'
             = f.label :tag_list
-            = f.text_field :tag_list
+            = f.text_field :tag_list, data: { autocomplete_source: @issue.tags_list }
+            #tag_drop_down
             = f.submit 'Report Issue'
+
 
 - else
   = render 'permissions_error'

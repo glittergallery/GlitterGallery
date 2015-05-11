@@ -67,4 +67,9 @@ class Issue < ActiveRecord::Base
     end
     nil
   end
+
+  # returns array of valid tags
+  def tags_list
+    %w(bug feature improvement)
+  end
 end
