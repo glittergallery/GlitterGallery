@@ -9,13 +9,23 @@ class Issue < ActiveRecord::Base
 
   validates_presence_of :title, :description, :user, :project, :status
   acts_as_taggable
-  validates_presence_of :tag_list
+  validate :tag_list_inclusion
 
   scope :status, -> (value) { where status: statuses[value] }
 
   # We're using sub_id in routes.
   def to_param
     sub_id.to_s
+  end
+
+  # Custom validation for tags. Allows new tags only if user
+  # is owner of the project
+  def tag_list_inclusion
+    validates_presence_of :tag_list
+    return unless user == project.user
+    tag_list.each do |tag|
+      errors.add(tag, 'is not valid tag') unless tags_list.include?(tag)
+    end
   end
 
   # TODO: make a list of 5 most popular types of issues
@@ -70,6 +80,10 @@ class Issue < ActiveRecord::Base
 
   # returns array of valid tags
   def tags_list
-    %w(bug feature improvement)
+    tag_array = []
+    ActsAsTaggableOn::Tag.all.each do |tag|
+      tag_array.append(tag.name)
+    end
+    tag_array
   end
 end
