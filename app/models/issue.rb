@@ -22,7 +22,7 @@ class Issue < ActiveRecord::Base
   # is owner of the project
   def tag_list_inclusion
     validates_presence_of :tag_list
-    return unless user == project.user
+    return if user == project.user
     tag_list.each do |tag|
       errors.add(tag, 'is not valid tag') unless tags_list.include?(tag)
     end

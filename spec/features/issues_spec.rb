@@ -121,4 +121,46 @@ feature 'Issues' do
 
   it_behaves_like 'issue services', 'public', 'fork'
 
+  describe 'User can make new tags only if he is owner of project' do
+    before :each do
+      sign_up_with('t@test.com', 'test1', 'secret12345')
+      click_button 'Create first project!'
+      fill_in 'project_name', with: 'testproject1'
+      click_button 'Public'
+      @project = Project.last
+    end
+
+    scenario 'owner of project can make new tags' do
+      click_link 'Issues'
+      click_button 'Report Issue'
+      fill_in 'issue[title]', with: 'test_issue'
+      fill_in 'issue[description]', with: 'this is a test'
+      fill_in 'issue[tag_list]', with: 'bug, new_tag'
+      expect{click_button 'Report Issue'}.to change{@project.issues.count}.by(1)
+    end
+
+    describe 'General user' do
+      before :each do
+        click_link 'logout'
+        sign_up_with('t2@test.com', 'test2', 'secret12345')
+        visit 'test1/testproject1'
+        click_link 'Issues'
+        click_button 'Report Issue'
+        fill_in 'issue[title]', with: 'test_issue'
+        fill_in 'issue[description]', with: 'this is a test'
+      end
+
+      scenario 'can creates issue with exisiting tags' do
+        fill_in 'issue[tag_list]', with: 'bug, feature'
+        expect{click_button 'Report Issue'}
+          .to change{@project.issues.count}.by(1)
+      end
+
+      scenario 'can not creates issue with new tags' do
+        fill_in 'issue[tag_list]', with: 'bug, more_tag'
+        expect{click_button 'Report Issue'}.to_not change{@project.issues.count}
+      end
+    end
+  end
+
 end
