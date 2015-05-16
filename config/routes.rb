@@ -1,5 +1,6 @@
 Glitter::Application.routes.draw do
 
+  post '/rate' => 'rater#create', :as => 'rate'
   devise_for :users,:controllers => { :registrations => 'registrations' }
   devise_scope :user do
     root to: "devise/sessions#new"

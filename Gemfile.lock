@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/sonalkr132/ratyrate.git
+  revision: b705610b3c6f896f788519df23b289e6c81252fe
+  branch: refactoring
+  specs:
+    ratyrate (1.2.2.alpha)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -356,6 +363,7 @@ DEPENDENCIES
   rails (~> 4.1.0)
   rails-observers
   rake
+  ratyrate!
   redcarpet
   rmagick (~> 2.13.4)
   rspec-rails

@@ -52,6 +52,8 @@ gem 'uglifier'
 
 gem 'acts-as-taggable-on', '~> 3.4'
 
+gem 'ratyrate', github: 'sonalkr132/ratyrate', branch: 'refactoring'
+
 
 group :development, :test do
   # https://github.com/rspec/rspec-rails/issues/1273

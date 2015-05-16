@@ -7,6 +7,7 @@
         /
       %span
         = link_to @project.name, user_project_path(@project.user, @project)
+      = rating_for_user @project, current_user, "stars", :disable_after_rate => true
   %h2
     - if @project.private == true
       %span.badge.type{ title: 'Private Project' } PRV
