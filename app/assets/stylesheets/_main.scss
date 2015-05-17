@@ -1,7 +1,7 @@
 *{
-	font-family: $font;
-	margin: 0;
-	padding: 0;
+  font-family: $font;
+  margin: 0;
+  padding: 0;
 }
 
 $nprogress-color: red;
@@ -10,7 +10,6 @@ $nprogress-color: red;
 // smaller phones
 
 @media screen and (min-width: 0em){
-
 	body{
 		background-color: $geometry_gray;
 		.wrapper{
@@ -49,6 +48,10 @@ $nprogress-color: red;
 						a:hover{
 							text-decoration: underline;
 						}
+            .star{
+                display: inline-flex;
+                width: 23% !important;
+            }
 					}
 					h2{
 						text-align: left;
@@ -104,7 +107,6 @@ $nprogress-color: red;
 			}
 		}
 	}
-
 }
 
 
@@ -112,60 +114,60 @@ $nprogress-color: red;
 
 @media screen and (min-width: 60.063em){
 
-	body{
-		.wrapper{
-			article {
-				@include span(3/4);
-				header{
-					h1.generated{
-						font-size: 1.5em;
-					}
-				}
-			}
+  body{
+    .wrapper{
+      article {
+        @include span(3/4);
+        header{
+          h1.generated{
+            font-size: 1.5em;
+          }
+        }
+      }
 
-			aside{
-				@include span(1/4);
-			}
-		}
-	}
+      aside{
+        @include span(1/4);
+      }
+    }
+  }
 }
 
 // desktops and bigger tablets
 
 @media screen and (min-width: 64.063em){
 
-	body{
-		.wrapper{
-			article{
-				@include span(1/2);
-				header{
-					margin-top: 2.25em;
-				}
-			}
-		}
-	}
+  body{
+    .wrapper{
+      article{
+        @include span(1/2);
+        header{
+          margin-top: 2.25em;
+        }
+      }
+    }
+  }
 
-	#mobile-header{
-		display: none;
-	}
+  #mobile-header{
+    display: none;
+  }
 }
 
 span.badge{
-	@include border-radius(0.1em);
-	padding: 0.2em;
-	font-size: 0.8em;
-	font-weight: 700;
+  @include border-radius(0.1em);
+  padding: 0.2em;
+  font-size: 0.8em;
+  font-weight: 700;
 }
 .author{
-	background-color: $light_green;
-	color: green;
+  background-color: $light_green;
+  color: green;
 }
 .pr{
-	@extend .author;
+  @extend .author;
 }
 .type{
-	box-shadow:inset 0 0 0.1em 0 $map_blue;
-	color: gray;
+  box-shadow:inset 0 0 0.1em 0 $map_blue;
+  color: gray;
 }
 .error_message{
   color:red;
