@@ -139,6 +139,14 @@ feature 'Issues' do
       expect{click_button 'Report Issue'}.to change{@project.issues.count}.by(1)
     end
 
+    scenario 'new tags are in context of project' do
+      click_link 'New Project'
+      fill_in 'project_name', with: 'testproject2'
+      click_button 'Public'
+      @project = Project.last
+      expect(@project.tag_list).not_to include('new_tag')
+    end
+
     describe 'General user' do
       before :each do
         click_link 'logout'

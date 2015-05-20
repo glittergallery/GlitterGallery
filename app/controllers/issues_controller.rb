@@ -26,22 +26,20 @@ class IssuesController < ApplicationController
     @issue.user = current_user
     @issue.project = @project
     @issue.status = 0
-<<<<<<< HEAD
-    if @issue.save
-      victims = @project.followers + [@project.user] - [@issue.user]
-      notify_users 'issue_create', 0, @project.id, victims
-      redirect_to issue_path(@issue)
-    else
-      flash[:alert] = "Couldn't create an issue"
-      render :new
-=======
     respond_to do |format|
       if @issue.save
+        @issue.tag_list.each do |tag|
+          unless @project.tag_list.include?(tag)
+            @project.tag_list.add(tag)
+            @project.save
+          end
+        end
+        victims = @project.followers + [@project.user] - [@issue.user]
+        notify_users 'issue_create', 0, @project.id, victims
         format.html { redirect_to @issue.show_url }
       else
         format.html { render 'new'}
       end
->>>>>>> Tagging added to issues
     end
   end
 

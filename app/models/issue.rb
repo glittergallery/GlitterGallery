@@ -24,7 +24,7 @@ class Issue < ActiveRecord::Base
     validates_presence_of :tag_list
     return if user == project.user
     tag_list.each do |tag|
-      errors.add(tag, 'is not valid tag') unless tags_list.include?(tag)
+      errors.add(tag, 'is not valid tag') unless project.tag_list.include?(tag)
     end
   end
 
@@ -76,14 +76,5 @@ class Issue < ActiveRecord::Base
       return i if i.sub_id == sub_id
     end
     nil
-  end
-
-  # returns array of valid tags
-  def tags_list
-    tag_array = []
-    ActsAsTaggableOn::Tag.all.each do |tag|
-      tag_array.append(tag.name)
-    end
-    tag_array
   end
 end

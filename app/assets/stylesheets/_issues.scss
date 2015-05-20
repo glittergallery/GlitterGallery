@@ -32,3 +32,21 @@ ul.ui-autocomplete {
     }
   }
 }
+
+//style for issue show
+
+.option{
+  header{
+    p{
+      font-weight: 300;
+      font-size: 0.9em;
+      a{
+        text-decoration: none;
+        color: #141823;
+      }
+      a:hover{
+        text-decoration: underline;
+      }
+    }
+  }
+}

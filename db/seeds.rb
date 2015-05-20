@@ -7,6 +7,3 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-%w(bug feature improvement inspiration discussion help).each do |tag|
-  ActsAsTaggableOn::Tag.create(name: tag)
-end
