@@ -8,42 +8,27 @@ class CommentsController < ApplicationController
   # polycomment attributes (type, id) to help
   # tell what the comments are for
   def create
-    @comment = Comment.new comment_params
-    @comment.user = current_user
-    if @comment.save
-      @comments = Comment.where(
-        polycomment_type: params[:comment][:polycomment_type],
-        polycomment_id: params[:comment][:polycomment_id]
-      )
-      @project = Project.find_by(name: params[:comment][:project_name])
-
-      notify_followers(@project, @comment)
-
-      respond_to do |format|
-        format.html { redirect_to :back }
-        format.js {}
+    if polycomment_exists
+      @comment = Comment.new comment_params
+      @comment.user = current_user
+      if @comment.save
+        @comments = find_project_comments
+        @project = Project.find_by(name: params[:comment][:project_name])
+        # action = 'project_comment' for projects or 'issue_comment' for issues
+        action = find_action
+        victims = @project.followers + [@project.user] - [@comment.user]
+        notify_users action, 1, @comment.id, victims
+        respond_to do |format|
+          format.html { redirect_to :back }
+          format.js {}
+        end
+      else
+        redirect_to :back
+        flash[:alert] = 'Something went wrong, try reposting your comment.'
       end
     else
-      redirect_to :back
-      flash[:alert] = 'Something went wrong, try reposting your comment.'
+      render status: 404
     end
-  end
-
-  def notify_followers(project, comment)
-    if comment.polycomment_type == 'project'
-      action = 0
-    elsif comment.polycomment_type == 'issue'
-      action = 5
-    end
-    victims = project.followers + [project.user]
-    victims.delete(comment.user)
-    Notification.create(
-      actor: current_user,
-      action: action, # Commented on either Project or Issue
-      object_type: 1, # Comment
-      object_id: comment.id,
-      victims: victims
-    )
   end
 
   def destroy
@@ -69,5 +54,33 @@ class CommentsController < ApplicationController
         :issue,
         :body
       )
+    end
+
+    # to check if polycomment object exists or not
+    def polycomment_exists
+      if %w(blob commit file).include?(params[:comment][:polycomment_type])
+        return true
+      else
+        polycomment = params[:comment][:polycomment_type]
+        value = params[:comment][:polycomment_id]
+        polycomment.classify.constantize.where(id: value).any?
+      end
+    end
+
+    # return all the comments associated with polycomment object
+    def find_project_comments
+      @comments = Comment.where(
+        polycomment_type: params[:comment][:polycomment_type],
+        polycomment_id: params[:comment][:polycomment_id]
+        )
+      @comments = @comments.paginate(page: 1, per_page: 10)
+    end
+
+    def find_action
+      if params[:comment][:polycomment_type] == 'project'
+        return 'project_comment'
+      elsif params[:comment][:polycomment_type] == 'issue'
+        return 'issue_comment'
+      end
     end
 end

@@ -3,4 +3,4 @@
     render partial: 'comments/comment',
     collection: @comments
   )}");
-  $('#comment_body').val('');
+  $('textarea').val('').trigger('input');

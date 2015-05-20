@@ -17,7 +17,6 @@
           %form{ action: user_project_path(@project.user, @project, @project.uniqueurl) }
             %input{ type: 'submit', value: 'Generate Unique Link' }
 
-
     = render partial: 'comments/show_comments', locals: { type: @comment_type,
       id: @project.id.to_s,
       ajax: @ajax,

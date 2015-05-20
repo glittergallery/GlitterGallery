@@ -1,45 +1,104 @@
 @media screen and (min-width: 0em){
-	body{
-		.wrapper{
-			article{
-				section.comments{
-					margin-bottom: 1em;
-					div{
-						@include cf();
-						padding: 0.25em 0.25em 0 0.25em;
-						header, h1, article, footer{
-							@include span(1);
-							margin:  0;
-							font-size: 0.8em;
-							background-color: $geometry_gray;
-							border-style: none;
-							p{
-								display: inline;
-								a{
-									text-decoration: none;
-									font-weight: 700;
-									color: $map_blue;
-								}
-								a:hover{
-									text-decoration: underline;
-								}
-							}
-							h1{
-								font-size: 1em;
-							}
-						}
-						footer{
-							color: gray;
-							p{
-								a{
-									color: gray;
-									font-weight: 300;				
-								}
-							}
-						}	
-					}
-				}
-			}
-		}
-	}
+  body{
+    .wrapper{
+      article{
+        section.comments{
+          margin-bottom: 1em;
+          div{
+            @include cf();
+            padding: 0.25em 0.25em 0 0.25em;
+            header, h1, article, footer{
+              @include span(1);
+              margin:  0;
+              font-size: 0.8em;
+              background-color: $geometry_gray;
+              border-style: none;
+              p{
+                display: inline;
+                a{
+                  text-decoration: none;
+                  font-weight: 700;
+                  color: $map_blue;
+                }
+                a:hover{
+                  text-decoration: underline;
+                }
+              }
+              h1{
+                font-size: 1em;
+              }
+            }
+
+            //style for expandable text area
+            .comment_submit{
+                margin: 0.50em 0;
+            }
+            .expandingArea {
+              position: relative;
+            }
+
+            .expandingArea{
+              textarea, pre {
+                padding: 5px 5px 0px 5px;
+                min-height: 80px;
+                background: transparent;
+                font: 400 13px/16px helvetica, arial, sans-serif;
+                /* Make the text soft-wrap */
+                white-space: pre-wrap;
+                word-wrap: break-word;
+              }
+
+              textarea {
+                -webkit-box-sizing: border-box;
+                   -moz-box-sizing: border-box;
+                    -ms-box-sizing: border-box;
+                        box-sizing: border-box;
+                width: 100%;
+                /* This height is used when JS is disabled */
+                height: 100px;
+              }
+
+              pre {
+                display: none;
+              }
+            }
+
+
+            .expandingArea.active{
+              padding: 0.75em 0em 0.20em 0;
+              textarea {
+                /* Hide any scrollbars */
+                overflow: hidden;
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                /* Remove WebKit user-resize widget */
+                resize: none;
+              }
+
+              pre {
+                display: block;
+                /* Hide the text; just using it for sizing */
+                visibility: hidden;
+                span{
+                  font: 400 13px/16px helvetica, arial, sans-serif;
+                }
+              }
+            }
+
+            footer{
+              color: gray;
+              p{
+                a{
+                  color: gray;
+                  font-weight: 300;       
+                }
+              }
+            } 
+          }
+        }
+      }
+    }
+  }
 }
