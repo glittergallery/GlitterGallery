@@ -14,7 +14,9 @@ $nprogress-color: red;
 	body{
 		background-color: $geometry_gray;
 		.wrapper{
-
+			nav {
+				z-index: 2;
+			}
 			article{
 				@include center;
 				@include span(1);
@@ -97,9 +99,9 @@ $nprogress-color: red;
 					}
 				}
 			}
-		  aside{
-		  	display: none;
-		  }
+			aside{
+				display: none;
+			}
 		}
 	}
 
@@ -170,4 +172,3 @@ span.badge{
   font-weight: bold;
   padding: 0.2em;
 }
-

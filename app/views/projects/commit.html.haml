@@ -22,10 +22,9 @@
           = link_to image[:name], project_blob_path(@project, @oid, image[:name])
           = data_image_tag(image, '100%', nil)
 
-      = render partial: 'comments/show_comments', locals: { type: action_name,
-        id: @id.to_s,
-        ajax: @ajax,
-        comment: @comment }
-
+    = render partial: 'comments/show_comments', locals: { type: action_name,
+      id: @id.to_s,
+      ajax: @ajax,
+      comment: @comment }
 - else
   = render 'permissions_error'

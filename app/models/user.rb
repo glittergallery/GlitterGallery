@@ -55,15 +55,6 @@ class User < ActiveRecord::Base
     ProjectFollower.make_follow self, project
   end
 
-  def notify_on_follow(user)
-    @notification = Notification.create actor: user,
-                                        action: 3, # Follow
-                                        object_type: 2, # User
-                                        object_id: id,
-                                        victims: [self]
-    @notification.save!
-  end
-
   def git_author_params
     {
       email: email,
