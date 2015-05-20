@@ -22,12 +22,15 @@ class ProjectsController < ApplicationController
 
   # TODO: Limit to popular/recent projects
   def index
-    if params[:id]
-      @user = User.find_by username: params[:id]
-      @projects = @user.projects
-      render :user_index
+    if params[:sort] == 'stars'
+      @projects = Project.first
     else
-      @projects = Project.inspiring_projects_for current_user.id
+      @projects = Project.all
+    end
+ 
+    respond_to do |format|
+      format.html
+      format.js { render 'populate_projects' }
     end
   end
 

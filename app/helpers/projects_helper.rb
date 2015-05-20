@@ -69,4 +69,9 @@ module ProjectsHelper
     end
     res
   end
+
+  # return array of possible sorting options
+  def sort_type
+    %w(stars followers commits)
+  end
 end

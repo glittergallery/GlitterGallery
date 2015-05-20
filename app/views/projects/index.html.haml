@@ -12,4 +12,7 @@
         %form{ action: '/projects/new' }
           %input{ type: 'submit', value: 'Be the first one to inspire!' }
   - else
-    = render 'projects_list'
+    = select('project', 'sort', sort_type, {prompt: 'Select method'})
+    #sorted{ style: 'display: none' }
+    #normal
+      = render 'projects_list'

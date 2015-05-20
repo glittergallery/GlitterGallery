@@ -37,6 +37,14 @@ $( document ).ready(function() {
   });
 });
 
+// script for on change event of sorting type selection
+$("document").ready(function() {
+  $("#project_sort").change(function() {
+    var state = $('select#project_sort :selected').val();
+    $.get("/inspire/"+state+".js");
+  });
+})
+
 
 //function for autocomplete of tags on issues page
 $("document").ready(function() {
