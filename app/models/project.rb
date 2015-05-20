@@ -19,7 +19,7 @@ class Project < ActiveRecord::Base
 
   has_ancestry # Tree structure.
   acts_as_paranoid # Soft delete.
-
+  acts_as_taggable
   # Don't do any change to the children when the parent is deleted.
   # After all the parent is only soft deleted.
   def apply_orphan_strategy

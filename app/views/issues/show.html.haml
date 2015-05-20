@@ -16,6 +16,9 @@
               = @issue.title
             .markdown
               = markdown @issue.description
+            %p
+              Tags:
+              = raw link_tags @issue
         %aside
           %h1
             Actions

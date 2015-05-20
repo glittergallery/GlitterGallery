@@ -2,7 +2,8 @@ class IssuesController < ApplicationController
   before_action :get_context
 
   def index
-    @issues = @project.issues.status(params[:state] || 'open')
+    @issues = find_issue(params[:state])
+    @issues = @issues.tagged_with(params[:tag]) if params[:tag]
   end
 
   def new
@@ -25,13 +26,20 @@ class IssuesController < ApplicationController
     @issue.user = current_user
     @issue.project = @project
     @issue.status = 0
-    if @issue.save
-      victims = @project.followers + [@project.user] - [@issue.user]
-      notify_users 'issue_create', 0, @project.id, victims
-      redirect_to issue_path(@issue)
-    else
-      flash[:alert] = "Couldn't create an issue"
-      render :new
+    respond_to do |format|
+      if @issue.save
+        @issue.tag_list.each do |tag|
+          unless @project.tag_list.include?(tag)
+            @project.tag_list.add(tag)
+            @project.save
+          end
+        end
+        victims = @project.followers + [@project.user] - [@issue.user]
+        notify_users 'issue_create', 0, @project.id, victims
+        format.html { redirect_to @issue.show_url }
+      else
+        format.html { render 'new'}
+      end
     end
   end
 
@@ -72,6 +80,16 @@ class IssuesController < ApplicationController
   end
 
   def issue_params
-    params.require(:issue).permit(:title, :description, :type)
+    params.require(:issue).permit(:title, :description, :tag_list)
+  end
+
+  def find_issue(type)
+    if type == 'closed'
+      @activetab = 1
+      @project.issues.where(status: 1)
+    else
+      @activetab = 0
+      @project.issues.where(status: 0)
+    end
   end
 end

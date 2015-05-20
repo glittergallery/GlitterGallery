@@ -2,9 +2,8 @@
   %header
     %h1
       = comment.user.username
-  %article
-    %p
-      = markdown comment.body
+  .markdown
+    = markdown comment.body
   %footer
     %p
       = link_to 'Issue?', "#{@project.urlbase}/issues/new?desc=#{comment.body}"

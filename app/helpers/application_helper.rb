@@ -55,4 +55,17 @@ module ApplicationHelper
     )
     markdown.render(text).html_safe
   end
+
+  # link tags to link which sorts them in context of active tab
+  def link_tags(issue)
+    path = user_project_issues_path(@project.user, @project)
+    if issue.open?
+      issue.tag_list.map { |t| link_to t, "#{path}/#{t}"}
+        .join(', ')
+    else
+      issue.tag_list
+        .map { |t| link_to t, "#{path}/#{t}?state=closed"}
+        .join(', ')
+    end
+  end
 end

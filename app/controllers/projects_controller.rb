@@ -48,6 +48,7 @@ class ProjectsController < ApplicationController
     project = Project.new project_params
     project.user_id = current_user.id
     project.private = true if params[:commit] == 'Private'
+    project.tag_list = 'bug, feature, improvement, feedback, discussion, help'
     if project.save
       unless project.private
         # TODO: clean up action ids, numbers makes unreadable

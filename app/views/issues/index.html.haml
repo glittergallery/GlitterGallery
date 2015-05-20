@@ -31,8 +31,9 @@
                     = precede '#' do
                       = issue.sub_id
                       = link_to issue.title, issue_path(issue)
-                      %span.badge.author
-                        = issue.type_text
+                  %p
+                    Tags:
+                    = raw link_tags issue
                 %footer
                   %p
                     by

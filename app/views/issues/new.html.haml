@@ -15,15 +15,17 @@
             - @issue.errors.full_messages.each do |msg|
               %p.error_message
                 = msg
-            %label Title
+            = f.label :title
             = f.text_field :title, placeholder: 'Title', autofocus: true
-            %label Description
-            = f.text_area :description, value: params[:desc], placeholder: '(Markdown Enabled)...'
-            %label Type
-            = f.select(:type, options_for_select([['Bug', 0], ['Improvement', 1]]))
+            = f.label :description
+            = f.text_area :description,
+              value: params[:desc],
+              placeholder: '(Markdown Enabled)...'
+            = f.label :tag_list
+            = f.text_field :tag_list, data: { autocomplete_source: @project.tag_list }
+            #tag_drop_down
             = f.submit 'Report Issue'
+
 
 - else
   = render 'permissions_error'
-
-
