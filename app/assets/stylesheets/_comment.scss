@@ -7,7 +7,7 @@
           div{
             @include cf();
             padding: 0.25em 0.25em 0 0.25em;
-            header, h1, article, footer{
+            header h1, article, footer{
               @include span(1);
               margin:  0;
               font-size: 0.8em;

@@ -14,8 +14,8 @@
           %header
             %h1
               = @issue.title
-            %h2.issue
-              = @issue.description
+            .markdown
+              = markdown @issue.description
             %p
               Tags:
               = raw link_tags @issue

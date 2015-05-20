@@ -1,0 +1,63 @@
+@media screen and (min-width: 0em){
+  div.markdown, div.option div.markdown {
+    h1, h2, h3, h4, h5, h6{
+      background-color: #f9fafb;
+      font-weight: bold;
+      padding: 0.25em 0 0.25em 0;
+      border-bottom: 1px solid #eee;
+    }
+    h1{
+      font-size: 2.25em;
+    }
+    h2{
+      font-size: 1.75em;
+    }
+    h3{
+      font-size: 1.5em;
+    }
+    h4{
+      font-size: 1.25em;
+    }
+    h5{
+      font-size: 1em;
+    }
+    h6{
+      font-size: 0.75em;
+    }
+
+    ul{
+      padding-left: 1.25em;
+    }
+
+    ol{
+      padding-left: 1.25em;
+    }
+
+    blockquote{
+      padding: 0 15px;
+      color: #777;
+      border-left: 4px solid #ddd;
+    }
+
+    p{
+      margin: 2% 0 2% 0;
+    }
+
+    pre{
+      padding: 2%;
+      overflow: auto;
+    }
+
+    code{
+      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    }
+
+    a{
+      color: #27639E;
+      text-decoration: none;
+    }
+    a:hover{
+      text-decoration: underline;
+    }
+  }
+}
