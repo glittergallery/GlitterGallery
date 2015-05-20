@@ -42,12 +42,14 @@ Glitter::Application.routes.draw do
       end
     end
     resources :projects, except: [:index], path: '/' do
-      resources :issues, path: "(:xid)/issues" do
+      resources :issues, except: [:show], path: "(:xid)/issues" do
         member do
           put 'close'
           put 'reopen'
         end
       end
+      get '(:xid)/issues/:id' => 'issues#show', constraints: { id: /\d.*/ }, as: :issue_show
+      get '(:xid)/issues/:tag' => 'issues#index'
       member do
         scope "(:xid)" do
           get :branches

@@ -4,7 +4,7 @@ FactoryGirl.define do
   factory :issue do
     title 'test issue'
     description 'I am a test'
-    type 0
+    tag_list ['bug']
     status 0
     association :project
     association :user

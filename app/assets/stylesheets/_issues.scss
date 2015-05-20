@@ -1,0 +1,52 @@
+#issue_description {
+  width:100%;
+}
+
+#issue_tag_list {
+  margin-bottom: 0;
+}
+
+#tag_drop_down {
+  padding: 0;
+  width:101%;
+}
+
+ul.ui-autocomplete {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: solid 1px #999;
+  cursor: default;
+  li{
+    background-color: #FFF;
+    border-top: solid 1px #DDD;
+    margin: 0;
+    padding: 0;
+    a{
+      color: #000;
+      display: block;
+      padding: 3px;
+    }
+    a.ui-state-hover, a.ui-state-active{
+      background-color: #FFFCB2;
+    }
+  }
+}
+
+//style for issue show
+
+.option{
+  header{
+    p{
+      font-weight: 300;
+      font-size: 0.9em;
+      a{
+        text-decoration: none;
+        color: #141823;
+      }
+      a:hover{
+        text-decoration: underline;
+      }
+    }
+  }
+}

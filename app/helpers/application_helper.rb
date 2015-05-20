@@ -45,4 +45,17 @@ module ApplicationHelper
     log_status = user_signed_in? ? 'logged_in' : 'not_logged_in'
     "#{controller.controller_name} #{controller.action_name} #{log_status}"
   end
+
+  # link tags to link which sorts them in context of active tab
+  def link_tags(issue)
+    path = user_project_issues_path(@project.user, @project)
+    if issue.open?
+      issue.tag_list.map { |t| link_to t, "#{path}/#{t}"}
+        .join(', ')
+    else
+      issue.tag_list
+        .map { |t| link_to t, "#{path}/#{t}?state=closed"}
+        .join(', ')
+    end
+  end
 end

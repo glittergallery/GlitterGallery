@@ -38,3 +38,46 @@ $( document ).ready(function() {
 });
 
 
+//function for autocomplete of tags on issues page
+$("document").ready(function() {
+	$(function() {
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+
+    $( "#issue_tag_list" )
+      // don't navigate away from the field on tab when selecting an item
+      .bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        appendTo: "#tag_drop_down",
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( $.ui.autocomplete.filter(
+            $('#issue_tag_list').data('autocomplete-source'), extractLast( request.term ) ) );
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join( ", " );
+          return false;
+        }
+      }).focus(function(){
+            //Displays the complete list on focus
+            $(this).data("autocomplete").search($(this).val());
+      });
+  });
+});
