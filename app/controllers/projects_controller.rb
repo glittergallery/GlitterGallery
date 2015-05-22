@@ -20,12 +20,38 @@ class ProjectsController < ApplicationController
     @project = Project.new
   end
 
-  # TODO: Limit to popular/recent projects
   def index
-    if params[:sort] == 'stars'
-      @projects = Project.first
+    if params[:id]
+      @user = User.find_by username: params[:id]
+      @projects = @user.projects
+      render :user_index
+      return
     else
-      @projects = Project.all
+      case params[:sort]
+      when 'stars'
+        @projects = Project.joins("INNER JOIN rating_caches ON rating_caches.cacheable_id = projects.id")
+          .order("rating_caches.avg desc")
+      when 'forks'
+        @projects = Project.joins("LEFT OUTER JOIN projects p1 on projects.id = p1.ancestry")
+          .group("projects.id")
+          .order("count(p1.ancestry) desc")
+      when 'followers'
+        @projects = Project.joins("LEFT OUTER JOIN project_followers ON project_followers.project_id = projects.id")
+          .group("projects.id")
+          .order("count(project_followers.project_id) desc")
+      when 'last updated'
+        @projects = Project.order('updated_at DESC')
+      when 'activity'
+        @projects = Project.joins("LEFT OUTER JOIN comments ON comments.polycomment_id = projects.id
+                                   AND comments.polycomment_type='project'
+                                   LEFT OUTER JOIN issues ON issues.project_id = projects.id
+                                   AND issues.status=1")
+                            .where("comments.created_at > ? OR issues.updated_at > ?", 10.days.ago, 10.days.ago)
+                            .group("projects.id")
+                            .order("count(comments.polycomment_id)+4*count(issues.project_id) desc")
+      else
+        @projects = Project.order('created_at DESC')
+      end
     end
  
     respond_to do |format|

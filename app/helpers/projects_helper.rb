@@ -72,6 +72,6 @@ module ProjectsHelper
 
   # return array of possible sorting options
   def sort_type
-    %w(stars followers commits)
+    ['newest', 'stars', 'followers', 'forks', 'activity', 'last updated']
   end
 end
