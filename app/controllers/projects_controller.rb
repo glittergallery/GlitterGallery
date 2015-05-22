@@ -29,7 +29,7 @@ class ProjectsController < ApplicationController
     else
       case params[:sort]
       when 'stars'
-        @projects = Project.joins("INNER JOIN rating_caches ON rating_caches.cacheable_id = projects.id")
+        @projects = Project.joins("LEFT OUTER JOIN rating_caches ON rating_caches.cacheable_id = projects.id")
           .order("rating_caches.avg desc")
       when 'forks'
         @projects = Project.joins("LEFT OUTER JOIN projects p1 on projects.id = p1.ancestry")
@@ -53,7 +53,6 @@ class ProjectsController < ApplicationController
         @projects = Project.order('created_at DESC')
       end
     end
- 
     respond_to do |format|
       format.html
       format.js { render 'populate_projects' }

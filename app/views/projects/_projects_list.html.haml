@@ -10,3 +10,14 @@
           %br
           Last updated #{distance_of_time_in_words_to_now project.updated_at} ago
         = rating_for project, 'stars', disable_after_rate: true, half_show: true
+        %p
+          - if project.followed_by? current_user
+            = link_to project_unfollow_path(project), method: :delete, class: 'follow-hover' do
+              Unfollow
+          - else
+            = link_to project_follow_path(project), method: :post, class: 'follow-hover' do
+              Follow
+          = link_to project_fork_path(project), method: :post, class: 'follow-hover' do
+            Fork
+          %a{ href: "#{project.urlbase + '/issues/new'}", class: 'follow-hover' }
+            Blame
