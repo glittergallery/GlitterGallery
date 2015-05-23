@@ -27,31 +27,7 @@ class ProjectsController < ApplicationController
       render :user_index
       return
     else
-      case params[:sort]
-      when 'stars'
-        @projects = Project.joins("LEFT OUTER JOIN rating_caches ON rating_caches.cacheable_id = projects.id")
-          .order("rating_caches.avg desc")
-      when 'forks'
-        @projects = Project.joins("LEFT OUTER JOIN projects p1 on projects.id = p1.ancestry")
-          .group("projects.id")
-          .order("count(p1.ancestry) desc")
-      when 'followers'
-        @projects = Project.joins("LEFT OUTER JOIN project_followers ON project_followers.project_id = projects.id")
-          .group("projects.id")
-          .order("count(project_followers.project_id) desc")
-      when 'last updated'
-        @projects = Project.order('updated_at DESC')
-      when 'activity'
-        @projects = Project.joins("LEFT OUTER JOIN comments ON comments.polycomment_id = projects.id
-                                   AND comments.polycomment_type='project'
-                                   LEFT OUTER JOIN issues ON issues.project_id = projects.id
-                                   AND issues.status=1")
-                            .where("comments.created_at > ? OR issues.updated_at > ?", 10.days.ago, 10.days.ago)
-                            .group("projects.id")
-                            .order("count(comments.polycomment_id)+4*count(issues.project_id) desc")
-      else
-        @projects = Project.order('created_at DESC')
-      end
+      sorted_projects
     end
     respond_to do |format|
       format.html
@@ -374,5 +350,56 @@ class ProjectsController < ApplicationController
     return unless @project.deleted?
     flash[:alert] = 'The project you requested had been deleted.'
     redirect_to user_path(@user)
+  end
+
+  def find_most_active
+    Project.joins("LEFT OUTER JOIN comments
+                   ON comments.polycomment_id = projects.id
+                   AND comments.polycomment_type='project'
+                   LEFT OUTER JOIN issues ON issues.project_id = projects.id
+                   AND issues.status=1")
+           .where('comments.created_at > ?
+                   OR issues.updated_at > ?', 10.days.ago, 10.days.ago)
+           .group('projects.id')
+           .order('count(comments.polycomment_id)+4*count(issues.project_id)
+                   desc')
+  end
+
+  def find_most_followers
+    Project.joins('LEFT OUTER JOIN project_followers
+                   ON project_followers.project_id = projects.id')
+           .group('projects.id')
+           .order('count(project_followers.project_id) desc')
+  end
+
+  def find_higest_stars
+    Project.joins('LEFT OUTER JOIN rating_caches
+                   ON rating_caches.cacheable_id = projects.id')
+           .order('rating_caches.avg desc')
+  end
+
+  def find_most_forks
+    Project.joins('LEFT OUTER JOIN projects p1
+                   ON projects.id = p1.ancestry')
+           .group('projects.id')
+           .order('count(p1.ancestry) desc')
+  end
+
+  # sorts projects on basis of dropdown selection
+  def sorted_projects
+    case params[:sort]
+    when 'stars'
+      @projects = find_higest_stars
+    when 'forks'
+      @projects = find_most_forks
+    when 'followers'
+      @projects = find_most_followers
+    when 'last updated'
+      @projects = Project.order('updated_at DESC')
+    when 'activity'
+      @projects = find_most_active
+    else
+      @projects = Project.order('created_at DESC')
+    end
   end
 end

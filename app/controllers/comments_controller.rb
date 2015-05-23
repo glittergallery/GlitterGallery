@@ -58,7 +58,7 @@ class CommentsController < ApplicationController
 
     # to check if polycomment object exists or not
     def polycomment_exists
-      if %w(blob commit file).include?(params[:comment][:polycomment_type])
+      if %w(blob commit file tree).include?(params[:comment][:polycomment_type])
         return true
       else
         polycomment = params[:comment][:polycomment_type]

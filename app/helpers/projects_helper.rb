@@ -74,4 +74,13 @@ module ProjectsHelper
   def sort_type
     ['newest', 'stars', 'followers', 'forks', 'activity', 'last updated']
   end
+
+  # used to render default or first image of repo
+  def render_image(project)
+    if project.browse_tree[0].empty?
+      image_tag '/usercover.jpg'
+    else
+      data_image_tag(project.browse_tree[0].first, '100%', nil)
+    end
+  end
 end
