@@ -23,6 +23,7 @@
 //= require jquery.sidr.min
 //= require jquery.raty
 //= require ratyrate
+//= require projects
 
 $(document).on('ajax:error', function (e, xhr, settings) {
     if (xhr.status == 401) {

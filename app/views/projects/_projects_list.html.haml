@@ -21,3 +21,4 @@
             Fork
           %a.follow-hover{ href: "#{project.urlbase + '/issues/new'}" }
             Blame
+  = will_paginate @projects, id: 'project_pagination'
