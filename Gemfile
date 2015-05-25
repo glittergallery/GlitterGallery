@@ -54,6 +54,8 @@ gem 'acts-as-taggable-on', '~> 3.4'
 
 gem 'ratyrate', github: 'sonalkr132/ratyrate', branch: 'refactoring'
 
+gem "cancancan", '~> 1.10'
+
 
 group :development, :test do
   # https://github.com/rspec/rspec-rails/issues/1273

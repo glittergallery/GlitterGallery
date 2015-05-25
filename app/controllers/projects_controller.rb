@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  authorize_resource
   before_filter :store_return_to
   before_filter :authenticate_user!, except: [:show,
                                               :commits,
@@ -45,15 +46,10 @@ class ProjectsController < ApplicationController
 
   def destroy
     @project = Project.find params[:id]
-    if current_user.id == @project.user_id
-      @project.destroy
-      # after_destroy callback in project.rb deletes files.
-      flash[:notice] = 'It has been destroyed!'
-      redirect_to dashboard_path
-    else
-      flash[:error] = "You don't have permission for this command!"
-      redirect_to user_project_path @project.user, @project
-    end
+    @project.destroy
+    # after_destroy callback in project.rb deletes files.
+    flash[:notice] = 'It has been destroyed!'
+    redirect_to dashboard_path
   end
 
   def create
