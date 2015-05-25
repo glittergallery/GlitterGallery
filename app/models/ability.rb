@@ -7,8 +7,8 @@ class Ability
     if user.new_record?
       guest
     else
-      signed_in_user
-      project_owner
+      signed_in(user)
+      project_owner(user)
     end
   end
 
@@ -25,7 +25,7 @@ class Ability
         ], Project
   end
 
-  def signed_in_user
+  def signed_in(user)
     guest # Inherits abilities of guest
     can [:new,
          :create,
@@ -37,7 +37,7 @@ class Ability
         ], Project
   end
 
-  def project_owner
+  def project_owner(user)
     can [:update_image,
          :file_upload,
          :file_delete,
@@ -45,7 +45,7 @@ class Ability
          :newfile,
          :create_directory,
          :create_branch,
-         :destory,
+         :destroy,
          :update,
          :file_update,
          ], Project do |project|
