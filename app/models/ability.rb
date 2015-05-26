@@ -3,11 +3,10 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user (not logged in)
-
     if user.new_record?
       guest
     else
-      signed_in(user)
+      signed_in
       project_owner(user)
     end
   end
@@ -25,11 +24,10 @@ class Ability
         ], Project
   end
 
-  def signed_in(user)
+  def signed_in
     guest # Inherits abilities of guest
     can [:new,
          :create,
-         :followed_index,
          :follow,
          :unfollow,
          :fork,
@@ -38,8 +36,7 @@ class Ability
   end
 
   def project_owner(user)
-    can [:update_image,
-         :file_upload,
+    can [:file_upload,
          :file_delete,
          :settings,
          :newfile,
@@ -47,7 +44,7 @@ class Ability
          :create_branch,
          :destroy,
          :update,
-         :file_update,
+         :file_update
          ], Project do |project|
       project.try(:user_id) == user.id
     end

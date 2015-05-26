@@ -1,5 +1,9 @@
 class ProjectsController < ApplicationController
-  authorize_resource
+  load_resource find_by: :name, except: [:destroy,
+                                         :followed_index,
+                                         :show
+                                        ]
+  authorize_resource except: [:followed_index]
   before_filter :store_return_to
   before_filter :authenticate_user!, except: [:show,
                                               :commits,
@@ -46,6 +50,7 @@ class ProjectsController < ApplicationController
 
   def destroy
     @project = Project.find params[:id]
+    authorize! :destroy, @project
     @project.destroy
     # after_destroy callback in project.rb deletes files.
     flash[:notice] = 'It has been destroyed!'
@@ -121,6 +126,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    authorize! :show, @project
     @oid = 'master'
     barerepo = @project.barerepo
     @branches = barerepo.branches
@@ -179,7 +185,6 @@ class ProjectsController < ApplicationController
   end
 
   # POST /user/project/create_branch
-  # TODO: to be visited after adding cancancan.
   def create_branch
     @branch = @project.create_branch params[:branch_name]
     if @branch
