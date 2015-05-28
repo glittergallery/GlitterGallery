@@ -123,7 +123,6 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    authorize! :show, @project
     @oid = 'master'
     barerepo = @project.barerepo
     @branches = barerepo.branches

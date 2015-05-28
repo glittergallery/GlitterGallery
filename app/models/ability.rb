@@ -33,6 +33,8 @@ class Ability
          :fork,
          :open
         ], Project
+
+    can [:new, :create], Comment
   end
 
   def project_owner(user)
@@ -47,6 +49,10 @@ class Ability
          :file_update
          ], Project do |project|
       project.try(:user_id) == user.id
+    end
+
+    can [:destroy], Comment do |comment|
+      comment.try(:user_id) == user.id
     end
   end
 end

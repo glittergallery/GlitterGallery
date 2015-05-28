@@ -3,7 +3,7 @@
     = render partial: 'comments/comment', collection: @comments
     = will_paginate @comments
   %section.newcomment
-    - if user_signed_in?
+    - if can? :create, @comment
       %div
         = form_for(comment, remote: true) do |f|
           = f.hidden_field(:polycomment_type, value: type)

@@ -4,7 +4,7 @@ describe CommentsController, type: :controller do
   context 'project exists' do
     describe 'POST #create' do
       before do
-        @project = FactoryGirl.create(:project)
+        @project = create(:project)
         sign_in(@project.user)
       end
       it 'adds comment to project' do
@@ -22,7 +22,7 @@ describe CommentsController, type: :controller do
 
   context "project doesn't exists" do
     before do
-      @user = FactoryGirl.create(:user)
+      @user = create(:user)
       sign_in(@user)
     end
     describe 'POST #create' do
@@ -42,7 +42,7 @@ describe CommentsController, type: :controller do
   context 'issue exists' do
     describe 'POST #create' do
       before do
-        @issue = FactoryGirl.create(:issue)
+        @issue = create(:issue)
         sign_in(@issue.user)
       end
       it 'adds comment to project' do
@@ -59,7 +59,7 @@ describe CommentsController, type: :controller do
 
   context "issue doesn't exists" do
     before do
-      @user = FactoryGirl.create(:user)
+      @user = create(:user)
       sign_in(@user)
     end
     describe 'POST #create' do
@@ -76,5 +76,63 @@ describe CommentsController, type: :controller do
     end
   end
 
+  context 'user is not logged in' do
+    describe 'GET #new' do
+      it 'redirects to sign in page' do
+        get :new
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
 
+    before do
+      @project = create(:project)
+    end
+
+    describe 'POST #create' do
+      it 'does not add comment' do
+        xhr :post, :create, comment: { polycomment_type: 'project',
+                                       polycomment_id: @project.id,
+                                       issue: false,
+                                       project_name: @project.name,
+                                       body: 'heads are cool'
+                                     }
+        expect(Comment.all).to be_empty
+        expect(response.response_code).to eq(401) # unauthorized access
+      end
+    end
+  end
+
+  context 'user is not owner of comment' do
+    before do
+      @user = create(:user)
+      @owner = create(:user, username: 'owner')
+      @comment = create(:comment, user: @owner)
+      sign_in(@user)
+    end
+
+    describe 'DELETE #destroy' do
+      it "doesn't deletes the comment" do
+        @request.env['HTTP_REFERER'] = 'http://test.host'
+        delete :destroy, id: @comment.id
+        expect(response.response_code).to eq(403)
+        expect(@owner.comments.first.body).to eq('fancy comment body')
+      end
+    end
+  end
+
+  context 'user is owner of comment' do
+    before do
+      @owner = create(:user, username: 'owner')
+      @comment = create(:comment, user: @owner)
+      sign_in(@owner)
+    end
+
+    describe 'DELETE #destroy' do
+      it 'deletes the comment' do
+        @request.env['HTTP_REFERER'] = 'http://test.host'
+        delete :destroy, id: @comment.id
+        expect(@owner.comments).to be_empty
+      end
+    end
+  end
 end
