@@ -18,12 +18,20 @@
             .guide
               %p No Issues to show!
               %p Report issues or request improvements to notify the author.
-              %form{ action: 'issues/new' }
-                %input{ type: 'submit', value: 'Report Issue' }
+              - if user_signed_in?
+                %form{ action: 'issues/new' }
+                  %input{ type: 'submit', value: 'Report Issue' }
+              - else
+                You need to login to be able to comment!
+                = link_to 'Login now!', new_user_session_path
 
           - else
-            %form{ action: 'issues/new' }
-              %input{ type: 'submit', value: 'Report New Issue' }
+            - if user_signed_in?
+              %form{ action: 'issues/new' }
+                %input{ type: 'submit', value: 'Report New Issue' }
+            - else
+              You need to login to be able to comment!
+              = link_to 'Login now!', new_user_session_path
             - @issues.each do |issue|
               %div
                 %header

@@ -22,6 +22,8 @@ class Ability
          :tree,
          :file_history
         ], Project
+
+    can [:index, :show], Issue
   end
 
   def signed_in
@@ -35,6 +37,7 @@ class Ability
         ], Project
 
     can [:new, :create], Comment
+    can [:new, :create], Issue
   end
 
   def project_owner(user)
@@ -53,6 +56,10 @@ class Ability
 
     can [:destroy], Comment do |comment|
       comment.try(:user_id) == user.id
+    end
+
+    can [:close, :reopen], Issue do |issue|
+      issue.try(:user_id) == user.id || issue.project.user == user
     end
   end
 end

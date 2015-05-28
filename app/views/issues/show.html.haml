@@ -19,16 +19,17 @@
             %p
               Tags:
               = raw link_tags @issue
-        %aside
-          %h1
-            Actions
-          %nav
-            %ul
-              %li.active
-                - if @issue.open?
-                  = link_to('Close', close_issue_path(@issue), method: 'put')
-                - else
-                  = link_to('Reopen', reopen_issue_path(@issue), method: 'put')
+        - if can? :close, @issue
+          %aside
+            %h1
+              Actions
+            %nav
+              %ul
+                %li.active
+                  - if @issue.open?
+                    = link_to('Close', close_issue_path(@issue), method: 'put')
+                  - else
+                    = link_to('Reopen', reopen_issue_path(@issue), method: 'put')
 
     = render partial: 'comments/show_comments', locals: { type: 'issue',
       id: @issue.id.to_s,
