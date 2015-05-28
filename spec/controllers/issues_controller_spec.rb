@@ -117,7 +117,7 @@ describe IssuesController, type: :controller do
       end
     end
 
-    context 'user is owner of project' do
+    context 'user is owner of issue' do
       before do
         sign_in(@issue.user)
       end
