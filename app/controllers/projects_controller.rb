@@ -1,10 +1,13 @@
 class ProjectsController < ApplicationController
-  load_resource find_by: :name, except: [:destroy,
-                                         :followed_index,
-                                         :show
-                                        ]
-  authorize_resource except: [:followed_index]
   before_filter :store_return_to
+
+  before_filter :return_context, except: [:new,
+                                          :create,
+                                          :destroy,
+                                          :index,
+                                          :followed_index
+                                          ]
+
   before_filter :authenticate_user!, except: [:show,
                                               :commits,
                                               :projectcommit,
@@ -13,13 +16,7 @@ class ProjectsController < ApplicationController
                                               :pulls,
                                               :pull
                                               ]
-
-  before_filter :return_context, except: [:new,
-                                          :create,
-                                          :destroy,
-                                          :index,
-                                          :followed_index
-                                          ]
+  authorize_resource except: [:followed_index]
 
   def new
     @project = Project.new
@@ -256,9 +253,6 @@ class ProjectsController < ApplicationController
     @cur = params[:oid] || 'master'
     @cur = 'master' unless @project.branch? @cur
     @all = @project.barerepo.branches
-  end
-
-  def update
   end
 
   # TODO: allow uploads/updates of only supported images.

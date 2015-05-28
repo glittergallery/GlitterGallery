@@ -11,7 +11,7 @@
       .photo
         %p
           = data_image_tag(@image, '100%', nil)
-      - if @project.branch?(params[:oid])
+      - if can? :file_update, @project
         %section
           %h3
             Update

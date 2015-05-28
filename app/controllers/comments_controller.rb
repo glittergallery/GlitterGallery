@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
-  before_filter :logged_in,  only: [:new, :create]
+  before_filter :logged_in
+  authorize_resource
 
   def new
     @comment = Comment.new

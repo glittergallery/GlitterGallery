@@ -11,7 +11,7 @@ describe ProjectsController, type: :controller do
     context 'not logged in' do
       it 'gets forbidden' do
         get :new
-        expect(403).to eq(response.response_code)
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end
@@ -126,7 +126,7 @@ describe ProjectsController, type: :controller do
         @project = create(:project, name: 'to_fork')
       end
 
-      it "makes a user follow a project if it's not his" do
+      it 'allows user to fork a project' do
         user = create(:user, email: 't@t.com', username: 'tester')
         sign_in(user)
         post :fork, user_id: @project.user.username, id: @project.name
@@ -222,13 +222,13 @@ describe ProjectsController, type: :controller do
       expect(response.response_code).to eq(403)
     end
 
-    it 'does not delete the project' do
+    it 'can not delete the project' do
       delete :destroy, id: @project.id
       expect(Project.find(@project.id)).to eq(@project)
       expect(response.response_code).to eq(403)
     end
 
-    it 'does not add directory to project' do
+    it 'can not add directory to project' do
       post :create_directory, user_id: @project.user.username,
                               id: @project.name,
                               directory: 'new_dir'
@@ -270,7 +270,7 @@ describe ProjectsController, type: :controller do
         expect(response.response_code).to eq(403)
       end
 
-      it 'allows user to update image' do
+      it 'does not allow user to update image' do
         file = ActionDispatch::Http::UploadedFile.new(
           tempfile: upload('naruto.png'),
           filename: 'naruto.png',
