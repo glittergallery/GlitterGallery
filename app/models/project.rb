@@ -234,6 +234,7 @@ class Project < ActiveRecord::Base
     commit_id = Rugged::Commit.create repo, options
     repo.index.write
     pushtobare branch
+    touch # use current updated_at time
     commit_id
   end
 

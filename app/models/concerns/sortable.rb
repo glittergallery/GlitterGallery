@@ -43,7 +43,7 @@ module Sortable
   module ClassMethods
     def order_by(method)
       case method.to_s
-      when 'acitvity' then find_most_active
+      when 'activity' then find_most_active
       when 'followers' then find_most_followers
       when 'stars' then find_higest_stars
       when 'forks' then find_most_forks
