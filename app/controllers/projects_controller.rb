@@ -360,54 +360,21 @@ class ProjectsController < ApplicationController
     redirect_to user_path(@user)
   end
 
-  def find_most_active
-    Project.joins("LEFT OUTER JOIN comments
-                   ON comments.polycomment_id = projects.id
-                   AND comments.polycomment_type='project'
-                   LEFT OUTER JOIN issues ON issues.project_id = projects.id
-                   AND issues.status=1")
-           .where('comments.created_at > ?
-                   OR issues.updated_at > ?', 10.days.ago, 10.days.ago)
-           .group('projects.id')
-           .order('count(comments.polycomment_id)+4*count(issues.project_id)
-                   desc')
-  end
-
-  def find_most_followers
-    Project.joins('LEFT OUTER JOIN project_followers
-                   ON project_followers.project_id = projects.id')
-           .group('projects.id')
-           .order('count(project_followers.project_id) desc')
-  end
-
-  def find_higest_stars
-    Project.joins('LEFT OUTER JOIN rating_caches
-                   ON rating_caches.cacheable_id = projects.id')
-           .order('rating_caches.avg desc')
-  end
-
-  def find_most_forks
-    Project.joins('LEFT OUTER JOIN projects p1
-                   ON projects.id = p1.ancestry')
-           .group('projects.id')
-           .order('count(p1.ancestry) desc')
-  end
-
   # sorts projects on basis of dropdown selection
   def sorted_projects
     case params[:sort]
     when 'stars'
-      @projects = find_higest_stars
+      @projects = Project.order_by('stars')
     when 'forks'
-      @projects = find_most_forks
+      @projects = Project.order_by('forks')
     when 'followers'
-      @projects = find_most_followers
+      @projects = Project.order_by('followers')
     when 'last updated'
-      @projects = Project.order('updated_at DESC')
+      @projects = Project.order_by('last updated')
     when 'activity'
-      @projects = find_most_active
+      @projects = Project.order_by('activity')
     else
-      @projects = Project.order('created_at DESC')
+      @projects = Project.order_by('newest')
     end
   end
 end

@@ -1,4 +1,6 @@
 class Project < ActiveRecord::Base
+
+  include Sortable
   after_create :set_path, :init
   after_destroy :deletefiles
   before_save :set_uniqueurl
