@@ -29,6 +29,7 @@ RSpec.configure do |config|
 
   Capybara.javascript_driver = :webkit
 
+  config.include FactoryGirl::Syntax::Methods
   config.include Devise::TestHelpers, type: :controller
   config.include Features::SessionHelpers, type: :feature
   config.include WaitForAjax, type: :feature

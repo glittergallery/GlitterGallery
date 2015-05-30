@@ -67,10 +67,62 @@ describe Project do
     commit_id = SecureRandom.hex(20)
     real_path = "/testdata/repos/#{@project.user.username}/#{@project.name}/" \
                 "thumbnails/#{commit_id}"
-    expect(@project.thumbnail_for(commit_id, false)).to eq(real_path)
+    expect(@project.image_for(commit_id, 'thumbnails', false)).to eq(real_path)
     real_path = 'public' + real_path
-    expect(@project.thumbnail_for(commit_id, true)).to eq(real_path)
-    expect(@project.thumbnail_for(commit_id)).to eq(real_path)
+    expect(@project.image_for(commit_id, 'thumbnails', true)).to eq(real_path)
+  end
+
+  describe 'inspire images' do
+    before do
+      @project = create(:project)
+      upload = File.new("#{Rails.root}/spec/factories/files/happypanda.png")
+      file = [ActionDispatch::Http::UploadedFile.new(
+        tempfile: upload,
+        filename: 'happypanda.png'
+      )]
+      @project.add_images(
+        'master',
+        nil,
+        file,
+        @project.user.git_author_params
+      )
+    end
+    it 'gets desktop images path' do
+      real_path = "/testdata/repos/#{@project.user.username}/#{@project.name}/"\
+                  'inspire/desktop/happypanda.png'
+      expect(@project.image_for('happypanda.png', 'desktop_inspire', false))
+        .to eq(real_path)
+    end
+
+    it 'gets mobie images path' do
+      real_path = "/testdata/repos/#{@project.user.username}/#{@project.name}/"\
+                  'inspire/mobile/happypanda.png'
+      expect(@project.image_for('happypanda.png', 'mobile_inspire', false))
+        .to eq(real_path)
+    end
+
+    it 'generates mobile and desktop images' do
+      upload = File.new("#{Rails.root}/spec/factories/files/naruto.png")
+      file = [ActionDispatch::Http::UploadedFile.new(
+        tempfile: upload,
+        filename: 'naruto.png'
+      )]
+      @project.add_images(
+        'master',
+        nil,
+        file,
+        @project.user.git_author_params
+      )
+      desk_p = "public/testdata/repos/#{@project.user.username}/"\
+             "#{@project.name}/inspire/desktop/naruto.png"
+      mob_p = "public/testdata/repos/#{@project.user.username}/"\
+             "#{@project.name}/inspire/mobile/naruto.png"
+      expect(File).not_to exist(desk_p)
+      expect(File).not_to exist(mob_p)
+      @project.generate_inspire_images('/naruto.png')
+      expect(File).to exist(desk_p)
+      expect(File).to exist(mob_p)
+    end
   end
 
   describe '.urlbase' do

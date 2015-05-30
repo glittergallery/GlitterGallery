@@ -20,14 +20,26 @@ class ProjectsController < ApplicationController
     @project = Project.new
   end
 
-  # TODO: Limit to popular/recent projects
   def index
     if params[:id]
       @user = User.find_by username: params[:id]
-      @projects = @user.projects
+      @projects = @user.projects.paginate(page: params[:page], per_page: 9)
       render :user_index
+      return
     else
-      @projects = Project.inspiring_projects_for current_user.id
+      sorted_projects
+      @projects = @projects.paginate(page: params[:page], per_page: 9)
+      if params[:page].present?
+        respond_to do |format|
+          format.html
+          format.js { render 'populate_pagination' }
+        end
+      else
+        respond_to do |format|
+          format.html
+          format.js { render 'populate_projects' }
+        end
+      end
     end
   end
 
@@ -346,5 +358,23 @@ class ProjectsController < ApplicationController
     return unless @project.deleted?
     flash[:alert] = 'The project you requested had been deleted.'
     redirect_to user_path(@user)
+  end
+
+  # sorts projects on basis of dropdown selection
+  def sorted_projects
+    case params[:sort]
+    when 'stars'
+      @projects = Project.order_by('stars')
+    when 'forks'
+      @projects = Project.order_by('forks')
+    when 'followers'
+      @projects = Project.order_by('followers')
+    when 'last updated'
+      @projects = Project.order_by('last updated')
+    when 'activity'
+      @projects = Project.order_by('activity')
+    else
+      @projects = Project.order_by('newest')
+    end
   end
 end

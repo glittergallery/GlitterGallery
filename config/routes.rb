@@ -1,5 +1,6 @@
 Glitter::Application.routes.draw do
 
+  post '/rate' => 'rater#create', :as => 'rate'
   devise_for :users,:controllers => { :registrations => 'registrations' }
   devise_scope :user do
     root to: "devise/sessions#new"
@@ -17,6 +18,7 @@ Glitter::Application.routes.draw do
 
 
   get '/inspire' => 'projects#index'
+  get '/inspire/:sort' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
   get '/:user_id/:id/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
   get '/:user_id/:id/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/

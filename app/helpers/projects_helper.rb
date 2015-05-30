@@ -69,4 +69,28 @@ module ProjectsHelper
     end
     res
   end
+
+  # return array of possible sorting options
+  def sort_type
+    ['newest', 'stars', 'followers', 'forks', 'activity', 'last updated']
+  end
+
+  # used to render default or first image of repo
+  def render_image(project)
+    tree = project.branch_tree 'master'
+    if tree.nil?
+      image_tag nil, class: 'img-placeholder', data: {
+        mobile_url: '/usercover_mobile.jpg',
+        desktop_url: '/usercover_desktop.jpg'
+      }
+    else
+      images = project.find_first_image
+      mobile = project.image_for images, 'mobile_inspire', false
+      desktop = project.image_for images, 'desktop_inspire', false
+      image_tag nil, class: 'img-placeholder', data: {
+        mobile_url: mobile,
+        desktop_url: desktop
+      }
+    end
+  end
 end

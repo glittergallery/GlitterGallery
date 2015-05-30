@@ -1,4 +1,6 @@
 class Project < ActiveRecord::Base
+
+  include Sortable
   after_create :set_path, :init
   after_destroy :deletefiles
   before_save :set_uniqueurl
@@ -20,6 +22,8 @@ class Project < ActiveRecord::Base
   has_ancestry # Tree structure.
   acts_as_paranoid # Soft delete.
   acts_as_taggable
+  ratyrate_rateable 'stars'
+
   # Don't do any change to the children when the parent is deleted.
   # After all the parent is only soft deleted.
   def apply_orphan_strategy
@@ -165,6 +169,18 @@ class Project < ActiveRecord::Base
     [images, directories]
   end
 
+  # finds and returns first image of the repo
+  def find_first_image
+    tree = branch_tree 'master'
+    return nil if tree.nil?
+    tmp = branch_tree 'master', "#{tree.first[:name]}"
+    tree = tmp unless tmp.nil?
+    tree.each do |item|
+      next if item[:name][0] == '.'
+      return item[:name] if item[:type] == :blob
+    end
+  end
+
   # Creates a new directory in the given branch and destination.
   def create_directory(branch, destination, name, author)
     destination ||= ''
@@ -197,7 +213,7 @@ class Project < ActiveRecord::Base
   # Generates a symlink for a commit that's just the creation of a directory.
   def fake_thumbnail(commit_id)
     src = File.join(Rails.public_path, 'mini_dir.png')
-    FileUtils.ln_s src, thumbnail_for(commit_id)
+    FileUtils.ln_s src, image_for(commit_id, 'thumbnails')
   end
 
   # Generates a thumbnail for a commit in the appropriate place.
@@ -209,7 +225,26 @@ class Project < ActiveRecord::Base
     image.scale(
       thumb_size[0],
       thumb_size[1]
-    ).write thumbnail_for(commit_id, true)
+    ).write image_for(commit_id, 'thumbnails', true)
+  end
+
+  # Generates thumbnails for exploration page and mobile
+  # exploration page
+  def generate_inspire_images(image_path)
+    inspire_size = Glitter::Application.config.inspire_geometry
+    mobile_size = Glitter::Application.config.mobile_inspire_geometry
+    # for desktops
+    image = Magick::Image.read(
+      "#{satellitedir}/#{image_path}"
+    ).first
+    image.resize_to_fill(inspire_size[0], inspire_size[1])
+      .write image_for(image_path.split('/').last, 'desktop_inspire', true)
+    # for mobile
+    image = Magick::Image.read(
+      "#{satellitedir}/#{image_path}"
+    ).first
+    image.resize_to_fill(mobile_size[0], mobile_size[1])
+      .write image_for(image_path.split('/').last, 'mobile_inspire', true)
   end
 
   # Returns a hash that can be passed to rugged while creating a commit
@@ -230,6 +265,7 @@ class Project < ActiveRecord::Base
     commit_id = Rugged::Commit.create repo, options
     repo.index.write
     pushtobare branch
+    touch # use current updated_at time
     commit_id
   end
 
@@ -270,7 +306,9 @@ class Project < ActiveRecord::Base
       branch
     )
     f = File.join(dest.to_s, image_files.last.original_filename)
+    i = File.join(dest.to_s, image_files.first.original_filename)
     generate_thumbnail f, commit_id
+    generate_inspire_images i if Dir["#{data_path.dup}/inspire/mobile/*"].empty?
     repo.checkout('master')
   end
 
@@ -279,6 +317,8 @@ class Project < ActiveRecord::Base
   def update_image(branch, old_path, new_file, author, message)
     repo = satelliterepo
     repo.checkout(branch)
+    # to test if first image is updated
+    first_tmp = find_first_image
     file = File.join satellitedir, old_path
     FileUtils.cp new_file.tempfile.path, file
     repo.index.add old_path
@@ -289,6 +329,7 @@ class Project < ActiveRecord::Base
       branch
     )
     generate_thumbnail old_path, commit_id
+    generate_inspire_images old_path if first_tmp == old_path
     repo.checkout('master')
   end
 
@@ -299,12 +340,21 @@ class Project < ActiveRecord::Base
     get_object :commit, id
   end
 
-  # Returns the path of the thumbnail for a specific commit,
+  # Returns the path of the thumbnail for a specific commit
+  # and images on inspire page
   # if add_public is false "public/" is removed from the path.
-  def thumbnail_for(commit_id, add_public = true)
+  # dest argument determines where should the image be stored
+  def image_for(file_name, dest = '', add_public = true)
     prefix = data_path.dup
     prefix.sub!('public', '') unless add_public
-    "#{prefix}/thumbnails/#{commit_id}"
+    case dest
+    when 'mobile_inspire'
+      "#{prefix}/inspire/mobile/#{file_name}"
+    when 'desktop_inspire'
+      "#{prefix}/inspire/desktop/#{file_name}"
+    when 'thumbnails'
+      "#{prefix}/thumbnails/#{file_name}"
+    end
   end
 
   # Push the existing contents of the satellite repo to the bare repo
@@ -347,7 +397,10 @@ class Project < ActiveRecord::Base
       Rugged::Repository.init_at barerepopath, :bare
       Rugged::Repository.clone_at parent.satelliterepopath, satelliterepopath
     end
-    FileUtils.mkdir_p thumbnail_for('', true)
+    FileUtils.mkdir_p image_for('', 'mobile_inspire', true)
+    FileUtils.mkdir_p image_for('', 'desktop_inspire', true)
+    FileUtils.mkdir_p image_for('', 'thumbnails', true)
+
     pushtobare unless satelliterepo.empty?
   end
 end

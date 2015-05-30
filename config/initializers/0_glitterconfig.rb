@@ -4,6 +4,8 @@
 # defaults to 100 px width
 # http://www.imagemagick.org/script/command-line-processing.php#geometry
 Glitter::Application.config.thumbnail_geometry=[50,50]
+Glitter::Application.config.inspire_geometry=[230,130]
+Glitter::Application.config.mobile_inspire_geometry=[600,340]
 
 # (gr)Avatar options
 ## path to default avatar - should start with slash
