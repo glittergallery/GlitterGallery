@@ -89,3 +89,22 @@ $("document").ready(function() {
       });
   });
 });
+
+//function to set src of images on exploration page
+//uses data-attributes to find url
+function imageLoad(){
+  $('.img-placeholder').each(function(){
+    data = $(this).data();
+    width = $(window).width();
+    mobile_breakpoint = 640;
+
+    if (width <= mobile_breakpoint) {
+      url = data.mobileUrl;
+    } else {
+      url = data.desktopUrl;
+    }
+
+    $(this).attr('src', url)
+  });
+}
+$("document").ready(imageLoad);

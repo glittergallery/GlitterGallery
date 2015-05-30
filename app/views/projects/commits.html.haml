@@ -21,7 +21,7 @@
                 = commit.author[:name]
               %article
                 %p
-                  %img{ src: "#{@project.thumbnail_for(commit.oid, false)}" }
+                  %img{ src: "#{@project.image_for(commit.oid, 'thumbnails', false)}" }
                   = link_to commit.message, commit_user_project_path(@project.user,
                     @project,
                     commit.oid)

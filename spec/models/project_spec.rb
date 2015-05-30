@@ -67,10 +67,9 @@ describe Project do
     commit_id = SecureRandom.hex(20)
     real_path = "/testdata/repos/#{@project.user.username}/#{@project.name}/" \
                 "thumbnails/#{commit_id}"
-    expect(@project.thumbnail_for(commit_id, false)).to eq(real_path)
+    expect(@project.image_for(commit_id, 'thumbnails', false)).to eq(real_path)
     real_path = 'public' + real_path
-    expect(@project.thumbnail_for(commit_id, true)).to eq(real_path)
-    expect(@project.thumbnail_for(commit_id)).to eq(real_path)
+    expect(@project.image_for(commit_id, 'thumbnails', true)).to eq(real_path)
   end
 
   describe '.urlbase' do

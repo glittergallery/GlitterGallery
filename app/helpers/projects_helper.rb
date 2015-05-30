@@ -77,10 +77,20 @@ module ProjectsHelper
 
   # used to render default or first image of repo
   def render_image(project)
-    if project.browse_tree[0].empty?
-      image_tag '/usercover.jpg'
+    tree = project.branch_tree 'master'
+    if tree.nil?
+      image_tag nil, class: 'img-placeholder', data: {
+        mobile_url: '/usercover_mobile.jpg',
+        desktop_url: '/usercover_desktop.jpg'
+      }
     else
-      data_image_tag(project.browse_tree[0].first, '100%', nil)
+      images = project.find_first_image
+      mobile = project.image_for images, 'mobile_inspire', false
+      desktop = project.image_for images, 'desktop_inspire', false
+      image_tag nil, class: 'img-placeholder', data: {
+        mobile_url: mobile,
+        desktop_url: desktop
+      }
     end
   end
 end
