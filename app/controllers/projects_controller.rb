@@ -10,11 +10,15 @@ class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!, except: [:show,
                                               :commits,
-                                              :projectcommit,
-                                              :masterbranch,
+                                              :commit,
                                               :file_history,
                                               :pulls,
-                                              :pull
+                                              :pull,
+                                              :index,
+                                              :blob,
+                                              :network,
+                                              :branches,
+                                              :tree
                                               ]
   authorize_resource except: [:followed_index]
 

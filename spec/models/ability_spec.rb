@@ -8,16 +8,26 @@ describe 'User' do
     context 'when user is a guest' do
       let(:comment) { create(:comment) }
       let(:issue) { create(:issue) }
+      let(:project) { create(:project) }
 
+      it{ should be_able_to(:index, Project) }
+      it{ should be_able_to(:show, project) }
+      it{ should be_able_to(:blob, project) }
+      it{ should be_able_to(:network, project) }
+      it{ should be_able_to(:branches, project) }
+      it{ should be_able_to(:commits, project) }
+      it{ should be_able_to(:commit, project) }
+      it{ should be_able_to(:tree, project) }
       it{ should be_able_to(:index, Issue) }
       it{ should be_able_to(:show, issue) }
+      it{ should_not be_able_to(:create, Project) }
+      it{ should_not be_able_to(:follow, project) }
+      it{ should_not be_able_to(:fork, project) }
       it{ should_not be_able_to(:create, Comment) }
       it{ should_not be_able_to(:destroy, comment) }
       it{ should_not be_able_to(:create, Comment) }
       it{ should_not be_able_to(:reopen, issue) }
       it{ should_not be_able_to(:close, issue) }
-
-      pending 'project abilities'
     end
 
     context 'when user is not owner' do

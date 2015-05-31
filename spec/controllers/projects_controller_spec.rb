@@ -7,17 +7,96 @@ describe ProjectsController, type: :controller do
     File.new("#{Rails.root}/spec/factories/files/#{file_name}")
   end
 
-  describe 'GET #new' do
-    context 'not logged in' do
-      it 'gets redirected to sing in page' do
-        get :new
-        expect(response).to redirect_to new_user_session_path
+  context 'user is guest' do
+    before do
+      @project = create(:project)
+    end
+    it 'sees the index page' do
+      get :index
+      expect(response).to render_template('index')
+    end
+
+    describe 'GET #show' do
+      it 'renders show template' do
+        get :show, user_id: @project.user.username, id: @project.name
+        expect(response).to render_template('show')
+      end
+
+      it 'renders 404 if not found' do
+        get :show, { id: 'not_existing_page_321' }
+        expect(response.status).to eq(404)
       end
     end
-  end
 
-  context 'user is guest' do
-    pending 'add abilities of user'
+    context 'actions after file upload' do
+      before do
+        file = [ActionDispatch::Http::UploadedFile.new(
+          tempfile: upload('happypanda.png'),
+          filename: 'happypanda.png'
+        )]
+        @project.add_images(
+          'master',
+          nil,
+          file,
+          @project.user.git_author_params
+        )
+        @commit = @project.branch_commit nil
+      end
+
+      it 'sees the log of the project' do
+        get :commits, user_id: @project.user.username, id: @project.name
+        expect(response).to render_template('commits')
+      end
+
+      it 'sees the changes in the commits' do
+        get :commit, user_id: @project.user.username,
+                     id: @project.name,
+                     commit_id: @commit.oid
+        expect(response).to render_template('commit')
+      end
+
+      it 'browses the project at any point in history' do
+        get :tree, user_id: @project.user.username,
+                   id: @project.name,
+                   oid: @commit.oid
+        expect(response).to render_template('show')
+      end
+    end
+
+    it 'sees the network of the project' do
+      get :network, user_id: @project.user.username, id: @project.name
+      expect(response).to render_template('network')
+    end
+
+    it 'sees the branches of the project' do
+      get :branches, user_id: @project.user.username, id: @project.name
+      expect(response).to render_template('branches')
+    end
+
+    it 'does not see new project page' do
+      get :new
+      expect(response).not_to render_template('show')
+      expect(response).to redirect_to new_user_session_path
+    end
+
+    it 'does not create new projects' do
+      post :create, project: { name: 'newproject' },
+                    params: { commit: 'Public' }
+      expect(Project.exists?(name: 'newproject')).to be false
+      expect(response).to redirect_to new_user_session_path
+    end
+
+    it 'does not follow projects' do
+      post :follow, user_id: @project.user.username, id: @project.name
+      expect(@project.followers.count).to eq(0)
+      expect(response).to redirect_to new_user_session_path
+    end
+
+    it 'does not fork the projects' do
+      post :fork, user_id: @project.user.username, id: @project.name
+      expect(Project.all.count).to eq(1)
+      expect(response).to redirect_to new_user_session_path
+    end
   end
 
   context 'user is signed in' do
@@ -286,22 +365,6 @@ describe ProjectsController, type: :controller do
           .find { |h| h[:name] == 'naruto.png' }).to be nil
         expect(response.response_code).to eq(403)
       end
-    end
-  end
-
-  describe 'GET #show' do
-    before do
-      @project = create(:project)
-    end
-
-    it 'renders show template' do
-      get :show, user_id: @project.user.username, id: @project.name
-      expect(response).to render_template('show')
-    end
-
-    it 'renders 404 if not found' do
-      get :show, { id: 'not_existing_page_321' }
-      expect(response.status).to eq(404)
     end
   end
 end
