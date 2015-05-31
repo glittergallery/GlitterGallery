@@ -3,7 +3,7 @@ Glitter::Application.routes.draw do
   post '/rate' => 'rater#create', :as => 'rate'
   devise_for :users,:controllers => { :registrations => 'registrations' }
   devise_scope :user do
-    root to: "devise/sessions#new"
+    root to: 'projects#index'
   end
 
   match 'auth/:provider/callback' => "identities#create", :via => [:get,:post]
