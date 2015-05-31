@@ -8,7 +8,7 @@
     %p
       = link_to 'Issue?', "#{@project.urlbase}/issues/new?desc=#{comment.body}"
 
-      - if user_signed_in? && current_user.id == comment.user.id
+      - if can? :destroy, comment
         = link_to 'Delete?',
                            comment_path(comment.id),
                            method: 'delete',

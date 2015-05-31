@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
-  before_filter :logged_in,  only: [:new, :create]
+  before_filter :authenticate_user!
+  load_and_authorize_resource
 
   def new
     @comment = Comment.new
@@ -33,20 +34,15 @@ class CommentsController < ApplicationController
 
   def destroy
     @delete = Comment.find(params[:id])
-    if @delete.user_id == current_user.id
-      @delete.destroy
+    if @delete.destroy
       redirect_to :back
     else
-      flash[:alert] = 'You can\'t delete this comment!'
+      flash[:alert] = 'Something went wrong. Please retry after some time.'
       redirect_to :back
     end
   end
 
   private
-    def logged_in
-      redirect_to root_url if current_user.nil?
-    end
-
     def comment_params
       params.require(:comment).permit(
         :polycomment_id,

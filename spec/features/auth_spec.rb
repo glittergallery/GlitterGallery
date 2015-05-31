@@ -12,7 +12,7 @@ feature 'Authentication' do
   end
 
   scenario 'New user signs up via omniauth' do
-    visit '/'
+    visit '/users/sign_in'
     click_button 'Facebook'
     expect(page.current_path).to eq('/dashboard')
   end
@@ -29,7 +29,7 @@ feature 'Authentication' do
 
   scenario 'Existing user signs up via omniauth' do
     @user = FactoryGirl.create(:user)
-    visit '/'
+    visit '/users/sign_in'
     click_button 'Facebook'
     expect(page.current_path).to eq('/dashboard')
   end

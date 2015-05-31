@@ -1,13 +1,5 @@
 class ProjectsController < ApplicationController
   before_filter :store_return_to
-  before_filter :authenticate_user!, except: [:show,
-                                              :commits,
-                                              :projectcommit,
-                                              :masterbranch,
-                                              :file_history,
-                                              :pulls,
-                                              :pull
-                                              ]
 
   before_filter :return_context, except: [:new,
                                           :create,
@@ -15,6 +7,20 @@ class ProjectsController < ApplicationController
                                           :index,
                                           :followed_index
                                           ]
+
+  before_filter :authenticate_user!, except: [:show,
+                                              :commits,
+                                              :commit,
+                                              :file_history,
+                                              :pulls,
+                                              :pull,
+                                              :index,
+                                              :blob,
+                                              :network,
+                                              :branches,
+                                              :tree
+                                              ]
+  authorize_resource except: [:followed_index]
 
   def new
     @project = Project.new
@@ -45,15 +51,11 @@ class ProjectsController < ApplicationController
 
   def destroy
     @project = Project.find params[:id]
-    if current_user.id == @project.user_id
-      @project.destroy
-      # after_destroy callback in project.rb deletes files.
-      flash[:notice] = 'It has been destroyed!'
-      redirect_to dashboard_path
-    else
-      flash[:error] = "You don't have permission for this command!"
-      redirect_to user_project_path @project.user, @project
-    end
+    authorize! :destroy, @project
+    @project.destroy
+    # after_destroy callback in project.rb deletes files.
+    flash[:notice] = 'It has been destroyed!'
+    redirect_to dashboard_path
   end
 
   def create
@@ -183,7 +185,6 @@ class ProjectsController < ApplicationController
   end
 
   # POST /user/project/create_branch
-  # TODO: to be visited after adding cancancan.
   def create_branch
     @branch = @project.create_branch params[:branch_name]
     if @branch
@@ -255,9 +256,6 @@ class ProjectsController < ApplicationController
     @cur = params[:oid] || 'master'
     @cur = 'master' unless @project.branch? @cur
     @all = @project.barerepo.branches
-  end
-
-  def update
   end
 
   # TODO: allow uploads/updates of only supported images.

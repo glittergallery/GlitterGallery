@@ -1,5 +1,7 @@
 class IssuesController < ApplicationController
+  before_filter :authenticate_user!, except: [:show, :index]
   before_action :get_context
+  load_and_authorize_resource
 
   def index
     @issues = find_issue(params[:state])
@@ -47,16 +49,11 @@ class IssuesController < ApplicationController
   # PUT /user/project/issues/1/close
   def close
     @issue = @project.issues.find_by_sub_id(params[:id])
-    if (current_user == @project.user) || (current_user == @issue.user)
-      if @issue.close
-        flash[:notice] = 'Issue Closed'
-        redirect_to project_issues_path(@project)
-      else
-        flash[:notice] = 'Something went wrong. The issue was not closed'
-        redirect_to issue_path(@issue)
-      end
+    if @issue.close
+      flash[:notice] = 'Issue Closed'
+      redirect_to project_issues_path(@project)
     else
-      flash[:alert] = "You don't have permission to close this issue"
+      flash[:notice] = 'Something went wrong. The issue was not closed'
       redirect_to issue_path(@issue)
     end
   end

@@ -4,7 +4,7 @@
       %h3
         Add a directory
       = form_tag project_create_directory_path(@project, @oid, @dest), multipart: true do
-        = text_field_tag 'directory', 'Directory name'
+        = text_field_tag 'directory', nil, placeholder: 'Directory name'
         = submit_tag 'Add Directory'
     %div
       %h3
@@ -13,8 +13,7 @@
         = file_field_tag 'file[]', multiple: true
         = submit_tag
   - else
-    - unless current_user.id == @project.user.id
-      .guide
-        %p You can make changes to your fork of this project!
-        %form{ action: 'forkyou' }
-          %input{ type: 'submit', value: 'Fork it!' }
+    .guide
+      %p You can make changes to your fork of this project!
+      %form{ action: 'forkyou' }
+        %input{ type: 'submit', value: 'Fork it!' }

@@ -31,12 +31,12 @@
                   ago.
       - else
         %div
-          - if user_signed_in? && current_user.id == @project.user.id
+          - if can? :file_upload, @project
             .guide
               %p Submit your design work on this project to start collaborating.
               %form{ action: File.join(@project.urlbase, 'newfile') }
                 %input{ type: 'submit', value: 'Add first file!' }
-          - elsif user_signed_in? && current_user.id != @project.user.id
+          - elsif can? :fork, @project
             .guide
               %p Work hasn't started on this project yet. Maybe you want to contribute?
               %form{ action: '#' }

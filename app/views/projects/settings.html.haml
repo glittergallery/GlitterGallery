@@ -17,7 +17,7 @@
     %section
       %div
         .option
-          - if user_signed_in? && @project.user_id == current_user.id
+          - if can? :destroy, @project
             = link_to 'Delete project',
                                       project_path(@project.id),
                                       method: :delete,
