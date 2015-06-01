@@ -65,6 +65,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'binding_of_caller'
+  gem 'sass-rails-source-maps'
 end
 
 gem 'better_errors', group: :development
