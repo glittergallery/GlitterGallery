@@ -1,62 +1,58 @@
 @media screen and (min-width: 0em){
-
-	body{
-		.wrapper{
-			aside.map{
-				display: none;
-			}
-		}
-	}
-	
+  body{
+    .wrapper{
+      aside.map{
+        display: none;
+      }
+    }
+  }
 }
 
 @media screen and (min-width: 64.063em){
+  body{
+    .wrapper{
+      aside.map{
+        display: initial;
+        text-align: right;
+        margin-top: 3em;
+        min-height: 100vh;
+        section{
+          padding-right: 2em;
+          margin-bottom: 1em;
+          header{
+            color: $map_blue;
+            font-weight:700;
+            font-size:0.75em;
+            margin-bottom: 0.25em;
+          }
+          a{
+            text-decoration:none;
+            color: $map_blue;
+          }
+          a:hover{
+            font-weight: 700;
+          }
 
-	body{
-		.wrapper{
-			aside.map{
-				display: initial;
-				text-align: right;
-				margin-top: 3em;
-			 	min-height: 100vh;
-				section{
-					padding-right: 2em;
-					margin-bottom: 1em;
-			    header{
-			      color: $map_blue;
-			      font-weight:700;
-			      font-size:0.75em;
-			      margin-bottom: 0.25em;
-			    }
-			    a{
-				    text-decoration:none;
-				    color: $map_blue;
-			    }
-			    a:hover{
-			    	font-weight: 700;
-			    }
-
-			    ul{
-			      list-style-type: none;
-			      padding: 0;
-			      margin: 0;
-			      font-size: 0.8em;
-						span.count{
-							display: inline-block;
-							min-width: 1.5em;
-							text-align: center;
-							color: $map_blue;
-							font-size: 0.75em;
-							font-weight: 700;
-							background-color: $dark_geometry_gray;
-						}
-						li{
-							margin-bottom:0.1em;
-						}
-			    }
-				}
-			}
-		}
-	}
-	
+          ul{
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.8em;
+            span.count{
+              display: inline-block;
+              min-width: 1.5em;
+              text-align: center;
+              color: $map_blue;
+              font-size: 0.75em;
+              font-weight: 700;
+              background-color: $dark_geometry_gray;
+            }
+            li{
+              margin-bottom:0.1em;
+            }
+          }
+        }
+      }
+    }
+  }
 }
