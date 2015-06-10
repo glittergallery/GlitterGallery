@@ -33,12 +33,15 @@ Glitter::Application.config.auth_methods=[:facebook,:twitter,:open_id,:linkedIn,
 # MAIL_PASSWORD=yourpassword
 # MAIL_AUTHENTICATION=plain
 Glitter::Application.config.action_mailer.delivery_method = :smtp
+Glitter::Application.config.git_path = '/usr/bin/git'
 if Rails.env.development?
   Glitter::Application.config.repo_dir="public/data"
+  Glitter::Application.config.repo_path = "#{Rails.root}/public/data/repos"
 elsif Rails.env.test?
   Glitter::Application.config.repo_dir="public/testdata"
 elsif Rails.env.production?
   Glitter::Application.config.repo_dir="public/data"
+  Glitter::Application.config.repo_path = "#{ENV["OPENSHIFT_DATA_DIR"]}/repos"
   Glitter::Application.config.action_mailer.smtp_settings={
   address:              ENV["MAIL_ADDRESS"],
   port:                 ENV["MAIL_PORT"],
