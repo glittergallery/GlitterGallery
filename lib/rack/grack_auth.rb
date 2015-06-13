@@ -63,7 +63,9 @@ module Grack
     def authorized_request?
       case git_cmd
       when *%w{ git-upload-pack git-upload-archive }
-        unless project.private
+        if user
+          user.owner?(project)
+        elsif !project.private
           # Allow clone/fetch for public projects
           true
         else
@@ -71,9 +73,7 @@ module Grack
         end
       when *%w{ git-receive-pack }
         if user
-          # Skip user authorization on upload request.
-          # It will be done by the pre-receive hook in the repository.
-          true
+          user.owner?(project)
         else
           false
         end

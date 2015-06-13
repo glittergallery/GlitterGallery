@@ -64,4 +64,13 @@ class User < ActiveRecord::Base
       time: Time.now
     }
   end
+
+  # checks if the user if the owner of the passed project
+  def owner?(project)
+    if id == project.user.id
+      true
+    else
+      false
+    end
+  end
 end
