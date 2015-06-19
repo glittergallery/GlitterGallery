@@ -68,7 +68,7 @@ class Project < ActiveRecord::Base
   end
 
   def barerepopath
-    File.join data_path , 'repo.git'
+    "#{data_path}" + '.git'
   end
 
   def satelliterepopath
@@ -386,7 +386,7 @@ class Project < ActiveRecord::Base
   end
 
   # Path : public/data/repos/user_id/project_id
-  # Bare repo Path : public/data/repos/user_id/project_id/repo.git
+  # Bare repo Path : public/data/repos/user_id/project_id.git
   # Satellite repo Path : public/data/repos/user_id/project_id/satellite/.git
   def init
     return if File.exists? data_path

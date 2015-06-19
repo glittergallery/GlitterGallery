@@ -7,6 +7,11 @@
 # used for overriding the grack::auth module of grack gem
 require Rails.root.join("lib", "rack", "grack_auth")
 
+# used for overriding the grack::server module of grack gem
+# so that files for satellite and commit can be generated/updated
+# after every push
+require Rails.root.join("lib", "rack", "overload_server")
+
 Glitter::Application.config.thumbnail_geometry=[50,50]
 Glitter::Application.config.inspire_geometry=[230,130]
 Glitter::Application.config.mobile_inspire_geometry=[600,340]
