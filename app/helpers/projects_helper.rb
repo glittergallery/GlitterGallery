@@ -84,7 +84,7 @@ module ProjectsHelper
         desktop_url: '/usercover_desktop.jpg'
       }
     else
-      images = project.find_first_image
+      images = project.find_inspire_image
       mobile = project.image_for images, 'mobile_inspire', false
       desktop = project.image_for images, 'desktop_inspire', false
       image_tag nil, class: 'img-placeholder', data: {

@@ -169,18 +169,6 @@ class Project < ActiveRecord::Base
     [images, directories]
   end
 
-  # finds and returns first image of the repo
-  def find_first_image
-    tree = branch_tree 'master'
-    return nil if tree.nil?
-    tmp = branch_tree 'master', "#{tree.first[:name]}"
-    tree = tmp unless tmp.nil?
-    tree.each do |item|
-      next if item[:name][0] == '.'
-      return item[:name] if item[:type] == :blob
-    end
-  end
-
   # Creates a new directory in the given branch and destination.
   def create_directory(branch, destination, name, author)
     destination ||= ''
@@ -228,9 +216,35 @@ class Project < ActiveRecord::Base
     ).write image_for(commit_id, 'thumbnails', true)
   end
 
+  # returns last rugged::diff image of the repo's head
+  # branch is always master
+  def find_inspire_image
+    head = satelliterepo.head.target
+    parent = head.parents.first
+    diff = head.diff parent
+    path = diff.deltas.last.new_file[:path]
+    path.split('/').last
+  end
+
+  # returns the last rugged::diff image path in context
+  # of passed branch
+  def inspire_image(branch)
+    repo = satelliterepo
+    repo.checkout(branch) unless repo.empty?
+    head = repo.head.target
+    parent = head.parents.first
+    diff = head.diff parent
+    path = diff.deltas.last.new_file[:path]
+    generate_inspire_image path
+  end
+
+
   # Generates thumbnails for exploration page and mobile
   # exploration page
-  def generate_inspire_images(image_path)
+  def generate_inspire_image(image_path)
+    # first empty the inspire folder
+    FileUtils.rm_rf("#{image_for('', 'mobile_inspire')}/.", secure: true)
+    FileUtils.rm_rf("#{image_for('', 'desktop_inspire')}/.", secure: true)
     inspire_size = Glitter::Application.config.inspire_geometry
     mobile_size = Glitter::Application.config.mobile_inspire_geometry
     # for desktops
@@ -306,9 +320,8 @@ class Project < ActiveRecord::Base
       branch
     )
     f = File.join(dest.to_s, image_files.last.original_filename)
-    i = File.join(dest.to_s, image_files.first.original_filename)
     generate_thumbnail f, commit_id
-    generate_inspire_images i if Dir["#{data_path.dup}/inspire/mobile/*"].empty?
+    inspire_image branch
     repo.checkout('master')
   end
 
@@ -318,7 +331,6 @@ class Project < ActiveRecord::Base
     repo = satelliterepo
     repo.checkout(branch)
     # to test if first image is updated
-    first_tmp = find_first_image
     file = File.join satellitedir, old_path
     FileUtils.cp new_file.tempfile.path, file
     repo.index.add old_path
@@ -329,7 +341,7 @@ class Project < ActiveRecord::Base
       branch
     )
     generate_thumbnail old_path, commit_id
-    generate_inspire_images old_path if first_tmp == old_path
+    generate_inspire_image old_path
     repo.checkout('master')
   end
 

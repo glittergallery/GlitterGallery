@@ -47,6 +47,7 @@ module Grack
           @res.write terminating_chunk
         end
         update_working_dir(path, branch)
+        generate_images_between(old_sha, new_sha)
       end
     end
 
@@ -57,23 +58,54 @@ module Grack
       username_projectname = path.last
       ids = username_projectname.split('/')
       project_owner = User.find_by(username: ids.second.to_s.downcase)
-      project = Project.with_deleted.find_by user_id: project_owner.id,
-                                             name: ids.last.to_s.downcase
+      @project = Project.with_deleted.find_by user_id: project_owner.id,
+                                              name: ids.last.to_s.downcase
 
       # update of username/project/satellite with rugged
-      sat_repo = project.satelliterepo
-      bare_remote = project.satelliterepo.remotes['bare']
+      @sat_repo = @project.satelliterepo
+      bare_remote = @project.satelliterepo.remotes['bare']
       # fetch from the bare remote
       bare_remote.fetch
-      remote_branch = sat_repo.branches["refs/remotes/bare/#{branch}"]
-      local_branch = sat_repo.branches["#{branch}"]
-      local_branch = sat_repo.create_branch "#{branch}" unless local_branch
+      remote_branch = @sat_repo.branches["refs/remotes/bare/#{branch}"]
+      local_branch = @sat_repo.branches["#{branch}"]
+      local_branch = @sat_repo.create_branch "#{branch}" unless local_branch
 
       # checkout the branch, sync the refs and force checkout head to keep
       # working dir clean
-      sat_repo.checkout local_branch.name
-      sat_repo.references.update(sat_repo.head.resolve, remote_branch.target_id)
-      sat_repo.checkout local_branch.name, strategy: :force
+      @sat_repo.checkout local_branch.name
+      @sat_repo.references.update(@sat_repo.head.resolve, remote_branch.target_id)
+      @sat_repo.checkout local_branch.name, strategy: :force
+    end
+
+    # find all the commits between old_sha and new_sha
+    # pass each commit and parent pair to generate the thumbnail
+    # pass the head after push for new inspire image
+    def generate_images_between(old_sha, new_sha)
+      head = @sat_repo.lookup("#{new_sha}")
+      tail = @sat_repo.lookup("#{old_sha}")
+      walker = Rugged::Walker.new(@sat_repo)
+      walker.push(head)
+      walker.hide(tail)
+      # find diff for each parent child pair
+      walker.each do |commit|
+        commit.parents.each do|p|
+          generate_for('thumbnail', commit, p)
+        end
+      end
+      generate_for('inspire', head, head.parents.first)
+    end
+
+    # generates thumnail and inspire images from the last diff delta path
+    # parent has to be a commit and not an array
+    def generate_for(type, child, parent)
+      diff =  child.diff(parent)
+      path = diff.deltas.last.new_file[:path]
+      case type
+      when 'thumbnail'
+        @project.generate_thumbnail path, child.oid
+      when 'inspire'
+        @project.generate_inspire_image path
+      end
     end
   end
 end
