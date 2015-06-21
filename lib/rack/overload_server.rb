@@ -46,8 +46,10 @@ module Grack
 
           @res.write terminating_chunk
         end
-        update_working_dir(path, branch)
-        generate_images_between(old_sha, new_sha)
+        if @rpc == 'receive-pack'
+          update_working_dir(path, branch)
+          generate_images_between(old_sha, new_sha, branch)
+        end
       end
     end
 
@@ -79,8 +81,8 @@ module Grack
 
     # find all the commits between old_sha and new_sha
     # pass each commit and parent pair to generate the thumbnail
-    # pass the head after push for new inspire image
-    def generate_images_between(old_sha, new_sha)
+    # pass the head after push for new inspire image if push branch is master
+    def generate_images_between(old_sha, new_sha, branch)
       head = @sat_repo.lookup("#{new_sha}")
       tail = @sat_repo.lookup("#{old_sha}")
       walker = Rugged::Walker.new(@sat_repo)
@@ -92,7 +94,7 @@ module Grack
           generate_for('thumbnail', commit, p)
         end
       end
-      generate_for('inspire', head, head.parents.first)
+      generate_for('inspire', head, head.parents.first) if branch == 'master'
     end
 
     # generates thumnail and inspire images from the last diff delta path

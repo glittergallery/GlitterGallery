@@ -216,7 +216,7 @@ class Project < ActiveRecord::Base
     ).write image_for(commit_id, 'thumbnails', true)
   end
 
-  # returns last rugged::diff image of the repo's head
+  # returns last rugged::diff image name of the repo's head
   # branch is always master
   def find_inspire_image
     head = satelliterepo.head.target
@@ -226,12 +226,10 @@ class Project < ActiveRecord::Base
     path.split('/').last
   end
 
-  # returns the last rugged::diff image path in context
-  # of passed branch
-  def inspire_image(branch)
-    repo = satelliterepo
-    repo.checkout(branch) unless repo.empty?
-    head = repo.head.target
+  # finds the last updated image's path on master
+  # and calls to generate inspire image
+  def inspire_image
+    head = satelliterepo.head.target
     parent = head.parents.first
     diff = head.diff parent
     path = diff.deltas.last.new_file[:path]
@@ -321,7 +319,7 @@ class Project < ActiveRecord::Base
     )
     f = File.join(dest.to_s, image_files.last.original_filename)
     generate_thumbnail f, commit_id
-    inspire_image branch
+    inspire_image  if branch == 'master'
     repo.checkout('master')
   end
 
@@ -341,7 +339,7 @@ class Project < ActiveRecord::Base
       branch
     )
     generate_thumbnail old_path, commit_id
-    generate_inspire_image old_path
+    generate_inspire_image old_path if branch == 'master'
     repo.checkout('master')
   end
 
