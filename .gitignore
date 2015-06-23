@@ -10,7 +10,6 @@ vendor
 
 # Ignore the data files created by user uploads
 /public/data/*
-/public/assets/*
 /public/testdata
 # Ignore the default SQLite database.
 /db/*.sqlite3

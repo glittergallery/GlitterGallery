@@ -55,6 +55,7 @@ module Grack
         # seperate username and project name
         id = path_with_namespace.split('/')
         @project_owner = User.find_by(username: id.first.to_s.downcase)
+        return nil if @project_owner.nil?
         Project.with_deleted.find_by user_id: @project_owner.id,
                                      name: id.last.to_s.downcase
       end

@@ -51,7 +51,7 @@ elsif Rails.env.test?
   Glitter::Application.config.repo_path = "#{Rails.root}/public/testdata/repos"
 elsif Rails.env.production?
   Glitter::Application.config.repo_dir="public/data"
-  Glitter::Application.config.repo_path = "#{ENV["OPENSHIFT_DATA_DIR"]}/repos"
+  Glitter::Application.config.repo_path = "#{ENV["OPENSHIFT_DATA_DIR"]}repos"
   Glitter::Application.config.action_mailer.smtp_settings={
   address:              ENV["MAIL_ADDRESS"],
   port:                 ENV["MAIL_PORT"],
