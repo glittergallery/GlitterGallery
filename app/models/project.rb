@@ -6,11 +6,16 @@ class Project < ActiveRecord::Base
   before_save :set_uniqueurl
 
   belongs_to :user
-  has_many :project_followers, dependent: :destroy,
-                               foreign_key: 'project_id'
+  # many to many relationship between projects and project's followers
+  has_many :project_followers, dependent: :destroy, foreign_key: 'project_id'
   has_many :followers, through: :project_followers,
                        class_name: 'User',
                        foreign_key: 'follower_id'
+  # many to many relationship between projects and project's members
+  has_many :project_members, dependent: :destroy, foreign_key: 'project_id'
+  has_many :members, through: :project_members,
+                     class_name: 'User',
+                     foreign_key: 'member_id'
   has_many :issues
 
   validates :name, presence: true,
