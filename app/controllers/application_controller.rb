@@ -75,4 +75,12 @@ class ApplicationController < ActionController::Base
           victims: victims
         )
   end
+
+  # used to set user and projects obejcts from the params
+  def get_context
+    @user = User.find_by username: params[:user_id]
+    @project = Project.find_by user_id: @user.id, name: params[:project_id]
+    render_404 && return if @project.blank?
+  end
+
 end

@@ -93,13 +93,13 @@ ActiveRecord::Schema.define(version: 20150623095804) do
 
   create_table "project_members", force: true do |t|
     t.integer  "member_id"
-    t.integer  "project_id"
+    t.integer  "gallery_id"
     t.string   "role"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "project_members", ["member_id", "project_id"], name: "index_project_members_on_member_id_and_project_id"
+  add_index "project_members", ["member_id", "gallery_id"], name: "index_project_members_on_member_id_and_gallery_id"
 
   create_table "projects", force: true do |t|
     t.string   "name"

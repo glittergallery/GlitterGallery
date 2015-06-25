@@ -1,0 +1,14 @@
+- if @project.project_members
+  %div
+    %table
+      - @project.project_members.each do |project_member|
+        %tr
+          %td
+            = project_member.member.username
+          %td
+            = project_member.role
+          %td
+            = link_to 'Remove',
+                project_member_path(project_member.id),
+                method: 'delete',
+                data: { confirm: 'Are you sure?' }

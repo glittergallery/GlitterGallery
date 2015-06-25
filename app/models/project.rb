@@ -12,7 +12,7 @@ class Project < ActiveRecord::Base
                        class_name: 'User',
                        foreign_key: 'follower_id'
   # many to many relationship between projects and project's members
-  has_many :project_members, dependent: :destroy, foreign_key: 'project_id'
+  has_many :project_members, dependent: :destroy, foreign_key: 'gallery_id'
   has_many :members, through: :project_members,
                      class_name: 'User',
                      foreign_key: 'member_id'

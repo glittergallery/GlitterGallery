@@ -78,4 +78,14 @@ class User < ActiveRecord::Base
       false
     end
   end
+
+  # finds the users on basis of username. used on project's
+  # setting page for searching and adding members to the project
+  def self.search(search)
+    if search
+      where(['username LIKE ?', "%#{search}%"])
+    else
+      all
+    end
+  end
 end

@@ -21,7 +21,8 @@ Glitter::Application.routes.draw do
   resources :identities, only: [:destroy,:index]
   resources :comments, only: [:new, :create, :destroy]
   resources :glitterposts
-  resources :notifications, only: [:index,:show]
+  resources :notifications, only: [:index, :show]
+  resources :project_members, only: [:destroy]
 
 
   get '/inspire' => 'projects#index'
@@ -59,6 +60,8 @@ Glitter::Application.routes.draw do
       end
       get '(:xid)/issues/:id' => 'issues#show', constraints: { id: /\d.*/ }, as: :issue_show
       get '(:xid)/issues/:tag' => 'issues#index'
+      get '(:xid)/project_members' => 'project_members#search', as: :project_members
+      post '(:xid)/project_members' => 'project_members#create', as: :new_project_members
       member do
         scope "(:xid)" do
           get :branches

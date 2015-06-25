@@ -22,6 +22,8 @@
                                       project_path(@project.id),
                                       method: :delete,
                                       data: { confirm: 'Are you sure?' }
+          = render 'project_members/search_form'
+          = render 'project_members/list'
         %aside
           %h1
             Project Settings
