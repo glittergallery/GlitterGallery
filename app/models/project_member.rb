@@ -8,4 +8,26 @@ class ProjectMember < ActiveRecord::Base
   def self.add_owner(project, user)
     find_or_create_by(member_id: user.id, gallery_id: project.id, role: 'owner')
   end
+
+  # finds the project_member object and return true if user is
+  # owner or collaborator or else returns false
+  def self.write_acess(project, user)
+    pm = find_by(member_id: user.id, gallery_id: project.id)
+    return false if pm.nil?
+    if pm.role == 'collaborator' || pm.role == 'owner'
+      return true
+    else
+      return false
+    end
+  end
+
+  # returns true if relation between user and projects exists
+  def self.member?(project, user)
+    pm = find_by(member_id: user.id, gallery_id: project.id)
+    if pm.nil?
+      return false
+    else
+      return true
+    end
+  end
 end

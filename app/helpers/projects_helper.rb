@@ -1,32 +1,4 @@
 module ProjectsHelper
-  def private_check
-    @user = User.find_by username: params[:user_id]
-    @project = Project.find_by(
-      user_id: @user.id,
-      name: (params[:project_id] || params[:id])
-    )
-    if user_signed_in?
-      if @project.private && ((params[:xid] != @project.uniqueurl &&
-         current_user.id != @project.user_id))
-        false
-      else
-        true
-      end
-    else
-      if @project.private && (params[:xid] != @project.uniqueurl)
-        false
-      else
-        true
-      end
-    end
-  end
-
-  def owner_check
-    @user = User.find_by username: params[:user_id]
-    @project = Project.find_by user_id: @user.id, name: params[:id]
-    user_signed_in? && @project.user_id == current_user.id
-  end
-
   def nested_projects(roots, project)
     content_tag :ul, class: 'nested_projects' do
       roots.each do |root|

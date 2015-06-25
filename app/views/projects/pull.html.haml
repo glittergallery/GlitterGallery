@@ -1,42 +1,39 @@
-- if private_check
-  - content_for :title do
-    Pull Request
+- content_for :title do
+  Pull Request
 
-  - content_for :pagetitle do
-    = link_to @project.name.titleize, @project.urlbase
-    \/
-    = link_to 'Pull Requests', File.join(@project.urlbase, 'pulls')
-    \/
-    = @pull.id
+- content_for :pagetitle do
+  = link_to @project.name.titleize, @project.urlbase
+  \/
+  = link_to 'Pull Requests', File.join(@project.urlbase, 'pulls')
+  \/
+  = @pull.id
 
-  = render 'project_toolbar'
-  = render 'shared/messages'
+= render 'project_toolbar'
+= render 'shared/messages'
 
-  .center
-    %h1
-      = precede '#' do
-        = @pull.id
-    %ul
-      %li
-        = @pull.desc
-      %li
-        .meta
-          = surround 'First opened ', ' ago |' do
-            = distance_of_time_in_words_to_now @pull.created_at
-          =  @pull.status
-    %ul
-      %li
-        - if current_user.id == @project.user_id && @pull.status == 'open'
-          = link_to 'Merge', File.join(@pull.id.to_s, 'merge')
-          |
-          = link_to 'Close', File.join(@pull.id.to_s, 'close')
-        - if current_user.id == @project.user_id && @pull.status == 'closed'
-          = link_to 'Re-open', File.join(@pull.id.to_s, 'open')
+.center
+  %h1
+    = precede '#' do
+      = @pull.id
+  %ul
+    %li
+      = @pull.desc
+    %li
+      .meta
+        = surround 'First opened ', ' ago |' do
+          = distance_of_time_in_words_to_now @pull.created_at
+        =  @pull.status
+  %ul
+    %li
+      - if current_user.id == @project.user_id && @pull.status == 'open'
+        = link_to 'Merge', File.join(@pull.id.to_s, 'merge')
+        |
+        = link_to 'Close', File.join(@pull.id.to_s, 'close')
+      - if current_user.id == @project.user_id && @pull.status == 'closed'
+        = link_to 'Re-open', File.join(@pull.id.to_s, 'open')
 
 
-    = render partial: 'comments/show_comments', locals: { type: action_name,
-      id: @id.to_s,
-      ajax: @ajax,
-      comment: @comment }
-- else
-  = render 'permissions_error'
+  = render partial: 'comments/show_comments', locals: { type: action_name,
+    id: @id.to_s,
+    ajax: @ajax,
+    comment: @comment }
