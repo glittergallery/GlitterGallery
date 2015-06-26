@@ -9,8 +9,12 @@ module Grack
       @auth = Request.new(env)
 
       auth!
-      if project && authorized_request?
-        @app.call(env)
+      if project
+        if authorized_request?
+          @app.call(env)
+        else
+          unauthorized
+        end
       elsif @user.nil?
         unauthorized
       else
@@ -65,7 +69,7 @@ module Grack
       case git_cmd
       when *%w{ git-upload-pack git-upload-archive }
         if user
-          user.owner?(project)
+          ProjectMember.member?(project, user)
         elsif !project.private
           # Allow clone/fetch for public projects
           true
@@ -74,7 +78,7 @@ module Grack
         end
       when *%w{ git-receive-pack }
         if user
-          user.owner?(project)
+          ProjectMember.write_acess(project, user)
         else
           false
         end

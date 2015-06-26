@@ -18,3 +18,10 @@
               = hidden_field_tag 'member_id', user.id
               = select(nil, 'role', roles)
               = submit_tag 'Add', name: nil
+      %aside
+        %h1
+          Project Settings
+        %nav
+          %ul
+            %li.active
+              %a{ href: '' }Delete

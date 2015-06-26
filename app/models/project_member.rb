@@ -3,7 +3,8 @@ class ProjectMember < ActiveRecord::Base
   belongs_to :member, foreign_key: 'member_id', class_name: 'User'
 
   validates_uniqueness_of :member_id, scope: :gallery_id
-
+  roles = %w(owner collaborator reporter)
+  validates_inclusion_of :role, in: roles
   # used to add current user as owner when project is created
   def self.add_owner(project, user)
     find_or_create_by(member_id: user.id, gallery_id: project.id, role: 'owner')

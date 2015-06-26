@@ -1,4 +1,7 @@
 - if @project.project_members
+  %header
+    %h1
+      People who make your project awesome:
   %div
     %table
       - @project.project_members.each do |project_member|

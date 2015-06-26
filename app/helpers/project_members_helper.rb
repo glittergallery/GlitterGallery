@@ -1,5 +1,5 @@
 module ProjectMembersHelper
   def roles
-    %w(owner collaborator reporter)
+    %w(collaborator reporter)
   end
 end

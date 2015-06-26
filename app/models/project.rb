@@ -227,6 +227,14 @@ class Project < ActiveRecord::Base
     head = satelliterepo.head.target
     parent = head.parents.first
     diff = head.diff parent
+    # if this diff is null or diff is about creation of new
+    # dir then find diff in next parent
+    temp_path = diff.deltas.last.new_file[:path]
+    if temp_path.split('/').last == '.gitignore' || diff.nil?
+      head = parent
+      parent = head.parents.first
+      diff = head.diff parent
+    end
     path = diff.deltas.last.new_file[:path]
     path.split('/').last
   end
@@ -237,6 +245,9 @@ class Project < ActiveRecord::Base
     head = satelliterepo.head.target
     parent = head.parents.first
     diff = head.diff parent
+    # in some case diff is nil, which breaks image generation
+    # with nilclass error <- TODO: Investivate this further
+    return unless diff
     path = diff.deltas.last.new_file[:path]
     generate_inspire_image path
   end

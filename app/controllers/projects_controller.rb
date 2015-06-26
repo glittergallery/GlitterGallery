@@ -192,7 +192,8 @@ class ProjectsController < ApplicationController
       flash[:notice] = "Successfully created #{params[:branch_name]}!"
       redirect_to project_tree_path @project, @branch.name
     else
-      flash[:alert] = 'Something went wrong, the branch was not created!'
+      flash[:alert] = 'Something went wrong! Make sure the branch name' +
+        " doesn't have spaces."
       redirect_to project_branches_path @project
     end
   end

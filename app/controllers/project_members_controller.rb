@@ -12,6 +12,7 @@ class ProjectMembersController < ApplicationController
       role: params[:role]
     )
     if new_member.save
+      flash[:alert] = "#{new_member.member.username} was added to your project"
       redirect_to project_settings_path(@project)
     else
       flash[:alert] = 'Something went wrong. Are you trying' +
