@@ -4,14 +4,15 @@
       People who make your project awesome:
   %div
     %table
-      - @project.project_members.each do |project_member|
+      - @project.project_members.each do |pm|
         %tr
           %td
-            = project_member.member.username
+            = pm.member.username
           %td
-            = project_member.role
+            = pm.role
           %td
-            = link_to 'Remove',
-                project_member_path(project_member.id),
-                method: 'delete',
-                data: { confirm: 'Are you sure?' }
+            - if pm.role != 'owner' && pm.member_project.user == current_user
+              = link_to 'Remove',
+                  project_member_path(pm.id),
+                  method: 'delete',
+                  data: { confirm: 'Are you sure?' }

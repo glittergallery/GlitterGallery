@@ -85,5 +85,12 @@ class Ability
     can [:destroy], Comment do |comment|
       comment.try(:user_id) == user.id
     end
+
+    # project owner can remove members as well as members
+    # can remembers can remove themselves
+    can [:destroy], ProjectMember do |pm|
+      proj_user = pm.member_project.user
+      (proj_user == user || pm.member.id == user.id) && pm.role != 'owner'
+    end
   end
 end

@@ -1,5 +1,7 @@
 class ProjectMembersController < ApplicationController
   before_filter :get_context, except: :destroy
+  before_filter :authenticate_user!
+  load_and_authorize_resource only: :destroy
 
   def search
     @users = User.search(params[:search])
@@ -11,20 +13,25 @@ class ProjectMembersController < ApplicationController
       member_id: params[:member_id],
       role: params[:role]
     )
-    if new_member.save
-      flash[:alert] = "#{new_member.member.username} was added to your project"
-      redirect_to project_settings_path(@project)
+    if @project.user.id == current_user.id
+      if new_member.save
+        flash[:alert] = "#{new_member.member.username} was added" +
+          ' to your project'
+        redirect_to project_settings_path(@project)
+      else
+        flash[:alert] = 'Something went wrong. Are you trying' +
+          ' to add a member which already exists?'
+        member = User.find(params[:member_id])
+        redirect_to action: 'search', search: member.username
+      end
     else
-      flash[:alert] = 'Something went wrong. Are you trying' +
-        ' to add a member which already exists?'
-      member = User.find(params[:member_id])
-      redirect_to action: 'search', search: member.username
+      fail CanCan::AccessDenied # cancan doesn't know about current project
     end
   end
 
   def destroy
-    @delete = ProjectMember.find(params[:id])
-    if @delete.destroy
+    pm = ProjectMember.find(params[:id])
+    if pm.destroy
       redirect_to :back
     else
       flash[:alert] = 'Something went wrong. Please retry after some time.'
