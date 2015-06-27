@@ -12,7 +12,7 @@ class Ability
     end
   end
 
-  # returns true if project is public or esle it
+  # returns true if project is public or else it
   # checks if user is member of project
   def check_acess(project, user)
     return true unless project.private
