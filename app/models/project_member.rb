@@ -24,6 +24,7 @@ class ProjectMember < ActiveRecord::Base
 
   # returns true if relation between user and projects exists
   def self.member?(project, user)
+    return false unless user
     pm = find_by(member_id: user.id, gallery_id: project.id)
     if pm.nil?
       return false

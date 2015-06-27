@@ -56,8 +56,7 @@ describe Grack::Auth do
 
     context 'when the project exists' do
       before do
-        env['PATH_INFO'] = '/' + project.user.username + '/' +
-           project.name + '.git'
+        env['PATH_INFO'] = "/#{project.user.username}/#{project.name}.git"
       end
 
       context 'when the project is public' do
@@ -138,8 +137,8 @@ describe Grack::Auth do
               }
             end
             before do
-              env['PATH_INFO'] = '/' + project.user.username + '/' +
-                project.name + '.git' + '/git-receive-pack'
+              env['PATH_INFO'] = "/#{project.user.username}/#{project.name}" +
+                '.git/git-receive-pack'
             end
 
             shared_examples 'has write access' do |role|

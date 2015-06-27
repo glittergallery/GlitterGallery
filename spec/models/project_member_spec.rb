@@ -1,4 +1,5 @@
 require 'spec_helper'
+include Models::ProjectMembersHelper
 
 describe 'ProjectMember' do
   it 'has a valid factory' do
@@ -33,14 +34,7 @@ describe 'ProjectMember' do
     end
 
     shared_examples 'has write acess roles' do |role|
-      before do
-        create(
-          :project_member,
-          member: @user,
-          member_project: @project,
-          role: role
-        )
-      end
+      before { make_member @project, @user, role }
       it "true for #{role}" do
         expect(ProjectMember.write_acess @project, @user).to be_truthy
       end
@@ -50,14 +44,7 @@ describe 'ProjectMember' do
     it_behaves_like 'has write acess roles', 'collaborator'
 
     shared_examples 'does not have write acess' do |role|
-      before do
-        create(
-          :project_member,
-          member: @user,
-          member_project: @project,
-          role: role
-        )
-      end if role
+      before { make_member @project, @user, role } if role
       it "false for #{role}" do
         expect(ProjectMember.write_acess @project, @user).to be_falsey
       end
@@ -74,14 +61,7 @@ describe 'ProjectMember' do
     end
 
     shared_examples 'it is member' do |role|
-      before do
-        create(
-          :project_member,
-          member: @user,
-          member_project: @project,
-          role: role
-        )
-      end
+      before { make_member @project, @user, role }
       it "true for #{role}" do
         expect(ProjectMember.member? @project, @user).to be_truthy
       end

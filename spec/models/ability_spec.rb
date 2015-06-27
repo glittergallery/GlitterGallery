@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'cancan/matchers'
+include Models::ProjectMembersHelper
 
 describe 'User' do
   describe 'Abilities' do
@@ -26,14 +27,7 @@ describe 'User' do
       if role
         let(:project) { create(:project, private: true) }
         let(:user) { create(:user) }
-        before do
-          create(
-            :project_member,
-            member: user,
-            member_project: project,
-            role: role
-          )
-        end
+        before { make_member project, user, role }
       else
         let(:project) { create(:project) }
         let(:user) { nil }
@@ -74,16 +68,7 @@ describe 'User' do
       let(:issue) { create(:issue)}
       let(:project) { create(:project) }
 
-      unless role.nil?
-        before do
-          create(
-            :project_member,
-            member: user,
-            member_project: project,
-            role: role
-          )
-        end
-      end
+      before { make_member project, user, role } unless role.nil?
 
       it{ should_not be_able_to(:file_upload, project) }
       it{ should_not be_able_to(:settings, project) }
@@ -105,14 +90,7 @@ describe 'User' do
       let(:project) { create(:project) }
       let(:issue) { create(:issue, project: project) }
 
-      before do
-        create(
-          :project_member,
-          member: user,
-          member_project: project,
-          role: role
-        )
-      end
+      before { make_member project, user, role }
 
       it{ should be_able_to(:file_upload, project) }
       it{ should be_able_to(:settings, project) }
