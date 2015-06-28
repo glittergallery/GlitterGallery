@@ -3,17 +3,19 @@ class ProjectMembersController < ApplicationController
   before_filter :authenticate_user!
   load_and_authorize_resource only: :destroy
 
+  # GET /user_id/project_id/project_member
   def search
     @users = User.search(params[:search])
   end
 
+  # POST /user_id/project_id/project_member
   def create
     new_member = ProjectMember.new(
       gallery_id: @project.id,
       member_id: params[:member_id],
       role: params[:role]
     )
-    if @project.user.id == current_user.id
+    if @project.user.id == current_user.id && params[:role] != 'owner'
       if new_member.save
         flash[:alert] = "#{new_member.member.username} was added" +
           ' to your project'
