@@ -1,40 +1,36 @@
-- if private_check
-  - content_for :title do
-    Show issue for
-    = @project.name
+- content_for :title do
+  Show issue for
+  = @project.name
 
-  %article{ data: 'issues' }
-    = render 'projects/project_header'
-    = render 'shared/messages'
-    = render 'projects/project_toolbar'
+%article{ data: 'issues' }
+  = render 'projects/project_header'
+  = render 'shared/messages'
+  = render 'projects/project_toolbar'
 
-    %section
-      %div
-        .option
-          %header
-            %h1
-              = @issue.title
-            .markdown
-              = markdown @issue.description
-            %p
-              Tags:
-              = raw link_tags @issue
-        - if can? :close, @issue
-          %aside
-            %h1
-              Actions
-            %nav
-              %ul
-                %li.active
-                  - if @issue.open?
-                    = link_to('Close', close_issue_path(@issue), method: 'put')
-                  - else
-                    = link_to('Reopen', reopen_issue_path(@issue), method: 'put')
+  %section
+    %div
+      .option
+        %header
+          %h1
+            = @issue.title
+          .markdown
+            = markdown @issue.description
+          %p
+            Tags:
+            = raw link_tags @issue
+      - if can? :close, @issue
+        %aside
+          %h1
+            Actions
+          %nav
+            %ul
+              %li.active
+                - if @issue.open?
+                  = link_to('Close', close_issue_path(@issue), method: 'put')
+                - else
+                  = link_to('Reopen', reopen_issue_path(@issue), method: 'put')
 
-    = render partial: 'comments/show_comments', locals: { type: 'issue',
-      id: @issue.id.to_s,
-      ajax: @ajax,
-      comment: @comment }
-
-- else
-  = render 'permissions_error'
+  = render partial: 'comments/show_comments', locals: { type: 'issue',
+    id: @issue.id.to_s,
+    ajax: @ajax,
+    comment: @comment }

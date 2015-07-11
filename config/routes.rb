@@ -1,5 +1,12 @@
 Glitter::Application.routes.draw do
 
+  mount Grack::Bundle.new({
+    git_path:     Glitter::Application.config.git_path,
+    project_root: Glitter::Application.config.repo_path,
+    upload_pack:  true,
+    receive_pack: true
+  }), at: '/', constraints: lambda { |request| /[-\/\w\.]+\.git\//.match(request.path_info) }, via: [:get, :post]
+
   post '/rate' => 'rater#create', :as => 'rate'
   devise_for :users,:controllers => { :registrations => 'registrations' }
   devise_scope :user do
@@ -14,7 +21,8 @@ Glitter::Application.routes.draw do
   resources :identities, only: [:destroy,:index]
   resources :comments, only: [:new, :create, :destroy]
   resources :glitterposts
-  resources :notifications, only: [:index,:show]
+  resources :notifications, only: [:index, :show]
+  resources :project_members, only: [:destroy]
 
 
   get '/inspire' => 'projects#index'
@@ -52,6 +60,8 @@ Glitter::Application.routes.draw do
       end
       get '(:xid)/issues/:id' => 'issues#show', constraints: { id: /\d.*/ }, as: :issue_show
       get '(:xid)/issues/:tag' => 'issues#index'
+      get '(:xid)/project_members' => 'project_members#search', as: :project_members
+      post '(:xid)/project_members' => 'project_members#create', as: :new_project_members
       member do
         scope "(:xid)" do
           get :branches

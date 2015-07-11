@@ -46,7 +46,7 @@ describe Project do
   it 'creates repositories after creation' do
     @project = FactoryGirl.create(:project)
     expect(File.exists?(@project.data_path)).to be true
-    expect(Rugged::Repository.new(File.join @project.data_path, 'repo.git'))
+    expect(Rugged::Repository.new("#{@project.data_path}" + '.git'))
       .to be_a(Rugged::Repository)
     expect(Rugged::Repository.new(File.join(
       @project.data_path,
@@ -102,24 +102,10 @@ describe Project do
     end
 
     it 'generates mobile and desktop images' do
-      upload = File.new("#{Rails.root}/spec/factories/files/naruto.png")
-      file = [ActionDispatch::Http::UploadedFile.new(
-        tempfile: upload,
-        filename: 'naruto.png'
-      )]
-      @project.add_images(
-        'master',
-        nil,
-        file,
-        @project.user.git_author_params
-      )
       desk_p = "public/testdata/repos/#{@project.user.username}/"\
-             "#{@project.name}/inspire/desktop/naruto.png"
+             "#{@project.name}/inspire/desktop/happypanda.png"
       mob_p = "public/testdata/repos/#{@project.user.username}/"\
-             "#{@project.name}/inspire/mobile/naruto.png"
-      expect(File).not_to exist(desk_p)
-      expect(File).not_to exist(mob_p)
-      @project.generate_inspire_images('/naruto.png')
+             "#{@project.name}/inspire/mobile/happypanda.png"
       expect(File).to exist(desk_p)
       expect(File).to exist(mob_p)
     end

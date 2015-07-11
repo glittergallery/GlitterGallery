@@ -3,6 +3,15 @@
 # ImageMagick geometry to use for thumbnail generation
 # defaults to 100 px width
 # http://www.imagemagick.org/script/command-line-processing.php#geometry
+
+# used for overriding the grack::auth module of grack gem
+require Rails.root.join("lib", "rack", "grack_auth")
+
+# used for overriding the grack::server module of grack gem
+# so that files for satellite and commit can be generated/updated
+# after every push
+require Rails.root.join("lib", "rack", "overload_server")
+
 Glitter::Application.config.thumbnail_geometry=[50,50]
 Glitter::Application.config.inspire_geometry=[230,130]
 Glitter::Application.config.mobile_inspire_geometry=[600,340]
@@ -33,12 +42,16 @@ Glitter::Application.config.auth_methods=[:facebook,:twitter,:open_id,:linkedIn,
 # MAIL_PASSWORD=yourpassword
 # MAIL_AUTHENTICATION=plain
 Glitter::Application.config.action_mailer.delivery_method = :smtp
+Glitter::Application.config.git_path = '/usr/bin/git'
 if Rails.env.development?
   Glitter::Application.config.repo_dir="public/data"
+  Glitter::Application.config.repo_path = "#{Rails.root}/public/data/repos"
 elsif Rails.env.test?
   Glitter::Application.config.repo_dir="public/testdata"
+  Glitter::Application.config.repo_path = "#{Rails.root}/public/testdata/repos"
 elsif Rails.env.production?
   Glitter::Application.config.repo_dir="public/data"
+  Glitter::Application.config.repo_path = "#{ENV["OPENSHIFT_DATA_DIR"]}repos"
   Glitter::Application.config.action_mailer.smtp_settings={
   address:              ENV["MAIL_ADDRESS"],
   port:                 ENV["MAIL_PORT"],

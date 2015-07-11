@@ -30,5 +30,21 @@
             %a{ href: '/' } GlitterGallery
             = distance_of_time_in_words_to_now @user.created_at
             ago.
+          - unless @user.project_members.empty? || current_user.nil?
+            - if @user.id == current_user.id
+              Projects you are helping grow:
+              %table
+                - @user.project_members.each do |pm|
+                  %tr
+                    %td
+                      = pm.member_project.name
+                    %td
+                      = pm.role
+                    %td
+                      - if @user.id == current_user.id && pm.role != 'owner'
+                        = link_to 'Remove',
+                            project_member_path(pm.id),
+                            method: 'delete',
+                            data: { confirm: 'Are you sure?' }
       #followers{ style: 'display: none' }
       #followings{ style: 'display: none' }

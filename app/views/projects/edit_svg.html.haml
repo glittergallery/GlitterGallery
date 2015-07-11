@@ -1,22 +1,19 @@
-- if private_check && owner_check
-  - content_for :title do
-    = @project.name.titleize
+- content_for :title do
+  = @project.name.titleize
 
-  %article.project
-    = render 'project_header'
-    = render 'project_toolbar'
-    = render 'shared/messages'
+%article.project
+  = render 'project_header'
+  = render 'project_toolbar'
+  = render 'shared/messages'
 
-    - if @project.private && params[:xid] != @project.uniqueurl
-      = link_to 'Unique link', @project.urlbase
+  - if @project.private && params[:xid] != @project.uniqueurl
+    = link_to 'Unique link', @project.urlbase
 
-    %section
-      %div
-        = form_tag(controller: 'projects', action: 'update_svg', id: @project.id) do
-          = sketchily_tag :sketch, url: @path
-          = label_tag 'commit message'
-          = text_field_tag 'message', "Update #{@filename}"
-          = hidden_field_tag 'filename', @filename
-          = submit_tag
-- else
-  = render 'permissions_error'
+  %section
+    %div
+      = form_tag(controller: 'projects', action: 'update_svg', id: @project.id) do
+        = sketchily_tag :sketch, url: @path
+        = label_tag 'commit message'
+        = text_field_tag 'message', "Update #{@filename}"
+        = hidden_field_tag 'filename', @filename
+        = submit_tag

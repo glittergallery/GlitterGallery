@@ -1,4 +1,5 @@
 require 'spec_helper'
+include Models::ProjectMembersHelper
 
 describe ProjectsController, type: :controller do
 
@@ -8,70 +9,7 @@ describe ProjectsController, type: :controller do
   end
 
   context 'user is guest' do
-    before do
-      @project = create(:project)
-    end
-    it 'sees the index page' do
-      get :index
-      expect(response).to render_template('index')
-    end
-
-    describe 'GET #show' do
-      it 'renders show template' do
-        get :show, user_id: @project.user.username, id: @project.name
-        expect(response).to render_template('show')
-      end
-
-      it 'renders 404 if not found' do
-        get :show, { id: 'not_existing_page_321' }
-        expect(response.status).to eq(404)
-      end
-    end
-
-    context 'actions after file upload' do
-      before do
-        file = [ActionDispatch::Http::UploadedFile.new(
-          tempfile: upload('happypanda.png'),
-          filename: 'happypanda.png'
-        )]
-        @project.add_images(
-          'master',
-          nil,
-          file,
-          @project.user.git_author_params
-        )
-        @commit = @project.branch_commit nil
-      end
-
-      it 'sees the log of the project' do
-        get :commits, user_id: @project.user.username, id: @project.name
-        expect(response).to render_template('commits')
-      end
-
-      it 'sees the changes in the commits' do
-        get :commit, user_id: @project.user.username,
-                     id: @project.name,
-                     commit_id: @commit.oid
-        expect(response).to render_template('commit')
-      end
-
-      it 'browses the project at any point in history' do
-        get :tree, user_id: @project.user.username,
-                   id: @project.name,
-                   oid: @commit.oid
-        expect(response).to render_template('show')
-      end
-    end
-
-    it 'sees the network of the project' do
-      get :network, user_id: @project.user.username, id: @project.name
-      expect(response).to render_template('network')
-    end
-
-    it 'sees the branches of the project' do
-      get :branches, user_id: @project.user.username, id: @project.name
-      expect(response).to render_template('branches')
-    end
+    let(:project) { create(:project) }
 
     it 'does not see new project page' do
       get :new
@@ -87,17 +25,96 @@ describe ProjectsController, type: :controller do
     end
 
     it 'does not follow projects' do
-      post :follow, user_id: @project.user.username, id: @project.name
-      expect(@project.followers.count).to eq(0)
+      post :follow, user_id: project.user.username, id: project.name
+      expect(project.followers.count).to eq(0)
       expect(response).to redirect_to new_user_session_path
     end
 
     it 'does not fork the projects' do
-      post :fork, user_id: @project.user.username, id: @project.name
+      post :fork, user_id: project.user.username, id: project.name
       expect(Project.all.count).to eq(1)
       expect(response).to redirect_to new_user_session_path
     end
   end
+
+  shared_examples 'has read access' do |role|
+    if role
+      let(:project) { create(:project, private: true) }
+      let(:user) { create(:user) }
+      before do
+        make_member project, user, role
+        sign_in(user)
+      end
+    else
+      let(:project) { create(:project) }
+      let(:user) { nil }
+    end
+
+    it 'sees the index page' do
+      get :index
+      expect(response).to render_template('index')
+    end
+
+    describe 'GET #show' do
+      it 'renders show template' do
+        get :show, user_id: project.user.username, id: project.name
+        expect(response).to render_template('show')
+      end
+
+      it 'renders 404 if not found' do
+        get :show, { id: 'not_existing_page_321' }
+        expect(response.status).to eq(404)
+      end
+    end
+
+    context 'actions after file upload' do
+      before do
+        file = [ActionDispatch::Http::UploadedFile.new(
+          tempfile: upload('happypanda.png'),
+          filename: 'happypanda.png'
+        )]
+        project.add_images(
+          'master',
+          nil,
+          file,
+          project.user.git_author_params
+        )
+        @commit = project.branch_commit nil
+      end
+
+      it 'sees the log of the project' do
+        get :commits, user_id: project.user.username, id: project.name
+        expect(response).to render_template('commits')
+      end
+
+      it 'sees the changes in the commits' do
+        get :commit, user_id: project.user.username,
+                     id: project.name,
+                     commit_id: @commit.oid
+        expect(response).to render_template('commit')
+      end
+
+      it 'browses the project at any point in history' do
+        get :tree, user_id: project.user.username,
+                   id: project.name,
+                   oid: @commit.oid
+        expect(response).to render_template('show')
+      end
+    end
+
+    it 'sees the network of the project' do
+      get :network, user_id: project.user.username, id: project.name
+      expect(response).to render_template('network')
+    end
+
+    it 'sees the branches of the project' do
+      get :branches, user_id: project.user.username, id: project.name
+      expect(response).to render_template('branches')
+    end
+  end
+
+  it_behaves_like 'has read access', nil # guest
+  it_behaves_like 'has read access', 'reporter'
 
   context 'user is signed in' do
     describe 'allows new, create and show actions' do
@@ -218,28 +235,25 @@ describe ProjectsController, type: :controller do
     end
   end
 
-  context 'user owns the project' do
+  shared_examples 'has write access' do |role|
+    let(:project) { create(:project) }
+    let(:user) { create(:user) }
+
     before do
-      @project = create(:project)
-      sign_in(@project.user)
+      make_member project, user, role
+      sign_in(user)
     end
 
     it 'allows user see settings page' do
-      get :settings, user_id: @project.user.username, id: @project.name
+      get :settings, user_id: project.user.username, id: project.name
       expect(response).to render_template('settings')
     end
 
-    it 'deletes the project' do
-      delete :destroy, id: @project.id
-      expect(Project.where(id: @project.id)).to be_empty
-      expect(response).to redirect_to(dashboard_path)
-    end
-
     it 'adds directory to project' do
-      post :create_directory, user_id: @project.user.username,
-                              id: @project.name,
+      post :create_directory, user_id: project.user.username,
+                              id: project.name,
                               directory: 'new_dir'
-      expect(@project.browse_tree[1].first[:name]).to eq('new_dir')
+      expect(project.browse_tree[1].first[:name]).to eq('new_dir')
     end
 
     describe 'actions afters file upload' do
@@ -248,14 +262,14 @@ describe ProjectsController, type: :controller do
           tempfile: upload('happypanda.png'),
           filename: 'happypanda.png'
         )]
-        post :file_upload, user_id: @project.user.username,
-                           id: @project.name,
+        post :file_upload, user_id: project.user.username,
+                           id: project.name,
                            file: file
       end
 
       describe 'POST #file_upload' do
         it 'allows user to upload image' do
-          expect(@project.browse_tree[0].first[:name]).to eq('happypanda.png')
+          expect(project.browse_tree[0].first[:name]).to eq('happypanda.png')
         end
       end
 
@@ -265,53 +279,54 @@ describe ProjectsController, type: :controller do
           filename: 'naruto.png',
           original_filename: 'happypanda.png'
         )
-        post :file_update, user_id: @project.user.username,
-                           id: @project.name,
+        post :file_update, user_id: project.user.username,
+                           id: project.name,
                            branch: 'master',
                            destination: 'naruto.png',
                            message: 'update panda image',
                            file: file
-        expect(@project.browse_tree[0]
+        expect(project.browse_tree[0]
           .find { |h| h[:name] == 'naruto.png' }).not_to be nil
       end
 
       it 'allows user to create a branch' do
-        post :create_branch, user_id: @project.user.username,
-                             id: @project.name,
+        post :create_branch, user_id: project.user.username,
+                             id: project.name,
                              branch_name: 'new_branch',
                              commit: 'Create new branch!'
-        expect(@project.branch?('new_branch')).to be true
+        expect(project.branch?('new_branch')).to be true
       end
     end
   end
 
-  context "user doesn't own the project" do
+  it_behaves_like 'has write access', 'owner'
+  it_behaves_like 'has write access', 'collaborator'
+
+  shared_examples 'does not have write acess' do |role|
+    let(:project) { create(:project) }
+    let(:user) { create(:user) }
     before do
-      @project = create(:project)
-      @non_owner = create(
-                    :user,
-                    username: 'some other user',
-                    email: 'abcd@gmail.com')
-      sign_in(@non_owner)
+      make_member project, user, role unless role.nil?
+      sign_in(user)
     end
 
     it 'does not see settings page' do
-      get :settings, user_id: @project.user.username, id: @project.name
+      get :settings, user_id: project.user.username, id: project.name
       expect(response).not_to render_template('settings')
       expect(response.response_code).to eq(403)
     end
 
     it 'can not delete the project' do
-      delete :destroy, id: @project.id
-      expect(Project.find(@project.id)).to eq(@project)
+      delete :destroy, id: project.id
+      expect(Project.find(project.id)).to eq(project)
       expect(response.response_code).to eq(403)
     end
 
     it 'can not add directory to project' do
-      post :create_directory, user_id: @project.user.username,
-                              id: @project.name,
+      post :create_directory, user_id: project.user.username,
+                              id: project.name,
                               directory: 'new_dir'
-      expect(@project.browse_tree[1]).to be_empty
+      expect(project.browse_tree[1]).to be_empty
     end
 
     it "doesn't allow user to upload image" do
@@ -319,10 +334,10 @@ describe ProjectsController, type: :controller do
           tempfile: upload('happypanda.png'),
           filename: 'happypanda.png'
         )]
-      post :file_upload, user_id: @project.user.username,
-                         id: @project.name,
+      post :file_upload, user_id: project.user.username,
+                         id: project.name,
                          file: file
-      expect(@project.browse_tree[0]).to be_empty
+      expect(project.browse_tree[0]).to be_empty
       expect(response.response_code).to eq(403)
     end
 
@@ -332,20 +347,20 @@ describe ProjectsController, type: :controller do
           tempfile: upload('happypanda.png'),
           filename: 'happypanda.png'
         )]
-        @project.add_images(
+        project.add_images(
           'master',
           nil,
           file,
-          @project.user.git_author_params
+          project.user.git_author_params
         )
       end
 
       it 'does not allow user to create a branch' do
-        post :create_branch, user_id: @project.user.username,
-                             id: @project.name,
+        post :create_branch, user_id: project.user.username,
+                             id: project.name,
                              branch_name: 'new_branch',
                              commit: 'Create new branch!'
-        expect(@project.branch?('new_branch')).to be false
+        expect(project.branch?('new_branch')).to be false
         expect(response.response_code).to eq(403)
       end
 
@@ -355,16 +370,30 @@ describe ProjectsController, type: :controller do
           filename: 'naruto.png',
           original_filename: 'happypanda.png'
         )
-        post :file_update, user_id: @project.user.username,
-                           id: @project.name,
+        post :file_update, user_id: project.user.username,
+                           id: project.name,
                            branch: 'master',
                            destination: 'naruto.png',
                            message: 'update panda image',
                            file: file
-        expect(@project.browse_tree[0]
+        expect(project.browse_tree[0]
           .find { |h| h[:name] == 'naruto.png' }).to be nil
         expect(response.response_code).to eq(403)
       end
+    end
+  end
+
+  it_behaves_like 'does not have write acess', nil
+  it_behaves_like 'does not have write acess', 'reporter'
+
+  context 'user is owner of project' do
+    let(:project) { create(:project) }
+    before { sign_in(project.user) }
+
+    it 'deletes the project' do
+      delete :destroy, id: project.id
+      expect(Project.where(id: project.id)).to be_empty
+      expect(response).to redirect_to(dashboard_path)
     end
   end
 end

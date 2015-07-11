@@ -1,0 +1,5 @@
+%p
+  Search and add more members to your team:
+= form_tag user_project_project_members_path(@project.user, @project), method: 'get' do
+  = text_field_tag :search, params[:search]
+  = submit_tag 'Search', name: nil

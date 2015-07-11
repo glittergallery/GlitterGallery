@@ -1,26 +1,22 @@
-- if private_check
-  - content_for :title do
-    = @project.name.titleize
+- content_for :title do
+  = @project.name.titleize
 
-  %article.project{ data: 'current' }
-    = render 'project_header'
-    = render 'project_toolbar'
-    = render 'shared/messages'
-    = render 'breadcrumb'
-    %section.album
-      = render 'images'
-      = render 'add_content'
+%article.project{ data: 'current' }
+  = render 'project_header'
+  = render 'project_toolbar'
+  = render 'shared/messages'
+  = render 'breadcrumb'
+  %section.album
+    = render 'images'
+    = render 'add_content'
 
-    - if @project.private && params[:xid] != @project.uniqueurl
-      %section
-        %div
-          %form{ action: user_project_path(@project.user, @project, @project.uniqueurl) }
-            %input{ type: 'submit', value: 'Generate Unique Link' }
+  - if @project.private && params[:xid] != @project.uniqueurl
+    %section
+      %div
+        %form{ action: user_project_path(@project.user, @project, @project.uniqueurl) }
+          %input{ type: 'submit', value: 'Generate Unique Link' }
 
-    = render partial: 'comments/show_comments', locals: { type: @comment_type,
-      id: @project.id.to_s,
-      ajax: @ajax,
-      comment: @comment }
-
-- else
-  = render 'permissions_error'
+  = render partial: 'comments/show_comments', locals: { type: @comment_type,
+    id: @project.id.to_s,
+    ajax: @ajax,
+    comment: @comment }

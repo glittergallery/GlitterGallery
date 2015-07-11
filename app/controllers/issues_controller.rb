@@ -71,11 +71,6 @@ class IssuesController < ApplicationController
 
   private
 
-  def get_context
-    @user = User.find_by username: params[:user_id]
-    @project = Project.find_by user_id: @user.id, name: params[:project_id]
-  end
-
   def issue_params
     params.require(:issue).permit(:title, :description, :tag_list)
   end

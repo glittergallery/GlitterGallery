@@ -1,30 +1,27 @@
-- if private_check
-  - content_for :title do
-    = @project.name.titleize + ' at ' + @id
+- content_for :title do
+  = @project.name.titleize + ' at ' + @id
 
-  %article.project
-    = render 'project_header'
-    = render 'project_toolbar'
-    = render 'shared/messages'
+%article.project
+  = render 'project_header'
+  = render 'project_toolbar'
+  = render 'shared/messages'
 
-    - if @project.private && params[:xid] != @project.uniqueurl
-      = link_to 'Unique link', @project.urlbase
+  - if @project.private && params[:xid] != @project.uniqueurl
+    = link_to 'Unique link', @project.urlbase
 
-    %section.album
-      - if action_name == 'commit'
-        .guide
-          %form{ action: project_tree_path(@project, @id) }
-            %input{ type: 'submit', value: 'Browse files at this commit' }
+  %section.album
+    - if action_name == 'commit'
+      .guide
+        %form{ action: project_tree_path(@project, @id) }
+          %input{ type: 'submit', value: 'Browse files at this commit' }
 
 
-      - @images.each do |image|
-        %div
-          = link_to image[:name], project_blob_path(@project, @oid, image[:name])
-          = data_image_tag(image, '100%', nil)
+    - @images.each do |image|
+      %div
+        = link_to image[:name], project_blob_path(@project, @oid, image[:name])
+        = data_image_tag(image, '100%', nil)
 
-    = render partial: 'comments/show_comments', locals: { type: action_name,
-      id: @id.to_s,
-      ajax: @ajax,
-      comment: @comment }
-- else
-  = render 'permissions_error'
+  = render partial: 'comments/show_comments', locals: { type: action_name,
+    id: @id.to_s,
+    ajax: @ajax,
+    comment: @comment }

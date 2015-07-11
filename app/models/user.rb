@@ -16,9 +16,14 @@ class User < ActiveRecord::Base
                                    class_name: 'Relationship'
   has_many :followings, through: :relationships, source: :following
   has_many :followers, through: :reverse_relationships, source: :follower
+  # many to many relationship between projects and project's followers
   has_many :project_followers, dependent: :destroy, foreign_key: 'follower_id'
   has_many :followed_projects, through: :project_followers,
                                source: :followed_project
+  # many to many relationship between projects and project's members
+  has_many :project_members, dependent: :destroy, foreign_key: 'member_id'
+  has_many :member_projects, through: :project_members,
+                             source: :member_project
   has_many :issues
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -63,5 +68,24 @@ class User < ActiveRecord::Base
       name: username,
       time: Time.now
     }
+  end
+
+  # checks if the user if the owner of the passed project
+  def owner?(project)
+    if id == project.user.id
+      true
+    else
+      false
+    end
+  end
+
+  # finds the users on basis of username. used on project's
+  # setting page for searching and adding members to the project
+  def self.search(search)
+    if search
+      where(['username LIKE ?', "%#{search}%"])
+    else
+      all
+    end
   end
 end

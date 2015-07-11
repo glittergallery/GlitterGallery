@@ -1,0 +1,18 @@
+- if @project.project_members
+  %header
+    %h1
+      People who make your project awesome:
+  %div
+    %table
+      - @project.project_members.each do |pm|
+        %tr
+          %td
+            = pm.member.username
+          %td
+            = pm.role
+          %td
+            - if pm.role != 'owner' && pm.member_project.user == current_user
+              = link_to 'Remove',
+                  project_member_path(pm.id),
+                  method: 'delete',
+                  data: { confirm: 'Are you sure?' }

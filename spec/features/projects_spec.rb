@@ -210,7 +210,8 @@ feature 'Projects' do
           )
         )
         expect(page).to have_content(
-          'Something went wrong, the branch was not created!'
+          'Something went wrong! ' +
+          "Make sure the branch name doesn't have spaces."
         )
       end
 

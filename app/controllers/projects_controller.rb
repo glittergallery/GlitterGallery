@@ -64,6 +64,7 @@ class ProjectsController < ApplicationController
     project.private = true if params[:commit] == 'Private'
     project.tag_list = 'bug, feature, improvement, feedback, discussion, help'
     if project.save
+      ProjectMember.add_owner project, current_user
       unless project.private
         # TODO: clean up action ids, numbers makes unreadable
         notify_users 'project_create', 0, project.id, current_user.followers
@@ -191,7 +192,8 @@ class ProjectsController < ApplicationController
       flash[:notice] = "Successfully created #{params[:branch_name]}!"
       redirect_to project_tree_path @project, @branch.name
     else
-      flash[:alert] = 'Something went wrong, the branch was not created!'
+      flash[:alert] = 'Something went wrong! Make sure the branch name' +
+        " doesn't have spaces."
       redirect_to project_branches_path @project
     end
   end
