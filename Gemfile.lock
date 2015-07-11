@@ -287,6 +287,11 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (~> 1.1)
+    sass-rails-source-maps (0.1.0)
+      rails
+      sass (~> 3.3)
+      sass-rails (~> 5.0.0.beta1)
+      sprockets (>= 2.3.0)
     shellany (0.0.1)
     sketchily (4.0.1)
       nokogiri
@@ -375,6 +380,7 @@ DEPENDENCIES
   rubocop
   rugged (~> 0.21)
   sass-rails
+  sass-rails-source-maps
   sketchily
   sqlite3
   test-unit
