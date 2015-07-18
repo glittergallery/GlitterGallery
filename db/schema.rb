@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150623095804) do
+ActiveRecord::Schema.define(version: 20150718043105) do
 
   create_table "comments", force: true do |t|
     t.text     "body"
@@ -66,6 +66,17 @@ ActiveRecord::Schema.define(version: 20150623095804) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "keys", force: true do |t|
+    t.integer  "user_id"
+    t.text     "key"
+    t.string   "title"
+    t.string   "fingerprint"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "keys", ["user_id"], name: "index_keys_on_user_id"
 
   create_table "notification_statuses", force: true do |t|
     t.integer  "victim_id"

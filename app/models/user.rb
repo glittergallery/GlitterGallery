@@ -25,6 +25,8 @@ class User < ActiveRecord::Base
   has_many :member_projects, through: :project_members,
                              source: :member_project
   has_many :issues
+  # authorization of ssh access
+  has_many :keys
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
