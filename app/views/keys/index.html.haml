@@ -1,0 +1,44 @@
+- content_for :title do
+  = current_user.username.titleize
+
+%article.user{ data: 'settings' }
+  %header
+    %h1
+      = avatar current_user.email
+      = current_user.username
+    %h2
+      = precede '@' do
+        = current_user.username
+
+  - @user = current_user
+  = render 'users/user_toolbar'
+  = render 'shared/messages'
+
+  %section
+    %div
+      .option
+        - if @keys.any?
+          %table
+            %thead
+              %tr
+                %th Title
+                %th Fingerprint
+                %th Added at
+                %th
+            %tbody
+              - @keys.each do |key|
+                %tr
+                  %td
+                    %strong= key.title
+                  %td
+                    %code= key.fingerprint
+                  %td
+                    %span
+                      added #{distance_of_time_in_words_to_now key.created_at}
+                  %td
+                    = link_to 'Remove',
+                        key_path(key),
+                        data: { confirm: 'Are you sure?' },
+                        method: :delete
+        - else
+          There are no SSH keys with access to your account.
