@@ -13,7 +13,10 @@ class KeysController < ApplicationController
     if @key.save
       redirect_to keys_path
     else
-      render 'new'
+      # remove unsaved key from collection
+      current_user.keys.delete @key
+      @keys = current_user.keys
+      render 'index'
     end
   end
 

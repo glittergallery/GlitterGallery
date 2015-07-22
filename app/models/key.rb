@@ -15,9 +15,8 @@ class Key < ActiveRecord::Base
   validates :fingerprint, uniqueness: true,
                           presence: { message: 'cannot be generated' }
 
-  def strip_white_space
-    self.key = key.strip unless key.blank?
-  end
+  after_create :add_to_shell
+  after_destroy :remove_from_shell
 
   # projects that has this key
   def projects
@@ -36,5 +35,20 @@ class Key < ActiveRecord::Base
     return unless key.present?
 
     self.fingerprint = Gg::KeyFingerprint.new(key).fingerprint
+  end
+
+  # add the key to authorized file and limit access to git
+  # only commands
+  def add_to_shell
+    Gg::Shell.add_key(shell_id, key)
+  end
+
+  # remove key from authorized files after key is deleted
+  def remove_from_shell
+    Gg::Shell.remove_key(shell_id, key)
+  end
+
+  def strip_white_space
+    self.key = key.strip unless key.blank?
   end
 end
