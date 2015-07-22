@@ -1,7 +1,7 @@
 - content_for :title do
   = current_user.username.titleize
 
-%article
+%article.user{ data: 'profile' }
   %header
     %h1
       = avatar current_user.email
@@ -37,19 +37,4 @@
           %div
             = f.submit 'Update'
 
-      %aside
-        %h1
-          User Settings
-        %nav
-          %ul
-            %li.active
-              = link_to 'Profile', edit_user_registration_path
-            %li
-              = link_to 'Identities', identities_path
-            -#
-              %li
-                = link_to 'Passwords'
-              %li
-                = link_to 'SSH Keys', identities_path
-              %li
-                = link_to 'Projects', identities_path
+      = render 'user_aside'

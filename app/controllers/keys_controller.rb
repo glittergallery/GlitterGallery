@@ -2,11 +2,9 @@ class KeysController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @keys = current_user.keys
-  end
-
-  def new
     @key = current_user.keys.new
+    current_user.keys.delete @key # remove new key from collection
+    @keys = current_user.keys
   end
 
   def create

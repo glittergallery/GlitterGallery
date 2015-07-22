@@ -1,0 +1,11 @@
+%p
+  %strong Add keys to your account
+= form_for @key do |f|
+  - @key.errors.full_messages.each do |msg|
+    %p.error_message
+      = msg
+  = f.label :title
+  = f.text_field :title, placeholder: 'Title', autofocus: true
+  = f.label :key
+  = f.text_area :key, rows: 8
+  = f.submit 'Add key'

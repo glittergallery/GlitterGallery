@@ -18,7 +18,7 @@ Glitter::Application.routes.draw do
 
 
   resources :projects
-  resources :keys, only: [:new, :create, :index, :destroy]
+  resources :keys, only: [:create, :index, :destroy]
   resources :identities, only: [:destroy,:index]
   resources :comments, only: [:new, :create, :destroy]
   resources :glitterposts

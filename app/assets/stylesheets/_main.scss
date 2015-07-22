@@ -65,7 +65,9 @@ $nprogress-color: red;
             }
           }
         }
-
+        table {
+          width: 100%;
+        }
         section{
           background-color: white;
           padding: 0.25em;
@@ -99,9 +101,6 @@ $nprogress-color: red;
                 margin-bottom: 0.25em;
               }
             }
-          }
-          table {
-            width: 100%;
           }
         }
       }
