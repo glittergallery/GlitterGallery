@@ -59,6 +59,8 @@ gem 'cancancan', '~> 1.10'
 # ruby implementation of git-http-backend
 gem 'gitlab-grack', '~> 2.0.2', require: 'grack'
 
+# used for api used by gitlab-shell
+gem 'grape'
 
 group :development, :test do
   # https://github.com/rspec/rspec-rails/issues/1273
