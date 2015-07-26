@@ -419,6 +419,7 @@ class Project < ActiveRecord::Base
     if parent.nil?
       Rugged::Repository.init_at  barerepopath, :bare
       Rugged::Repository.clone_at barerepopath, satelliterepopath
+      sym_hook
     else # it's a fork, therefore:
       Rugged::Repository.init_at barerepopath, :bare
       Rugged::Repository.clone_at parent.satelliterepopath, satelliterepopath
@@ -428,5 +429,17 @@ class Project < ActiveRecord::Base
     FileUtils.mkdir_p image_for('', 'thumbnails', true)
 
     pushtobare unless satelliterepo.empty?
+  end
+
+  # makes a symlink to hooks in gitlab-shell in each project
+  # dir structure:
+  # |--home/username
+  #    |--GlitterGallery
+  #    |--gitlab-shell
+  def sym_hook
+    local_hooks_directory = File.join(barerepopath, 'hooks')
+    new_dir_name = "#{local_hooks_directory}.old.#{Time.now.to_i}"
+    FileUtils.mv(local_hooks_directory, new_dir_name)
+    FileUtils.ln_s(Glitter::Application.config.hook_dir, local_hooks_directory)
   end
 end

@@ -32,6 +32,9 @@ Glitter::Application.config.gravatar_size='48'
 # Don't forget to set the respective Environment variables for the auth methods. For ex, FACEBOOK_KEY and FACEBOOK_SECRET
 Glitter::Application.config.auth_methods=[:facebook,:twitter,:open_id,:linkedIn,:github]
 
+# location of gitlab-shell/hooks
+Glitter::Application.config.hook_dir = File.join(Rails.root,'..','gitlab-shell','hooks')
+
 # This is the ActionMailer configuration
 #
 # Example Environment variables :

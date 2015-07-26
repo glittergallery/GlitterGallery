@@ -31,6 +31,10 @@ module Grack
       # Authentication with username and password
       login, password = @auth.credentials
       @user = authenticate_user(login, password)
+
+      if @user
+        Gg::ShellEnv.set_env(@user)
+      end
     end
 
     # return nil if user is not found else return
@@ -78,7 +82,9 @@ module Grack
         end
       when *%w{ git-receive-pack }
         if user
-          ProjectMember.write_acess(project, user)
+          # Skip user authorization on upload request.
+          # It will be done by the pre-receive hook in the repository.
+          true
         else
           false
         end

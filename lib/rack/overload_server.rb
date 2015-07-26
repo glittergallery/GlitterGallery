@@ -66,11 +66,13 @@ module Grack
       # update of username/project/satellite with rugged
       @sat_repo = @project.satelliterepo
       bare_remote = @project.satelliterepo.remotes['bare']
+      bare_remote = @sat_repo.remotes.create 'bare', @project.barerepo.path unless bare_remote
       # fetch from the bare remote
       bare_remote.fetch
       remote_branch = @sat_repo.branches["refs/remotes/bare/#{branch}"]
       local_branch = @sat_repo.branches["#{branch}"]
-      local_branch = @sat_repo.create_branch "#{branch}" unless local_branch
+      local_branch = @sat_repo
+        .create_branch("#{branch}", "remotes/bare/#{branch}") unless local_branch
 
       # checkout the branch, sync the refs and force checkout head to keep
       # working dir clean
@@ -84,14 +86,20 @@ module Grack
     # pass the head after push for new inspire image if push branch is master
     def generate_images_between(old_sha, new_sha, branch)
       head = @sat_repo.lookup("#{new_sha}")
-      tail = @sat_repo.lookup("#{old_sha}")
+      # tails won't exist if previously repo was empty
+      tail = @sat_repo.lookup("#{old_sha}") unless old_sha[0..5] == '000000'
       walker = Rugged::Walker.new(@sat_repo)
       walker.push(head)
-      walker.hide(tail)
+      walker.hide(tail) unless old_sha[0..5] == '000000'
       # find diff for each parent child pair
       walker.each do |commit|
-        commit.parents.each do|p|
-          generate_for('thumbnail', commit, p)
+        # very first commit has no parent
+        if commit.parents.empty?
+          generate_for('thumbnail', commit, nil)
+        else
+          commit.parents.each do|p|
+            generate_for('thumbnail', commit, p)
+          end
         end
       end
       generate_for('inspire', head, head.parents.first) if branch == 'master'
