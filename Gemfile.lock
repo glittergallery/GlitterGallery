@@ -235,6 +235,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    puma (2.12.2)
     rack (1.5.2)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -400,6 +401,7 @@ DEPENDENCIES
   omniauth-openid
   omniauth-twitter
   paranoia (~> 2.0)
+  puma
   rails (~> 4.1.0)
   rails-observers
   rake
