@@ -1,65 +1,31 @@
-# used to overload the service_rpc function. Read_body
-# returns the useful bit. One can extract the commits
-# and the branch name from there, which will be further
-# used to update satellite folder and commits thumbnails
+# used to sync satellite and bare repo after push
+# triggerd by api call from post-recieve
+module Gg
+  class Sync
 
-# TODO: Find a better way to achieve the same
-require 'zlib'
-require 'rack/request'
-require 'rack/response'
-require 'rack/utils'
-require 'time'
+    attr_reader :changes, :repo_path
 
-require 'grack/git'
+    def initialize(repo_path, changes)
+      @repo_path = repo_path
+      @changes = changes
+    end
 
-module Grack
-  class Server
-    attr_reader :git
-
-     def service_rpc
-      return render_no_access unless has_access?(@rpc, true)
-
-      input = read_body
-      # old commit SHA starts from the fourth position
-      commits_sha = input[4, 120].split(' ')
-      old_sha = commits_sha.first
-      new_sha = commits_sha.second
-      branch = commits_sha.third.split(/\W+/).last
-
-      # take out username and project from path
-      path = /^([\w\.\/-]+)\.git/.match(@req.path).to_a
-
-      @res = Rack::Response.new
-      @res.status = 200
-      @res["Content-Type"] = "application/x-git-%s-result" % @rpc
-      @res["Transfer-Encoding"] = "chunked"
-      @res["Cache-Control"] = "no-cache"
-
-      @res.finish do
-        git.execute([@rpc, '--stateless-rpc', git.repo]) do |pipe|
-          pipe.write(input)
-          pipe.close_write
-
-          while block = pipe.read(8192)     # 8KB at a time
-            @res.write encode_chunk(block)  # stream it to the client
-          end
-
-          @res.write terminating_chunk
-        end
-        if @rpc == 'receive-pack'
-          update_working_dir(path, branch)
-          generate_images_between(old_sha, new_sha, branch)
-        end
-      end
+    def sync_satellite
+      refs = @changes.split(' ')
+      branch = refs.last.split('/').last
+      update_working_dir(@repo_path, branch)
+      old_sha = refs.first
+      new_sha = refs.second
+      generate_images_between(old_sha, new_sha, branch)
     end
 
     # working dir or satellite folder needs to be in sync with bare repo
     # path is used to find the user and project
     # branch is used to get context of branch to sync
     def update_working_dir(path, branch)
-      username_projectname = path.last
-      ids = username_projectname.split('/')
-      project_owner = User.find_by(username: ids.second.to_s.downcase)
+      # path is of form username/project_name
+      ids = path.split('/')
+      project_owner = User.find_by(username: ids.first.to_s.downcase)
       @project = Project.with_deleted.find_by user_id: project_owner.id,
                                               name: ids.last.to_s.downcase
 

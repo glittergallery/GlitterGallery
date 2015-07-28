@@ -21,7 +21,13 @@ module API
           elsif params[:user_id]
             User.find_by(id: params[:user_id])
           end
-        { status: true, message: 'can hear you clear and load!!' }
+        @status = true
+        @message = ''
+      end
+
+      post "/sync" do
+        status 200
+        Gg::Sync.new(params[:project], params[:changes]).sync_satellite
       end
 
       get "/check" do
