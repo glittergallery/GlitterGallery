@@ -17,12 +17,16 @@ module API
         status 200
         actor =
           if params[:key_id]
-            Key.find_by(id: params[:key_id])
+            key = Key.find_by(id: params[:key_id])
+            key.user
           elsif params[:user_id]
             User.find_by(id: params[:user_id])
           end
-        @status = true
-        @message = ''
+        ids = params[:project].split('/')
+        project = Project.with_deleted.find_by user_id: actor.id,
+                                               name: ids.last.to_s.downcase
+        access = Gg::GitAccess.new(actor, project)
+        access.check(params[:action])
       end
 
       post "/sync" do
