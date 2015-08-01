@@ -31,8 +31,6 @@ gem 'activerecord-session_store'
 gem 'actionpack-action_caching'
 gem 'rails-observers'
 
-gem 'puma'
-
 # For producing thumbnails.
 gem 'rmagick', '~> 2.13.4'
 
@@ -96,7 +94,7 @@ end
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano'
