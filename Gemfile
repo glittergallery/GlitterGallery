@@ -85,6 +85,7 @@ group :test do
   gem 'launchy'
   gem 'rubocop', require: false
   gem 'haml-lint', require: false
+  gem 'shoulda-matchers'
 end
 
 # To use ActiveModel has_secure_password

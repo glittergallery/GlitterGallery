@@ -23,7 +23,6 @@ module Gg
 
         cmd_output, cmd_status = popen(cmd, '/tmp')
       end
-      puts cmd_status, cmd_output
       return nil unless cmd_status.zero?
 
       # 16 hex bytes separated by ':', optionally starting with "MD5:"

@@ -18,11 +18,6 @@ class Key < ActiveRecord::Base
   after_create :add_to_shell
   after_destroy :remove_from_shell
 
-  # projects that has this key
-  def projects
-    user.authorized_projects
-  end
-
   def shell_id
     "key-#{id}"
   end

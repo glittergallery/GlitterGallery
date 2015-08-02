@@ -319,6 +319,8 @@ GEM
       sass-rails (~> 5.0.0.beta1)
       sprockets (>= 2.3.0)
     shellany (0.0.1)
+    shoulda-matchers (2.8.0)
+      activesupport (>= 3.0.0)
     sketchily (4.0.1)
       nokogiri
       rails (>= 3.1)
@@ -417,6 +419,7 @@ DEPENDENCIES
   rugged (~> 0.21)
   sass-rails
   sass-rails-source-maps
+  shoulda-matchers
   sketchily
   sqlite3
   test-unit
