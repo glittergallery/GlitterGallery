@@ -84,7 +84,8 @@ feature 'Users' do
       end
 
       it 'removes key' do
-        allow_any_instance_of(Key).to receive(:remove_from_shell).and_return(true)
+        allow_any_instance_of(Key).to receive(:remove_from_shell)
+          .and_return(true)
         find('table').click_link 'Remove'
         expect(find('.option')).not_to have_content(@key.title)
       end

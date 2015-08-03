@@ -28,7 +28,6 @@ module Gg
       else
         build_status_object(false, "The command you're trying to execute is not allowed.")
       end
-      build_status_object(true)
     end
 
     private

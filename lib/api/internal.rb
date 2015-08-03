@@ -23,7 +23,8 @@ module API
             User.find_by(id: params[:user_id])
           end
         ids = params[:project].split('/')
-        project = Project.with_deleted.find_by user_id: actor.id,
+        user = User.find_by(username: ids.first.to_s.downcase)
+        project = Project.with_deleted.find_by user_id: user.id,
                                                name: ids.last.to_s.downcase
         access = Gg::GitAccess.new(actor, project)
         access.check(params[:action])
@@ -35,11 +36,7 @@ module API
       end
 
       get "/check" do
-        {
-          api_version: '3.2.0',
-          gitlab_version: '3.1.2',
-          gitlab_rev: '0.1.1',
-        }
+        status 200
       end
     end
   end
