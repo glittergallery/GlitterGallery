@@ -13,7 +13,7 @@ module API
       #   ref - branch name
       #   forced_push - forced_push
       #
-      post "/allowed" do
+      post '/allowed' do
         status 200
         actor =
           if params[:key_id]
@@ -30,12 +30,12 @@ module API
         access.check(params[:action])
       end
 
-      post "/sync" do
+      post '/sync' do
         status 200
         Gg::Sync.new(params[:project], params[:changes]).sync_satellite
       end
 
-      get "/check" do
+      get '/check' do
         status 200
       end
     end

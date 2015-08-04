@@ -32,9 +32,7 @@ module Grack
       login, password = @auth.credentials
       @user = authenticate_user(login, password)
 
-      if @user
-        Gg::ShellEnv.set_env(@user)
-      end
+      Gg::ShellEnv.set_env(@user) if @user
     end
 
     # return nil if user is not found else return
@@ -42,7 +40,7 @@ module Grack
     def authenticate_user(login, password)
       user = User.find_by(username: login.to_s.downcase)
       if user.nil?
-        return nil 
+        return nil
       else
         user if user.valid_password?(password)
       end
@@ -71,7 +69,7 @@ module Grack
 
     def authorized_request?
       case git_cmd
-      when *%w{ git-upload-pack git-upload-archive }
+      when *%w( git-upload-pack git-upload-archive )
         if user
           ProjectMember.member?(project, user)
         elsif !project.private
@@ -80,7 +78,7 @@ module Grack
         else
           false
         end
-      when *%w{ git-receive-pack }
+      when *%w( git-receive-pack )
         if user
           # Skip user authorization on upload request.
           # It will be done by the pre-receive hook in the repository.
@@ -104,7 +102,7 @@ module Grack
     end
 
     def render_not_found
-      [404, { "Content-Type" => "text/plain" }, ["Not Found"]]
+      [404, { 'Content-Type' => 'text/plain' }, ['Not Found']]
     end
   end
 end
