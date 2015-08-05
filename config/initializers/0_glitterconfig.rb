@@ -28,7 +28,7 @@ Glitter::Application.config.gravatar_size='48'
 Glitter::Application.config.auth_methods=[:facebook,:twitter,:open_id,:linkedIn,:github]
 
 # location of gitlab-shell/hooks
-Glitter::Application.config.hook_dir = File.join(Rails.root,'..','gitlab-shell','hooks')
+Glitter::Application.config.shell_path = File.join(Rails.root,'..','gitlab-shell')
 
 # This is the ActionMailer configuration
 #

@@ -438,8 +438,9 @@ class Project < ActiveRecord::Base
   #    |--gitlab-shell
   def sym_hook
     local_hooks_directory = File.join(barerepopath, 'hooks')
+    shell_hook_dir = File.join(Glitter::Application.config.shell_path, 'hooks')
     new_dir_name = "#{local_hooks_directory}.old.#{Time.now.to_i}"
     FileUtils.mv(local_hooks_directory, new_dir_name)
-    FileUtils.ln_s(Glitter::Application.config.hook_dir, local_hooks_directory)
+    FileUtils.ln_s(shell_hook_dir, local_hooks_directory)
   end
 end

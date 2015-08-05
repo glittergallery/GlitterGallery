@@ -21,7 +21,7 @@ module Gg
     protected
 
     def self.gg_shell_keys_path
-      File.join('/home', 'addie','gitlab-shell', 'bin', 'gitlab-keys')
+      File.join(Glitter::Application.config.shell_path, 'bin', 'gitlab-keys')
     end
   end
 end
