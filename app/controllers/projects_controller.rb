@@ -218,23 +218,13 @@ class ProjectsController < ApplicationController
     render 'show'
   end
 
+  # first argument is commit from where walker will start
+  # second argument is path of the file in repo
   def file_history
-    @bloblist = []
-    walker = Rugged::Walker.new @project.barerepo
-    walker.push @project.barerepo.head.target
-    walker.each do |commit|
-      tree = @project.barerepo.lookup commit.tree_id
-      tree.each do |blob|
-        next unless  blob[:name] == params[:image_name]
-
-        blobdata = @project.barerepo.read(blob[:oid]).data
-        image = {
-                  name: blob[:name],
-                  data: blobdata
-                }
-        @bloblist << [image , commit]
-      end
-    end
+    rugged_repo = @project.barerepo
+    @bloblist = Gg::Diff.build_log rugged_repo.head.target,
+                                   params[:destination],
+                                   rugged_repo
   end
 
   def create_directory
