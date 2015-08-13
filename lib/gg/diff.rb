@@ -1,17 +1,23 @@
 module Gg
-  module Diff
-    extend self
+  class Diff
 
+    attr_reader :rugged, :path
+
+    def initialize(rugged, path)
+      @rugged  = rugged
+      @path  = path
+    end
     # Return an array of log commits, given an SHA hash and a hash of
     # options.
-    def build_log(sha, path, rugged)
+    def build_log(sha)
       bloblist = []
       # Instantiate a Walker and add the SHA hash
       walker = Rugged::Walker.new(rugged)
-      walker.push(sha)
+      commit_head = rugged.lookup sha
+      walker.push(commit_head)
       walker.sorting(Rugged::SORT_DATE)
       walker.each do |c|
-        if commit_touches_path?(c, path, false, walker, rugged)
+        if commit_touches_path?(c, walker)
           tree = rugged.lookup c.tree_id
           blob = tree.path path
           blobdata = rugged.read(blob[:oid]).data
@@ -33,8 +39,8 @@ module Gg
     # trees to make that determination.  Uses the history simplification
     # rules that `git log` uses by default, where a commit is omitted if it
     # is TREESAME to any parent.
-    def commit_touches_path?(commit, path, follow, walker, rugged)
-      entry = tree_entry(commit, path, rugged)
+    def commit_touches_path?(commit, walker)
+      entry = tree_entry(commit)
 
       num_treesame = 0
       if commit.parents.empty?
@@ -43,7 +49,7 @@ module Gg
       end
 
       commit.parents.each do |parent|
-        parent_entry = tree_entry(parent, path, rugged)
+        parent_entry = tree_entry(parent)
 
         # Only follow the first TREESAME parent for merge commits
         if num_treesame > 0
@@ -66,7 +72,7 @@ module Gg
     end
 
     # Find the entry for +path+ in the tree for +commit+
-    def tree_entry(commit, path, rugged)
+    def tree_entry(commit)
       pathname = Pathname.new(path)
       tmp_entry = nil
 

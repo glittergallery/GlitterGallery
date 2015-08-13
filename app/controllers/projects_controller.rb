@@ -221,10 +221,9 @@ class ProjectsController < ApplicationController
   # first argument is commit from where walker will start
   # second argument is path of the file in repo
   def file_history
-    rugged_repo = @project.barerepo
-    @bloblist = Gg::Diff.build_log rugged_repo.head.target,
-                                   params[:destination],
-                                   rugged_repo
+    oid = @project.branch_commit(params[:oid]).oid
+    diff = Gg::Diff.new @project.barerepo, params[:destination]
+    @bloblist = diff.build_log(oid)
   end
 
   def create_directory
