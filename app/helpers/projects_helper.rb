@@ -47,6 +47,11 @@ module ProjectsHelper
     ['newest', 'stars', 'followers', 'forks', 'activity', 'last updated']
   end
 
+  # return array of possible diff options
+  def compare_options
+    %w(side toggle opacity mask)
+  end
+
   # used to render default or first image of repo
   def render_image(project)
     tree = project.branch_tree 'master'

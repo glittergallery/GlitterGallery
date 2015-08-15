@@ -1,0 +1,19 @@
+- content_for :title do
+  Toggle
+
+%article.project{ data: 'current' }
+  = render 'project_header'
+  = render 'project_toolbar'
+  = render 'shared/messages'
+  = render 'breadcrumb'
+
+  %section
+    %div#toggle
+      #toggle_first
+        - diff1 = @bloblist.first
+        = truncate diff1.second.oid, length: 12
+        = data_image_tag(diff1.first, '100%', nil)
+      #toggle_second
+        - diff2 = @bloblist.second
+        = truncate diff2.second.oid, length: 12
+        = data_image_tag(diff2.first, '100%', nil)

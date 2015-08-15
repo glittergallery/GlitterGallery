@@ -1,0 +1,31 @@
+@media screen and (min-width: 0em){
+  body{
+    .wrapper{
+      article{
+        section{
+          #side_first, #side_second{
+            width: 48%;
+            float: left;
+          }
+
+          #toggle{
+            position: relative;
+          }
+
+          #toggle_first, #toggle_second{
+            position:absolute;
+            cursor:pointer;
+            -webkit-transition: opacity 1s ease-in-out;
+            -moz-transition: opacity 1s ease-in-out;
+            -o-transition: opacity 1s ease-in-out;
+            transition: opacity 1s ease-in-out;
+          }
+
+          #toggle_second.transparent{
+            opacity:0;
+          }
+        }
+      }
+    }
+  }
+}

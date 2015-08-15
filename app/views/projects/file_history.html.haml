@@ -7,13 +7,18 @@
   = render 'shared/messages'
   = render 'breadcrumb'
 
-  %br
-  - @bloblist.each do |image, commit|
-    = commit.author[:name]
-    = commit.message
-    = distance_of_time_in_words_to_now Time.at(commit.epoch_time)
-    ago
-    %br
-    = data_image_tag(image, '100%', nil)
+  %section
+    %div
+      = form_tag diff_user_project_path, method: 'get' do
+        = select_tag 'compare_type', options_for_select(compare_options)
+        - @bloblist.each do |image, commit|
+          = check_box_tag 'compare[]', commit.oid
+          = commit.author[:name]
+          = commit.message
+          = distance_of_time_in_words_to_now Time.at(commit.epoch_time)
+          ago
+          %br
+          = data_image_tag(image, '100%', nil)
 
-    %hr
+          %hr
+        = submit_tag 'Check'

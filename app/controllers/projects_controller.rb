@@ -226,6 +226,23 @@ class ProjectsController < ApplicationController
     @bloblist = diff.build_log(oid)
   end
 
+  def diff
+    @bloblist = []
+    if params[:compare].count == 2
+      @bloblist << find_blob_data(params[:compare].first, params[:destination])
+      @bloblist << find_blob_data(params[:compare].second, params[:destination])
+      case params[:compare_type]
+      when 'side'
+        render template: 'projects/diff/side_by_side'
+      when 'toggle'
+        render template: 'projects/diff/toggle'
+      end
+    else
+      flash[:alert] = 'Please select two commits to compare'
+      redirect_to history_user_project_path
+    end
+  end
+
   def create_directory
     branch = params[:branch] || 'master'
     new_dest = @project.create_directory(
@@ -365,5 +382,18 @@ class ProjectsController < ApplicationController
     else
       @projects = Project.order_by('newest')
     end
+  end
+
+  # returns image state a given commit and path
+  def find_blob_data(sha, path)
+    commit = @project.barerepo.lookup sha
+    tree = @project.barerepo.lookup commit.tree_id
+    blob = tree.path path
+    blobdata = @project.barerepo.read(blob[:oid]).data
+    image = {
+            name: blob[:name],
+            data: blobdata
+          }
+    [image , commit]
   end
 end
