@@ -1,3 +1,9 @@
+@media screen and (max-width: 81.03em) and (min-width: 64.063em){
+  #opacity_first, #opacity_second, #mask_first, #mask_second{
+    width: 50%;
+  }
+}
+
 @media screen and (min-width: 0em){
   body{
     .wrapper{
@@ -24,8 +30,34 @@
           #toggle_second.transparent{
             opacity:0;
           }
+
+          #opacity_first, #opacity_second, #mask_first, #mask_second{
+            position:absolute;
+          }
+
+          #opacity_slider, #mask_slider{
+            position: relative;
+            width: 100%;
+            padding: 0;
+          }
+          .ui-slider-range{
+            padding: 0;
+          }
+
+          #mask_second{
+            overflow: hidden;
+            width: 0;
+            padding-left: 0;
+            padding-right: 0;
+          }
         }
       }
     }
+  }
+}
+
+@media screen and (max-width: 60.063em){
+  #opacity_first, #opacity_second, #mask_first, #mask_second{
+    width: 98%;
   }
 }

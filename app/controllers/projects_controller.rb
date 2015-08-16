@@ -236,6 +236,10 @@ class ProjectsController < ApplicationController
         render template: 'projects/diff/side_by_side'
       when 'toggle'
         render template: 'projects/diff/toggle'
+      when 'opacity'
+        render template: 'projects/diff/opacity'
+      when 'mask'
+        render template: 'projects/diff/mask'
       end
     else
       flash[:alert] = 'Please select two commits to compare'

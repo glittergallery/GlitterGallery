@@ -1,5 +1,5 @@
 - content_for :title do
-  Toggle
+  Opacity
 
 %article.project{ data: 'current' }
   = render 'project_header'
@@ -8,12 +8,15 @@
   = render 'breadcrumb'
 
   %section
-    #toggle
-      #toggle_first
+    #opacity
+      #opacity_first
         - diff1 = @bloblist.first
         = truncate diff1.second.oid, length: 12
         = data_image_tag(diff1.first, '100%', nil)
-      #toggle_second
+      #opacity_second
         - diff2 = @bloblist.second
         = truncate diff2.second.oid, length: 12
         = data_image_tag(diff2.first, '100%', nil)
+
+    #opacity_slider
+
