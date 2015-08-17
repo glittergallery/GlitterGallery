@@ -18,7 +18,8 @@ class ProjectsController < ApplicationController
                                               :blob,
                                               :network,
                                               :branches,
-                                              :tree
+                                              :tree,
+                                              :diff
                                               ]
   authorize_resource except: [:followed_index]
 
