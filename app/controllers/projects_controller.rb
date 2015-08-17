@@ -218,19 +218,23 @@ class ProjectsController < ApplicationController
     render 'show'
   end
 
-  # first argument is commit from where walker will start
+  # first argument of Gg:diff is commit from where walker will start
   # second argument is path of the file in repo
+  # GET /history/branch_or_SHA/path
   def file_history
     oid = @project.branch_commit(params[:oid]).oid
     diff = Gg::Diff.new @project.barerepo, params[:destination]
     @bloblist = diff.build_log(oid)
   end
 
+  # GET /diff/branch_or_SHA/path
   def diff
     @bloblist = []
     if params[:compare].count == 2
-      @bloblist << find_blob_data(params[:compare].first, params[:destination])
-      @bloblist << find_blob_data(params[:compare].second, params[:destination])
+      @bloblist << @project.find_blob_data(params[:compare].first,
+                                           params[:destination])
+      @bloblist << @project.find_blob_data(params[:compare].second,
+                                           params[:destination])
       case params[:compare_type]
       when 'side'
         render template: 'projects/diff/side_by_side'
@@ -386,18 +390,5 @@ class ProjectsController < ApplicationController
     else
       @projects = Project.order_by('newest')
     end
-  end
-
-  # returns image state a given commit and path
-  def find_blob_data(sha, path)
-    commit = @project.barerepo.lookup sha
-    tree = @project.barerepo.lookup commit.tree_id
-    blob = tree.path path
-    blobdata = @project.barerepo.read(blob[:oid]).data
-    image = {
-            name: blob[:name],
-            data: blobdata
-          }
-    [image , commit]
   end
 end

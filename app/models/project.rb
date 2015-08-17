@@ -401,6 +401,19 @@ class Project < ActiveRecord::Base
     child
   end
 
+  # returns image state a given commit and path
+  def find_blob_data(sha, path)
+    commit = barerepo.lookup sha
+    tree = barerepo.lookup commit.tree_id
+    blob = tree.path path
+    blobdata = barerepo.read(blob[:oid]).data
+    image = {
+            name: blob[:name],
+            data: blobdata
+          }
+    [image , commit]
+  end
+
   private
 
   def set_path

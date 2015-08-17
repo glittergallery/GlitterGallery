@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  //toggles te image on click
+  //toggles the image on click
   $("#toggle_second").click(function() {
     $("#toggle_second").toggleClass("transparent");
   });
@@ -8,7 +8,7 @@ $(document).ready(function() {
 //used for mask and opacity
 $(document).ready(function() {
 
-  //set heigth of container of images from it's child div height
+  //set height of container of images from it's child div height
   function setHeight() {
     $('#opacity, #mask').height($('#mask_first, #opacity_first').height());
   }

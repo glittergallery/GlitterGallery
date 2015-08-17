@@ -9,13 +9,13 @@
 
   %section
     #opacity
+      - diff1 = @bloblist.first
+      - diff2 = @bloblist.second
+      comparing
+      = diff1.second.oid[0..7] + '..' + diff2.second.oid[0..7]
       #opacity_first
-        - diff1 = @bloblist.first
-        = truncate diff1.second.oid, length: 12
         = data_image_tag(diff1.first, '100%', nil)
       #opacity_second
-        - diff2 = @bloblist.second
-        = truncate diff2.second.oid, length: 12
         = data_image_tag(diff2.first, '100%', nil)
 
     #opacity_slider

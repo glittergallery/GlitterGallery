@@ -1,5 +1,5 @@
 - content_for :title do
-  Opacity
+  Mask
 
 %article.project{ data: 'current' }
   = render 'project_header'
@@ -9,13 +9,13 @@
 
   %section
     #mask
+      - diff1 = @bloblist.first
+      - diff2 = @bloblist.second
+      comparing
+      = diff1.second.oid[0..7] + '..' + diff2.second.oid[0..7]
       #mask_first
-        - diff1 = @bloblist.first
-        = truncate diff1.second.oid, length: 12
         = data_image_tag(diff1.first, '100%', nil)
       #mask_second
-        - diff2 = @bloblist.second
-        = truncate diff2.second.oid, length: 12
         = data_image_tag(diff2.first, nil, nil, 'mask_top')
 
     #mask_slider
