@@ -231,7 +231,7 @@ class ProjectsController < ApplicationController
   # GET /diff/branch_or_SHA/path
   def diff
     @bloblist = []
-    if params[:compare].count == 2
+    if !params[:compare].nil? && params[:compare].count == 2
       @bloblist << @project.find_blob_data(params[:compare].first,
                                            params[:destination])
       @bloblist << @project.find_blob_data(params[:compare].second,

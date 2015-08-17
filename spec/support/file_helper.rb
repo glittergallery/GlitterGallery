@@ -37,6 +37,21 @@ module FileHelper
     )
   end
 
+  def update_image(project, old_image, new_image)
+    file = ActionDispatch::Http::UploadedFile.new(
+      tempfile: upload(new_image),
+      filename: new_image,
+      original_filename: old_image
+    )
+    project.update_image(
+      'master',
+      old_image,
+      file,
+      project.user.git_author_params,
+      "updated image #{old_image}"
+    )
+  end
+
   private
 
   # helper to find the file to upload
