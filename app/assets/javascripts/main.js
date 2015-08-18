@@ -23,6 +23,7 @@ name: 'sidr-main',
 source: '#navigation'
 });
 
+$( '.swipebox' ).swipebox();
 });
 
 $( document ).ready(function() {
