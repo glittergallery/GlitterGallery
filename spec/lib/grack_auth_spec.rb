@@ -158,26 +158,6 @@ describe Grack::Auth do
 
             it_behaves_like 'has write access', 'collaborator'
             it_behaves_like 'has write access', 'owner'
-
-            shared_examples 'doesn not have write access' do |role|
-              unless role.nil?
-                before do
-                  create(
-                    :project_member,
-                    member: user,
-                    member_project: project,
-                    role: role
-                  )
-                end
-              end
-
-              it 'responds with status 401' do
-                expect(status).to eq(401)
-              end
-            end
-
-            it_behaves_like 'doesn not have write access', 'reporter'
-            it_behaves_like 'doesn not have write access', nil
           end
 
           context "when the user doesn't have access to the project" do

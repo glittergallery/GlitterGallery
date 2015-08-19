@@ -9,7 +9,7 @@ $("document").ready( function(){
 	if(articleContent === "login"){
 		$(".wrapper nav").css("display", "none");
 	}
-	var toolbarDivs = $("section.toolbar div, section.action div");
+	var toolbarDivs = $("section.toolbar div, section.action div, aside nav ul li");
 	toolbarDivs.each(function(){
 			if($(this).attr("data") === articleContent){
 				$(this).addClass("active");

@@ -1,0 +1,16 @@
+%aside
+  %h1
+    User Settings
+  %nav
+    %ul
+      %li{ data: 'profile' }
+        = link_to 'Profile', edit_user_registration_path
+      %li{ data: 'identities' }
+        = link_to 'Identities', identities_path
+      %li{ data: 'keys' }
+        = link_to 'SSH Keys', keys_path
+      -#
+        %li
+          = link_to 'Passwords'
+        %li
+          = link_to 'Projects', identities_path

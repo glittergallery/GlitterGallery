@@ -59,6 +59,8 @@ gem 'cancancan', '~> 1.10'
 # ruby implementation of git-http-backend
 gem 'gitlab-grack', '~> 2.0.2', require: 'grack'
 
+# used for api used by gitlab-shell
+gem 'grape'
 
 group :development, :test do
   # https://github.com/rspec/rspec-rails/issues/1273
@@ -83,6 +85,7 @@ group :test do
   gem 'launchy'
   gem 'rubocop', require: false
   gem 'haml-lint', require: false
+  gem 'shoulda-matchers'
 end
 
 # To use ActiveModel has_secure_password
@@ -92,7 +95,7 @@ end
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano'

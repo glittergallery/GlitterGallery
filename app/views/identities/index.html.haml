@@ -1,7 +1,7 @@
 - content_for :title do
   = current_user.username.titleize
 
-%article.user{ data: 'settings' }
+%article.user{ data: 'identities' }
   %header
     %h1
       = avatar current_user.email
@@ -29,17 +29,4 @@
         - @allowedmethods.each do |method|
           %div
             = link_to(method.to_s.capitalize, "/auth/#{method}")
-      %aside
-        %h1
-          User Settings
-        %nav
-          %ul
-            %li
-              = link_to 'Profile', edit_user_registration_path
-            %li.active
-              = link_to 'Identities', identities_path
-            -#
-              %li
-                = link_to 'SSH Keys', identities_path
-              %li
-                = link_to 'Projects', identities_path
+      = render 'devise/registrations/user_aside'

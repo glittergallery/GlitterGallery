@@ -1,5 +1,8 @@
+require 'api/api'
+
 Glitter::Application.routes.draw do
 
+  # handles git-* requests
   mount Grack::Bundle.new({
     git_path:     Glitter::Application.config.git_path,
     project_root: Glitter::Application.config.repo_path,
@@ -7,6 +10,11 @@ Glitter::Application.routes.draw do
     receive_pack: true
   }), at: '/', constraints: lambda { |request| /[-\/\w\.]+\.git\//.match(request.path_info) }, via: [:get, :post]
 
+  # API
+  API::API.logger Rails.logger
+  mount API::API => '/api'
+
+  # Web app
   post '/rate' => 'rater#create', :as => 'rate'
   devise_for :users,:controllers => { :registrations => 'registrations' }
   devise_scope :user do
@@ -18,6 +26,7 @@ Glitter::Application.routes.draw do
 
 
   resources :projects
+  resources :keys, only: [:create, :index, :destroy]
   resources :identities, only: [:destroy,:index]
   resources :comments, only: [:new, :create, :destroy]
   resources :glitterposts
