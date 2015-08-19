@@ -1,24 +1,24 @@
 - content_for :title do
   = @project.name.titleize
-  File history
 
-- content_for :pagetitle do
-  = link_to @project.name.titleize, @project.urlbase
-  \/
-  = link_to params[:image_name], File.join(@project.urlbase, 'master', params[:image_name])
-  \/
-  File history
-
+%article.project{ data: 'current' }
+  = render 'project_header'
   = render 'project_toolbar'
   = render 'shared/messages'
+  = render 'breadcrumb'
 
-%br
-- @bloblist.each do |image, commit|
-  = commit.author[:name]
-  = commit.message
-  = distance_of_time_in_words_to_now Time.at(commit.epoch_time)
-  ago
-  %br
-  = data_image_tag(image, '100%', nil)
+  %section
+    %div
+      = form_tag diff_user_project_path, method: 'get' do
+        = select_tag 'compare_type', options_for_select(compare_options)
+        - @bloblist.each do |image, commit|
+          = check_box_tag 'compare[]', commit.oid
+          = commit.author[:name]
+          = commit.message
+          = distance_of_time_in_words_to_now Time.at(commit.epoch_time)
+          ago
+          %br
+          = data_image_tag(image, '100%', nil)
 
-  %hr
+          %hr
+        = submit_tag 'Check'

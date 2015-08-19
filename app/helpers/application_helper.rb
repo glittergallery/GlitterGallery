@@ -5,18 +5,18 @@ module ApplicationHelper
   # This is used to generate image tags based on raw data.
   # Currently used only when we are displaying history of images.
   # In the normal project#show - standard image linking is used.
-  def data_image_tag(image, width, height)
+  def data_image_tag(image, width, height, id_name = nil)
     extension = image[:name].split('.').last
     if extension == 'svg'
-      "<img src='data:image/svg+xml;base64,
+      "<img id='#{id_name}' src='data:image/svg+xml;base64,
         #{Base64.encode64(image[:data])}' width='#{width}' height='#{height}'/>"
         .html_safe
     elsif extension == 'jpg'
-      "<img src='data:image/jpg;base64,
+      "<img id='#{id_name}' src='data:image/jpg;base64,
         #{Base64.encode64(image[:data])}' width='#{width}' height='#{height}'/>"
         .html_safe
     elsif extension == 'png'
-      "<img src='data:image/png;base64,
+      "<img id='#{id_name}' src='data:image/png;base64,
         #{Base64.encode64(image[:data])}' width='#{width}' height='#{height}'/>"
         .html_safe
     end

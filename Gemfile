@@ -31,6 +31,9 @@ gem 'activerecord-session_store'
 gem 'actionpack-action_caching'
 gem 'rails-observers'
 
+# For slider user in mask and opacity
+gem 'jquery-ui-rails'
+
 # For producing thumbnails.
 gem 'rmagick', '~> 2.13.4'
 

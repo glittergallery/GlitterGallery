@@ -18,7 +18,8 @@ class ProjectsController < ApplicationController
                                               :blob,
                                               :network,
                                               :branches,
-                                              :tree
+                                              :tree,
+                                              :diff
                                               ]
   authorize_resource except: [:followed_index]
 
@@ -218,22 +219,36 @@ class ProjectsController < ApplicationController
     render 'show'
   end
 
+  # first argument of Gg:diff is commit from where walker will start
+  # second argument is path of the file in repo
+  # GET /history/branch_or_SHA/path
   def file_history
-    @bloblist = []
-    walker = Rugged::Walker.new @project.barerepo
-    walker.push @project.barerepo.head.target
-    walker.each do |commit|
-      tree = @project.barerepo.lookup commit.tree_id
-      tree.each do |blob|
-        next unless  blob[:name] == params[:image_name]
+    oid = @project.branch_commit(params[:oid]).oid
+    diff = Gg::Diff.new @project.barerepo, params[:destination]
+    @bloblist = diff.build_log(oid)
+  end
 
-        blobdata = @project.barerepo.read(blob[:oid]).data
-        image = {
-                  name: blob[:name],
-                  data: blobdata
-                }
-        @bloblist << [image , commit]
+  # GET /diff/branch_or_SHA/path
+  def diff
+    @bloblist = []
+    if !params[:compare].nil? && params[:compare].count == 2
+      @bloblist << @project.find_blob_data(params[:compare].first,
+                                           params[:destination])
+      @bloblist << @project.find_blob_data(params[:compare].second,
+                                           params[:destination])
+      case params[:compare_type]
+      when 'side'
+        render template: 'projects/diff/side_by_side'
+      when 'toggle'
+        render template: 'projects/diff/toggle'
+      when 'opacity'
+        render template: 'projects/diff/opacity'
+      when 'mask'
+        render template: 'projects/diff/mask'
       end
+    else
+      flash[:alert] = 'Please select two commits to compare'
+      redirect_to history_user_project_path
     end
   end
 

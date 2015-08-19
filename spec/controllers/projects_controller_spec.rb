@@ -1,12 +1,8 @@
 require 'spec_helper'
 include Models::ProjectMembersHelper
+include FileHelper
 
 describe ProjectsController, type: :controller do
-
-  # helper to find the file to upload
-  def upload(file_name)
-    File.new("#{Rails.root}/spec/factories/files/#{file_name}")
-  end
 
   context 'user is guest' do
     let(:project) { create(:project) }
@@ -99,6 +95,32 @@ describe ProjectsController, type: :controller do
                    id: project.name,
                    oid: @commit.oid
         expect(response).to render_template('show')
+      end
+
+      it 'sees the history of a file' do
+        get :file_history, user_id: project.user.username,
+                           id: project.name,
+                           oid: 'master',
+                           destination: 'happypanda.png'
+        expect(response).to render_template('file_history')
+      end
+
+      describe 'GET #diff' do
+        before do
+          file_upload project, 'happypanda.png'
+          @commit = project.barerepo.head.target.oid
+        end
+
+        it 'compares two files' do
+          get :diff, user_id: project.user.username,
+                     id: project.name,
+                     compare_type: 'toggle',
+                     compare: [@commit, @commit],
+                     destination: 'happypanda.png',
+                     commit: 'Check',
+                     oid: 'master'
+          expect(response).to render_template('projects/diff/toggle')
+        end
       end
     end
 
@@ -258,13 +280,7 @@ describe ProjectsController, type: :controller do
 
     describe 'actions afters file upload' do
       before do
-        file = [ActionDispatch::Http::UploadedFile.new(
-          tempfile: upload('happypanda.png'),
-          filename: 'happypanda.png'
-        )]
-        post :file_upload, user_id: project.user.username,
-                           id: project.name,
-                           file: file
+        file_upload project, 'happypanda.png'
       end
 
       describe 'POST #file_upload' do
@@ -274,17 +290,7 @@ describe ProjectsController, type: :controller do
       end
 
       it 'allows user to update image' do
-        file = ActionDispatch::Http::UploadedFile.new(
-          tempfile: upload('naruto.png'),
-          filename: 'naruto.png',
-          original_filename: 'happypanda.png'
-        )
-        post :file_update, user_id: project.user.username,
-                           id: project.name,
-                           branch: 'master',
-                           destination: 'naruto.png',
-                           message: 'update panda image',
-                           file: file
+        file_update project, 'happypanda.png' , 'naruto.png'
         expect(project.browse_tree[0]
           .find { |h| h[:name] == 'naruto.png' }).not_to be nil
       end
@@ -330,29 +336,14 @@ describe ProjectsController, type: :controller do
     end
 
     it "doesn't allow user to upload image" do
-      file = [ActionDispatch::Http::UploadedFile.new(
-          tempfile: upload('happypanda.png'),
-          filename: 'happypanda.png'
-        )]
-      post :file_upload, user_id: project.user.username,
-                         id: project.name,
-                         file: file
+      file_upload project, 'happypanda.png'
       expect(project.browse_tree[0]).to be_empty
       expect(response.response_code).to eq(403)
     end
 
     describe 'after image upload actions' do
       before do
-        file = [ActionDispatch::Http::UploadedFile.new(
-          tempfile: upload('happypanda.png'),
-          filename: 'happypanda.png'
-        )]
-        project.add_images(
-          'master',
-          nil,
-          file,
-          project.user.git_author_params
-        )
+        file_upload project, 'happypanda.png'
       end
 
       it 'does not allow user to create a branch' do
@@ -365,17 +356,7 @@ describe ProjectsController, type: :controller do
       end
 
       it 'does not allow user to update image' do
-        file = ActionDispatch::Http::UploadedFile.new(
-          tempfile: upload('naruto.png'),
-          filename: 'naruto.png',
-          original_filename: 'happypanda.png'
-        )
-        post :file_update, user_id: project.user.username,
-                           id: project.name,
-                           branch: 'master',
-                           destination: 'naruto.png',
-                           message: 'update panda image',
-                           file: file
+        file_update project, 'happypanda.png' , 'naruto.png'
         expect(project.browse_tree[0]
           .find { |h| h[:name] == 'naruto.png' }).to be nil
         expect(response.response_code).to eq(403)

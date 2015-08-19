@@ -4,6 +4,7 @@
 // Core sheets
 @import '_main';
 @import 'jquery.sidr.light.css';
+@import 'jquery-ui.css';
 
 // Elements
 @import '_markdown';
@@ -21,3 +22,4 @@
 @import '_toolbar';
 @import '_user';
 @import '_widget';
+@import '_diff';

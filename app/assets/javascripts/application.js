@@ -20,6 +20,7 @@
 //= require nprogress
 //= require nprogress-turbolinks
 //= require main
+//= require diff
 //= require jquery.sidr.min
 //= require jquery.raty
 //= require ratyrate

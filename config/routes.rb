@@ -37,7 +37,6 @@ Glitter::Application.routes.draw do
   get '/inspire' => 'projects#index'
   get '/inspire/:sort' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
-  get '/:user_id/:id/master/:image_name/history' => 'projects#file_history', :image_name => /[^\/]*/
   get '/:user_id/:id/master/:image_name/update' => 'projects#update', :image_name => /[^\/]*/
   delete '/:user_id/:id/master/:image_name/delete' => 'projects#file_delete', :image_name => /[^\/]*/
   get '/:user_id/:id/pull' => 'projects#pull_request'
@@ -78,6 +77,8 @@ Glitter::Application.routes.draw do
           get 'commit/:commit_id' => 'projects#commit', as: :commit
           get 'tree(/:oid(/*destination))' => 'projects#tree', as: :tree, :destination => /.+/
           get 'blob/:oid/*destination' => 'projects#blob', as: :blob, :destination => /.+/
+          get 'history/:oid/*destination' => 'projects#file_history', as: :history, :destination => /.+/
+          get 'diff/:oid/*destination' => 'projects#diff', as: :diff, destination: /.+/
           post 'file_upload/(:branch(/*destination))' => 'projects#file_upload', as: :file_upload, :destination => /.+/
           post 'file_update/(:branch(/*destination))' => 'projects#file_update', as: :file_update, :destination => /.+/
           post 'create_directory/(:branch(/*destination))' => 'projects#create_directory', as: :create_directory, :destination => /.+/

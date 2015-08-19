@@ -28,7 +28,8 @@ class Ability
          :commits,
          :commit,
          :tree,
-         :file_history
+         :file_history,
+         :diff
         ], Project do |project|
       check_acess project, user
     end
