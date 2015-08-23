@@ -6,7 +6,8 @@ module ApplicationHelper
   # Currently used only when we are displaying history of images.
   # In the normal project#show - standard image linking is used.
   def data_image_tag(image, width, height, id_name = nil)
-    "<img id='#{id_name}' src='#{data_image_path(image)}' width='#{width}' height='#{height}'/>"
+    "<img id='#{id_name}' src='#{data_image_path(image)}'
+      width='#{width}' height='#{height}'/>"
       .html_safe
   end
 
