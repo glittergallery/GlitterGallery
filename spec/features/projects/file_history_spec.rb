@@ -16,8 +16,8 @@ feature 'History' do
 
     it 'sees all the previous commits' do
       visit "/#{user.username}/#{project.name}/history/master/happypanda.png"
-      expect(find('form')).to have_content('Add 1 image: happypanda.png')
-      expect(find('form')).to have_content('updated image happypanda.png')
+      expect(all('form')[1]).to have_content('Add 1 image: happypanda.png')
+      expect(all('form')[1]).to have_content('updated image happypanda.png')
     end
 
     describe 'fills form' do

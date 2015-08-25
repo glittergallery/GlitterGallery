@@ -35,18 +35,17 @@ feature 'Users' do
 
   describe 'Not logged in' do
     before :each do
-      sign_up_with('t@test.com', 'test1', 'secret12345')
-      click_link 'logout'
-      visit '/test1'
+      @user = create(:user)
+      visit "/#{@user.username}"
     end
 
     scenario 'Redirected to login page for HTML requests' do
-      click_link 'Follow test1'
+      click_link "Follow #{@user.username}"
       expect(page.current_path).to eq(new_user_session_path)
     end
 
     scenario 'Redirected to login page for JS requests', js: true do
-      click_link 'Follow test1'
+      click_link "Follow #{@user.username}"
       wait_for_ajax
       expect(page.current_path).to eq(new_user_session_path)
     end

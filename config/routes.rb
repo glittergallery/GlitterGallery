@@ -46,10 +46,10 @@ Glitter::Application.routes.draw do
   get '/:user_id/:id/pull/:pull_id/close' => 'projects#close'
   get '/:user_id/:id/pull/:pull_id/open' => 'projects#open'
   get '/:user_id/:id/pulls' => 'projects#pulls'
+  get '/:user_id' => 'users#show', :as => :user
 
 
-
-  resources :users, only: [:show], path: '/' do
+  resources :users, only: [], path: '/' do
     member do
       post 'follow' => 'relationships#follow'
       delete 'unfollow' => 'relationships#unfollow'

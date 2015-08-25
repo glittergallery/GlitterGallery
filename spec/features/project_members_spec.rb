@@ -10,8 +10,8 @@ feature 'ProjectMembers' do
 
     scenario 'adds members' do
       visit "/#{user.username}/#{project.name}/settings"
-      fill_in 'search', with: "#{user2.username}"
-      click_button 'Search'
+      fill_in 'find', with: "#{user2.username}"
+      click_button 'Find'
       expect(find('.option')).to have_content("#{user2.username}")
       click_button 'Add'
       expect(find('table')).to have_content("#{user2.username} collaborator")

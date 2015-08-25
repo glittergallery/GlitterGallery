@@ -8,11 +8,11 @@ describe UsersController, type: :controller do
     end
     describe 'GET #show' do
       it 'renders show template' do
-        get :show, id: @user.username
+        get :show, user_id: @user.username
         expect(response).to render_template('show')
       end
       it 'assigns correct user ID' do
-        get :show, id: @user.username
+        get :show, user_id: @user.username
         expect(assigns(:user)).to eq(@user)
       end
     end
