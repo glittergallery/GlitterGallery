@@ -24,6 +24,7 @@
           %img{ src: '/logo.svg' }
           #mobile-header
             %a#responsive-menu-button{ href: '#sidr-main' } Menu
+          = render 'search/form'
         .right
           - if user_signed_in?
             = link_to avatar(current_user.email), (File.join '/', current_user.username)

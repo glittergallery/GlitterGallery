@@ -14,7 +14,7 @@ $nprogress-color: red;
     background-color: $geometry_gray;
     .wrapper{
       nav {
-        z-index: 2;
+        z-index: 10000;
       }
       article{
         @include center;

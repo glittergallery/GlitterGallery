@@ -86,7 +86,7 @@ $("document").ready(function() {
         }
       }).focus(function(){
             //Displays the complete list on focus
-            $(this).data("autocomplete").search($(this).val());
+            $(this).autocomplete("search");
       });
   });
 });

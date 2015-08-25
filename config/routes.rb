@@ -34,6 +34,7 @@ Glitter::Application.routes.draw do
   resources :project_members, only: [:destroy]
 
 
+  get '/search' => 'search#show'
   get '/inspire' => 'projects#index'
   get '/inspire/:sort' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard

@@ -79,6 +79,7 @@
         }
         div.right{
           display: initial;
+          margin-top: 0.30em;
           @include col(1/4);
           a{
             text-decoration: none;
