@@ -1,5 +1,8 @@
 #search
   = form_tag '/search', method: 'get' do
-    = text_field_tag :search, params[:search]
+    - if params[:id].present?
+      = text_field_tag :search, params[:search], placeholder: 'This Project'
+    -else
+      = text_field_tag :search, params[:search]
     = hidden_field_tag :id, params[:id]
     = hidden_field_tag :user_id, params[:user_id]

@@ -1,0 +1,29 @@
+- content_for :title do
+  Search
+
+%article.project
+  = render 'projects/project_header'
+  = render 'shared/messages'
+  %section.album
+    - if @directories.empty? && @images.empty?
+      .guide
+        %p No match found
+    - else
+      Search result for
+      = "'#{params[:search]}'"
+      %div
+        - @directories.each do |dir|
+          %div
+            %p{ title: dir[:name] }
+              = link_to project_tree_path(@project, nil, dir[:name]) do
+                %img{ src: '/directory.png' }
+                %span.name
+                  = dir[:name]
+
+        - @images.each do |image|
+          %div
+            %p{ title: image[:name] }
+              = link_to image[:path], id: image[:name], class: 'swipebox' do
+                %img{ src: "#{image[:path]}" }
+                %span.name
+                  = link_to  image[:name], project_blob_path(@project, @oid, image[:name])
