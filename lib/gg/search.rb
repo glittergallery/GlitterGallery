@@ -14,7 +14,7 @@ module Gg
       files.each do |f|
         next if (/#{query}/i =~ f).nil?
         f_name = f.sub(project.satellitedir + '/', '')
-        push = {name: f_name, path: f.sub('public/', '')}
+        push = {name: f_name, path: f.sub('public', '')}
         File.file?(f) ? images << push : dir << push
       end
       [images, dir]

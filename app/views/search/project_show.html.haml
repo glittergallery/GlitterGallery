@@ -10,7 +10,7 @@
         %p No match found
     - else
       Search result for
-      = "'#{params[:search]}'"
+      = params[:search]
       %div
         - @directories.each do |dir|
           %div
