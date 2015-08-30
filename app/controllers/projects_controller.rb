@@ -28,24 +28,17 @@ class ProjectsController < ApplicationController
   end
 
   def index
-    if params[:id]
-      @user = User.find_by username: params[:id]
-      @projects = @user.projects.paginate(page: params[:page], per_page: 9)
-      render :user_index
-      return
+    sorted_projects
+    @projects = @projects.paginate(page: params[:page], per_page: 9)
+    if params[:page].present?
+      respond_to do |format|
+        format.html
+        format.js { render 'populate_pagination' }
+      end
     else
-      sorted_projects
-      @projects = @projects.paginate(page: params[:page], per_page: 9)
-      if params[:page].present?
-        respond_to do |format|
-          format.html
-          format.js { render 'populate_pagination' }
-        end
-      else
-        respond_to do |format|
-          format.html
-          format.js { render 'populate_projects' }
-        end
+      respond_to do |format|
+        format.html
+        format.js { render 'populate_projects' }
       end
     end
   end

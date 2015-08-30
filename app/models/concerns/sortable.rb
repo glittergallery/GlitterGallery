@@ -13,8 +13,9 @@ module Sortable
              AND comments.polycomment_type='project'
              LEFT OUTER JOIN issues ON issues.project_id = projects.id
              AND issues.status=1")
-     .where('comments.created_at > ?
-             OR issues.updated_at > ?', 10.days.ago, 10.days.ago)
+     .where('private = ? AND
+             comments.created_at > ?
+             OR issues.updated_at > ?', false, 10.days.ago, 10.days.ago)
      .group('projects.id')
      .order('count(comments.polycomment_id)+4*count(issues.project_id)
              desc')
@@ -24,20 +25,27 @@ module Sortable
              ON project_followers.project_id = projects.id')
      .group('projects.id')
      .order('count(project_followers.project_id) desc')
+     .where('private = ?', false)
     }
     scope :find_higest_stars, lambda {
       joins('LEFT OUTER JOIN rating_caches
              ON rating_caches.cacheable_id = projects.id')
      .order('rating_caches.avg desc')
+     .where('private = ?', false)
     }
     scope :find_most_forks, lambda {
       joins('LEFT OUTER JOIN projects p1
              ON projects.id = p1.ancestry')
      .group('projects.id')
      .order('count(p1.ancestry) desc')
+     .where('projects.private = ?', false)
     }
-    scope :find_most_recent, -> { order('created_at DESC') }
-    scope :find_last_updated, -> { order('updated_at DESC') }
+    scope :find_most_recent, lambda {
+      order('created_at DESC').where('private = ?', false)
+    }
+    scope :find_last_updated, lambda {
+      order('updated_at DESC').where('private = ?', false)
+    }
   end
 
   module ClassMethods

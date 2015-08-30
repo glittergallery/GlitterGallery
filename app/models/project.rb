@@ -29,6 +29,17 @@ class Project < ActiveRecord::Base
   acts_as_taggable
   ratyrate_rateable 'stars'
 
+  # returns public project with name matching search
+  # if no search query is passed all the public projects
+  # are returned
+  def self.search(search)
+    if search
+      with_deleted.where('name LIKE ? AND private = ', "%#{search}%", false)
+    else
+      with_deleted.where('private = ?', false)
+    end
+  end
+
   # Don't do any change to the children when the parent is deleted.
   # After all the parent is only soft deleted.
   def apply_orphan_strategy

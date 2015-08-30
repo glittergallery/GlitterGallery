@@ -6,7 +6,7 @@
           = link_to user_project_path(project.user, project) do
             = render_image project
           = link_to project.name, user_project_path(project.user, project)
-          = render 'forked_from', project: project
+          = render 'projects/forked_from', project: project
           %p.last_update
             Last updated #{distance_of_time_in_words_to_now project.updated_at} ago
         = rating_for project, 'stars', disable_after_rate: true, half_show: true

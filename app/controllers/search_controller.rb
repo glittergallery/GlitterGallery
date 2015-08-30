@@ -17,6 +17,8 @@ class SearchController < ApplicationController
 
   # GET /search
   def website_search
-    render 'show'
+    @projects = Project.search(params[:search])
+      .paginate(page: params[:page], per_page: 9)
+    render 'website_show'
   end
 end
