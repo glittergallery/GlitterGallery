@@ -70,4 +70,23 @@ module ProjectsHelper
       }
     end
   end
+
+  # As of now we support only three file types.
+  # Following function finds all files (not dir) and finds
+  # their type using extenstion
+  def find_file_types(project)
+    formats = { '.svg' => 0, '.jpg' =>  0, '.png' => 0, 'other' => 0 }
+    path = File.join project.satellitedir, '/**/*'
+    files = Dir[path]
+    files.each do |f|
+      next unless File.file?(f)
+      ext = File.extname(f)
+      if !formats[ext].nil?
+        formats[ext] += 1
+      else
+        formats['other'] += 1
+      end
+    end
+    formats.sort_by {|_k, v| v}.reverse
+  end
 end

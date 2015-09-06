@@ -17,13 +17,14 @@ $("document").ready( function(){
 	});
 });
 
+// function which triggers slide show of images
 $("document").ready(function() {
-$('#responsive-menu-button').sidr({
-name: 'sidr-main',
-source: '#navigation'
-});
+  $('#responsive-menu-button').sidr({
+    name: 'sidr-main',
+    source: '#navigation'
+  });
 
-$( '.swipebox' ).swipebox();
+  $( '.swipebox' ).swipebox();
 });
 
 $( document ).ready(function() {

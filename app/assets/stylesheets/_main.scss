@@ -55,10 +55,12 @@ $nprogress-color: red;
           }
           h2{
             text-align: left;
-            padding: 0.5em;
+            padding: 0.3em;
             font-size: 0.85em;
             font-weight: 300;
+            display: inline-block;
             background-color: white;
+            overflow: hidden;
             a{
               text-decoration: underline;
               color: $map_blue;
@@ -175,4 +177,9 @@ span.badge{
   color:red;
   font-weight: bold;
   padding: 0.2em;
+}
+
+#file_info{
+  margin-top: 0.3em;
+  margin-bottom: -0.35em;
 }
