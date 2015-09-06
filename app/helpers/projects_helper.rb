@@ -89,4 +89,12 @@ module ProjectsHelper
     end
     formats.sort_by {|_k, v| v}.reverse
   end
+
+  # returns number of commits on basis of repo's head
+  def commit_count(project, head)
+    return 0 if project.barerepo.empty?
+    commits = Rugged::Walker.new project.barerepo
+    commits.push project.branch_commit head
+    commits.count
+  end
 end

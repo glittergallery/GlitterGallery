@@ -8,11 +8,15 @@
     %div{ data: 'log' }
       %p
         Log
+        %span.count
+          = commit_count(@project, params[:oid])
 
   = link_to project_issues_path(@project) do
     %div{ data: 'issues' }
       %p
         Issues
+        %span.count
+          = @project.issues.count
 
   = link_to project_network_path(@project) do
     %div{ data: 'network' }
@@ -22,6 +26,8 @@
     %div{ data: 'branches' }
       %p
         Branches
+        %span.count
+          = @project.barerepo.branches.count
 
 %section.action
   - if user_signed_in? && @project.user.id == current_user.id
