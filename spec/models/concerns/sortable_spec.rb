@@ -22,6 +22,7 @@ describe 'sortable' do
   context 'involves user action' do
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
+    let(:user3) { create(:user) }
     describe 'most stars' do
       before do
         @project1.rate(3.0, user1, 'stars')
@@ -49,15 +50,20 @@ describe 'sortable' do
     end
 
     describe 'most fork' do
+
       before do
         (child1 = @project1.create_fork_project).user = user1
         child1.save
-        (child2 = @project2.create_fork_project).user = user1
+        (child2 = @project1.create_fork_project).user = user2
         child2.save
-        (child3 = @project3.create_fork_project).user = user2
+        (child3 = @project2.create_fork_project).user = user1
         child3.save
-        (child4 = @project3.create_fork_project).user = user1
+        (child4 = @project3.create_fork_project).user = user2
         child4.save
+        (child5 = @project3.create_fork_project).user = user1
+        child5.save
+        (child6 = @project3.create_fork_project).user = user3
+        child6.save
       end
       it 'shows most forked projects in order' do
         expect(Project.order_by('forks').limit(3))

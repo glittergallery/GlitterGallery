@@ -2,6 +2,7 @@ require 'spec_helper'
 include Models::ProjectMembersHelper
 
 describe IssuesController, type: :controller do
+  let(:user) { create(:user) }
   let(:project) { create(:project) }
   let(:issue) { create(:issue, project: project) }
 
@@ -29,6 +30,7 @@ describe IssuesController, type: :controller do
     if role
       let(:user) { create(:user) }
       before do
+        issue
         project.update_attribute(:private, true)
         make_member project, user, role
         sign_in(user)
@@ -43,7 +45,7 @@ describe IssuesController, type: :controller do
     it 'sees the show page' do
       get :show, user_id: project.user.username,
                  project_id: project.name,
-                 id: issue.id
+                 id: issue.sub_id
       expect(response).to render_template('show')
     end
   end
@@ -72,8 +74,8 @@ describe IssuesController, type: :controller do
   end
 
   shared_examples 'does not have write acess' do |role|
-    let(:user) { create(:user) }
     before do
+      issue
       make_member project, user, role unless role.nil?
       sign_in(user)
     end
@@ -81,7 +83,7 @@ describe IssuesController, type: :controller do
     it 'does not allow user to close issue' do
       put :close, user_id: project.user.username,
                   project_id: project.name,
-                  id: issue.id
+                  id: issue.sub_id
       issue.reload
       expect(issue.status).to eq('open')
       expect(response.response_code).to eq(403)
@@ -91,7 +93,7 @@ describe IssuesController, type: :controller do
       issue.close
       put :reopen, user_id: project.user.username,
                   project_id: project.name,
-                  id: issue.id
+                  id: issue.sub_id
       expect(issue.status).to eq('closed')
       expect(response.response_code).to eq(403)
     end
@@ -101,8 +103,8 @@ describe IssuesController, type: :controller do
   it_behaves_like 'does not have write acess', 'reporter'
 
   shared_examples 'has write access' do |role|
-    let(:user) { create(:user) }
     before do
+      issue
       make_member project, user, role
       sign_in(user)
     end
@@ -110,7 +112,7 @@ describe IssuesController, type: :controller do
     it 'allows user to close issue' do
       put :close, user_id: project.user.username,
                   project_id: project.name,
-                  id: issue.id
+                  id: issue.sub_id
       issue.reload
       expect(issue.status).to eq('closed')
     end
@@ -119,7 +121,7 @@ describe IssuesController, type: :controller do
       issue.close
       put :reopen, user_id: project.user.username,
                   project_id: project.name,
-                  id: issue.id
+                  id: issue.sub_id
       issue.reload
       expect(issue.status).to eq('open')
     end
@@ -129,12 +131,15 @@ describe IssuesController, type: :controller do
   it_behaves_like 'has write access', 'collaborator'
 
   context 'user is owner of issue' do
-    before { sign_in(issue.user) }
+    before do
+      issue
+      sign_in(issue.user)
+    end
 
     it 'allows user to close issue' do
       put :close, user_id: project.user.username,
                   project_id: project.name,
-                  id: issue.id
+                  id: issue.sub_id
       issue.reload
       expect(issue.status).to eq('closed')
     end
@@ -143,7 +148,7 @@ describe IssuesController, type: :controller do
       issue.close
       put :reopen, user_id: project.user.username,
                   project_id: project.name,
-                  id: issue.id
+                  id: issue.sub_id
       issue.reload
       expect(issue.status).to eq('open')
     end

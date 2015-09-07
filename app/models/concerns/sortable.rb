@@ -30,12 +30,12 @@ module Sortable
     scope :find_higest_stars, lambda {
       joins('LEFT OUTER JOIN rating_caches
              ON rating_caches.cacheable_id = projects.id')
-     .order('rating_caches.avg desc')
+     .order('rating_caches.avg desc NULLS LAST')
      .where('private = ?', false)
     }
     scope :find_most_forks, lambda {
       joins('LEFT OUTER JOIN projects p1
-             ON projects.id = p1.ancestry')
+             ON projects.id = CAST(p1.ancestry AS integer)')
      .group('projects.id')
      .order('count(p1.ancestry) desc')
      .where('projects.private = ?', false)

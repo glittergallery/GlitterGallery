@@ -1,7 +1,8 @@
 class IssuesController < ApplicationController
   before_filter :authenticate_user!, except: [:show, :index]
   before_action :get_context
-  load_and_authorize_resource
+  before_action :set_issue, only: [:show, :reopen, :close]
+  authorize_resource
 
   def index
     @issues = find_issue(params[:state])
@@ -13,7 +14,6 @@ class IssuesController < ApplicationController
   end
 
   def show
-    @issue = @project.issues.find_by_sub_id(params[:id])
     @comments = Comment.where(
       polycomment_type: 'issue',
       polycomment_id: @issue.id
@@ -48,7 +48,6 @@ class IssuesController < ApplicationController
   # TODO: Needs a revisit after defining abilities
   # PUT /user/project/issues/1/close
   def close
-    @issue = @project.issues.find_by_sub_id(params[:id])
     if @issue.close
       flash[:notice] = 'Issue Closed'
       redirect_to project_issues_path(@project)
@@ -60,7 +59,6 @@ class IssuesController < ApplicationController
 
   # PUT /user/project/issues/1/reopen
   def reopen
-    @issue = @project.issues.find_by_sub_id(params[:id])
     if @issue.reopen
       flash[:notice] = 'Issue Reopened'
     else
@@ -83,5 +81,9 @@ class IssuesController < ApplicationController
       @activetab = 0
       @project.issues.where(status: 0)
     end
+  end
+
+  def set_issue
+    @issue = @project.issues.find_by_sub_id(params[:id])
   end
 end
