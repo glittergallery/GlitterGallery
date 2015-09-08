@@ -133,9 +133,9 @@ feature 'Projects' do
         .to have_link('public_project')
       expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul'))
         .to have_no_content('test2')
-      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul/li[1]'))
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul'))
         .to have_link('test3')
-      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul/li[2]'))
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul'))
         .to have_link('test4')
     end
   end

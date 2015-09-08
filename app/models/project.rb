@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
 
   include Sortable
-  after_create :set_path, :init
+  after_create :set_path, :init, :add_tags
   after_destroy :deletefiles
   before_save :set_uniqueurl
 
@@ -452,7 +452,18 @@ class Project < ActiveRecord::Base
     FileUtils.mkdir_p image_for('', 'desktop_inspire', true)
     FileUtils.mkdir_p image_for('', 'thumbnails', true)
 
-    pushtobare unless satelliterepo.empty?
+    return if satelliterepo.empty?
+    pushtobare
+    copy_inspire_images parent
+  end
+
+  # copy inspire image in fork from the parent project
+  def copy_inspire_images(parent)
+    img = parent.find_inspire_image
+    mobile = parent.image_for img, 'mobile_inspire', true
+    desktop = parent.image_for img, 'desktop_inspire', true
+    FileUtils.cp(mobile, "#{data_path}/inspire/mobile")
+    FileUtils.cp(desktop, "#{data_path}/inspire/desktop")
   end
 
   # makes a symlink to hooks in gitlab-shell in each project
@@ -466,5 +477,10 @@ class Project < ActiveRecord::Base
     new_dir_name = "#{local_hooks_directory}.old.#{Time.now.to_i}"
     FileUtils.mv(local_hooks_directory, new_dir_name)
     FileUtils.ln_s(shell_hook_dir, local_hooks_directory)
+  end
+
+  # default list of tags
+  def add_tags
+    self.tag_list = 'bug, feature, improvement, feedback, discussion, help'
   end
 end

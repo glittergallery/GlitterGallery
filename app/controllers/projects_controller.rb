@@ -56,7 +56,6 @@ class ProjectsController < ApplicationController
     project = Project.new project_params
     project.user_id = current_user.id
     project.private = true if params[:commit] == 'Private'
-    project.tag_list = 'bug, feature, improvement, feedback, discussion, help'
     if project.save
       ProjectMember.add_owner project, current_user
       unless project.private
@@ -339,6 +338,7 @@ class ProjectsController < ApplicationController
     child = @project.create_fork_project
     child.user = current_user
     if child.save
+      ProjectMember.add_owner child, current_user
       redirect_to user_project_path child.user, child
       # TODO: notifications
     else

@@ -66,6 +66,11 @@ $nprogress-color: red;
               color: $map_blue;
             }
           }
+          #file_info{
+            margin-top: 0.3em;
+            margin-bottom: -0.35em;
+            display: none;
+          }
         }
         table {
           width: 100%;
@@ -156,6 +161,12 @@ $nprogress-color: red;
   }
 }
 
+@media screen and (min-width: 40.063em){
+  #file_info{
+    display: initial;
+  }
+}
+
 span.badge{
   @include border-radius(0.1em);
   padding: 0.2em;
@@ -179,7 +190,3 @@ span.badge{
   padding: 0.2em;
 }
 
-#file_info{
-  margin-top: 0.3em;
-  margin-bottom: -0.35em;
-}

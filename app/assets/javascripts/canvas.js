@@ -25,7 +25,7 @@ function draw() {
   var center_width = $(".project").width()
   var c = document.getElementById("file_info");
   // set width ( = parent - approx h2 width) and height of canvas
-  c.width = center_width - 91;
+  c.width = center_width - ($('.project header h2').width() + 15);
   c.height = 32;
   var ctx = c.getContext("2d");
   ctx.lineWidth = 4;
@@ -48,3 +48,4 @@ function draw() {
 }
 
 $("document").ready(draw);
+

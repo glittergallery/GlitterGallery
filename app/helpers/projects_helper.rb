@@ -1,4 +1,7 @@
 module ProjectsHelper
+
+  # set the network graph, starting at root of the tree.
+  # also includes deleted projects in the graph
   def nested_projects(roots, project)
     content_tag :ul, class: 'nested_projects' do
       roots.each do |root|
@@ -15,7 +18,8 @@ module ProjectsHelper
         else
           concat(content_tag(:li, str))
         end
-        concat(nested_projects(root.children, project)) if root.has_children?
+        r_children = root.children.with_deleted
+        concat(nested_projects(r_children, project)) unless r_children.empty?
       end
     end
   end
