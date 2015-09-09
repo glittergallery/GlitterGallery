@@ -36,3 +36,16 @@
 #search input[type="text"]:focus {
   width: 200px;
 }
+
+.item {
+  font-size: 0.9em;
+  padding: 0.2em 2.9em!important;
+  border: 1px solid rgb(168, 151, 151);
+  border-bottom: 0;
+  float: left;
+  border-radius: 2px 2px 0 0;
+}
+
+.ui-widget-content{
+  border: none;
+}

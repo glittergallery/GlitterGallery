@@ -18,6 +18,7 @@ $("document").ready( function(){
 });
 
 // function which triggers slide show of images
+// Also used for switching of tabs. They both use jquery-ui
 $("document").ready(function() {
   $('#responsive-menu-button').sidr({
     name: 'sidr-main',
@@ -25,6 +26,8 @@ $("document").ready(function() {
   });
 
   $( '.swipebox' ).swipebox();
+  $("#tabs").tabs();
+  $('#tabs ul').removeClass('ui-widget-header');
 });
 
 $( document ).ready(function() {

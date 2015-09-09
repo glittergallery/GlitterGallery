@@ -64,6 +64,9 @@ gem 'gitlab-grack', '~> 2.0.2', require: 'grack'
 # used for api used by gitlab-shell
 gem 'grape'
 
+# performs full text search
+gem 'pg_search'
+
 group :development, :test do
   # https://github.com/rspec/rspec-rails/issues/1273
   gem 'minitest'

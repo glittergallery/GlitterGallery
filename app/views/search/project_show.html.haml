@@ -3,15 +3,18 @@
 
 %article.project
   = render 'projects/project_header'
+  = render 'projects/project_toolbar'
   = render 'shared/messages'
-  %section.album
-    - if @directories.empty? && @images.empty?
-      .guide
-        %p No match found
-    - else
-      Search result for
-      = params[:search]
-      %div
+  #tabs
+    %ul
+      %li.item
+        %a{ href: '#files' }
+          Files
+      %li.item
+        %a{ href: '#issues' }
+          Issues
+    %section.album
+      #files
         - @directories.each do |dir|
           %div
             %p{ title: dir[:name] }
@@ -27,3 +30,23 @@
                 %img{ src: "#{image[:path]}" }
                 %span.name
                   = link_to  image[:name], project_blob_path(@project, @oid, image[:name])
+    %section
+      #issues
+        .option.feed
+          %header
+            - @issues.each do |issue|
+              %div
+                %header
+                  %h2
+                    = precede '#' do
+                      = issue.sub_id
+                      = link_to issue.title, issue_path(issue)
+                  %p
+                    Tags:
+                    = raw link_tags issue
+                %footer
+                  %p
+                    by
+                    = issue.user.username
+                    = distance_of_time_in_words_to_now issue.created_at
+                    ago.

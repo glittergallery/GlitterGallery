@@ -21,7 +21,7 @@
     .wrapper
       %nav
         .left
-          %img{ src: '/logo.svg' }
+          = link_to image_tag('logo.svg', alt: 'gg-logo'), root_path
           #mobile-header
             %a#responsive-menu-button{ href: '#sidr-main' } Menu
           = render 'search/form'

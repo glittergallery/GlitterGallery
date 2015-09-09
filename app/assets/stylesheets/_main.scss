@@ -163,7 +163,7 @@ $nprogress-color: red;
 
 @media screen and (min-width: 40.063em){
   #file_info{
-    display: initial;
+    display: initial !important;
   }
 }
 
