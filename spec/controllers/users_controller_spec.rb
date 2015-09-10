@@ -27,6 +27,15 @@ describe UsersController, type: :controller do
       expect(response).not_to render_template(partial: '_followings')
       expect(response.response_code).to eq(401)
     end
+
+    describe 'GET #show_projects' do
+      before { @project = create(:project, user: @user) }
+      it 'renders project show template' do
+        get :show_projects, id: @user.username
+        expect(response).to render_template('show_projects')
+        expect(response.body).to include(@project.name)
+      end
+    end
   end
 
   context 'user is logged in' do

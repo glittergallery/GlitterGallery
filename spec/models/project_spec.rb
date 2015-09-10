@@ -38,6 +38,10 @@ describe Project do
     expect {project.destroy}.not_to change{Project.with_deleted.count}
   end
 
+  it 'has default set of tags' do
+    expect(project.tag_list).not_to be_empty
+  end
+
   it 'sets path after creation' do
     expect(project.data_path).to_not eq(nil)
   end
