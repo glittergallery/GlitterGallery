@@ -13,12 +13,12 @@ module Sortable
              AND comments.polycomment_type='project'
              LEFT OUTER JOIN issues ON issues.project_id = projects.id
              AND issues.status=1")
-     .where('private = ? AND
-             comments.created_at > ?
-             OR issues.updated_at > ?', false, 10.days.ago, 10.days.ago)
+     .where('comments.created_at > ?
+             OR issues.updated_at > ?', 10.days.ago, 10.days.ago)
      .group('projects.id')
      .order('count(comments.polycomment_id)+4*count(issues.project_id)
              desc')
+     .where('projects.private = ?', false)
     }
     scope :find_most_followers, lambda {
       joins('LEFT OUTER JOIN project_followers

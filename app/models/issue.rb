@@ -36,17 +36,6 @@ class Issue < ActiveRecord::Base
     end
   end
 
-  # TODO: make a list of 5 most popular types of issues
-  #       people can raise on design projects.
-  #
-  # TYPES
-  # [0] - Bug
-  # [1] - Improvement
-  #
-  # STATUSES
-  # [0] - OPEN
-  # [1] - CLOSED
-
   # Closes the issue.
   def close
     self.closed!
@@ -55,10 +44,6 @@ class Issue < ActiveRecord::Base
   # Reopens the issue.
   def reopen
     self.open!
-  end
-
-  def self.type_keys
-    { 0 => 'Bug', 1 => 'Improvement' }
   end
 
   def friendly_text

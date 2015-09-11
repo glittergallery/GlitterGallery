@@ -22,10 +22,11 @@ function drawText(ctx, n, start_x, num){
 // Draws on the canvas used to show the file info.
 // uses gray scale for all file types.
 function draw() {
-  var center_width = $(".project").width()
+  $('#file_info').css('height', '');
+  var center_width = $(".generated").width()
   var c = document.getElementById("file_info");
   // set width ( = parent - approx h2 width) and height of canvas
-  c.width = center_width - ($('.project header h2').width() + 15);
+  c.width = center_width - ($('article header h2').width() + 3);
   c.height = 32;
   var ctx = c.getContext("2d");
   ctx.lineWidth = 4;

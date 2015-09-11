@@ -57,10 +57,35 @@ describe Project do
     ))).to be_a(Rugged::Repository)
   end
 
-  it 'gets list of inspiring projects' do
-    create(:project, name: 't2', private: true, user: project.user)
-    expect(Project.inspiring_projects_for(project.user.id).count).to eq(0)
-    expect(Project.inspiring_projects_for(project.user.id + 1).count).to eq(1)
+  describe '.search' do
+    before do
+      @project2 = create(:project, name: 'red_solo_cup')
+      project
+    end
+
+    it 'looks through the title' do
+      matches = Project.search('red')
+      expect(matches).to include(@project2)
+      expect(matches).not_to include(project)
+    end
+
+    it 'looks through username of owner' do
+      matches = Project.search(@project2.user.username)
+      expect(matches).to include(@project2)
+      expect(matches).not_to include(project)
+    end
+
+    it 'perform stemming' do
+      matches = Project.search('cups')
+      expect(matches).to include(@project2)
+      expect(matches).not_to include(project)
+    end
+
+    it 'find matches with prifix' do
+      matches = Project.search('sol')
+      expect(matches).to include(@project2)
+      expect(matches).not_to include(project)
+    end
   end
 
   it 'gets thumbnails path' do

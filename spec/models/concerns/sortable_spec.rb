@@ -1,22 +1,28 @@
 require 'spec_helper'
+include FileHelper
 
 describe 'sortable' do
-
-  # helper to find the file to upload
-  def upload(file_name)
-    File.new("#{Rails.root}/spec/factories/files/#{file_name}")
-  end
 
   before do
     @project1 = create(:project, name: 'new_name')
     @project2 = create(:project, created_at: '2010-05-24 21:00:57')
     @project3 = create(:project, name: 'newer_name')
   end
+
+  shared_examples 'private projects' do |sort|
+    before { @project1.update_attribute(:private, true) }
+    it 'does not show private projects' do
+      expect(Project.order_by(sort)).not_to include(@project1)
+    end
+  end
+
   describe 'most recent' do
     it 'shows most recent projects in order' do
       expect(Project.order_by('newest'))
         .to eq([@project3, @project1, @project2])
     end
+
+    it_behaves_like 'private projects', 'newest'
   end
 
   context 'involves user action' do
@@ -35,6 +41,8 @@ describe 'sortable' do
         expect(Project.order_by('stars'))
           .to eq([@project1, @project2, @project3])
       end
+
+      it_behaves_like 'private projects', 'stars'
     end
 
     describe 'most followers' do
@@ -47,6 +55,8 @@ describe 'sortable' do
         expect(Project.order_by('followers'))
           .to eq([@project2, @project1, @project3])
       end
+
+      it_behaves_like 'private projects', 'followers'
     end
 
     describe 'most fork' do
@@ -69,6 +79,8 @@ describe 'sortable' do
         expect(Project.order_by('forks').limit(3))
           .to eq([@project3, @project1, @project2])
       end
+
+      it_behaves_like 'private projects', 'forks'
     end
 
     describe 'most activity' do
@@ -83,21 +95,14 @@ describe 'sortable' do
         expect(Project.order_by('activity'))
           .to eq([@project3, @project2, @project1])
       end
+
+      it_behaves_like 'private projects', 'activity'
     end
 
     describe 'last updated' do
       before do
         # Image upload
-        file = [ActionDispatch::Http::UploadedFile.new(
-          tempfile: upload('happypanda.png'),
-          filename: 'happypanda.png'
-        )]
-        @project2.add_images(
-          'master',
-          nil,
-          file,
-          @project1.user.git_author_params
-        )
+        add_image @project2, 'happypanda.png'
         # Directory creation
         @project3.create_directory(
           'master',
@@ -111,6 +116,8 @@ describe 'sortable' do
         expect(Project.order_by('last updated'))
           .to eq([@project3, @project2, @project1])
       end
+
+      it_behaves_like 'private projects', 'last updated'
     end
   end
 end

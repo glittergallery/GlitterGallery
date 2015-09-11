@@ -48,11 +48,6 @@ class Project < ActiveRecord::Base
     name
   end
 
-  # Returns a list of public projects that belong to other users.
-  def self.inspiring_projects_for(user_id)
-    Project.where.not(private: true, user_id: user_id)
-  end
-
   def set_uniqueurl
     self.uniqueurl ||= SecureRandom.hex if private
   end
