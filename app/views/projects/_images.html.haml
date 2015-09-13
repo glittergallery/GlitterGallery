@@ -14,7 +14,9 @@
     - @images.each do |image|
       %div
         %p{ title: image[:name] }
-          = link_to data_image_path(image), id: image[:name], class: 'swipebox' do
-            = data_image_tag(image, '100%', nil)
-            %span.name
-              = link_to  image[:name], project_blob_path(@project, @oid, image[:dest])
+          = link_to render_show_image(@project, image[:name]),
+            @project.image_for(image[:name], 'slide_show', false),
+            id: image[:name],
+            class: 'swipebox'
+          %span.name
+            = link_to  image[:name], project_blob_path(@project, @oid, image[:dest])

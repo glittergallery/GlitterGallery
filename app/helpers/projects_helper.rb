@@ -57,7 +57,7 @@ module ProjectsHelper
   end
 
   # used to render default or first image of repo
-  def render_image(project)
+  def render_inspire_image(project)
     tree = project.branch_tree 'master'
     if tree.nil?
       image_tag nil, class: 'img-placeholder', data: {
@@ -73,6 +73,17 @@ module ProjectsHelper
         desktop_url: desktop
       }
     end
+  end
+
+  # render responsive images for project show page
+  # uses jquery for setting src from data attribute
+  def render_show_image(project, image_name)
+    mobile = project.image_for image_name, 'show_image_mob', false
+    desktop = project.image_for image_name, 'show_image_desk', false
+    image_tag nil, class: 'img-placeholder', data: {
+      mobile_url: mobile,
+      desktop_url: desktop
+    }
   end
 
   # As of now we support only three file types.

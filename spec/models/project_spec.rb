@@ -97,30 +97,75 @@ describe Project do
     expect(project.image_for(commit_id, 'thumbnails', true)).to eq(real_path)
   end
 
-  describe 'inspire images' do
+  describe 'image processing' do
     before { add_image project, 'happypanda.png' }
 
-    it 'gets desktop images path' do
-      real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
-                  'inspire/desktop/happypanda.png'
-      expect(project.image_for('happypanda.png', 'desktop_inspire', false))
-        .to eq(real_path)
+    describe '#image_for' do
+      it 'gets desktop images path' do
+        real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
+                    'inspire/desktop/happypanda.png'
+        expect(project.image_for('happypanda.png', 'desktop_inspire', false))
+          .to eq(real_path)
+      end
+
+      it 'gets mobie images path' do
+        real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
+                    'inspire/mobile/happypanda.png'
+        expect(project.image_for('happypanda.png', 'mobile_inspire', false))
+          .to eq(real_path)
+      end
+
+      it 'gets mobile show image path' do
+        real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
+                    'show_images/mobile/happypanda.png'
+        expect(project.image_for('happypanda.png', 'show_image_mob', false))
+          .to eq(real_path)
+      end
+
+      it 'gets desktop show image path' do
+        real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
+                    'show_images/desktop/happypanda.png'
+        expect(project.image_for('happypanda.png', 'show_image_desk', false))
+          .to eq(real_path)
+      end
+
+      it 'gets slide show image path' do
+        real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
+                    'show_images/slide/happypanda.png'
+        expect(project.image_for('happypanda.png', 'slide_show', false))
+          .to eq(real_path)
+      end
     end
 
-    it 'gets mobie images path' do
-      real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
-                  'inspire/mobile/happypanda.png'
-      expect(project.image_for('happypanda.png', 'mobile_inspire', false))
-        .to eq(real_path)
+    describe 'inspire images' do
+      it 'generates desktop images for inspire page' do
+        desk_path = project.image_for 'happypanda.png', 'desktop_inspire', true
+        expect(File.exists?(desk_path)).to be true
+      end
+
+      it 'generates mobile images for inspire page' do
+        mob_path = project.image_for 'happypanda.png', 'mobile_inspire', true
+        expect(File.exists?(mob_path)).to be true
+      end
     end
 
-    it 'generates mobile and desktop images' do
-      desk_p = "public/testdata/repos/#{project.user.username}/"\
-             "#{project.name}/inspire/desktop/happypanda.png"
-      mob_p = "public/testdata/repos/#{project.user.username}/"\
-             "#{project.name}/inspire/mobile/happypanda.png"
-      expect(File).to exist(desk_p)
-      expect(File).to exist(mob_p)
+    describe 'project show images' do
+      before { project.browse_tree }
+
+      it 'gets generates desktop image' do
+        desk_path = project.image_for 'happypanda.png', 'show_image_desk', true
+        expect(File.exists?(desk_path)).to be true
+      end
+
+      it 'gets generates mobile image' do
+        mob_path = project.image_for 'happypanda.png', 'show_image_mob', true
+        expect(File.exists?(mob_path)).to be true
+      end
+
+      it 'gets generates slide show image' do
+        slide_path = project.image_for 'happypanda.png', 'slide_show', true
+        expect(File.exists?(slide_path)).to be true
+      end
     end
   end
 

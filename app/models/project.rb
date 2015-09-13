@@ -152,6 +152,20 @@ class Project < ActiveRecord::Base
     end
   end
 
+  # resize images for project show page
+  # uses same size as that of images on inspire page
+  def resize_image(image_string, dest)
+    inspire_size = Glitter::Application.config.inspire_geometry
+    mobile_size = Glitter::Application.config.mobile_inspire_geometry
+    image = Magick::Image.from_blob(image_string).first
+    image.write image_for(dest.split('/').last, 'slide_show', true)
+    image.resize_to_fill(inspire_size[0], inspire_size[1])
+      .write image_for(dest.split('/').last, 'show_image_desk', true)
+    image.resize_to_fill(mobile_size[0], mobile_size[1])
+      .write image_for(dest.split('/').last, 'show_image_mob', true)
+    image
+  end
+
   # Takes a tree and the path to that tree.
   # Returns an array containing 2 elements, the first is an array of blobs
   # in the tree and the second is an array of the subtrees in the tree.
@@ -160,12 +174,13 @@ class Project < ActiveRecord::Base
     tree ||= barerepo.head.target.tree
     images = []
     directories = []
+    dump_show_img
     tree.each do |item|
       next if item[:name][0] == '.'
       dest = cur.nil? ? item[:name] : File.join(cur, item[:name])
       if item[:type] == :blob
+        resize_image(barerepo.read(item[:oid]).data, dest)
         images.push({
-          data: barerepo.read(item[:oid]).data,
           dest: dest, name: item[:name]
         })
       else
@@ -383,6 +398,12 @@ class Project < ActiveRecord::Base
       "#{prefix}/inspire/desktop/#{file_name}"
     when 'thumbnails'
       "#{prefix}/thumbnails/#{file_name}"
+    when 'show_image_desk'
+      "#{prefix}/show_images/desktop/#{file_name}"
+    when 'show_image_mob'
+      "#{prefix}/show_images/mobile/#{file_name}"
+    when 'slide_show'
+      "#{prefix}/show_images/slide/#{file_name}"
     end
   end
 
@@ -443,6 +464,9 @@ class Project < ActiveRecord::Base
     FileUtils.mkdir_p image_for('', 'mobile_inspire', true)
     FileUtils.mkdir_p image_for('', 'desktop_inspire', true)
     FileUtils.mkdir_p image_for('', 'thumbnails', true)
+    FileUtils.mkdir_p image_for('', 'show_image_desk', true)
+    FileUtils.mkdir_p image_for('', 'show_image_mob', true)
+    FileUtils.mkdir_p image_for('', 'slide_show', true)
 
     return if satelliterepo.empty?
     pushtobare
@@ -474,5 +498,12 @@ class Project < ActiveRecord::Base
   # default list of tags
   def add_tags
     self.tag_list = 'bug, feature, improvement, feedback, discussion, help'
+  end
+
+  # Dumbs show-image folder content before walk
+  def dump_show_img
+    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_desk', true)}/*"))
+    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_mob', true)}/*"))
+    FileUtils.rm_rf(Dir.glob("#{image_for('', 'slide_show', true)}/*"))
   end
 end
