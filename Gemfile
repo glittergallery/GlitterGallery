@@ -10,8 +10,7 @@ gem 'turbolinks'
 gem 'nprogress-rails'
 gem 'jquery-turbolinks'
 gem 'will_paginate'
-gem 'sqlite3'
-gem 'mysql2'
+gem 'pg'
 gem 'haml'
 gem 'rugged', '~> 0.21'
 gem 'escape'
@@ -64,6 +63,9 @@ gem 'gitlab-grack', '~> 2.0.2', require: 'grack'
 
 # used for api used by gitlab-shell
 gem 'grape'
+
+# performs full text search
+gem 'pg_search'
 
 group :development, :test do
   # https://github.com/rspec/rspec-rails/issues/1273

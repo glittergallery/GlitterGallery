@@ -13,6 +13,14 @@ class Issue < ActiveRecord::Base
 
   scope :status, -> (value) { where status: statuses[value] }
 
+  # Perform full text search on projects name while taking
+  # username in account. partial words are also searchable.
+  include PgSearch
+
+  pg_search_scope :search, against: [:title, :description],
+     using: { tsearch: { dictionary: 'english', prefix: true } },
+     associated_against: { user: :username }
+
   # We're using sub_id in routes.
   def to_param
     sub_id.to_s
@@ -28,17 +36,6 @@ class Issue < ActiveRecord::Base
     end
   end
 
-  # TODO: make a list of 5 most popular types of issues
-  #       people can raise on design projects.
-  #
-  # TYPES
-  # [0] - Bug
-  # [1] - Improvement
-  #
-  # STATUSES
-  # [0] - OPEN
-  # [1] - CLOSED
-
   # Closes the issue.
   def close
     self.closed!
@@ -47,10 +44,6 @@ class Issue < ActiveRecord::Base
   # Reopens the issue.
   def reopen
     self.open!
-  end
-
-  def self.type_keys
-    { 0 => 'Bug', 1 => 'Improvement' }
   end
 
   def friendly_text

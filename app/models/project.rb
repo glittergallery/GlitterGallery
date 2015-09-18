@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
 
   include Sortable
-  after_create :set_path, :init
+  after_create :set_path, :init, :add_tags
   after_destroy :deletefiles
   before_save :set_uniqueurl
 
@@ -29,6 +29,14 @@ class Project < ActiveRecord::Base
   acts_as_taggable
   ratyrate_rateable 'stars'
 
+  # Perform full text search on projects name while taking
+  # username in account. partial words are also searchable.
+  include PgSearch
+
+  pg_search_scope :search, against: :name,
+     using: { tsearch: { dictionary: 'english', prefix: true } },
+     associated_against: { user: :username }
+
   # Don't do any change to the children when the parent is deleted.
   # After all the parent is only soft deleted.
   def apply_orphan_strategy
@@ -38,11 +46,6 @@ class Project < ActiveRecord::Base
   # We're using name in routes.
   def to_param
     name
-  end
-
-  # Returns a list of public projects that belong to other users.
-  def self.inspiring_projects_for(user_id)
-    Project.where.not(private: true, user_id: user_id)
   end
 
   def set_uniqueurl
@@ -149,6 +152,20 @@ class Project < ActiveRecord::Base
     end
   end
 
+  # resize images for project show page
+  # uses same size as that of images on inspire page
+  def resize_image(image_string, dest)
+    inspire_size = Glitter::Application.config.inspire_geometry
+    mobile_size = Glitter::Application.config.mobile_inspire_geometry
+    image = Magick::Image.from_blob(image_string).first
+    image.write image_for(dest.split('/').last, 'slide_show', true)
+    image.resize_to_fill(inspire_size[0], inspire_size[1])
+      .write image_for(dest.split('/').last, 'show_image_desk', true)
+    image.resize_to_fill(mobile_size[0], mobile_size[1])
+      .write image_for(dest.split('/').last, 'show_image_mob', true)
+    image
+  end
+
   # Takes a tree and the path to that tree.
   # Returns an array containing 2 elements, the first is an array of blobs
   # in the tree and the second is an array of the subtrees in the tree.
@@ -157,12 +174,13 @@ class Project < ActiveRecord::Base
     tree ||= barerepo.head.target.tree
     images = []
     directories = []
+    dump_show_img
     tree.each do |item|
       next if item[:name][0] == '.'
       dest = cur.nil? ? item[:name] : File.join(cur, item[:name])
       if item[:type] == :blob
+        resize_image(barerepo.read(item[:oid]).data, dest)
         images.push({
-          data: barerepo.read(item[:oid]).data,
           dest: dest, name: item[:name]
         })
       else
@@ -380,6 +398,12 @@ class Project < ActiveRecord::Base
       "#{prefix}/inspire/desktop/#{file_name}"
     when 'thumbnails'
       "#{prefix}/thumbnails/#{file_name}"
+    when 'show_image_desk'
+      "#{prefix}/show_images/desktop/#{file_name}"
+    when 'show_image_mob'
+      "#{prefix}/show_images/mobile/#{file_name}"
+    when 'slide_show'
+      "#{prefix}/show_images/slide/#{file_name}"
     end
   end
 
@@ -440,8 +464,22 @@ class Project < ActiveRecord::Base
     FileUtils.mkdir_p image_for('', 'mobile_inspire', true)
     FileUtils.mkdir_p image_for('', 'desktop_inspire', true)
     FileUtils.mkdir_p image_for('', 'thumbnails', true)
+    FileUtils.mkdir_p image_for('', 'show_image_desk', true)
+    FileUtils.mkdir_p image_for('', 'show_image_mob', true)
+    FileUtils.mkdir_p image_for('', 'slide_show', true)
 
-    pushtobare unless satelliterepo.empty?
+    return if satelliterepo.empty?
+    pushtobare
+    copy_inspire_images parent
+  end
+
+  # copy inspire image in fork from the parent project
+  def copy_inspire_images(parent)
+    img = parent.find_inspire_image
+    mobile = parent.image_for img, 'mobile_inspire', true
+    desktop = parent.image_for img, 'desktop_inspire', true
+    FileUtils.cp(mobile, "#{data_path}/inspire/mobile")
+    FileUtils.cp(desktop, "#{data_path}/inspire/desktop")
   end
 
   # makes a symlink to hooks in gitlab-shell in each project
@@ -455,5 +493,17 @@ class Project < ActiveRecord::Base
     new_dir_name = "#{local_hooks_directory}.old.#{Time.now.to_i}"
     FileUtils.mv(local_hooks_directory, new_dir_name)
     FileUtils.ln_s(shell_hook_dir, local_hooks_directory)
+  end
+
+  # default list of tags
+  def add_tags
+    self.tag_list = 'bug, feature, improvement, feedback, discussion, help'
+  end
+
+  # Dumbs show-image folder content before walk
+  def dump_show_img
+    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_desk', true)}/*"))
+    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_mob', true)}/*"))
+    FileUtils.rm_rf(Dir.glob("#{image_for('', 'slide_show', true)}/*"))
   end
 end

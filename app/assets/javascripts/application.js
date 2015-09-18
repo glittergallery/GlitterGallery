@@ -21,10 +21,12 @@
 //= require nprogress-turbolinks
 //= require main
 //= require diff
+//= require canvas
 //= require jquery.sidr.min
 //= require jquery.raty
 //= require ratyrate
 //= require projects
+//= require jquery.swipebox.min
 
 $(document).on('ajax:error', function (e, xhr, settings) {
     if (xhr.status == 401) {

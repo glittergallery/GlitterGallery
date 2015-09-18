@@ -6,21 +6,23 @@ module ApplicationHelper
   # Currently used only when we are displaying history of images.
   # In the normal project#show - standard image linking is used.
   def data_image_tag(image, width, height, id_name = nil)
+    "<img id='#{id_name}' src='#{data_image_path(image)}'
+      width='#{width}' height='#{height}'/>"
+      .html_safe
+  end
+
+  # makes the href/src part to be used in links or img tags
+  def data_image_path(image)
     extension = image[:name].split('.').last
     if extension == 'svg'
-      "<img id='#{id_name}' src='data:image/svg+xml;base64,
-        #{Base64.encode64(image[:data])}' width='#{width}' height='#{height}'/>"
-        .html_safe
+      "data:image/svg+xml;base64, #{Base64.encode64(image[:data])}"
     elsif extension == 'jpg'
-      "<img id='#{id_name}' src='data:image/jpg;base64,
-        #{Base64.encode64(image[:data])}' width='#{width}' height='#{height}'/>"
-        .html_safe
+      "data:image/jpg;base64, #{Base64.encode64(image[:data])}"
     elsif extension == 'png'
-      "<img id='#{id_name}' src='data:image/png;base64,
-        #{Base64.encode64(image[:data])}' width='#{width}' height='#{height}'/>"
-        .html_safe
+      "data:image/png;base64, #{Base64.encode64(image[:data])}"
     end
   end
+
 
   # Returns gravatar
   def avatar(email = nil)

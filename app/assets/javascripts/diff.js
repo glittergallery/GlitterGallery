@@ -22,13 +22,11 @@ $(document).ready(function() {
   }
 
   function refreshMask() {
-    var maskWidth = $('#mask_first').width();
-    var resizeValue = $('#mask_slider').slider('value')*6.42;
-    if( maskWidth >= resizeValue){
-      $( "#mask_second" ).width(resizeValue);
-    }
+    var resizeValue = $('#mask_slider').slider('value');
+    $( "#mask_second" ).width(resizeValue);
   }
 
+  var maskWidth = $('#mask_first').width();
   //slider for mask and opacity
   $(function() {
     $('#opacity_slider').slider({
@@ -42,7 +40,7 @@ $(document).ready(function() {
     $('#mask_slider').slider({
         orientation: "horizontal",
         range: "min",
-        max: 100,
+        max: maskWidth+10,
         slide: refreshMask,
         change: refreshMask
     });

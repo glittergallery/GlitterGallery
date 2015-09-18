@@ -34,6 +34,7 @@ Glitter::Application.routes.draw do
   resources :project_members, only: [:destroy]
 
 
+  get '/search' => 'search#website_search'
   get '/inspire' => 'projects#index'
   get '/inspire/:sort' => 'projects#index'
   get '/dashboard' => 'dashboard#index', :as => :dashboard
@@ -47,14 +48,14 @@ Glitter::Application.routes.draw do
   get '/:user_id/:id/pulls' => 'projects#pulls'
 
 
-
   resources :users, only: [:show], path: '/' do
     member do
       post 'follow' => 'relationships#follow'
       delete 'unfollow' => 'relationships#unfollow'
       get 'followers' => 'users#list_followers'
       get 'followings' => 'users#list_followings'
-      get 'projects' => 'projects#index'
+      get 'projects' => 'users#show_projects'
+      get 'search' => 'search#project_search'
       scope 'followed', as: :followed do
         get 'projects' => 'projects#followed_index'
       end
@@ -70,6 +71,7 @@ Glitter::Application.routes.draw do
       get '(:xid)/issues/:tag' => 'issues#index'
       get '(:xid)/project_members' => 'project_members#search', as: :project_members
       post '(:xid)/project_members' => 'project_members#create', as: :new_project_members
+      get '(:xid)/search' => 'search#project_search', as: :search
       member do
         scope "(:xid)" do
           get :branches

@@ -24,3 +24,6 @@ tmp/
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
 *.un~
+
+# Ignore database config file
+/config/database.yml

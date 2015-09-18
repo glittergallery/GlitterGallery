@@ -27,6 +27,12 @@
       article{
         section.toolbar{
           @include bar-styling;
+
+          span.count {
+            padding: 0.2em 0.5em;
+            background-color: #eee;
+            border-radius: 5px;
+          }
         }
         section.action{
           @include bar-styling;

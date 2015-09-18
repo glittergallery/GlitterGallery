@@ -17,6 +17,13 @@
     - else
       %span.badge.author FORK
       = render partial: 'projects/forked_from', locals: { project: @project }
+  %ul#file_data{ style: 'display: none' }
+    - find_file_types(@project).each do |type|
+      %li
+        %span.file_type{ 'data-type' => "#{type[0]}" }
+        %span.file_num{ 'data-num' => "#{type[1]}" }
+  %canvas#file_info{ style: 'height: 0' }
+    File info
 
   - if params[:oid] && params[:oid] != 'master'
     %p

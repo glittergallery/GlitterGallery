@@ -133,9 +133,9 @@ feature 'Projects' do
         .to have_link('public_project')
       expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul'))
         .to have_no_content('test2')
-      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul/li[1]'))
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul'))
         .to have_link('test3')
-      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul/li[2]'))
+      expect(find(:xpath, '/html/body/div/article/section/div/ul/ul/ul'))
         .to have_link('test4')
     end
   end
@@ -278,7 +278,7 @@ feature 'Projects' do
 
       describe 'After updating an image on the branch' do
         before :each do
-          click_link 'happypanda.png'
+          find('a', text: 'happypanda.png').click
           @old = find('.album//img')['src']
           page.attach_file(
             'file', 'spec/factories/files/1.png'
@@ -315,7 +315,7 @@ feature 'Projects' do
           before :each do
             click_link 'Branches'
             click_link 'master'
-            click_link 'happypanda.png'
+            find('a', text: 'happypanda.png').click
           end
 
           scenario 'User sees old image' do
@@ -351,7 +351,7 @@ feature 'Projects' do
 
       scenario 'User sees uploaded image' do
         expect(page).to have_content 'happypanda.png'
-        click_link 'happypanda.png'
+        find('a', text: 'happypanda.png').click
         expect(find('.photo')).to have_selector('img')
       end
 
@@ -375,7 +375,7 @@ feature 'Projects' do
 
       describe 'After image update' do
         before :each do
-          click_link 'happypanda.png'
+          find('a', text: 'happypanda.png').click
           @old = find('.photo//img')['src']
           page.attach_file('file', 'spec/factories/files/1.png')
           fill_in 'message', with: 'updated commit test'
@@ -550,7 +550,7 @@ feature 'Projects' do
         end
 
         scenario 'User updates the new image' do
-          click_link 'happypanda.png'
+          find('a', text: 'happypanda.png').click
           old = find('.album//img')['src']
           page.attach_file(
             'file',

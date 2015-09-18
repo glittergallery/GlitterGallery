@@ -71,6 +71,11 @@ RSpec.configure do |config|
     DatabaseCleaner.start
   end
 
+  # making request over web makes test slower.
+  config.before(:each, js: true) do
+    page.driver.block_url 'http://gravatar.com'
+  end
+
   # Run tests in a random order.
   config.order = 'random'
 end

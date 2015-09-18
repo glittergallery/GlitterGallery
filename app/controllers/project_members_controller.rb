@@ -5,7 +5,7 @@ class ProjectMembersController < ApplicationController
 
   # GET /user_id/project_id/project_member
   def search
-    @users = User.search(params[:search])
+    @users = User.search(params[:find])
   end
 
   # POST /user_id/project_id/project_member

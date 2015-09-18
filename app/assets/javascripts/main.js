@@ -17,12 +17,17 @@ $("document").ready( function(){
 	});
 });
 
+// function which triggers slide show of images
+// Also used for switching of tabs. They both use jquery-ui
 $("document").ready(function() {
-$('#responsive-menu-button').sidr({
-name: 'sidr-main',
-source: '#navigation'
-});
+  $('#responsive-menu-button').sidr({
+    name: 'sidr-main',
+    source: '#navigation'
+  });
 
+  $( '.swipebox' ).swipebox();
+  $("#tabs").tabs();
+  $('#tabs ul').removeClass('ui-widget-header');
 });
 
 $( document ).ready(function() {
@@ -85,7 +90,7 @@ $("document").ready(function() {
         }
       }).focus(function(){
             //Displays the complete list on focus
-            $(this).data("autocomplete").search($(this).val());
+            $(this).autocomplete("search");
       });
   });
 });

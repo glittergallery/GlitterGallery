@@ -1,4 +1,7 @@
 module ProjectsHelper
+
+  # set the network graph, starting at root of the tree.
+  # also includes deleted projects in the graph
   def nested_projects(roots, project)
     content_tag :ul, class: 'nested_projects' do
       roots.each do |root|
@@ -15,7 +18,8 @@ module ProjectsHelper
         else
           concat(content_tag(:li, str))
         end
-        concat(nested_projects(root.children, project)) if root.has_children?
+        r_children = root.children.with_deleted
+        concat(nested_projects(r_children, project)) unless r_children.empty?
       end
     end
   end
@@ -53,7 +57,7 @@ module ProjectsHelper
   end
 
   # used to render default or first image of repo
-  def render_image(project)
+  def render_inspire_image(project)
     tree = project.branch_tree 'master'
     if tree.nil?
       image_tag nil, class: 'img-placeholder', data: {
@@ -69,5 +73,43 @@ module ProjectsHelper
         desktop_url: desktop
       }
     end
+  end
+
+  # render responsive images for project show page
+  # uses jquery for setting src from data attribute
+  def render_show_image(project, image_name)
+    mobile = project.image_for image_name, 'show_image_mob', false
+    desktop = project.image_for image_name, 'show_image_desk', false
+    image_tag nil, class: 'img-placeholder', data: {
+      mobile_url: mobile,
+      desktop_url: desktop
+    }
+  end
+
+  # As of now we support only three file types.
+  # Following function finds all files (not dir) and finds
+  # their type using extenstion
+  def find_file_types(project)
+    formats = { '.svg' => 0, '.jpg' =>  0, '.png' => 0, 'other' => 0 }
+    path = File.join project.satellitedir, '/**/*'
+    files = Dir[path]
+    files.each do |f|
+      next unless File.file?(f)
+      ext = File.extname(f)
+      if !formats[ext].nil?
+        formats[ext] += 1
+      else
+        formats['other'] += 1
+      end
+    end
+    formats.sort_by {|_k, v| v}.reverse
+  end
+
+  # returns number of commits on basis of repo's head
+  def commit_count(project, head)
+    return 0 if project.barerepo.empty?
+    commits = Rugged::Walker.new project.barerepo
+    commits.push project.branch_commit head
+    commits.count
   end
 end

@@ -1,0 +1,10 @@
+- content_for :title do
+  Search
+
+%article.project
+  %header
+    %h1 Exciting Projects
+    %p#sorting
+      Search results for:
+      = params[:search]
+  = render 'projects/projects_list'

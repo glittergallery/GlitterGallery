@@ -1,0 +1,7 @@
+#search
+  - if !params[:user_id].present?
+    = form_tag '/search', method: 'get' do
+      = text_field_tag :search, params[:search], placeholder: 'Search GG'
+  - else
+    = form_tag user_project_search_path(@project.user, @project), method: 'get' do
+      = text_field_tag :search, params[:search], placeholder: 'This Project'

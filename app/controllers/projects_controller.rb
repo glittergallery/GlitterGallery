@@ -28,24 +28,17 @@ class ProjectsController < ApplicationController
   end
 
   def index
-    if params[:id]
-      @user = User.find_by username: params[:id]
-      @projects = @user.projects.paginate(page: params[:page], per_page: 9)
-      render :user_index
-      return
+    sorted_projects
+    @projects = @projects.paginate(page: params[:page], per_page: 9)
+    if params[:page].present?
+      respond_to do |format|
+        format.html
+        format.js { render 'populate_pagination' }
+      end
     else
-      sorted_projects
-      @projects = @projects.paginate(page: params[:page], per_page: 9)
-      if params[:page].present?
-        respond_to do |format|
-          format.html
-          format.js { render 'populate_pagination' }
-        end
-      else
-        respond_to do |format|
-          format.html
-          format.js { render 'populate_projects' }
-        end
+      respond_to do |format|
+        format.html
+        format.js { render 'populate_projects' }
       end
     end
   end
@@ -63,7 +56,6 @@ class ProjectsController < ApplicationController
     project = Project.new project_params
     project.user_id = current_user.id
     project.private = true if params[:commit] == 'Private'
-    project.tag_list = 'bug, feature, improvement, feedback, discussion, help'
     if project.save
       ProjectMember.add_owner project, current_user
       unless project.private
@@ -346,6 +338,7 @@ class ProjectsController < ApplicationController
     child = @project.create_fork_project
     child.user = current_user
     if child.save
+      ProjectMember.add_owner child, current_user
       redirect_to user_project_path child.user, child
       # TODO: notifications
     else
