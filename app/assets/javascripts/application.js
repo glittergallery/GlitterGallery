@@ -14,9 +14,9 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require less-1.1.3.min
-//= require jquery.annotate
 //= require jquery-ui
 //= require turbolinks
+//= require annotorious.min
 //= require nprogress
 //= require nprogress-turbolinks
 //= require main

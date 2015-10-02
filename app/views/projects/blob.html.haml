@@ -10,7 +10,7 @@
   %section.album
     .photo
       %p
-        = data_image_tag(@image, '100%', nil)
+        = data_image_tag(@image, '100%', nil, 'myImage')
     - if can? :file_update, @project
       %section
         %h3
