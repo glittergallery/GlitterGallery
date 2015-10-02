@@ -22,6 +22,7 @@
 //= require main
 //= require diff
 //= require canvas
+//= require annotation
 //= require jquery.sidr.min
 //= require jquery.raty
 //= require ratyrate
