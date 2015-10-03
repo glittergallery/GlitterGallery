@@ -215,6 +215,12 @@ feature 'Projects' do
         )
       end
 
+      scenario 'User comments on a tree' do
+        fill_in 'comment_body', with: 'test comment'
+        click_button 'Create Comment'
+        expect(find('.comments')).to have_content('test comment')
+      end
+
       scenario 'User uploads an image from the tree view' do
         page.attach_file(
           'file[]', 'spec/factories/files/1.png'
@@ -342,6 +348,11 @@ feature 'Projects' do
       expect(page).to have_content 'naruto.png'
     end
 
+    scenario 'User gets a flash alert when no files are selected' do
+      click_button 'Save changes'
+      expect(page).to have_content 'No image selected!'
+    end
+
     describe 'After image upload' do
       before :each do
         page.attach_file('file[]', 'spec/factories/files/happypanda.png')
@@ -368,6 +379,13 @@ feature 'Projects' do
       scenario 'User comments on a specific commit' do
         click_link 'Log'
         click_link 'Add 1 image: happypanda.png'
+        fill_in 'comment_body', with: 'test comment'
+        click_button 'Create Comment'
+        expect(find('.comments')).to have_content('test comment')
+      end
+
+      scenario 'User comments on a specific blob' do
+        click_link 'happypanda.png'
         fill_in 'comment_body', with: 'test comment'
         click_button 'Create Comment'
         expect(find('.comments')).to have_content('test comment')
@@ -453,6 +471,11 @@ feature 'Projects' do
           expect(page).to have_content('happypanda.png')
         end
       end
+    end
+
+    scenario 'User gets a flash alert when adding a directory with no name' do
+      click_button 'Add Directory'
+      expect(page).to have_content 'No name provided for the directory!'
     end
 
     describe 'After creating a directory' do

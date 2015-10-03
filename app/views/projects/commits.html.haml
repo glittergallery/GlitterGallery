@@ -33,7 +33,7 @@
         - if can? :file_upload, @project
           .guide
             %p Submit your design work on this project to start collaborating.
-            %form{ action: File.join(@project.urlbase, 'newfile') }
+            %form{ action: user_project_path(@project.user, @project) }
               %input{ type: 'submit', value: 'Add first file!' }
         - elsif can? :fork, @project
           .guide
