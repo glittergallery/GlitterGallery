@@ -48,9 +48,10 @@ class Notification < ActiveRecord::Base
   def objectname
     case action
     when 0
-      return Project.find(Comment.find(object_id).polycomment_id).name
+      return Project.find(Comment.find(object_id).polycomment_id.to_i).name
     when 5
-      return Issue.find(Comment.find(object_id).polycomment_id).friendly_text
+      return Issue.find(Comment.find(object_id).polycomment_id.to_i)
+        .friendly_text
     when 3
       return User.find(object_id).username
     when 1, 2, 4
@@ -63,9 +64,9 @@ class Notification < ActiveRecord::Base
   def url
     case action
     when 0 # TODO: link directly to a comment
-      return Project.find(Comment.find(object_id).polycomment_id).urlbase
+      return Project.find(Comment.find(object_id).polycomment_id.to_i).urlbase
     when 5
-      return Issue.find(Comment.find(object_id).polycomment_id).show_url
+      return Issue.find(Comment.find(object_id).polycomment_id.to_i).show_url
     when 1, 2, 4
       return Project.find(object_id).urlbase
     when 6

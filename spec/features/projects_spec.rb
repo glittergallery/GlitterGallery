@@ -210,8 +210,7 @@ feature 'Projects' do
           )
         )
         expect(page).to have_content(
-          'Something went wrong! ' +
-          "Make sure the branch name doesn't have spaces."
+          'Something went wrong, the branch was not created!'
         )
       end
 
@@ -385,7 +384,7 @@ feature 'Projects' do
       end
 
       scenario 'User comments on a specific blob' do
-        click_link 'happypanda.png'
+        find('a', text: 'happypanda.png').click
         fill_in 'comment_body', with: 'test comment'
         click_button 'Create Comment'
         expect(find('.comments')).to have_content('test comment')

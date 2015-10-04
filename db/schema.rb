@@ -11,14 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150906202159) do
+ActiveRecord::Schema.define(version: 20151004052308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "annotations", force: true do |t|
+    t.integer  "user_id"
+    t.text     "json"
+    t.string   "text"
+    t.string   "blob_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "comments", force: true do |t|
     t.text     "body"
-    t.integer  "polycomment_id"
+    t.string   "polycomment_id"
     t.string   "polycomment_type"
     t.integer  "user_id"
     t.boolean  "issue"

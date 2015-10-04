@@ -108,7 +108,7 @@ class ProjectsController < ApplicationController
     @image = { data: blob.text, name: @dest }
     @comments = Comment.where(
       polycomment_type: 'blob',
-      polycomment_id: blob.oid
+      polycomment_id: "#{blob.oid}"
     )
     @comments = pg @comments, 10
     @comment = Comment.new
@@ -128,7 +128,7 @@ class ProjectsController < ApplicationController
     @images, @directories = @project.browse_tree
     @comments = Comment.where(
       polycomment_type: 'project',
-      polycomment_id: @project.id
+      polycomment_id: "#{@project.id}"
     )
     @comments = pg @comments, 10
     @comment = Comment.new
@@ -173,7 +173,7 @@ class ProjectsController < ApplicationController
     end
     @comments = Comment.where(
       polycomment_type: 'commit',
-      polycomment_id: commit.oid
+      polycomment_id: "#{commit.oid}"
     )
     @comments = pg @comments, 10
     @comment = Comment.new
@@ -208,7 +208,7 @@ class ProjectsController < ApplicationController
     @images, @directories = @project.browse_tree tree, params[:destination]
     @comments = Comment.where(
       polycomment_type: 'tree',
-      polycomment_id: tree.oid
+      polycomment_id: "#{tree.oid}"
     )
     @comment_type = 'tree'
     @comments = pg @comments, 10
