@@ -129,10 +129,10 @@ describe Project do
           .to eq(real_path)
       end
 
-      it 'gets slide show image path' do
+      it 'gets show image path' do
         real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
-                    'show_images/slide/happypanda.png'
-        expect(project.image_for('happypanda.png', 'slide_show', false))
+                    'show_images/show/happypanda.png'
+        expect(project.image_for('happypanda.png', 'show', false))
           .to eq(real_path)
       end
     end
@@ -162,9 +162,9 @@ describe Project do
         expect(File.exists?(mob_path)).to be true
       end
 
-      it 'gets generates slide show image' do
-        slide_path = project.image_for 'happypanda.png', 'slide_show', true
-        expect(File.exists?(slide_path)).to be true
+      it 'gets generates show image' do
+        show_path = project.image_for 'happypanda.png', 'show', true
+        expect(File.exists?(show_path)).to be true
       end
     end
   end

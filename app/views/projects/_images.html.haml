@@ -15,7 +15,7 @@
       %div
         %p{ title: image[:name] }
           = link_to render_show_image(@project, image[:name]),
-            @project.image_for(image[:name], 'slide_show', false),
+            @project.image_for(image[:name], 'show', false),
             id: image[:name],
             class: 'swipebox'
           %span.name
