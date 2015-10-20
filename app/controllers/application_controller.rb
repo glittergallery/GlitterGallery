@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include Escape
   include SessionsHelper
   include PathsHelper
-  protect_from_forgery
+  protect_from_forgery with: :exception
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
   before_action :return_current_user_projects
 

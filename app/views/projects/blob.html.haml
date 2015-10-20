@@ -10,7 +10,7 @@
   %section.album
     .photo
       %p
-        = data_image_tag(@image, nil, nil, 'annotate')
+        = image_tag @project.image_for(@image[:name], 'show', false), class: 'annotatable'
     - if can? :file_update, @project
       %section
         %h3

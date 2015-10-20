@@ -105,6 +105,7 @@ class ProjectsController < ApplicationController
     oid = @project.branch_commit(params[:oid]).oid
     @dest = params[:destination]
     blob = @project.blob oid, @dest
+    @project.resize_image blob.text, @dest
     @image = { data: blob.text, name: @dest }
     @comments = Comment.where(
       polycomment_type: 'blob',

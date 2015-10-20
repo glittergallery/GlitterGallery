@@ -368,9 +368,11 @@ class Project < ActiveRecord::Base
   # and images on inspire page
   # if add_public is false "public/" is removed from the path.
   # dest argument determines where should the image be stored
+  # if svg file_name is passed then it is first changed to png
   def image_for(file_name, dest = '', add_public = true)
     prefix = data_path.dup
     prefix.sub!('public', '') unless add_public
+    file_name = file_name.gsub(/.svg/i, '.png')
     case dest
     when 'mobile_inspire'
       "#{prefix}/inspire/mobile/#{file_name}"
