@@ -306,8 +306,8 @@ feature 'Projects' do
         end
 
         context 'On the new branch' do
-          scenario 'User sees updated image' do
-            expect(find('.album//img')['src']).to_not eq(@old)
+          scenario 'User sees updated image under same name' do
+            expect(find('.album//img')['src']).to eq(@old)
           end
 
           scenario 'User sees a new commit in the log' do
@@ -412,9 +412,9 @@ feature 'Projects' do
           )
         end
 
-        scenario 'User sees updated image' do
+        scenario 'User sees updated image under same name' do
           expect(find('.photo')).to have_selector('img')
-          expect(find('.photo//img')['src']).not_to eq(@old)
+          expect(find('.photo//img')['src']).to eq(@old)
         end
 
         scenario 'User sees a new commit in the logs' do
@@ -579,7 +579,7 @@ feature 'Projects' do
             'spec/factories/files/naruto.png'
           )
           click_button 'Save changes'
-          expect(find('.album//img')['src']).to_not eq(old)
+          expect(find('.album//img')['src']).to eq(old)
         end
       end
     end
