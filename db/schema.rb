@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(version: 20151004052308) do
     t.datetime "updated_at"
   end
 
+  add_index "annotations", ["blob_id"], name: "index_annotations_on_blob_id", using: :btree
+
   create_table "comments", force: true do |t|
     t.text     "body"
     t.string   "polycomment_id"

@@ -33,6 +33,12 @@ Glitter::Application.routes.draw do
   resources :notifications, only: [:index, :show]
   resources :project_members, only: [:destroy]
 
+  resources :annotations, only: [:create, :destroy, :update] do
+    collection do
+      get 'for_blob/:id', to: 'annotations#find_by_blobid', constraints: { id: /[0-9a-f]{5,40}/ }
+    end
+  end
+
 
   get '/search' => 'search#website_search'
   get '/inspire' => 'projects#index'
