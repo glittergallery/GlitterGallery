@@ -8,10 +8,11 @@
   = render 'breadcrumb'
   = link_to 'History', history_user_project_path
   = link_to 'Annotation', '#', id: 'toggle-annotation'
+  = link_to 'Raw', raw_user_project_path
   %section.album
     .photo
       %p
-        = image_tag @project.image_for(@image[:name], 'show', false),
+        = image_tag @project.image_for(@dest, 'show', false),
                     class: 'annotatable',
                     data: { id: @id }
     - if can? :file_update, @project

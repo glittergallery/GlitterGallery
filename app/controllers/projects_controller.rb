@@ -16,6 +16,7 @@ class ProjectsController < ApplicationController
                                               :pull,
                                               :index,
                                               :blob,
+                                              :raw,
                                               :network,
                                               :branches,
                                               :tree,
@@ -106,7 +107,6 @@ class ProjectsController < ApplicationController
     @dest = params[:destination]
     blob = @project.blob oid, @dest
     @project.resize_image blob.text, @dest
-    @image = { data: blob.text, name: @dest }
     @comments = Comment.where(
       polycomment_type: 'blob',
       polycomment_id: "#{blob.oid}"
@@ -115,6 +115,14 @@ class ProjectsController < ApplicationController
     @comment = Comment.new
     @id = blob.oid
     @ajax = params[:page].nil? || params[:page] == 1
+  end
+
+  # GET /user/project/raw/branch_or_commit_oid/destination
+  def raw
+    oid = @project.branch_commit(params[:oid]).oid
+    blob = @project.blob oid, params[:destination]
+    type = params[:destination].split('.').last
+    send_data blob.text, type: "image/#{type}", disposition: 'inline'
   end
 
   # GET /user/project/branches

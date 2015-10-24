@@ -85,6 +85,7 @@ Glitter::Application.routes.draw do
           get 'commit/:commit_id' => 'projects#commit', as: :commit
           get 'tree(/:oid(/*destination))' => 'projects#tree', as: :tree, :destination => /.+/
           get 'blob/:oid/*destination' => 'projects#blob', as: :blob, :destination => /.+/
+          get 'raw/:oid/*destination' => 'projects#raw', as: :raw, :destination => /.+/
           get 'history/:oid/*destination' => 'projects#file_history', as: :history, :destination => /.+/
           get 'diff/:oid/*destination' => 'projects#diff', as: :diff, destination: /.+/
           post 'file_upload/(:branch(/*destination))' => 'projects#file_upload', as: :file_upload, :destination => /.+/

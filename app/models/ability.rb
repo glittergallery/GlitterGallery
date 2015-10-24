@@ -22,6 +22,7 @@ class Ability
   def guest(user)
     can [:index,
          :blob,
+         :raw,
          :branches,
          :show,
          :network,
