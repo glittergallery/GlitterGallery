@@ -100,5 +100,14 @@ anno.addPlugin('addUsernamePlugin', {});
 
 // wait until all the assets and images are loaded before drawing annotations
 $(window).load(function() {
-  loadAnnotations();
+  if($('.annotatable').length > 0){
+    loadAnnotations();
+    $('.annotorious-item, .annotorious-hint').addClass('hidden');
+  }
+});
+
+$(document).ready(function() {
+  $('#toggle-annotation').click( function(){
+    $('.annotorious-item, .annotorious-hint').toggleClass('hidden');
+  });
 });

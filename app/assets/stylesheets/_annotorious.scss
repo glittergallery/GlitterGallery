@@ -1,6 +1,12 @@
 /** Global item styles **/
 @media screen and (min-width: 0em){
   body{
+    .hidden{
+      display: none !important;
+    }
+    .annotatable{
+      width: 100%;
+    }
     .wrapper{
       article.project{
         section.album{
