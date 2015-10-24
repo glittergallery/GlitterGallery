@@ -54,6 +54,7 @@ class Ability
     # TODO: allow comment only on public projects
     can [:new, :create], Comment
     can [:new, :create], Issue
+    can [:new, :create], Annotation
   end
 
   # owners and collaborators have write acess
@@ -92,6 +93,11 @@ class Ability
     can [:destroy], ProjectMember do |pm|
       proj_user = pm.member_project.user
       (proj_user == user || pm.member.id == user.id) && pm.role != 'owner'
+    end
+
+    # only annotation owner can edit or delete annotation
+    can [:update, :destroy], Annotation do |annotation|
+      annotation.try(:user_id) == user.id
     end
   end
 end

@@ -1,8 +1,14 @@
 class AnnotationsController < ApplicationController
+  before_filter :authenticate_user!, except: :find_by_blobid
+  load_resource except: [:find_by_blobid, :create]
+  authorize_resource except: :find_by_blobid
 
   # GET  /annotations/for_blob/:id
   def find_by_blobid
-    @annotations = Annotation.find_by_blob(params[:id])
+    @annotations = Annotation.where(blob_id: params[:id])
+    @annotations.each do |annotation|
+      make_presentable(annotation)
+    end
     respond_to do |format|
       format.json { render json: @annotations.to_json }
     end
@@ -12,15 +18,20 @@ class AnnotationsController < ApplicationController
   def create
     annotation_json = params[:annotation]
     annotation_hash = JSON.parse(annotation_json)
-    @annotation = Annotation.create(
+    @annotation = Annotation.new(
       json: annotation_json,
       text: annotation_hash['text'],
       blob_id: params[:blob_id],
       user_id: current_user.id
     )
-    @annotation.make_presentable
     respond_to do |format|
-      format.json { render json: @annotation.as_json }
+      if @annotation.save
+        make_presentable(@annotation)
+        format.json { render json: @annotation.as_json }
+      else
+        full_error = @annotation.errors.full_messages
+        format.json { render json: { error: full_error }, status: 422 }
+      end
     end
   end
 
@@ -31,10 +42,14 @@ class AnnotationsController < ApplicationController
     @annotation = Annotation.find(params[:id])
     @annotation.json = annotation_json
     @annotation.text = annotation_hash['text']
-    @annotation.save
 
     respond_to do |format|
-      format.json { render json: @annotation.to_json }
+      if @annotation.save
+        format.json { render json: @annotation.as_json }
+      else
+        full_error = @annotation.errors.full_messages
+        format.json { render json: { error: full_error }, status: 422 }
+      end
     end
   end
 
@@ -42,9 +57,27 @@ class AnnotationsController < ApplicationController
   # DELETE /annotations/:id
   def destroy
     @annotation = Annotation.find(params[:id])
-    @annotation.destroy
     respond_to do |format|
-      format.json { render json: @annotation.as_json }
+      if @annotation.destroy
+        format.json { render json: :nothing }
+      else
+        full_error = @annotation.errors.full_messages
+        format.json { render json: { error: full_error }, status: 400 }
+      end
     end
+  end
+
+  private
+  # Sets username and time for annotation
+  # These values are used while drawing each annotation
+  def make_presentable(annotation)
+    # parse the annotation json into a ruby object
+    annotation_hash = JSON.parse(annotation.json)
+    annotation_hash[:username] = annotation.user.username.to_s
+    annotation_hash[:updated_at] = annotation.updated_at.strftime('%B %d, %Y')
+    annotation_hash[:editable] = false unless current_user == annotation.user
+    annotation_hash[:id] = annotation.id
+    # convert back to json
+    annotation.json = annotation_hash.to_json
   end
 end

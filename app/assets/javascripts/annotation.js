@@ -1,5 +1,26 @@
 //See: https://github.com/annotorious/annotorious/wiki/JavaScript-API
 
+// Function which first finds all the annotations associated with given
+// blob and draws them using addAnnotation Handler
+function loadAnnotations() {
+  jQuery.getJSON("/annotations/for_blob/"+blob_id()+ ".json",function(data) {
+    for (var i = 0; i < data.length; i++) {
+        annotation = JSON.parse(data[i].json)
+        anno.addAnnotation(annotation);
+      }
+  });
+}
+
+// Returns the blob_id of a given blob
+function blob_id() {
+  return $('.annotatable').data('id');
+}
+
+function showFlashMessage(error){
+  $('.message').remove();
+  $('.action').after('<section class="message"><div class="alert">'+ error+'</div></section>');
+}
+
 // Handler used for creation of annotation
 // On success it sets the username and time
 anno.addHandler('onAnnotationCreated', function(annotation) {
@@ -13,6 +34,10 @@ anno.addHandler('onAnnotationCreated', function(annotation) {
       json_data = JSON.parse(data.json)
       annotation.username = json_data.username;
       annotation.updated_at = json_data.updated_at;
+    },
+    error: function(data){
+      anno.removeAnnotation(annotation);
+      showFlashMessage(JSON.parse(data.responseText).error);
     }
     });
 });
@@ -27,6 +52,11 @@ anno.addHandler('onAnnotationUpdated', function(annotation) {
     data: "annotation="+encodeURIComponent(JSON.stringify(annotation)),
     success: function(data) {
       loadAnnotations();
+    },
+    error: function(data){
+      anno.removeAnnotation(annotation);
+      loadAnnotations();
+      showFlashMessage(JSON.parse(data.responseText).error);
     }
   });
 });
@@ -45,8 +75,8 @@ anno.addHandler('onAnnotationRemoved', function(annotation) {
     type: "DELETE",
     dataType: "JSON",
     url: "/annotations/" + annotation.id,
-    success: function(data) {
-      loadAnnotations();
+    error: function(data){
+      showFlashMessage(JSON.parse(data.responseText).error);
     }
   });
 });
@@ -67,23 +97,6 @@ annotorious.plugin.addUsernamePlugin.prototype.onInitAnnotator = function(annota
 }
 
 anno.addPlugin('addUsernamePlugin', {});
-
-
-// Function which first finds all the annotations associated with given
-// blob and draws them using addAnnotation Handler
-function loadAnnotations() {
-  jQuery.getJSON("/annotations/for_blob/"+blob_id()+ ".json",function(data) {
-    for (var i = 0; i < data.length; i++) {
-        annotation = JSON.parse(data[i].json)
-        anno.addAnnotation(annotation);
-      }
-  });
-}
-
-// Returns the blob_id of a given blob
-function blob_id() {
-  return $('#comment_polycomment_id').val();
-}
 
 // wait until all the assets and images are loaded before drawing annotations
 $(window).load(function() {
