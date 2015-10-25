@@ -36,6 +36,7 @@ describe 'User' do
       it{ should be_able_to(:index, Project) }
       it{ should be_able_to(:show, project) }
       it{ should be_able_to(:blob, project) }
+      it{ should be_able_to(:raw, project) }
       it{ should be_able_to(:network, project) }
       it{ should be_able_to(:branches, project) }
       it{ should be_able_to(:commits, project) }
@@ -62,6 +63,7 @@ describe 'User' do
       it{ should be_able_to(:new, Comment) }
       it{ should be_able_to(:create, Comment) }
       it{ should be_able_to(:create, Issue) }
+      it{ should be_able_to(:create, Annotation) }
       it{ should_not be_able_to(:destroy, comment) }
     end
 
@@ -115,11 +117,14 @@ describe 'User' do
       let(:comment) { create(:comment, user: user) }
       let(:project) { create(:project, user: user) }
       let(:issue) { create(:issue, user: user) }
+      let(:annotation) { create(:annotation, user: user) }
 
       it{ should be_able_to(:destroy, project) }
       it{ should be_able_to(:destroy, comment) }
       it{ should be_able_to(:reopen, issue) }
       it{ should be_able_to(:close, issue) }
+      it{ should be_able_to(:update, annotation) }
+      it{ should be_able_to(:destroy, annotation) }
     end
   end
 end
