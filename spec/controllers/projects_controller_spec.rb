@@ -105,6 +105,24 @@ describe ProjectsController, type: :controller do
         expect(response).to render_template('file_history')
       end
 
+      it 'sees the blob of the file' do
+        get :blob, user_id: project.user.username,
+                   id: project.name,
+                   oid: 'master',
+                   destination: 'happypanda.png'
+        expect(response).to render_template('blob')
+      end
+
+      it 'sees raw version of the file' do
+        get :raw, user_id: project.user.username,
+                  id: project.name,
+                  oid: 'master',
+                  destination: 'happypanda.png'
+        data = project.blob @commit.oid, 'happypanda.png'
+        expect(response.body).to eq(data.text)
+        expect(response.header['Content-Type']).to eq('image/png')
+      end
+
       describe 'GET #diff' do
         before do
           file_upload project, 'happypanda.png'
