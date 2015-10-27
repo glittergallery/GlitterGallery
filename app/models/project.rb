@@ -372,6 +372,7 @@ class Project < ActiveRecord::Base
   def image_for(file_name, dest = '', add_public = true)
     prefix = data_path.dup
     prefix.sub!('public', '') unless add_public
+    file_name = file_name.split('/').last unless file_name.empty?
     file_name = file_name.gsub(/.svg/i, '.png')
     case dest
     when 'mobile_inspire'
