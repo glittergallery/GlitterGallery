@@ -48,5 +48,7 @@ function draw() {
   }
 }
 
-$("document").ready(draw);
+$("document").ready( function() {
+  if($('#file_info').length > 0) draw();
+});
 

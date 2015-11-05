@@ -28,6 +28,8 @@ class User < ActiveRecord::Base
   # authorization of ssh access
   has_many :keys
 
+  has_many :annotations
+
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   before_save { |user| user.email = email.downcase }

@@ -16,7 +16,7 @@ class IssuesController < ApplicationController
   def show
     @comments = Comment.where(
       polycomment_type: 'issue',
-      polycomment_id: @issue.id
+      polycomment_id: "#{@issue.id}"
     )
     @comments = pg @comments, 10
     @comment = Comment.new

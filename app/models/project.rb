@@ -155,15 +155,11 @@ class Project < ActiveRecord::Base
   # resize images for project show page
   # uses same size as that of images on inspire page
   def resize_image(image_string, dest)
-    inspire_size = Glitter::Application.config.inspire_geometry
-    mobile_size = Glitter::Application.config.mobile_inspire_geometry
-    image = Magick::Image.from_blob(image_string).first
-    image.write image_for(dest.split('/').last, 'slide_show', true)
-    image.resize_to_fill(inspire_size[0], inspire_size[1])
-      .write image_for(dest.split('/').last, 'show_image_desk', true)
-    image.resize_to_fill(mobile_size[0], mobile_size[1])
-      .write image_for(dest.split('/').last, 'show_image_mob', true)
-    image
+    image = Gg::ImageProcessing.new(image_string)
+    i_name = dest.split('/').last
+    image.blob_generate(image_for(i_name, 'show', true))
+    image.blob_generate(image_for(i_name, 'show_image_desk', true), 'desktop')
+    image.blob_generate(image_for(i_name, 'show_image_mob', true), 'mobile')
   end
 
   # Takes a tree and the path to that tree.
@@ -229,14 +225,8 @@ class Project < ActiveRecord::Base
 
   # Generates a thumbnail for a commit in the appropriate place.
   def generate_thumbnail(image_path, commit_id)
-    thumb_size = Glitter::Application.config.thumbnail_geometry
-    image = Magick::Image.read(
-      "#{satellitedir}/#{image_path}"
-    ).first
-    image.scale(
-      thumb_size[0],
-      thumb_size[1]
-    ).write image_for(commit_id, 'thumbnails', true)
+    Gg::ImageProcessing.new("#{satellitedir}/#{image_path}")
+      .generate(image_for(commit_id, 'thumbnails', true), 'thumbnail')
   end
 
   # returns last rugged::diff image name of the repo's head
@@ -277,20 +267,10 @@ class Project < ActiveRecord::Base
     # first empty the inspire folder
     FileUtils.rm_rf("#{image_for('', 'mobile_inspire')}/.", secure: true)
     FileUtils.rm_rf("#{image_for('', 'desktop_inspire')}/.", secure: true)
-    inspire_size = Glitter::Application.config.inspire_geometry
-    mobile_size = Glitter::Application.config.mobile_inspire_geometry
-    # for desktops
-    image = Magick::Image.read(
-      "#{satellitedir}/#{image_path}"
-    ).first
-    image.resize_to_fill(inspire_size[0], inspire_size[1])
-      .write image_for(image_path.split('/').last, 'desktop_inspire', true)
-    # for mobile
-    image = Magick::Image.read(
-      "#{satellitedir}/#{image_path}"
-    ).first
-    image.resize_to_fill(mobile_size[0], mobile_size[1])
-      .write image_for(image_path.split('/').last, 'mobile_inspire', true)
+    image = Gg::ImageProcessing.new("#{satellitedir}/#{image_path}")
+    i_name = image_path.split('/').last
+    image.generate(image_for(i_name, 'desktop_inspire', true), 'desktop')
+    image.generate(image_for(i_name, 'mobile_inspire', true), 'mobile')
   end
 
   # Returns a hash that can be passed to rugged while creating a commit
@@ -388,9 +368,12 @@ class Project < ActiveRecord::Base
   # and images on inspire page
   # if add_public is false "public/" is removed from the path.
   # dest argument determines where should the image be stored
+  # if svg file_name is passed then it is first changed to png
   def image_for(file_name, dest = '', add_public = true)
     prefix = data_path.dup
     prefix.sub!('public', '') unless add_public
+    file_name = file_name.split('/').last unless file_name.empty?
+    file_name = file_name.gsub(/.svg/i, '.png')
     case dest
     when 'mobile_inspire'
       "#{prefix}/inspire/mobile/#{file_name}"
@@ -402,8 +385,8 @@ class Project < ActiveRecord::Base
       "#{prefix}/show_images/desktop/#{file_name}"
     when 'show_image_mob'
       "#{prefix}/show_images/mobile/#{file_name}"
-    when 'slide_show'
-      "#{prefix}/show_images/slide/#{file_name}"
+    when 'show'
+      "#{prefix}/show_images/show/#{file_name}"
     end
   end
 
@@ -466,7 +449,7 @@ class Project < ActiveRecord::Base
     FileUtils.mkdir_p image_for('', 'thumbnails', true)
     FileUtils.mkdir_p image_for('', 'show_image_desk', true)
     FileUtils.mkdir_p image_for('', 'show_image_mob', true)
-    FileUtils.mkdir_p image_for('', 'slide_show', true)
+    FileUtils.mkdir_p image_for('', 'show', true)
 
     return if satelliterepo.empty?
     pushtobare
@@ -504,6 +487,6 @@ class Project < ActiveRecord::Base
   def dump_show_img
     FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_desk', true)}/*"))
     FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_mob', true)}/*"))
-    FileUtils.rm_rf(Dir.glob("#{image_for('', 'slide_show', true)}/*"))
+    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show', true)}/*"))
   end
 end

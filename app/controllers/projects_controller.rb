@@ -16,6 +16,7 @@ class ProjectsController < ApplicationController
                                               :pull,
                                               :index,
                                               :blob,
+                                              :raw,
                                               :network,
                                               :branches,
                                               :tree,
@@ -105,14 +106,23 @@ class ProjectsController < ApplicationController
     oid = @project.branch_commit(params[:oid]).oid
     @dest = params[:destination]
     blob = @project.blob oid, @dest
-    @image = { data: blob.text, name: @dest }
+    @project.resize_image blob.text, @dest
     @comments = Comment.where(
       polycomment_type: 'blob',
-      polycomment_id: blob.oid
+      polycomment_id: "#{blob.oid}"
     )
     @comments = pg @comments, 10
     @comment = Comment.new
+    @id = blob.oid
     @ajax = params[:page].nil? || params[:page] == 1
+  end
+
+  # GET /user/project/raw/branch_or_commit_oid/destination
+  def raw
+    oid = @project.branch_commit(params[:oid]).oid
+    blob = @project.blob oid, params[:destination]
+    type = params[:destination].split('.').last
+    send_data blob.text, type: "image/#{type}", disposition: 'inline'
   end
 
   # GET /user/project/branches
@@ -127,11 +137,12 @@ class ProjectsController < ApplicationController
     @images, @directories = @project.browse_tree
     @comments = Comment.where(
       polycomment_type: 'project',
-      polycomment_id: @project.id
+      polycomment_id: "#{@project.id}"
     )
     @comments = pg @comments, 10
     @comment = Comment.new
     @comment_type = 'project'
+    @id = @project.id.to_s
     @ajax = params[:page].nil? || params[:page] == 1
   end
 
@@ -171,7 +182,7 @@ class ProjectsController < ApplicationController
     end
     @comments = Comment.where(
       polycomment_type: 'commit',
-      polycomment_id: commit.oid
+      polycomment_id: "#{commit.oid}"
     )
     @comments = pg @comments, 10
     @comment = Comment.new
@@ -180,14 +191,18 @@ class ProjectsController < ApplicationController
 
   # POST /user/project/create_branch
   def create_branch
-    @branch = @project.create_branch params[:branch_name]
-    if @branch
-      flash[:notice] = "Successfully created #{params[:branch_name]}!"
-      redirect_to project_tree_path @project, @branch.name
-    else
-      flash[:alert] = 'Something went wrong! Make sure the branch name' +
-        " doesn't have spaces."
+    if params[:branch_name].empty?
+      flash[:alert] = 'No name provided for the branch!'
       redirect_to project_branches_path @project
+    else
+      @branch = @project.create_branch params[:branch_name]
+      if @branch
+        flash[:notice] = "Successfully created #{params[:branch_name]}!"
+        redirect_to project_tree_path @project, @branch.name
+      else
+        flash[:alert] = 'Something went wrong, the branch was not created!'
+        redirect_to project_branches_path @project
+      end
     end
   end
 
@@ -202,7 +217,7 @@ class ProjectsController < ApplicationController
     @images, @directories = @project.browse_tree tree, params[:destination]
     @comments = Comment.where(
       polycomment_type: 'tree',
-      polycomment_id: tree.oid
+      polycomment_id: "#{tree.oid}"
     )
     @comment_type = 'tree'
     @comments = pg @comments, 10
@@ -245,19 +260,24 @@ class ProjectsController < ApplicationController
   end
 
   def create_directory
-    branch = params[:branch] || 'master'
-    new_dest = @project.create_directory(
-      branch,
-      params[:destination],
-      params[:directory],
-      @user.git_author_params
-    )
-    if user_signed_in? && new_dest
-      flash[:notice] = "Successfully added #{params[:dir_name]}!"
-      redirect_to project_tree_path(@project, branch, new_dest)
+    if params[:directory].empty?
+      flash[:alert] = 'No name provided for the directory!'
+      redirect_to :back
     else
-      flash[:alert] = 'An error prevented your directory from being created'
-      redirect_to project_newfile_path(@project, branch)
+      branch = params[:branch] || 'master'
+      new_dest = @project.create_directory(
+        branch,
+        params[:destination],
+        params[:directory],
+        @user.git_author_params
+      )
+      if user_signed_in? && new_dest
+        flash[:notice] = "Successfully added #{params[:dir_name]}!"
+        redirect_to project_tree_path(@project, branch, new_dest)
+      else
+        flash[:alert] = 'An error prevented your directory from being created'
+        redirect_to :back
+      end
     end
   end
 
@@ -283,11 +303,11 @@ class ProjectsController < ApplicationController
         redirect_to project_tree_path(@project, branch)
       else
         flash[:alert] = "An error prevented your #{sentence} from being saved"
-        redirect_to project_newfile_path(@project, branch)
+        redirect_to :back
       end
     else
       flash[:alert] = 'No image selected!'
-      redirect_to project_newfile_path(@project, branch)
+      redirect_to :back
     end
   end
 

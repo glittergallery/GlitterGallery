@@ -58,7 +58,7 @@ class CommentsController < ApplicationController
         return true
       else
         polycomment = params[:comment][:polycomment_type]
-        value = params[:comment][:polycomment_id]
+        value = "#{params[:comment][:polycomment_id]}"
         polycomment.classify.constantize.where(id: value).any?
       end
     end
@@ -67,7 +67,7 @@ class CommentsController < ApplicationController
     def find_project_comments
       @comments = Comment.where(
         polycomment_type: params[:comment][:polycomment_type],
-        polycomment_id: params[:comment][:polycomment_id]
+        polycomment_id: "#{params[:comment][:polycomment_id]}"
         )
       @comments = @comments.paginate(page: 1, per_page: 10)
     end

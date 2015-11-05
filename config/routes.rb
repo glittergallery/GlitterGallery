@@ -33,6 +33,12 @@ Glitter::Application.routes.draw do
   resources :notifications, only: [:index, :show]
   resources :project_members, only: [:destroy]
 
+  resources :annotations, only: [:create, :destroy, :update] do
+    collection do
+      get 'for_blob/:id', to: 'annotations#find_by_blobid', constraints: { id: /[0-9a-f]{5,40}/ }
+    end
+  end
+
 
   get '/search' => 'search#website_search'
   get '/inspire' => 'projects#index'
@@ -79,6 +85,7 @@ Glitter::Application.routes.draw do
           get 'commit/:commit_id' => 'projects#commit', as: :commit
           get 'tree(/:oid(/*destination))' => 'projects#tree', as: :tree, :destination => /.+/
           get 'blob/:oid/*destination' => 'projects#blob', as: :blob, :destination => /.+/
+          get 'raw/:oid/*destination' => 'projects#raw', as: :raw, :destination => /.+/
           get 'history/:oid/*destination' => 'projects#file_history', as: :history, :destination => /.+/
           get 'diff/:oid/*destination' => 'projects#diff', as: :diff, destination: /.+/
           post 'file_upload/(:branch(/*destination))' => 'projects#file_upload', as: :file_upload, :destination => /.+/

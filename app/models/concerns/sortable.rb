@@ -9,7 +9,7 @@ module Sortable
 
     scope :find_most_active, lambda {
       joins("LEFT OUTER JOIN comments
-             ON comments.polycomment_id = projects.id
+             ON comments.polycomment_id = CAST(projects.id AS varchar)
              AND comments.polycomment_type='project'
              LEFT OUTER JOIN issues ON issues.project_id = projects.id
              AND issues.status=1")

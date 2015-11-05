@@ -17,6 +17,6 @@
           %input{ type: 'submit', value: 'Generate Unique Link' }
 
   = render partial: 'comments/show_comments', locals: { type: @comment_type,
-    id: @project.id.to_s,
-    ajax: @ajax,
-    comment: @comment }
+      id: @id,
+      ajax: @ajax,
+      comment: @comment }

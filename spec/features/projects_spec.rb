@@ -210,9 +210,14 @@ feature 'Projects' do
           )
         )
         expect(page).to have_content(
-          'Something went wrong! ' +
-          "Make sure the branch name doesn't have spaces."
+          'Something went wrong, the branch was not created!'
         )
+      end
+
+      scenario 'User comments on a tree' do
+        fill_in 'comment_body', with: 'test comment'
+        click_button 'Create Comment'
+        expect(find('.comments')).to have_content('test comment')
       end
 
       scenario 'User uploads an image from the tree view' do
@@ -301,8 +306,8 @@ feature 'Projects' do
         end
 
         context 'On the new branch' do
-          scenario 'User sees updated image' do
-            expect(find('.album//img')['src']).to_not eq(@old)
+          scenario 'User sees updated image under same name' do
+            expect(find('.album//img')['src']).to eq(@old)
           end
 
           scenario 'User sees a new commit in the log' do
@@ -342,6 +347,11 @@ feature 'Projects' do
       expect(page).to have_content 'naruto.png'
     end
 
+    scenario 'User gets a flash alert when no files are selected' do
+      click_button 'Save changes'
+      expect(page).to have_content 'No image selected!'
+    end
+
     describe 'After image upload' do
       before :each do
         page.attach_file('file[]', 'spec/factories/files/happypanda.png')
@@ -373,6 +383,13 @@ feature 'Projects' do
         expect(find('.comments')).to have_content('test comment')
       end
 
+      scenario 'User comments on a specific blob' do
+        find('a', text: 'happypanda.png').click
+        fill_in 'comment_body', with: 'test comment'
+        click_button 'Create Comment'
+        expect(find('.comments')).to have_content('test comment')
+      end
+
       describe 'After image update' do
         before :each do
           find('a', text: 'happypanda.png').click
@@ -395,9 +412,9 @@ feature 'Projects' do
           )
         end
 
-        scenario 'User sees updated image' do
+        scenario 'User sees updated image under same name' do
           expect(find('.photo')).to have_selector('img')
-          expect(find('.photo//img')['src']).not_to eq(@old)
+          expect(find('.photo//img')['src']).to eq(@old)
         end
 
         scenario 'User sees a new commit in the logs' do
@@ -453,6 +470,11 @@ feature 'Projects' do
           expect(page).to have_content('happypanda.png')
         end
       end
+    end
+
+    scenario 'User gets a flash alert when adding a directory with no name' do
+      click_button 'Add Directory'
+      expect(page).to have_content 'No name provided for the directory!'
     end
 
     describe 'After creating a directory' do
@@ -557,7 +579,7 @@ feature 'Projects' do
             'spec/factories/files/naruto.png'
           )
           click_button 'Save changes'
-          expect(find('.album//img')['src']).to_not eq(old)
+          expect(find('.album//img')['src']).to eq(old)
         end
       end
     end

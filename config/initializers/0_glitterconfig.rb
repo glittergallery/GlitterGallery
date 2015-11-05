@@ -8,8 +8,8 @@
 require Rails.root.join("lib", "rack", "grack_auth")
 
 Glitter::Application.config.thumbnail_geometry=[50,50]
-Glitter::Application.config.inspire_geometry=[230,130]
-Glitter::Application.config.mobile_inspire_geometry=[600,340]
+Glitter::Application.config.desktop_geometry=[230,130]
+Glitter::Application.config.mobile_geometry=[600,340]
 
 # (gr)Avatar options
 ## path to default avatar - should start with slash
