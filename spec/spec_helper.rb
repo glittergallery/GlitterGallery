@@ -52,7 +52,7 @@ RSpec.configure do |config|
   config.after(:each) do
     if Rails.env.test? || Rails.env.cucumber?
       FileUtils.rm_rf(File.expand_path(
-        "..",
+        '..',
         Glitter::Application.config.repo_path
       ))
     end

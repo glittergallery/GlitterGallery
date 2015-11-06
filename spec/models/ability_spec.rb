@@ -43,6 +43,7 @@ describe 'User' do
       it{ should be_able_to(:commit, project) }
       it{ should be_able_to(:tree, project) }
       it{ should be_able_to(:diff, project) }
+      it{ should be_able_to(:render_image, project) }
       it{ should be_able_to(:file_history, project) }
       it{ should be_able_to(:index, Issue) }
       it{ should be_able_to(:show, issue) }

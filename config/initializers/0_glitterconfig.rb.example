@@ -44,8 +44,10 @@ Glitter::Application.config.git_path = '/usr/bin/git'
 if Rails.env.development?
   Glitter::Application.config.repo_path = '/home/git/repos'
 elsif Rails.env.test?
-  Glitter::Application.config.repo_dir="public/testdata"
-  Glitter::Application.config.repo_path = "#{Rails.root}/public/testdata/repos"
+  # **WARNING**
+  # Content of repo_path's parent dir gets deleted after test. Don't chose path
+  # where you may lose data. Here testdata dir will be deleted
+  Glitter::Application.config.repo_path = "#{Rails.root}/testdata/repos"
 elsif Rails.env.production?
   Glitter::Application.config.repo_dir="public/data"
   Glitter::Application.config.repo_path = "#{ENV["OPENSHIFT_DATA_DIR"]}repos"
