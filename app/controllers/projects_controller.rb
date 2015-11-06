@@ -20,7 +20,8 @@ class ProjectsController < ApplicationController
                                               :network,
                                               :branches,
                                               :tree,
-                                              :diff
+                                              :diff,
+                                              :render_image
                                               ]
   authorize_resource except: [:followed_index]
 
@@ -369,6 +370,10 @@ class ProjectsController < ApplicationController
   end
 
   def settings
+  end
+
+  def render_image
+    send_file File.join(@project.data_path, params[:destination])
   end
 
   private

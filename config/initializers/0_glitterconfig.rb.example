@@ -17,7 +17,7 @@ if Rails.env.development?
     Glitter::Application.config.default_avatar='https://raw.githubusercontent.com/glittergallery/GlitterGallery/master/public/happypanda.png'
 else
     Glitter::Application.config.default_avatar='/happypanda.png'
-end    
+end
 ## size of gravatar to ask for - one dimension in pixels
 ## (gravatars are square :))
 Glitter::Application.config.gravatar_size='48'
@@ -42,8 +42,7 @@ Glitter::Application.config.shell_path = File.join(Rails.root,'..','gitlab-shell
 Glitter::Application.config.action_mailer.delivery_method = :smtp
 Glitter::Application.config.git_path = '/usr/bin/git'
 if Rails.env.development?
-  Glitter::Application.config.repo_dir="public/data"
-  Glitter::Application.config.repo_path = "#{Rails.root}/public/data/repos"
+  Glitter::Application.config.repo_path = '/home/git/repos'
 elsif Rails.env.test?
   Glitter::Application.config.repo_dir="public/testdata"
   Glitter::Application.config.repo_path = "#{Rails.root}/public/testdata/repos"

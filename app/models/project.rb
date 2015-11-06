@@ -425,8 +425,8 @@ class Project < ActiveRecord::Base
 
   def set_path
     user = User.find user_id
-    self.data_path = File.join Glitter::Application.config.repo_dir,
-                               'repos', user.username.to_s, name
+    self.data_path = File.join Glitter::Application.config.repo_path,
+                               user.username.to_s, name
     logger.debug "setting path - path: #{data_path}"
     save
   end
