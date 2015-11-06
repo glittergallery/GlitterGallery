@@ -453,16 +453,19 @@ class Project < ActiveRecord::Base
 
     return if satelliterepo.empty?
     pushtobare
-    copy_inspire_images parent
+    copy_generated_images parent
   end
 
   # copy inspire image in fork from the parent project
-  def copy_inspire_images(parent)
+  def copy_generated_images(parent)
     img = parent.find_inspire_image
     mobile = parent.image_for img, 'mobile_inspire', true
     desktop = parent.image_for img, 'desktop_inspire', true
+    thumbnails = parent.image_for '', 'thumbnails', true
+
     FileUtils.cp(mobile, "#{data_path}/inspire/mobile")
     FileUtils.cp(desktop, "#{data_path}/inspire/desktop")
+    FileUtils.cp_r("#{thumbnails}/.", "#{data_path}/thumbnails")
   end
 
   # makes a symlink to hooks in gitlab-shell in each project

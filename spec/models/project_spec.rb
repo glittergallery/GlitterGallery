@@ -4,6 +4,7 @@ include FileHelper
 
 describe Project do
   let(:user) { create(:user) }
+  let(:user1) { create(:user) }
   let(:project) { create(:project, user: user) }
 
   it 'has a valid factory' do
@@ -273,4 +274,29 @@ describe Project do
       expect(data.second.oid). to eq(sha)
     end
   end
+
+  # testing private method, so delete it if fails
+  describe '#copy_generated_images' do
+    before do
+      add_image project, 'happypanda.png'
+      (@child = project.create_fork_project).user = user1
+      @child.save
+    end
+
+    it 'copies mobile inspire images from parent' do
+      path = File.join @child.image_for('', 'mobile_inspire', true), '/*'
+      expect(Dir[path]).to_not be_empty
+    end
+
+    it 'copies desktop inspire images from parent' do
+      path = File.join @child.image_for('', 'desktop_inspire', true), '/*'
+      expect(Dir[path]).to_not be_empty
+    end
+
+    it 'copies commit thumbnails from parent' do
+      path = File.join @child.image_for('', 'thumbnails', true), '/*'
+      expect(Dir[path]).to_not be_empty
+    end
+  end
+
 end
