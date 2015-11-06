@@ -157,9 +157,9 @@ class Project < ActiveRecord::Base
   def resize_image(image_string, dest)
     image = Gg::ImageProcessing.new(image_string)
     i_name = dest.split('/').last
-    image.blob_generate(image_for(i_name, 'show', true))
-    image.blob_generate(image_for(i_name, 'show_image_desk', true), 'desktop')
-    image.blob_generate(image_for(i_name, 'show_image_mob', true), 'mobile')
+    image.blob_generate(image_for(i_name, 'show'))
+    image.blob_generate(image_for(i_name, 'show_image_desk'), 'desktop')
+    image.blob_generate(image_for(i_name, 'show_image_mob'), 'mobile')
   end
 
   # Takes a tree and the path to that tree.
@@ -226,7 +226,7 @@ class Project < ActiveRecord::Base
   # Generates a thumbnail for a commit in the appropriate place.
   def generate_thumbnail(image_path, commit_id)
     Gg::ImageProcessing.new("#{satellitedir}/#{image_path}")
-      .generate(image_for(commit_id, 'thumbnails', true), 'thumbnail')
+      .generate(image_for(commit_id, 'thumbnails'), 'thumbnail')
   end
 
   # returns last rugged::diff image name of the repo's head
@@ -269,8 +269,8 @@ class Project < ActiveRecord::Base
     FileUtils.rm_rf("#{image_for('', 'desktop_inspire')}/.", secure: true)
     image = Gg::ImageProcessing.new("#{satellitedir}/#{image_path}")
     i_name = image_path.split('/').last
-    image.generate(image_for(i_name, 'desktop_inspire', true), 'desktop')
-    image.generate(image_for(i_name, 'mobile_inspire', true), 'mobile')
+    image.generate(image_for(i_name, 'desktop_inspire'), 'desktop')
+    image.generate(image_for(i_name, 'mobile_inspire'), 'mobile')
   end
 
   # Returns a hash that can be passed to rugged while creating a commit
@@ -366,10 +366,9 @@ class Project < ActiveRecord::Base
 
   # Returns the path of the thumbnail for a specific commit
   # and images on inspire page
-  # if add_public is false "public/" is removed from the path.
   # dest argument determines where should the image be stored
   # if svg file_name is passed then it is first changed to png
-  def image_for(file_name, dest = '', add_public = true)
+  def image_for(file_name, dest = '')
     prefix = data_path.dup
     prefix.sub!('public', '') unless add_public
     file_name = file_name.split('/').last unless file_name.empty?
@@ -444,12 +443,12 @@ class Project < ActiveRecord::Base
       Rugged::Repository.init_at barerepopath, :bare
       Rugged::Repository.clone_at parent.satelliterepopath, satelliterepopath
     end
-    FileUtils.mkdir_p image_for('', 'mobile_inspire', true)
-    FileUtils.mkdir_p image_for('', 'desktop_inspire', true)
-    FileUtils.mkdir_p image_for('', 'thumbnails', true)
-    FileUtils.mkdir_p image_for('', 'show_image_desk', true)
-    FileUtils.mkdir_p image_for('', 'show_image_mob', true)
-    FileUtils.mkdir_p image_for('', 'show', true)
+    FileUtils.mkdir_p image_for('', 'mobile_inspire')
+    FileUtils.mkdir_p image_for('', 'desktop_inspire')
+    FileUtils.mkdir_p image_for('', 'thumbnails')
+    FileUtils.mkdir_p image_for('', 'show_image_desk')
+    FileUtils.mkdir_p image_for('', 'show_image_mob')
+    FileUtils.mkdir_p image_for('', 'show')
 
     return if satelliterepo.empty?
     pushtobare
@@ -459,9 +458,9 @@ class Project < ActiveRecord::Base
   # copy inspire image in fork from the parent project
   def copy_generated_images(parent)
     img = parent.find_inspire_image
-    mobile = parent.image_for img, 'mobile_inspire', true
-    desktop = parent.image_for img, 'desktop_inspire', true
-    thumbnails = parent.image_for '', 'thumbnails', true
+    mobile = parent.image_for img, 'mobile_inspire'
+    desktop = parent.image_for img, 'desktop_inspire'
+    thumbnails = parent.image_for '', 'thumbnails'
 
     FileUtils.cp(mobile, "#{data_path}/inspire/mobile")
     FileUtils.cp(desktop, "#{data_path}/inspire/desktop")
@@ -488,8 +487,8 @@ class Project < ActiveRecord::Base
 
   # Dumbs show-image folder content before walk
   def dump_show_img
-    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_desk', true)}/*"))
-    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_mob', true)}/*"))
-    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show', true)}/*"))
+    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_desk')}/*"))
+    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_mob')}/*"))
+    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show')}/*"))
   end
 end
