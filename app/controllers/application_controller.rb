@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
   end
 
   # used to deliver notification on various events
-  def notify_users(action, object_type, object_id, victims, url)
+  def notify_users(action, object_type, object_id, victims, url = nil)
     actions = { 'project_comment' => 0,
                 'follow_project' => 1,
                 'fork' => 2,

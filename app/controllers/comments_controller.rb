@@ -67,15 +67,16 @@ class CommentsController < ApplicationController
     @comments = Comment.where(
       polycomment_type: params[:comment][:polycomment_type],
       polycomment_id: "#{params[:comment][:polycomment_id]}"
-      )
-    @comments = pg @comments, 10
+    )
   end
 
   # if url has master in it then replace it with repo head
+  # and append comment id to url
   def notification_url
-    match_data = params[:url].match /((blob|tree)\/master)/
-    return params[:url] unless match_data
+    comment_url = "#{params[:url]}#comment_#{@comment.id}"
+    match_data = comment_url.match /((blob|tree)\/master)/
+    return comment_url unless match_data
     replace_str = "#{match_data[2]}/#{@project.barerepo.head.target.oid}"
-    params[:url].gsub /((blob|tree)\/master)/, replace_str
+    comment_url.gsub /((blob|tree)\/master)/, replace_str
   end
 end

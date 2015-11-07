@@ -1,7 +1,6 @@
 %section.comments
   %section.showcomments
     = render partial: 'comments/comment', collection: @comments
-    = will_paginate @comments
   %section.newcomment
     - if can? :create, @comment
       %div

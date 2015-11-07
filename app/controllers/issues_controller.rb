@@ -18,9 +18,7 @@ class IssuesController < ApplicationController
       polycomment_type: 'issue',
       polycomment_id: "#{@issue.id}"
     )
-    @comments = pg @comments, 10
     @comment = Comment.new
-    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   def create

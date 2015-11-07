@@ -111,7 +111,6 @@ class ProjectsController < ApplicationController
       polycomment_type: 'blob',
       polycomment_id: "#{blob.oid}"
     )
-    @comments = pg @comments, 10
     @comment = Comment.new
     @id = blob.oid
     @ajax = params[:page].nil? || params[:page] == 1
@@ -139,11 +138,9 @@ class ProjectsController < ApplicationController
       polycomment_type: 'project',
       polycomment_id: "#{@project.id}"
     )
-    @comments = pg @comments, 10
     @comment = Comment.new
     @comment_type = 'project'
     @id = @project.id.to_s
-    @ajax = params[:page].nil? || params[:page] == 1
   end
 
 
@@ -184,7 +181,6 @@ class ProjectsController < ApplicationController
       polycomment_type: 'commit',
       polycomment_id: "#{commit.oid}"
     )
-    @comments = pg @comments, 10
     @comment = Comment.new
     @id = commit.oid
   end
@@ -220,7 +216,6 @@ class ProjectsController < ApplicationController
       polycomment_id: "#{tree.oid}"
     )
     @comment_type = 'tree'
-    @comments = pg @comments, 10
     @comment = Comment.new
     @id = tree.oid
     render 'show'

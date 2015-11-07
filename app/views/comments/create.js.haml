@@ -1,6 +1,5 @@
-:plain
-  $('.comments .showcomments').html("#{escape_javascript(
-    render partial: 'comments/comment',
-    collection: @comments
-  )}");
-  $('textarea').val('').trigger('input');
+var new_reply = $("#{escape_javascript(render partial: 'comments/comment', collection: [@comment])}").hide();
+$('.showcomments').append(new_reply);
+$("#comment_#{@comment.id}").fadeIn('slow');
+$('#new_comment')[0].reset();
+$('textarea').val('').trigger('input');
