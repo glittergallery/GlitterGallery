@@ -17,7 +17,7 @@ class RelationshipsController < ApplicationController
     else
       @user.followers << current_user
       @user.save!
-      notify_users 'follow_user', 2, @user.id, [@user]
+      notify_users 'follow_user', @user.id, [@user]
       respond_to do |format|
         # TODO: it might be better to show flash messages on successful and
         # unsuccessful requests.

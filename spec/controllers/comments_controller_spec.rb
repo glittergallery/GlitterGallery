@@ -3,7 +3,7 @@ require 'spec_helper'
 describe CommentsController, type: :controller do
   let(:project) { create(:project) }
   let(:user) { create(:user) }
-  let(:issue) { create (:issue) }
+  let(:issue) { create(:issue) }
 
   context 'project exists' do
     describe 'POST #create' do

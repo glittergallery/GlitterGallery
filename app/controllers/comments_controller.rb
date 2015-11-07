@@ -16,7 +16,7 @@ class CommentsController < ApplicationController
       @comment.user = current_user
       if @comment.save
         victims = @project.followers + [@project.user] - [@comment.user]
-        notify_users @comment.action, 1, @comment.id, victims, notification_url
+        notify_users @comment.action, @comment.id, victims, notification_url
         respond_to do |format|
           format.html { redirect_to :back }
           format.js {}

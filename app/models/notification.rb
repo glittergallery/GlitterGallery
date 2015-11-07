@@ -22,7 +22,7 @@ class Notification < ActiveRecord::Base
   # 9: Commented on tree
   # 10: annotation
   #
-  # Object_type [0: Project, 1: Comment, 2: User]
+
   # Object_id - ID of the object
   # Victims - the people to be notified
 

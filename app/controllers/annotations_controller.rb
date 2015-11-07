@@ -29,7 +29,7 @@ class AnnotationsController < ApplicationController
       if @annotation.save
         make_presentable(@annotation)
         victims = @project.followers + [@project.user] - [@annotation.user]
-        notify_users 'annotation', 1, @annotation.id, victims, notification_url
+        notify_users 'annotation', @annotation.id, victims, notification_url
         format.json { render json: @annotation.as_json }
       else
         full_error = @annotation.errors.full_messages
@@ -85,7 +85,7 @@ class AnnotationsController < ApplicationController
   end
 
   def find_project
-    names = params[:url].split('/')[1,2]
+    names = params[:url].split('/')[1, 2]
     user = User.find_by username: names.first
     @project = Project.find_by user_id: user.id, name: names.second
   end
