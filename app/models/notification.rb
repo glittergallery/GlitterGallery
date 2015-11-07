@@ -20,6 +20,7 @@ class Notification < ActiveRecord::Base
   # 7: Commented on blob
   # 8: Commented on commit
   # 9: Commented on tree
+  # 10: annotation
   #
   # Object_type [0: Project, 1: Comment, 2: User]
   # Object_id - ID of the object
@@ -45,6 +46,8 @@ class Notification < ActiveRecord::Base
       ' forked '
     when 4, 6
       ' created '
+    when 10
+      ' annotated '
     end
   end
 
@@ -58,6 +61,9 @@ class Notification < ActiveRecord::Base
     when 7, 8, 9
       comment = Comment.find(object_id)
       return "#{comment.polycomment_type}: #{comment.polycomment_id[0..6]}"
+    when 10
+      annotation = Annotation.find(object_id)
+      return "blob #{annotation.blob_id[0..6]}"
     when 3
       return User.find(object_id).username
     when 1, 2, 4
@@ -69,7 +75,7 @@ class Notification < ActiveRecord::Base
 
   def redirect_url
     case action
-    when 0, 7, 8, 9, 5
+    when 0, 7, 8, 9, 5, 10
       return url
     when 1, 2, 4
       return Project.find(object_id).urlbase

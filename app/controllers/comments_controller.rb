@@ -15,7 +15,6 @@ class CommentsController < ApplicationController
       @comment = Comment.new comment_params
       @comment.user = current_user
       if @comment.save
-        @comments = find_project_comments
         victims = @project.followers + [@project.user] - [@comment.user]
         notify_users @comment.action, 1, @comment.id, victims, notification_url
         respond_to do |format|
@@ -60,23 +59,5 @@ class CommentsController < ApplicationController
       value = "#{params[:comment][:polycomment_id]}"
       polycomment.classify.constantize.where(id: value).any?
     end
-  end
-
-  # return all the comments associated with polycomment object
-  def find_project_comments
-    @comments = Comment.where(
-      polycomment_type: params[:comment][:polycomment_type],
-      polycomment_id: "#{params[:comment][:polycomment_id]}"
-    )
-  end
-
-  # if url has master in it then replace it with repo head
-  # and append comment id to url
-  def notification_url
-    comment_url = "#{params[:url]}#comment_#{@comment.id}"
-    match_data = comment_url.match /((blob|tree)\/master)/
-    return comment_url unless match_data
-    replace_str = "#{match_data[2]}/#{@project.barerepo.head.target.oid}"
-    comment_url.gsub /((blob|tree)\/master)/, replace_str
   end
 end

@@ -28,7 +28,7 @@ anno.addHandler('onAnnotationCreated', function(annotation) {
     type: "POST",
     url: "/annotations",
     dataType: "JSON",
-    data: "annotation="+encodeURIComponent(JSON.stringify(annotation))+"&blob_id=" + blob_id(),
+    data: "annotation="+encodeURIComponent(JSON.stringify(annotation))+"&blob_id=" + blob_id()+"&url="+window.location.pathname,
     success: function(data) {
       annotation.id=data.id; // the annotation ID should match the database row ID so we can delete it if needed
       json_data = JSON.parse(data.json)
