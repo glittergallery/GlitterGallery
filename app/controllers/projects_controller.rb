@@ -113,7 +113,6 @@ class ProjectsController < ApplicationController
     )
     @comment = Comment.new
     @id = blob.oid
-    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   # GET /user/project/raw/branch_or_commit_oid/destination
