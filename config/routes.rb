@@ -28,7 +28,6 @@ Glitter::Application.routes.draw do
   resources :projects
   resources :keys, only: [:create, :index, :destroy]
   resources :identities, only: [:destroy,:index]
-  resources :comments, only: [:new, :create, :destroy]
   resources :glitterposts
   resources :notifications, only: [:index, :show]
   resources :project_members, only: [:destroy]
@@ -67,6 +66,7 @@ Glitter::Application.routes.draw do
       end
     end
     resources :projects, except: [:index], path: '/' do
+      resources :comments, only: [:new, :create, :destroy]
       resources :issues, except: [:show], path: "(:xid)/issues" do
         member do
           put 'close'

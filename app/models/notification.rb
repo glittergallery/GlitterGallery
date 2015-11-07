@@ -17,6 +17,9 @@ class Notification < ActiveRecord::Base
   # 4: Created Project,
   # 5: Commented on Issue
   # 6: Created Issue
+  # 7: Commented on blob
+  # 8: Commented on commit
+  # 9: Commented on tree
   #
   # Object_type [0: Project, 1: Comment, 2: User]
   # Object_id - ID of the object
@@ -34,7 +37,7 @@ class Notification < ActiveRecord::Base
 
   def messageverb
     case action
-    when 0, 5
+    when 0, 5, 7, 8, 9
       ' commented on '
     when 1, 3
       ' followed '
@@ -52,6 +55,12 @@ class Notification < ActiveRecord::Base
     when 5
       return Issue.find(Comment.find(object_id).polycomment_id.to_i)
         .friendly_text
+    when 7
+      return "blob #{Comment.find(object_id).polycomment_id[0..6]}"
+    when 8
+      return "commit #{Comment.find(object_id).polycomment_id[0..6]}"
+    when 9
+      return "tree #{Comment.find(object_id).polycomment_id[0..6]}"
     when 3
       return User.find(object_id).username
     when 1, 2, 4
@@ -61,12 +70,14 @@ class Notification < ActiveRecord::Base
     end
   end
 
-  def url
+  def redirect_url
     case action
     when 0 # TODO: link directly to a comment
       return Project.find(Comment.find(object_id).polycomment_id.to_i).urlbase
     when 5
       return Issue.find(Comment.find(object_id).polycomment_id.to_i).show_url
+    when 7, 8, 9
+      return url
     when 1, 2, 4
       return Project.find(object_id).urlbase
     when 6

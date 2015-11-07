@@ -1,5 +1,7 @@
 class CommentsController < ApplicationController
   before_filter :authenticate_user!
+  before_action :get_context
+
   load_and_authorize_resource
 
   def new
@@ -14,11 +16,8 @@ class CommentsController < ApplicationController
       @comment.user = current_user
       if @comment.save
         @comments = find_project_comments
-        @project = Project.find_by(name: params[:comment][:project_name])
-        # action = 'project_comment' for projects or 'issue_comment' for issues
-        action = find_action
         victims = @project.followers + [@project.user] - [@comment.user]
-        notify_users action, 1, @comment.id, victims
+        notify_users @comment.action, 1, @comment.id, victims, notification_url
         respond_to do |format|
           format.html { redirect_to :back }
           format.js {}
@@ -43,40 +42,40 @@ class CommentsController < ApplicationController
   end
 
   private
-    def comment_params
-      params.require(:comment).permit(
-        :polycomment_id,
-        :polycomment_type,
-        :issue,
-        :body
+  def comment_params
+    params.require(:comment).permit(
+      :polycomment_id,
+      :polycomment_type,
+      :issue,
+      :body
+    )
+  end
+
+  # to check if polycomment object exists or not
+  def polycomment_exists
+    if %w(blob commit tree).include?(params[:comment][:polycomment_type])
+      return true
+    else
+      polycomment = params[:comment][:polycomment_type]
+      value = "#{params[:comment][:polycomment_id]}"
+      polycomment.classify.constantize.where(id: value).any?
+    end
+  end
+
+  # return all the comments associated with polycomment object
+  def find_project_comments
+    @comments = Comment.where(
+      polycomment_type: params[:comment][:polycomment_type],
+      polycomment_id: "#{params[:comment][:polycomment_id]}"
       )
-    end
+    @comments = pg @comments, 10
+  end
 
-    # to check if polycomment object exists or not
-    def polycomment_exists
-      if %w(blob commit file tree).include?(params[:comment][:polycomment_type])
-        return true
-      else
-        polycomment = params[:comment][:polycomment_type]
-        value = "#{params[:comment][:polycomment_id]}"
-        polycomment.classify.constantize.where(id: value).any?
-      end
-    end
-
-    # return all the comments associated with polycomment object
-    def find_project_comments
-      @comments = Comment.where(
-        polycomment_type: params[:comment][:polycomment_type],
-        polycomment_id: "#{params[:comment][:polycomment_id]}"
-        )
-      @comments = @comments.paginate(page: 1, per_page: 10)
-    end
-
-    def find_action
-      if params[:comment][:polycomment_type] == 'project'
-        return 'project_comment'
-      elsif params[:comment][:polycomment_type] == 'issue'
-        return 'issue_comment'
-      end
-    end
+  # if url has master in it then replace it with repo head
+  def notification_url
+    match_data = params[:url].match /((blob|tree)\/master)/
+    return params[:url] unless match_data
+    replace_str = "#{match_data[2]}/#{@project.barerepo.head.target.oid}"
+    params[:url].gsub /((blob|tree)\/master)/, replace_str
+  end
 end

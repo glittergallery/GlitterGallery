@@ -1,4 +1,4 @@
-%div
+= div_for comment do
   %header
     %h1
       = comment.user.username
@@ -10,7 +10,7 @@
 
       - if can? :destroy, comment
         = link_to 'Delete?',
-                           comment_path(comment.id),
+                           user_project_comment_path(@project.user, @project, comment.id),
                            method: 'delete',
                            data: { confirm: 'Are you sure?' }
     = distance_of_time_in_words_to_now comment.created_at

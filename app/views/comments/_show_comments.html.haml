@@ -5,11 +5,11 @@
   %section.newcomment
     - if can? :create, @comment
       %div
-        = form_for(comment, remote: true) do |f|
+        = form_for([@project.user, @project, comment], remote: true) do |f|
           = f.hidden_field(:polycomment_type, value: type)
           = f.hidden_field(:polycomment_id, value: id)
           = f.hidden_field(:issue, value: false)
-          = f.hidden_field(:project_name, value: @project.name)
+          = hidden_field_tag(:url, request.original_fullpath)
           .expandingArea
             %pre
               %span
