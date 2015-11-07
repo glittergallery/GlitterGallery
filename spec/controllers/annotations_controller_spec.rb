@@ -5,6 +5,7 @@ describe AnnotationsController, type: :controller do
   let(:other_user) { create(:user) }
   let(:project) { create(:project) }
   let(:annotation) { create(:annotation, user: user) }
+  let(:blob_oid) { 'fb82abfe99bb2be3b885b9cf72b7e05220dce165' }
   let(:annotation_param) do
     "{\"src\":\"http://localhost:3000/some/path\"," +
     "\"text\":\"flying monkeys\",\"shapes\":[{\"type\":\"rect\",\"geometry" +
@@ -22,19 +23,23 @@ describe AnnotationsController, type: :controller do
 
     it 'does not create new annotation' do
       post :create, format: :json,
-                    blob_id: 'fb82abfe99bb2be3b885b9cf72b7e05220dce165',
+                    blob_id: blob_oid,
                     annotation: annotation_param
       expect(user.annotations).to be_empty
     end
   end
 
   context 'user is signed in' do
-    before { sign_in(user) }
+    before do
+      sign_in(user)
+      @url = "/#{project.user.username}/#{project.name}/oid/some.png"
+    end
 
     it 'creates new annotation' do
       post :create, format: :json,
-                    blob_id: 'fb82abfe99bb2be3b885b9cf72b7e05220dce165',
-                    annotation: annotation_param
+                    blob_id: blob_oid,
+                    annotation: annotation_param,
+                    url: @url
       expect(user.annotations.last. text).to eq('flying monkeys')
     end
   end
