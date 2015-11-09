@@ -370,7 +370,6 @@ class Project < ActiveRecord::Base
   # if svg file_name is passed then it is first changed to png
   def image_for(file_name, dest = '')
     prefix = data_path.dup
-    prefix.sub!('public', '') unless add_public
     file_name = file_name.split('/').last unless file_name.empty?
     file_name = file_name.gsub(/.svg/i, '.png')
     case dest
