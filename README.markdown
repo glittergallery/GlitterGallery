@@ -1,6 +1,8 @@
 [![security](https://hakiri.io/github/glittergallery/GlitterGallery/master.svg)](https://hakiri.io/github/glittergallery/GlitterGallery/master)
 [![tests](https://travis-ci.org/glittergallery/GlitterGallery.svg?branch=master)](https://travis-ci.org/glittergallery/GlitterGallery)
- [![Stories in Ready](https://badge.waffle.io/glittergallery/glittergallery.svg?label=ready&title=Ready)](http://waffle.io/glittergallery/glittergallery) 
+[![Code Climate](https://codeclimate.com/github/glittergallery/GlitterGallery/badges/gpa.svg)](https://codeclimate.com/github/glittergallery/GlitterGallery)
+[![Stories in Ready](https://badge.waffle.io/glittergallery/glittergallery.svg?label=ready&title=Ready)](http://waffle.io/glittergallery/glittergallery)
+
  
 ![Homestrip 1/2](http://thirstyforcola.files.wordpress.com/2013/05/front.jpg)
 ![Homestrip - 2/2](http://thirstyforcola.files.wordpress.com/2013/05/back.jpg)

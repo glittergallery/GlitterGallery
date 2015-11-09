@@ -62,70 +62,18 @@ module PathsHelper
     create_branch_user_project_path project.user, project, project.uniqueurl
   end
 
-  def project_tree_path(project,
-    oid = params[:oid],
-    destination = params[:destination])
-    oid ||= 'master'
-    tree_user_project_path(
-      project.user,
-      project,
-      project.uniqueurl,
-      oid,
-      destination
-    )
-  end
-
-  def project_blob_path(
-    project,
-    oid = params[:oid],
-    destination = params[:destination]
-  )
-    oid ||= 'master'
-    blob_user_project_path(
-      project.user,
-      project,
-      project.uniqueurl,
-      oid,
-      destination
-    )
-  end
-
-  def project_file_upload_path(project,
-    oid = params[:oid],
-    destination = params[:destination]
-  )
-    file_upload_user_project_path(
-      project.user,
-      project,
-      project.uniqueurl,
-      oid,
-      destination
-    )
-  end
-
-  def project_file_update_path(project,
-    branch = params[:oid],
-    destination = params[:destination]
-  )
-    file_update_user_project_path(
-      project.user,
-      project,
-      project.uniqueurl,
-      branch,
-      destination
-    )
-  end
-
-  def project_create_directory_path(project,
-    branch = params[:oid],
-    destination = params[:destination]
-  )
-    create_directory_user_project_path(
-      project.user,
-      project,
-      project.uniqueurl,
-      branch,
-      destination
-    )
+  %w(tree blob file_upload file_update create_directory).each do |action|
+    define_method("project_#{action}_path") do
+      |project, oid = params[:oid], destination = params[:destination]|
+      oid ||= 'master'
+      Rails.application.routes.url_helpers.send(
+        "#{action}_user_project_path",
+        project.user,
+        project,
+        project.uniqueurl,
+        oid,
+        destination
+      )
+    end
   end
 end
