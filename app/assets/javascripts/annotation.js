@@ -2,10 +2,11 @@
 
 // Function which first finds all the annotations associated with given
 // blob and draws them using addAnnotation Handler
+/* globals anno, annotorious, confirm*/
 function loadAnnotations() {
   jQuery.getJSON("/annotations/for_blob/"+blob_id()+ ".json",function(data) {
     for (var i = 0; i < data.length; i++) {
-        annotation = JSON.parse(data[i].json)
+        var annotation = JSON.parse(data[i].json);
         anno.addAnnotation(annotation);
       }
   });
@@ -31,7 +32,7 @@ anno.addHandler('onAnnotationCreated', function(annotation) {
     data: "annotation="+encodeURIComponent(JSON.stringify(annotation))+"&blob_id=" + blob_id()+"&url="+window.location.pathname,
     success: function(data) {
       annotation.id=data.id; // the annotation ID should match the database row ID so we can delete it if needed
-      json_data = JSON.parse(data.json)
+      var json_data = JSON.parse(data.json);
       annotation.username = json_data.username;
       annotation.updated_at = json_data.updated_at;
     },
@@ -50,7 +51,7 @@ anno.addHandler('onAnnotationUpdated', function(annotation) {
     dataType: "JSON",
     url: "/annotations/" + annotation.id,
     data: "annotation="+encodeURIComponent(JSON.stringify(annotation)),
-    success: function(data) {
+    success: function() {
       loadAnnotations();
     },
     error: function(data){
@@ -62,10 +63,10 @@ anno.addHandler('onAnnotationUpdated', function(annotation) {
 });
 
 // this gets called when the user clicks the delete icon
-anno.addHandler('beforeAnnotationRemoved', function(annotation) {
+anno.addHandler('beforeAnnotationRemoved', function() {
   var r=confirm("Delete annotation?");
-  if (r==false) return false;
-  else return true;
+  if (r===false){ return false; }
+  else { return true; }
 });
 
 // this is what gets called when the annotation is actually deleted
@@ -82,19 +83,19 @@ anno.addHandler('onAnnotationRemoved', function(annotation) {
 });
 
 // this plugin allows us to add the username and date to each annotation and display it
-annotorious.plugin.addUsernamePlugin = function(opt_config_options) { }
+annotorious.plugin.addUsernamePlugin = function() { };
 annotorious.plugin.addUsernamePlugin.prototype.onInitAnnotator = function(annotator) {
   // A Field can be an HTML string or a function(annotation) that returns a string
   annotator.popup.addField(function(annotation) {
-    if (annotation.username != '') {
-      return '<em>' + annotation.username + ' - '+ annotation.updated_at +'</em>'
+    if (annotation.username !== '') {
+      return '<em>' + annotation.username + ' - '+ annotation.updated_at +'</em>';
     }
     else
     {
-     return ''
+     return '';
     }
   });
-}
+};
 
 anno.addPlugin('addUsernamePlugin', {});
 

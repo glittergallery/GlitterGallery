@@ -1,7 +1,7 @@
 // calculates the total number of files in repo by
 // reading the data attr of li span.file_num
 function totalFiles(){
-  total = 0;
+  var total = 0;
   $(".file_num").each(function(){ total+=$(this).data("num"); });
   return total;
 }
@@ -14,7 +14,7 @@ function drawCircle(ctx, start_x, start_y){
 // reads file type from data attr of li span.file_type
 // and appends number of that file type
 function drawText(ctx, n, start_x, num){
-  type = $($("#file_data").find(".file_type")[n]).data("type");
+  var type = $($("#file_data").find(".file_type")[n]).data("type");
   ctx.font = "bold 0.9em sans-serif";
   ctx.fillText(''+type+' '+num+'', start_x, 17);
 }
@@ -23,18 +23,18 @@ function drawText(ctx, n, start_x, num){
 // uses gray scale for all file types.
 function draw() {
   $('#file_info').css('height', '');
-  var center_width = $(".generated").width()
+  var center_width = $(".generated").width();
   var c = document.getElementById("file_info");
   // set width ( = parent - approx h2 width) and height of canvas
   c.width = center_width - ($('article header h2').width() + 3);
   c.height = 32;
   var ctx = c.getContext("2d");
   ctx.lineWidth = 4;
-  total = totalFiles();
-  line_pos = 0;
+  var total = totalFiles();
+  var line_pos = 0;
   // loop to draw circle, text and lines at bottom
-  for (i = 15, j = 1; i < c.width; i+= c.width/4, j++){
-    cur_num = $($("#file_data").find(".file_num")[j-1]).data("num");
+  for (var i = 15, j = 1; i < c.width; i+= c.width/4, j++){
+    var cur_num = $($("#file_data").find(".file_num")[j-1]).data("num");
     ctx.beginPath();
     drawCircle(ctx, i, 12);
     drawText(ctx, j-1, i+10, cur_num);
@@ -49,6 +49,6 @@ function draw() {
 }
 
 $("document").ready( function() {
-  if($('#file_info').length > 0) draw();
+  if($('#file_info').length > 0) { draw(); }
 });
 
