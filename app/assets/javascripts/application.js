@@ -27,9 +27,10 @@
 //= require jquery.raty
 //= require ratyrate
 //= require projects
+//= require relationship
 //= require jquery.swipebox.min
 
-$(document).on('ajax:error', function (e, xhr, settings) {
+$(document).on('ajax:error', function (e, xhr, data, settings) {
     if (xhr.status == 401) {
         window.location.replace('/users/sign_in')
     }
