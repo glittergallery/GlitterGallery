@@ -6,6 +6,8 @@ module Gg
   class ImageProcessing
     attr_reader :read_path
 
+    SUPPORTED_FILE_TYPES = ['.png', '.jepg', '.jpg', '.svg', '']
+
     def initialize(read_path)
       @read_path = read_path
     end
@@ -14,6 +16,7 @@ module Gg
     # at write_path. Used to generate images for inspire page
     # and commit thumbnails
     def generate(write_path, size_type)
+      return unless SUPPORTED_FILE_TYPES.include? File.extname(write_path)
       image = Magick::Image.read(read_path).first
       write_image image, write_path, size_type
     end
@@ -21,6 +24,7 @@ module Gg
     # Reads blob read_path and writes the (resized) image at write_path
     # Used to generate images for project show page
     def blob_generate(write_path, size_type = nil)
+      return unless SUPPORTED_FILE_TYPES.include? File.extname(write_path)
       image = Magick::Image.from_blob(read_path).first
       write_image image, write_path, size_type
     end
