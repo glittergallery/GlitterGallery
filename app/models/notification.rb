@@ -54,16 +54,13 @@ class Notification < ActiveRecord::Base
   def objectname
     case action
     when 0
-      return Project.find(Comment.find(object_id).polycomment_id.to_i).name
+      find_project_name
     when 5
-      return Issue.find(Comment.find(object_id).polycomment_id.to_i)
-        .friendly_text
+      find_issue_number
     when 7, 8, 9
-      comment = Comment.find(object_id)
-      return "#{comment.polycomment_type}: #{comment.polycomment_id[0..6]}"
+      find_comment_oid
     when 10
-      annotation = Annotation.find(object_id)
-      return "blob #{annotation.blob_id[0..6]}"
+      find_annotation_oid
     when 3
       return User.find(object_id).username
     when 1, 2, 4
@@ -84,5 +81,25 @@ class Notification < ActiveRecord::Base
     else
       return "/#{actor.username}"
     end
+  end
+
+  private
+
+  def find_project_name
+    Project.find(Comment.find(object_id).polycomment_id.to_i).name
+  end
+
+  def find_issue_number
+    Issue.find(Comment.find(object_id).polycomment_id.to_i).friendly_text
+  end
+
+  def find_comment_oid
+    comment = Comment.find(object_id)
+    "#{comment.polycomment_type}: #{comment.polycomment_id[0..6]}"
+  end
+
+  def find_annotation_oid
+    annotation = Annotation.find(object_id)
+    "blob #{annotation.blob_id[0..6]}"
   end
 end

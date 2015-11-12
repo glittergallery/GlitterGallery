@@ -16,15 +16,7 @@ class AnnotationsController < ApplicationController
 
   # POST  /annotations
   def create
-    find_project
-    annotation_json = params[:annotation]
-    annotation_hash = JSON.parse(annotation_json)
-    @annotation = Annotation.new(
-      json: annotation_json,
-      text: annotation_hash['text'],
-      blob_id: params[:blob_id],
-      user_id: current_user.id
-    )
+    build_annotation
     respond_to do |format|
       if @annotation.save
         make_presentable(@annotation)
@@ -88,5 +80,17 @@ class AnnotationsController < ApplicationController
     names = params[:url].split('/')[1, 2]
     user = User.find_by username: names.first
     @project = Project.find_by user_id: user.id, name: names.second
+  end
+
+  def build_annotation
+    find_project
+    annotation_json = params[:annotation]
+    annotation_hash = JSON.parse(annotation_json)
+    @annotation = Annotation.new(
+      json: annotation_json,
+      text: annotation_hash['text'],
+      blob_id: params[:blob_id],
+      user_id: current_user.id
+    )
   end
 end
