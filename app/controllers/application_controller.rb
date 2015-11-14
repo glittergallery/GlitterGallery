@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
   end
 
   # used to deliver notification on various events
-  def notify_users(action, object_id, victims, url = nil)
+  def notify_users(action, model_id, victims, url = nil)
     return if victims.empty?
     actions = { 'project_comment' => 0,
                 'follow_project' => 1,
@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
     Notification.create(
           actor: current_user,
           action: actions[action],
-          object_id: object_id,
+          model_id: model_id,
           victims: victims,
           url: url
         )

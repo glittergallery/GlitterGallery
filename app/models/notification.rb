@@ -5,6 +5,8 @@ class Notification < ActiveRecord::Base
                      class_name: 'User',
                      foreign_key: 'victim_id'
 
+  validates :action, :actor, :model_id, presence: true
+
   # TODO: clean up action ids, numbers makes unreadable
 
   # This class has the following information -
@@ -23,7 +25,7 @@ class Notification < ActiveRecord::Base
   # 10: annotation
   #
 
-  # Object_id - ID of the object
+  # model_id - ID of the object
   # Victims - the people to be notified
 
   after_create :send_emails
@@ -62,11 +64,11 @@ class Notification < ActiveRecord::Base
     when 10
       find_annotation_oid
     when 3
-      return User.find(object_id).username
+      return User.find(model_id).username
     when 1, 2, 4
-      return Project.find(object_id).name
+      return Project.find(model_id).name
     when 6
-      return Issue.find(object_id).friendly_text
+      return Issue.find(model_id).friendly_text
     end
   end
 
@@ -75,9 +77,9 @@ class Notification < ActiveRecord::Base
     when 0, 7, 8, 9, 5, 10
       return url
     when 1, 2, 4
-      return Project.find(object_id).urlbase
+      return Project.find(model_id).urlbase
     when 6
-      return Issue.find(object_id).show_url
+      return Issue.find(model_id).show_url
     else
       return "/#{actor.username}"
     end
@@ -86,20 +88,20 @@ class Notification < ActiveRecord::Base
   private
 
   def find_project_name
-    Project.find(Comment.find(object_id).polycomment_id.to_i).name
+    Project.find(Comment.find(model_id).polycomment_id.to_i).name
   end
 
   def find_issue_number
-    Issue.find(Comment.find(object_id).polycomment_id.to_i).friendly_text
+    Issue.find(Comment.find(model_id).polycomment_id.to_i).friendly_text
   end
 
   def find_comment_oid
-    comment = Comment.find(object_id)
+    comment = Comment.find(model_id)
     "#{comment.polycomment_type}: #{comment.polycomment_id[0..6]}"
   end
 
   def find_annotation_oid
-    annotation = Annotation.find(object_id)
+    annotation = Annotation.find(model_id)
     "blob #{annotation.blob_id[0..6]}"
   end
 end
