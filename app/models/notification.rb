@@ -80,7 +80,7 @@ class Notification < ActiveRecord::Base
       return Project.find(model_id).urlbase
     when 6
       return Issue.find(model_id).show_url
-    else
+    when 3
       return "/#{actor.username}"
     end
   end
