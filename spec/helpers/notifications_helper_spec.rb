@@ -1,15 +1,12 @@
 require 'spec_helper'
 
-# Specs in this file have access to a helper object that includes
-# the NotificationsHelper. For example:
-#
-# describe NotificationsHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
-describe NotificationsHelper do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe NotificationsHelper, type: :helper do
+  let(:notification) { create(:notification) }
+
+  describe '#notif_string' do
+    it 'returns appeneded username and messageverb' do
+      expected_string = notification.actor.username + notification.messageverb
+      expect(notif_string notification).to eq(expected_string)
+    end
+  end
 end
