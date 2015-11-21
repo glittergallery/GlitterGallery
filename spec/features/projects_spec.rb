@@ -197,21 +197,31 @@ feature 'Projects' do
         expect(page).to have_link 'test_branch'
       end
 
-      scenario 'User is not able to create a branch with the same name' do
-        project = Project.last
-        click_link 'Branches'
-        fill_in 'branch_name', with: 'test_branch'
-        click_button 'Create new branch!'
-        expect(page.current_path).to eq(
-          branches_user_project_path(
-            project.user,
-            project,
-            project.uniqueurl
-          )
-        )
-        expect(page).to have_content(
-          'Something went wrong, the branch was not created!'
-        )
+      describe 'Invalid branch' do
+        before do
+          @project = Project.last
+          click_link 'Branches'
+        end
+
+        shared_examples 'new branch' do |name|
+          it 'does not create new branch' do
+            fill_in 'branch_name', with: name
+            click_button 'Create new branch!'
+            expect(page.current_path).to eq(
+              branches_user_project_path(
+                @project.user,
+                @project,
+                @project.uniqueurl
+              )
+            )
+            expect(page).to have_content(
+              'Branch name can only have dash, underscore and alphanumeric'
+            )
+          end
+        end
+
+        it_behaves_like 'new branch', 'test_branch'
+        it_behaves_like 'new branch', 'test branch'
       end
 
       scenario 'User comments on a tree' do

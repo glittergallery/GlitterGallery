@@ -27,6 +27,11 @@ describe 'User' do
     expect(build(:user, username: '')).to_not be_valid
   end
 
+  it 'is invalid without correct username format' do
+    expect(build(:user, username: 'some name')).to_not be_valid
+    expect(build(:user, username: 'some@name')).to_not be_valid
+  end
+
   describe '#owner?' do
     before do
       @user = create(:user)
