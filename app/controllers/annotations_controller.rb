@@ -57,7 +57,7 @@ class AnnotationsController < ApplicationController
         format.json { render json: :nothing }
       else
         full_error = @annotation.errors.full_messages
-        format.json { render json: { error: full_error }, status: 400 }
+        format.json { render json: { error: full_error }, status: 422 }
       end
     end
   end

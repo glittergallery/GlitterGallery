@@ -40,26 +40,75 @@ describe AnnotationsController, type: :controller do
                     blob_id: blob_oid,
                     annotation: annotation_param,
                     url: @url
-      expect(user.annotations.last. text).to eq('flying monkeys')
+      expect(user.annotations.last.text).to eq('flying monkeys')
+    end
+
+    context 'save fails' do
+      before do
+        allow_any_instance_of(Annotation).to receive(:save).and_return(false)
+      end
+
+      it 'does not create annotation' do
+        post :create, format: :json,
+                      blob_id: blob_oid,
+                      annotation: annotation_param,
+                      url: @url
+        expect(user.annotations).to be_empty
+        expect(response.status).to eq 422
+      end
     end
   end
 
   context 'user is owner of annotation' do
     before { sign_in(user) }
 
-    it 'updates annotation' do
-      annotation_param.gsub!('flying monkeys', 'astro giraffe')
-      put :update, format: :json,
-                   id: annotation.id,
-                   annotation: annotation_param
-      annotation.reload
-      expect(annotation.text).to eq('astro giraffe')
+    describe 'PATCH #update' do
+      it 'updates annotation' do
+        annotation_param.gsub!('flying monkeys', 'astro giraffe')
+        put :update, format: :json,
+                     id: annotation.id,
+                     annotation: annotation_param
+        annotation.reload
+        expect(annotation.text).to eq('astro giraffe')
+      end
+
+      context 'save fails' do
+        before do
+          allow_any_instance_of(Annotation).to receive(:save).and_return(false)
+        end
+
+        it 'does not update annotation' do
+          annotation_param.gsub!('flying monkeys', 'astro giraffe')
+          put :update, format: :json,
+                       id: annotation.id,
+                       annotation: annotation_param
+          annotation.reload
+          expect(annotation.text).to eq('flying monkeys')
+          expect(response.status).to eq 422
+        end
+      end
     end
 
-    it 'destroys annotation' do
-      delete :destroy, format: :json,
-                        id: annotation.id
-      expect(user.annotations).to be_empty
+    describe 'DELETE #destroy' do
+      it 'destroys annotation' do
+        delete :destroy, format: :json,
+                         id: annotation.id
+        expect(user.annotations).to be_empty
+      end
+
+      context 'destroy fails' do
+        before do
+          allow_any_instance_of(Annotation).to receive(:destroy)
+            .and_return(false)
+        end
+
+        it 'does not delete annotation' do
+          delete :destroy, format: :json,
+                           id: annotation.id
+          expect(user.annotations).not_to be_empty
+          expect(response.status).to eq 422
+        end
+      end
     end
   end
 
@@ -77,7 +126,7 @@ describe AnnotationsController, type: :controller do
 
     it 'can not destroy annotation' do
       delete :destroy, format: :json,
-                        id: annotation.id
+                       id: annotation.id
       expect(user.annotations).not_to be_empty
     end
   end

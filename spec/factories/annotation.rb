@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :annotation do
-    text 'flying  monkeys'
+    text 'flying monkeys'
     blob_id '453bb23f7defbd153379a22284445dbfd8008295'
     json "{\"src\":\"http://localhost:3000/some/path\"," +
       "\"text\":\"flying monkeys\",\"shapes\":[{\"type\":\"rect\",\"geometry" +

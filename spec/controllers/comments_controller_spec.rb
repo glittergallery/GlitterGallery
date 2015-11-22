@@ -21,6 +21,24 @@ describe CommentsController, type: :controller do
         expect(response.response_code).to eq(200)
         expect(project.user.comments.first.body).to eq('heads are cool')
       end
+
+      context 'save fails' do
+        before do
+          allow_any_instance_of(Comment).to receive(:save).and_return(false)
+          @request.env['HTTP_REFERER'] = 'http://test.host/keys'
+        end
+        it 'does not add comment' do
+          xhr :post, :create, comment: { polycomment_type: 'project',
+                                       polycomment_id: project.id,
+                                       issue: false,
+                                       body: 'heads are cool'
+                                       },
+                              project_id: project.name,
+                              user_id: project.user.username
+          expect(flash[:alert]).to be_present
+          expect(project.user.comments).to be_empty
+        end
+      end
     end
   end
 
@@ -133,12 +151,26 @@ describe CommentsController, type: :controller do
     end
 
     describe 'DELETE #destroy' do
+      before { @request.env['HTTP_REFERER'] = 'http://test.host/keys' }
       it 'deletes the comment' do
-        @request.env['HTTP_REFERER'] = 'http://test.host'
         delete :destroy, id: @comment.id,
                          project_id: project.name,
                          user_id: project.user.username
         expect(user.comments).to be_empty
+      end
+
+      context 'destroy fails' do
+        before do
+          allow_any_instance_of(Comment).to receive(:destroy).and_return(false)
+        end
+
+        it 'does not remove comment' do
+          delete :destroy, id: @comment.id,
+                           project_id: project.name,
+                           user_id: project.user.username
+          expect(flash[:alert]).to be_present
+          expect(user.comments).not_to be_empty
+        end
       end
     end
   end
