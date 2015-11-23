@@ -25,5 +25,6 @@ tmp/
 [._]s[a-w][a-z]
 *.un~
 
-# Ignore database config file
+# Ignore env specific config files
 /config/database.yml
+/config/initializers/0_glitterconfig.rb

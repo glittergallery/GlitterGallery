@@ -51,10 +51,7 @@ RSpec.configure do |config|
 
   config.after(:each) do
     if Rails.env.test? || Rails.env.cucumber?
-      FileUtils.rm_rf(File.join(
-        Rails.root,
-        Glitter::Application.config.repo_dir
-      ))
+      FileUtils.rm_rf(Glitter::Application.config.repo_path)
     end
     DatabaseCleaner.clean
   end

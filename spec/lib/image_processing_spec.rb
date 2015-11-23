@@ -8,7 +8,7 @@ describe Gg::ImageProcessing do
     before do
       add_image project, 'logo.svg'
       @commit = project.branch_commit nil
-      @write_path = project.image_for('logo.svg', 'mobile_inspire', true)
+      @write_path = project.image_for('logo.svg', 'mobile_inspire')
       @path = File.join project.image_for('', 'mobile_inspire'), '/*'
     end
 

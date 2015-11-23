@@ -66,8 +66,8 @@ module ProjectsHelper
       }
     else
       images = project.find_inspire_image
-      mobile = project.image_for images, 'mobile_inspire', false
-      desktop = project.image_for images, 'desktop_inspire', false
+      mobile = project.image_for images, 'mobile_inspire'
+      desktop = project.image_for images, 'desktop_inspire'
       image_tag nil, class: 'img-placeholder', data: {
         mobile_url: mobile,
         desktop_url: desktop
@@ -78,8 +78,8 @@ module ProjectsHelper
   # render responsive images for project show page
   # uses jquery for setting src from data attribute
   def render_show_image(project, image_name)
-    mobile = project.image_for image_name, 'show_image_mob', false
-    desktop = project.image_for image_name, 'show_image_desk', false
+    mobile = project.image_for image_name, 'show_image_mob'
+    desktop = project.image_for image_name, 'show_image_desk'
     image_tag nil, class: 'img-placeholder', data: {
       mobile_url: mobile,
       desktop_url: desktop

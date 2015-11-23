@@ -44,7 +44,7 @@ module Gg
       version_matches = version_output.match(/OpenSSH_(?<major>\d+)\.(?<minor>\d+)/)
       return false unless version_matches
 
-      if version_matches[:major].to_i > 6 && version_matches[:minor].to_i > 8
+      if (version_matches[:major]+'.'+version_matches[:minor]).to_i >= 6.8
         return true
       else
         return false

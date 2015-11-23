@@ -4,7 +4,9 @@ include FileHelper
 
 describe Project do
   let(:user) { create(:user) }
+  let(:user1) { create(:user) }
   let(:project) { create(:project, user: user) }
+  let(:repo_path) { Glitter::Application.config.repo_path }
 
   it 'has a valid factory' do
     expect(create(:project)).to be_valid
@@ -90,11 +92,9 @@ describe Project do
 
   it 'gets thumbnails path' do
     commit_id = SecureRandom.hex(20)
-    real_path = "/testdata/repos/#{project.user.username}/#{project.name}/" \
+    real_path = "#{repo_path}/#{project.user.username}/#{project.name}/" \
                 "thumbnails/#{commit_id}"
-    expect(project.image_for(commit_id, 'thumbnails', false)).to eq(real_path)
-    real_path = 'public' + real_path
-    expect(project.image_for(commit_id, 'thumbnails', true)).to eq(real_path)
+    expect(project.image_for(commit_id, 'thumbnails')).to eq(real_path)
   end
 
   describe 'image processing' do
@@ -102,49 +102,49 @@ describe Project do
 
     describe '#image_for' do
       it 'gets desktop images path' do
-        real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
+        real_path = "#{repo_path}/#{project.user.username}/#{project.name}/"\
                     'inspire/desktop/happypanda.png'
-        expect(project.image_for('happypanda.png', 'desktop_inspire', false))
+        expect(project.image_for('happypanda.png', 'desktop_inspire'))
           .to eq(real_path)
       end
 
       it 'gets mobie images path' do
-        real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
+        real_path = "#{repo_path}/#{project.user.username}/#{project.name}/"\
                     'inspire/mobile/happypanda.png'
-        expect(project.image_for('happypanda.png', 'mobile_inspire', false))
+        expect(project.image_for('happypanda.png', 'mobile_inspire'))
           .to eq(real_path)
       end
 
       it 'gets mobile show image path' do
-        real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
+        real_path = "#{repo_path}/#{project.user.username}/#{project.name}/"\
                     'show_images/mobile/happypanda.png'
-        expect(project.image_for('happypanda.png', 'show_image_mob', false))
+        expect(project.image_for('happypanda.png', 'show_image_mob'))
           .to eq(real_path)
       end
 
       it 'gets desktop show image path' do
-        real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
+        real_path = "#{repo_path}/#{project.user.username}/#{project.name}/"\
                     'show_images/desktop/happypanda.png'
-        expect(project.image_for('happypanda.png', 'show_image_desk', false))
+        expect(project.image_for('happypanda.png', 'show_image_desk'))
           .to eq(real_path)
       end
 
       it 'gets show image path' do
-        real_path = "/testdata/repos/#{project.user.username}/#{project.name}/"\
+        real_path = "#{repo_path}/#{project.user.username}/#{project.name}/"\
                     'show_images/show/happypanda.png'
-        expect(project.image_for('happypanda.png', 'show', false))
+        expect(project.image_for('happypanda.png', 'show'))
           .to eq(real_path)
       end
     end
 
     describe 'inspire images' do
       it 'generates desktop images for inspire page' do
-        desk_path = project.image_for 'happypanda.png', 'desktop_inspire', true
+        desk_path = project.image_for 'happypanda.png', 'desktop_inspire'
         expect(File.exists?(desk_path)).to be true
       end
 
       it 'generates mobile images for inspire page' do
-        mob_path = project.image_for 'happypanda.png', 'mobile_inspire', true
+        mob_path = project.image_for 'happypanda.png', 'mobile_inspire'
         expect(File.exists?(mob_path)).to be true
       end
     end
@@ -153,17 +153,17 @@ describe Project do
       before { project.browse_tree }
 
       it 'gets generates desktop image' do
-        desk_path = project.image_for 'happypanda.png', 'show_image_desk', true
+        desk_path = project.image_for 'happypanda.png', 'show_image_desk'
         expect(File.exists?(desk_path)).to be true
       end
 
       it 'gets generates mobile image' do
-        mob_path = project.image_for 'happypanda.png', 'show_image_mob', true
+        mob_path = project.image_for 'happypanda.png', 'show_image_mob'
         expect(File.exists?(mob_path)).to be true
       end
 
       it 'gets generates show image' do
-        show_path = project.image_for 'happypanda.png', 'show', true
+        show_path = project.image_for 'happypanda.png', 'show'
         expect(File.exists?(show_path)).to be true
       end
     end
@@ -273,4 +273,29 @@ describe Project do
       expect(data.second.oid). to eq(sha)
     end
   end
+
+  # testing private method, so delete it if fails
+  describe '#copy_generated_images' do
+    before do
+      add_image project, 'happypanda.png'
+      (@child = project.create_fork_project).user = user1
+      @child.save
+    end
+
+    it 'copies mobile inspire images from parent' do
+      path = File.join @child.image_for('', 'mobile_inspire'), '/*'
+      expect(Dir[path]).to_not be_empty
+    end
+
+    it 'copies desktop inspire images from parent' do
+      path = File.join @child.image_for('', 'desktop_inspire'), '/*'
+      expect(Dir[path]).to_not be_empty
+    end
+
+    it 'copies commit thumbnails from parent' do
+      path = File.join @child.image_for('', 'thumbnails'), '/*'
+      expect(Dir[path]).to_not be_empty
+    end
+  end
+
 end
