@@ -55,19 +55,18 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.new project_params
-    project.user_id = current_user.id
-    project.private = true if params[:commit] == 'Private'
-    if project.save
-      ProjectMember.add_owner project, current_user
-      unless project.private
-        # TODO: clean up action ids, numbers makes unreadable
-        notify_users 'project_create', project.id, current_user.followers
+    @project = Project.new project_params
+    @project.user_id = current_user.id
+    @project.private = true if params[:commit] == 'Private'
+    if @project.save
+      ProjectMember.add_owner @project, current_user
+      unless @project.private
+        notify_users 'project_create', @project.id, current_user.followers
       end
-      redirect_to user_project_path project.user, project
+      redirect_to user_project_path @project.user, @project
     else
       flash[:alert] = "Didn't save project!"
-      redirect_to new_project_path
+      render 'new'
     end
   end
 
@@ -187,18 +186,14 @@ class ProjectsController < ApplicationController
 
   # POST /user/project/create_branch
   def create_branch
-    if params[:branch_name].empty?
-      flash[:alert] = 'No name provided for the branch!'
-      redirect_to project_branches_path @project
+    @branch = @project.create_branch params[:branch_name]
+    if @branch
+      flash[:notice] = "Successfully created #{params[:branch_name]}!"
+      redirect_to project_tree_path @project, @branch.name
     else
-      @branch = @project.create_branch params[:branch_name]
-      if @branch
-        flash[:notice] = "Successfully created #{params[:branch_name]}!"
-        redirect_to project_tree_path @project, @branch.name
-      else
-        flash[:alert] = 'Something went wrong, the branch was not created!'
-        redirect_to project_branches_path @project
-      end
+      flash[:alert] = 'Branch name can only have dash, ' +
+        'underscore and alphanumeric characters'
+      redirect_to project_branches_path @project
     end
   end
 

@@ -34,6 +34,11 @@ describe Project do
     expect(build(:project, user: user)).to be_valid
   end
 
+  it 'is invalid without correct name format' do
+    expect(build(:project, name: 'some name')).to_not be_valid
+    expect(build(:project, name: 'some@name')).to_not be_valid
+  end
+
   it 'is soft deleted' do
     project = create(:project)
     expect {project.destroy}.to change {Project.count}
@@ -172,11 +177,6 @@ describe Project do
   describe '#urlbase' do
     it 'is correct' do
       expect(project.urlbase).to eq("/#{project.user.username}/#{project.name}")
-    end
-
-    it 'handles spaces properly' do
-      project = create(:project, name: 'test project', user: user)
-      expect(project.urlbase).to eq("/#{user.username}/test%20project")
     end
   end
 

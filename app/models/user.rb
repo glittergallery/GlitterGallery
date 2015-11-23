@@ -34,6 +34,8 @@ class User < ActiveRecord::Base
 
   before_save { |user| user.email = email.downcase }
   validates :username, presence: true, uniqueness: { case_sensitive: false }
+  validates_format_of :username, with: /\A[a-z0-9\-_]+\z/i, message: 'can ' +
+    'only have dash, underscore and alphanumeric characters'
 
   ratyrate_rater
 

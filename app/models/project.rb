@@ -21,7 +21,9 @@ class Project < ActiveRecord::Base
   validates :name, presence: true,
                    uniqueness: { scope: :user,
                                  conditions: -> { where(deleted_at: nil) },
-                                 message: 'is used by one of your projects.' }
+                                 message: 'is used by one of your projects.' },
+                   format: { with: /\A[a-z0-9\-_]+\z/i, message: 'can only, ' +
+                      'have dash underscore and alphanumeric characters' }
   validates :user, presence: true
 
   has_ancestry # Tree structure.
@@ -208,6 +210,7 @@ class Project < ActiveRecord::Base
 
   # Creates a new branch from master.
   def create_branch(name)
+    return unless /[a-z0-9\-_]/.match name
     begin
       res = satelliterepo.create_branch(name)
     rescue
