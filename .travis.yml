@@ -11,4 +11,4 @@ before_script:
 script:
   - bundle exec rubocop --config .rubocop.yml
   - RAILS_ENV=test xvfb-run bundle exec rspec
-  - bundle exec haml-lint app/views/
+  - bundle exec haml-lint app/**/*.html.haml

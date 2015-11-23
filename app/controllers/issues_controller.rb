@@ -18,9 +18,7 @@ class IssuesController < ApplicationController
       polycomment_type: 'issue',
       polycomment_id: "#{@issue.id}"
     )
-    @comments = pg @comments, 10
     @comment = Comment.new
-    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   def create
@@ -37,7 +35,7 @@ class IssuesController < ApplicationController
           end
         end
         victims = @project.followers + [@project.user] - [@issue.user]
-        notify_users 'issue_create', 0, @project.id, victims
+        notify_users 'issue_create', @issue.id, victims
         format.html { redirect_to @issue.show_url }
       else
         format.html { render 'new'}

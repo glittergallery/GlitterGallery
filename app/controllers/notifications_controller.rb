@@ -16,6 +16,6 @@ class NotificationsController < ApplicationController
     ).first
     notificationstatus.seen = true
     notificationstatus.save
-    redirect_to(notificationstatus.notification.url)
+    redirect_to(notificationstatus.notification.redirect_url)
   end
 end

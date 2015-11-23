@@ -62,7 +62,7 @@ class ProjectsController < ApplicationController
       ProjectMember.add_owner project, current_user
       unless project.private
         # TODO: clean up action ids, numbers makes unreadable
-        notify_users 'project_create', 0, project.id, current_user.followers
+        notify_users 'project_create', project.id, current_user.followers
       end
       redirect_to user_project_path project.user, project
     else
@@ -81,7 +81,7 @@ class ProjectsController < ApplicationController
   def follow
     if @user != current_user
       current_user.follow_project @project
-      notify_users 'follow_project', 0, @project.id, [@project.user]
+      notify_users 'follow_project', @project.id, [@project.user]
       flash[:notice] = "You're now following #{@user.username}/#{@project.name}"
     else
       flash[:notice] = "You're the owner of this project, " \
@@ -112,10 +112,8 @@ class ProjectsController < ApplicationController
       polycomment_type: 'blob',
       polycomment_id: "#{blob.oid}"
     )
-    @comments = pg @comments, 10
     @comment = Comment.new
     @id = blob.oid
-    @ajax = params[:page].nil? || params[:page] == 1
   end
 
   # GET /user/project/raw/branch_or_commit_oid/destination
@@ -140,11 +138,9 @@ class ProjectsController < ApplicationController
       polycomment_type: 'project',
       polycomment_id: "#{@project.id}"
     )
-    @comments = pg @comments, 10
     @comment = Comment.new
     @comment_type = 'project'
     @id = @project.id.to_s
-    @ajax = params[:page].nil? || params[:page] == 1
   end
 
 
@@ -185,7 +181,6 @@ class ProjectsController < ApplicationController
       polycomment_type: 'commit',
       polycomment_id: "#{commit.oid}"
     )
-    @comments = pg @comments, 10
     @comment = Comment.new
     @id = commit.oid
   end
@@ -221,7 +216,6 @@ class ProjectsController < ApplicationController
       polycomment_id: "#{tree.oid}"
     )
     @comment_type = 'tree'
-    @comments = pg @comments, 10
     @comment = Comment.new
     @id = tree.oid
     render 'show'

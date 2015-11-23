@@ -17,6 +17,21 @@ describe ProjectMembersController, type: :controller do
         .to redirect_to(settings_user_project_path(project.user, project))
     end
 
+    describe 'duplicate member' do
+      before { make_member project, user }
+
+      it 'gets notified that duplicate memebers can not be added' do
+        post :create, user_id: project.user.username,
+                      project_id: project.name,
+                      member_id: user.id,
+                      role: 'collaborator'
+        expect(flash[:alert]).to be_present
+        path = user_project_project_members_path(project.user, project) +
+          "?search=#{user.username}"
+        expect(response).to redirect_to(path)
+      end
+    end
+
     it 'does not add project members as owner' do
       post :create, user_id: project.user.username,
                     project_id: project.name,

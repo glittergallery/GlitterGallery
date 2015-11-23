@@ -37,6 +37,48 @@ class ApplicationController < ActionController::Base
     things.paginate(page: params[:page], per_page: num) unless things.nil?
   end
 
+  # used to deliver notification on various events
+  def notify_users(action, model_id, victims, url = nil)
+    return if victims.empty?
+    actions = { 'project_comment' => 0,
+                'follow_project' => 1,
+                'fork' => 2,
+                'follow_user' => 3,
+                'project_create' => 4,
+                'issue_comment' => 5,
+                'issue_create' => 6,
+                'blob_comment' => 7,
+                'commit_comment' => 8,
+                'tree_comment' => 9,
+                'annotation' => 10
+              }
+    Notification.create(
+          actor: current_user,
+          action: actions[action],
+          model_id: model_id,
+          victims: victims,
+          url: url
+        )
+  end
+
+  # if url comes from a comment then append comment id to url
+  # change space to %20 with URI
+  # if url has master in it then replace it with repo head
+  def notification_url
+    params[:url] = "#{params[:url]}#comment_#{@comment.id}" if @comment
+    match_data = params[:url].match /((blob|tree)\/master)/
+    return params[:url] unless match_data
+    replace_str = "#{match_data[2]}/#{@project.barerepo.head.target.oid}"
+    params[:url].gsub /((blob|tree)\/master)/, replace_str
+  end
+
+  # used to set user and projects obejcts from the params
+  def get_context
+    @user = User.find_by username: params[:user_id]
+    @project = Project.find_by user_id: @user.id, name: params[:project_id]
+    render_404 && return if @project.blank?
+  end
+
   protected
 
   def configure_devise_permitted_parameters
@@ -56,31 +98,4 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(_)
     dashboard_path
   end
-
-  # used to deliver notification on various events
-  def notify_users(action, object_type, object_id, victims)
-    actions = { 'project_comment' => 0,
-                'follow_project' => 1,
-                'fork' => 2,
-                'follow_user' => 3,
-                'project_create' => 4,
-                'issue_comment' => 5,
-                'issue_create' => 6
-              }
-    Notification.create(
-          actor: current_user,
-          action: actions[action],
-          object_type: object_type,
-          object_id: object_id,
-          victims: victims
-        )
-  end
-
-  # used to set user and projects obejcts from the params
-  def get_context
-    @user = User.find_by username: params[:user_id]
-    @project = Project.find_by user_id: @user.id, name: params[:project_id]
-    render_404 && return if @project.blank?
-  end
-
 end

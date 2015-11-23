@@ -23,5 +23,5 @@
             = link_to(notif_string(notification) + 'you', notification_path(notification))
           - else
             = link_to(notif_string(notification) + notification.objectname,
-              notification_path(notification))
+              notification_path(notification), data: { no_turbolink: true })
 
