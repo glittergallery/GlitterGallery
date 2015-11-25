@@ -55,9 +55,11 @@ class CommentsController < ApplicationController
     if %w(blob commit tree).include?(params[:comment][:polycomment_type])
       return true
     else
-      polycomment = params[:comment][:polycomment_type]
+      comment_class = [Project, Issue].find do |x|
+        x.name == params[:comment][:polycomment_type].to_s.classify
+      end
       value = "#{params[:comment][:polycomment_id]}"
-      polycomment.classify.constantize.where(id: value).any?
+      comment_class.where(id: value).any?
     end
   end
 end
