@@ -45,7 +45,7 @@ gem 'ancestry', '~> 2.1.0'
 # For soft-deleting projects.
 gem 'paranoia', '~> 2.0'
 
-gem 'sass-rails'
+gem 'sass-rails', '~> 5.0.3'
 gem 'coffee-rails'
 
 gem 'therubyracer', platform: :ruby
