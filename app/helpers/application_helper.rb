@@ -63,11 +63,11 @@ module ApplicationHelper
     path = user_project_issues_path(@project.user, @project)
     if issue.open?
       issue.tag_list.map { |t| link_to t, "#{path}/#{t}"}
-        .join(', ')
+        .join(', ').html_safe
     else
       issue.tag_list
         .map { |t| link_to t, "#{path}/#{t}?state=closed"}
-        .join(', ')
+        .join(', ').html_safe
     end
   end
 end
