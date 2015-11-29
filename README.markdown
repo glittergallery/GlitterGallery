@@ -1,5 +1,6 @@
 [![security](https://hakiri.io/github/glittergallery/GlitterGallery/master.svg)](https://hakiri.io/github/glittergallery/GlitterGallery/master)
 [![tests](https://travis-ci.org/glittergallery/GlitterGallery.svg?branch=master)](https://travis-ci.org/glittergallery/GlitterGallery)
+[![Coverage Status](https://coveralls.io/repos/glittergallery/GlitterGallery/badge.svg?branch=master&service=github)](https://coveralls.io/github/glittergallery/GlitterGallery?branch=master)
  [![Stories in Ready](https://badge.waffle.io/glittergallery/glittergallery.svg?label=ready&title=Ready)](http://waffle.io/glittergallery/glittergallery) 
  
 ![Homestrip 1/2](http://thirstyforcola.files.wordpress.com/2013/05/front.jpg)
