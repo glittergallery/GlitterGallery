@@ -20,6 +20,8 @@ module ApplicationHelper
       "data:image/jpg;base64, #{Base64.encode64(image[:data])}"
     elsif extension == 'png'
       "data:image/png;base64, #{Base64.encode64(image[:data])}"
+    elsif extension == 'jpeg'
+      "data:image/png;base64, #{Base64.encode64(image[:data])}"
     end
   end
 

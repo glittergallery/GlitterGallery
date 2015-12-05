@@ -6,7 +6,7 @@ module Gg
   class ImageProcessing
     attr_reader :read_path
 
-    SUPPORTED_FILE_TYPES = ['.png', '.jepg', '.jpg', '.svg', '']
+    SUPPORTED_FILE_TYPES = ['.png', '.jpeg', '.jpg', '.svg', '']
 
     def initialize(read_path)
       @read_path = read_path
