@@ -52,6 +52,35 @@ module FileHelper
     )
   end
 
+  # generateds readme file and returns its path
+  def generate_readme
+    readme_path = File.join(Glitter::Application.config.repo_path, 'readme.md')
+    File.write(
+      readme_path,
+      <<-RUBY.strip_heredoc)
+        ## HEAD
+
+        * bullet1
+        * bullet2
+      RUBY
+    readme_path
+  end
+
+  # adds a readme to the project
+  def add_readme(project)
+    file_path = generate_readme
+    file = [ActionDispatch::Http::UploadedFile.new(
+      tempfile: File.new(file_path),
+      filename: 'readme.md'
+    )]
+    project.add_images(
+      'master',
+      nil,
+      file,
+      project.user.git_author_params
+    )
+  end
+
   private
 
   # helper to find the file to upload

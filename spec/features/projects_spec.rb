@@ -1,4 +1,5 @@
 require 'spec_helper'
+include FileHelper
 
 feature 'Projects' do
   scenario 'User creates a public project' do
@@ -237,6 +238,13 @@ feature 'Projects' do
         click_button 'Save changes'
         expect(page).to have_content 'test_branch'
         expect(page).to have_content '1.png'
+      end
+
+      scenario 'User uploads a readme to the project' do
+        page.attach_file('file[]', generate_readme)
+        click_button 'Save changes'
+        expect(page).to have_content 'readme.md'
+        expect(page).to have_content 'bullet1'
       end
 
       describe 'After uploading an image to the branch' do

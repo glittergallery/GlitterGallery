@@ -9,9 +9,9 @@ class Tree
     @path = path
   end
 
-  # Takes a tree and the path to that tree.
-  # Returns an array containing 2 elements, the first is an array of blobs
-  # in the tree and the second is an array of the subtrees in the tree.
+  # Returns an array containing 2 elements, the first is readme if it exists
+  # second is an array of blobs in the tree and the third is an array of the
+  # subtrees in the tree.
   def traverse
     return [nil, [], []] if project.barerepo.empty?
     images = []
