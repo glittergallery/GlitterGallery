@@ -106,7 +106,8 @@ class ProjectsController < ApplicationController
     oid = @project.branch_commit(params[:oid]).oid
     @dest = params[:destination]
     blob = @project.blob oid, @dest
-    @project.resize_image blob.text, @dest
+    image = Gg::ImageProcessing.new(blob.text)
+    image.blob_generate(@project.image_for(@dest, 'show'))
     @comments = Comment.where(
       polycomment_type: 'blob',
       polycomment_id: "#{blob.oid}"
