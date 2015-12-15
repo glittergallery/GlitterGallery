@@ -154,41 +154,6 @@ class Project < ActiveRecord::Base
     end
   end
 
-  # resize images for project show page
-  # uses same size as that of images on inspire page
-  def resize_image(image_string, dest)
-    image = Gg::ImageProcessing.new(image_string)
-    i_name = dest.split('/').last
-    image.blob_generate(image_for(i_name, 'show'))
-    image.blob_generate(image_for(i_name, 'show_image_desk'), 'desktop')
-    image.blob_generate(image_for(i_name, 'show_image_mob'), 'mobile')
-  end
-
-  # Takes a tree and the path to that tree.
-  # Returns an array containing 2 elements, the first is an array of blobs
-  # in the tree and the second is an array of the subtrees in the tree.
-  def browse_tree(tree = nil, cur = nil)
-    return [[], []] if barerepo.empty?
-    tree ||= barerepo.head.target.tree
-    images = []
-    directories = []
-    dump_show_img
-    tree.each do |item|
-      next if item[:name][0] == '.'
-      dest = cur.nil? ? item[:name] : File.join(cur, item[:name])
-      if item[:type] == :blob
-        resize_image(barerepo.read(item[:oid]).data, dest)
-        images.push({
-          dest: dest, name: item[:name]
-        })
-      else
-        directories.push({
-          dest: dest, name: item[:name]
-        })
-      end
-    end
-    [images, directories]
-  end
 
   # Creates a new directory in the given branch and destination.
   def create_directory(branch, destination, name, author)
@@ -485,12 +450,5 @@ class Project < ActiveRecord::Base
   # default list of tags
   def add_tags
     self.tag_list = 'bug, feature, improvement, feedback, discussion, help'
-  end
-
-  # Dumbs show-image folder content before walk
-  def dump_show_img
-    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_desk')}/*"))
-    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show_image_mob')}/*"))
-    FileUtils.rm_rf(Dir.glob("#{image_for('', 'show')}/*"))
   end
 end
