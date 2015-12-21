@@ -48,7 +48,7 @@ $("document").ready(function() {
     var state = $('select#project_sort :selected').val();
     $.get("/inspire/"+state+".js");
   });
-})
+});
 
 
 //function for autocomplete of tags on issues page
@@ -109,7 +109,7 @@ function imageLoad(){
       url = data.desktopUrl;
     }
 
-    $(this).attr('src', url)
+    $(this).attr('src', url);
   });
 }
 $("document").ready(imageLoad);
