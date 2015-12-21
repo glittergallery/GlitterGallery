@@ -106,7 +106,8 @@ class ProjectsController < ApplicationController
     oid = @project.branch_commit(params[:oid]).oid
     @dest = params[:destination]
     blob = @project.blob oid, @dest
-    @project.resize_image blob.text, @dest
+    image = Gg::ImageProcessing.new(blob.text)
+    image.blob_generate(@project.image_for(@dest, 'show'))
     @comments = Comment.where(
       polycomment_type: 'blob',
       polycomment_id: "#{blob.oid}"
@@ -132,7 +133,7 @@ class ProjectsController < ApplicationController
     @oid = 'master'
     barerepo = @project.barerepo
     @branches = barerepo.branches
-    @images, @directories = @project.browse_tree
+    @readme, @images, @directories = Tree.new(@project).traverse
     @comments = Comment.where(
       polycomment_type: 'project',
       polycomment_id: "#{@project.id}"
@@ -201,11 +202,11 @@ class ProjectsController < ApplicationController
   def tree
     @oid = params[:oid] || 'master'
     @dest = params[:destination]
-    tree = @project.branch_tree @oid, @dest
+    tree = Tree.new(@project, @oid, @dest)
+    @readme, @images, @directories = tree.traverse
     redirect_to(user_project_path(
       @project.user, @project, @project.uniqueurl
-    )) unless tree
-    @images, @directories = @project.browse_tree tree, params[:destination]
+    )) unless @images || @directories # redirect to home if nothing found
     @comments = Comment.where(
       polycomment_type: 'tree',
       polycomment_id: "#{tree.oid}"

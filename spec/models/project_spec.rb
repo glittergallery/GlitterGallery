@@ -155,7 +155,7 @@ describe Project do
     end
 
     describe 'project show images' do
-      before { project.browse_tree }
+      before { Tree.new(project).traverse }
 
       it 'gets generates desktop image' do
         desk_path = project.image_for 'happypanda.png', 'show_image_desk'

@@ -16,6 +16,9 @@
         %form{ action: user_project_path(@project.user, @project, @project.uniqueurl) }
           %input{ type: 'submit', value: 'Generate Unique Link' }
 
+  - if @readme
+    .markdown
+      = markdown @readme
   = render partial: 'comments/show_comments', locals: { type: @comment_type,
       id: @id,
       comment: @comment }

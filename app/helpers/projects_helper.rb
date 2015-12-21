@@ -65,7 +65,7 @@ module ProjectsHelper
         desktop_url: '/usercover_desktop.jpg'
       }
     else
-      images = project.find_inspire_image
+      images = correct_format project.find_inspire_image
       mobile = project.image_for images, 'mobile_inspire'
       desktop = project.image_for images, 'desktop_inspire'
       image_tag nil, class: 'img-placeholder', data: {
@@ -78,12 +78,20 @@ module ProjectsHelper
   # render responsive images for project show page
   # uses jquery for setting src from data attribute
   def render_show_image(project, image_name)
-    mobile = project.image_for image_name, 'show_image_mob'
-    desktop = project.image_for image_name, 'show_image_desk'
+    corrected_name = correct_format image_name
+    mobile = project.image_for corrected_name, 'show_image_mob'
+    desktop = project.image_for corrected_name, 'show_image_desk'
     image_tag nil, class: 'img-placeholder', data: {
       mobile_url: mobile,
       desktop_url: desktop
     }
+  end
+
+  # Renders image for gallery view
+  # Needed to change the file extension if it falls in unsupported type
+  def render_gallery_image(image_name)
+    corrected_name = correct_format image_name
+    @project.image_for corrected_name, 'show'
   end
 
   # As of now we support only three file types.
@@ -111,5 +119,18 @@ module ProjectsHelper
     commits = Rugged::Walker.new project.barerepo
     commits.push project.branch_commit head
     commits.count
+  end
+
+  private
+
+  # Changes file extension to png if the original file is
+  # in unsupported file type
+  def correct_format(file_name)
+    ext = File.extname file_name
+    if Gg::ImageProcessing::SUPPORTED_FILE_TYPES.include? ext
+      file_name
+    else
+      file_name.gsub(/#{ext}/i, '.png')
+    end
   end
 end

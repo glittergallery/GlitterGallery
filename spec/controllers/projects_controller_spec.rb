@@ -4,6 +4,8 @@ include FileHelper
 
 describe ProjectsController, type: :controller do
 
+  let(:tree) { Tree.new(project) }
+
   context 'user is guest' do
     let(:project) { create(:project) }
 
@@ -293,7 +295,7 @@ describe ProjectsController, type: :controller do
       post :create_directory, user_id: project.user.username,
                               id: project.name,
                               directory: 'new_dir'
-      expect(project.browse_tree[1].first[:name]).to eq('new_dir')
+      expect(tree.traverse[2].first[:name]).to eq('new_dir')
     end
 
     describe 'actions afters file upload' do
@@ -303,13 +305,13 @@ describe ProjectsController, type: :controller do
 
       describe 'POST #file_upload' do
         it 'allows user to upload image' do
-          expect(project.browse_tree[0].first[:name]).to eq('happypanda.png')
+          expect(tree.traverse[1].first[:name]).to eq('happypanda.png')
         end
       end
 
       it 'allows user to update image' do
         file_update project, 'happypanda.png' , 'naruto.png'
-        expect(project.browse_tree[0]
+        expect(tree.traverse[1]
           .find { |h| h[:name] == 'naruto.png' }).not_to be nil
       end
 
@@ -350,12 +352,12 @@ describe ProjectsController, type: :controller do
       post :create_directory, user_id: project.user.username,
                               id: project.name,
                               directory: 'new_dir'
-      expect(project.browse_tree[1]).to be_empty
+      expect(tree.traverse[2]).to be_empty
     end
 
     it "doesn't allow user to upload image" do
       file_upload project, 'happypanda.png'
-      expect(project.browse_tree[0]).to be_empty
+      expect(tree.traverse[1]).to be_empty
       expect(response.response_code).to eq(403)
     end
 
@@ -375,7 +377,7 @@ describe ProjectsController, type: :controller do
 
       it 'does not allow user to update image' do
         file_update project, 'happypanda.png' , 'naruto.png'
-        expect(project.browse_tree[0]
+        expect(tree.traverse[1]
           .find { |h| h[:name] == 'naruto.png' }).to be nil
         expect(response.response_code).to eq(403)
       end
