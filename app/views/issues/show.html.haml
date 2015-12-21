@@ -17,7 +17,7 @@
             = markdown @issue.description
           %p
             Tags:
-            = raw link_tags @issue
+            = link_tags @issue
       - if can? :close, @issue
         %aside
           %h1

@@ -322,8 +322,8 @@ class ProjectsController < ApplicationController
   end
 
   def file_delete
-    file = File.join @project.satellitedir, params[:image_name]
-    FileUtils.rm file if File.exists? file
+    file = Gg::SanitizeFilename.new @project.satellitedir, params[:image_name]
+    FileUtils.rm file.safe_filepath
     satellite_delete @project.satelliterepo, params[:image_name]
     @project.pushtobare
     flash[:notice] = "#{params[:image_name]} has been deleted!"
@@ -362,7 +362,8 @@ class ProjectsController < ApplicationController
   end
 
   def render_image
-    send_file File.join(@project.data_path, params[:destination])
+    file = Gg::SanitizeFilename.new @project.data_path, params[:destination]
+    send_file file.safe_filepath
   end
 
   private

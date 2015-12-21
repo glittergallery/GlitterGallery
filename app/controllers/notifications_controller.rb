@@ -16,6 +16,13 @@ class NotificationsController < ApplicationController
     ).first
     notificationstatus.seen = true
     notificationstatus.save
-    redirect_to(notificationstatus.notification.redirect_url)
+    check_redirect(notificationstatus.notification.redirect_url)
+  end
+
+  private
+  def check_redirect(url)
+    redirect_to url if URI.parse(url).path
+    rescue URI::InvalidURIError
+      redirect_to '/'
   end
 end

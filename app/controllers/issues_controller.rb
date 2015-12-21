@@ -36,7 +36,7 @@ class IssuesController < ApplicationController
         end
         victims = @project.followers + [@project.user] - [@issue.user]
         notify_users 'issue_create', @issue.id, victims
-        format.html { redirect_to @issue.show_url }
+        format.html { redirect_to issue_path(@issue) }
       else
         format.html { render 'new'}
       end
