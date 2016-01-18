@@ -60,6 +60,7 @@ class Project < ActiveRecord::Base
 
   def deletefiles
     FileUtils.rm_rf data_path
+    FileUtils.rm_rf "#{data_path}.git"
   end
 
   # Project URL
