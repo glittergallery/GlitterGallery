@@ -197,22 +197,10 @@ class Project < ActiveRecord::Base
       .generate(image_for(commit_id, 'thumbnails'), 'thumbnail')
   end
 
-  # returns last rugged::diff image name of the repo's head
-  # branch is always master
+  # returns the name of file present in inspire dir
   def find_inspire_image
-    head = satelliterepo.head.target
-    parent = head.parents.first
-    diff = head.diff parent
-    # if this diff is null or diff is about creation of new
-    # dir then find diff in next parent
-    temp_path = diff.deltas.last.new_file[:path]
-    if temp_path.split('/').last == '.gitignore' || diff.nil?
-      head = parent
-      parent = head.parents.first
-      diff = head.diff parent
-    end
-    path = diff.deltas.last.new_file[:path]
-    path.split('/').last
+    path = Dir[image_for('', 'mobile_inspire') + '*']
+    path.first.split('/').last
   end
 
   # finds the last updated image's path on master
@@ -223,7 +211,7 @@ class Project < ActiveRecord::Base
     diff = head.diff parent
     # in some case diff is nil, which breaks image generation
     # with nilclass error <- TODO: Investivate this further
-    return unless diff
+    return if diff.nil? || diff.deltas.empty?
     path = diff.deltas.last.new_file[:path]
     generate_inspire_image path
   end

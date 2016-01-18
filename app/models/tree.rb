@@ -9,7 +9,7 @@ class Tree
     @path = path
   end
 
-  # Returns an array containing 2 elements, the first is readme if it exists
+  # Returns an array containing 3 elements, the first is readme if it exists
   # second is an array of blobs in the tree and the third is an array of the
   # subtrees in the tree.
   def traverse
