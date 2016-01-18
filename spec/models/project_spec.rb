@@ -29,9 +29,9 @@ describe Project do
     expect(build(:project, user: user)).to be_valid
   end
 
-  it 'allows same name per user after the first is deleted' do
+  it 'does not allow same name per user of deleted projects' do
     project.destroy
-    expect(build(:project, user: user)).to be_valid
+    expect(build(:project, user: user)).to_not be_valid
   end
 
   it 'is invalid without correct name format' do
