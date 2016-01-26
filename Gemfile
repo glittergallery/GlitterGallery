@@ -89,7 +89,7 @@ group :test do
   gem 'launchy'
   gem 'rubocop', require: false
   gem 'haml-lint', require: false
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '~> 2.8.0'
   gem 'coveralls', require: false
 end
 
