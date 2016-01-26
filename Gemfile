@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 # source 'http://mirror1.prod.rhcloud.com/mirror/ruby/'
 
-gem 'rails', '~> 4.1.0'
+gem 'rails', '~> 4.2.5.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -18,7 +18,7 @@ gem 'jquery-rails', '~> 3.1.0'
 gem 'rake'
 gem 'sketchily'
 gem 'redcarpet'
-gem 'devise'
+gem 'devise', '~> 3.5.5'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
@@ -45,7 +45,7 @@ gem 'ancestry', '~> 2.1.0'
 # For soft-deleting projects.
 gem 'paranoia', '~> 2.0'
 
-gem 'sass-rails', '~> 5.0.3'
+gem 'sass-rails', '~> 5.0.4'
 gem 'coffee-rails'
 
 gem 'therubyracer', platform: :ruby
@@ -59,7 +59,7 @@ gem 'ratyrate', github: 'sonalkr132/ratyrate', branch: 'refactoring'
 gem 'cancancan', '~> 1.10'
 
 # ruby implementation of git-http-backend
-gem 'gitlab-grack', '~> 2.0.2', require: 'grack'
+gem 'gitlab-grack', require: 'grack', github: 'gitlabhq/grack'
 
 # used for api used by gitlab-shell
 gem 'grape'
