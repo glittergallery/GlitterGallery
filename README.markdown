@@ -32,10 +32,14 @@ Email us and let us know you're interested, and what you can do, and we'll figur
 
 ### Authors
 
-Sarup Banskota (sarup@glittergallery.net)
+Aditya Prakash (aditya.prakash132@gmail.com)
 
-Rohit Paul Kuruvilla (rohitpaulk@live.com)
+Ahmed Fathy Hussein (alwahsh.ahmed@gmail.com)
+
+Emily Dirsh (emily@glittergallery.net)
 
 Maírín Duffy (duffy@fedoraproject.org)
 
-Emily Dirsh (emily@glittergallery.net)
+Rohit Paul Kuruvilla (rohitpaulk@live.com)
+
+Sarup Banskota (sarup@glittergallery.net)
