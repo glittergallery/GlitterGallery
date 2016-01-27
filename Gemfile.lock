@@ -169,9 +169,10 @@ GEM
       rubocop (~> 0.20)
     haml (4.0.7)
       tilt
-    haml-lint (0.13.0)
+    haml_lint (0.16.0)
       haml (~> 4.0)
-      rubocop (>= 0.25.0)
+      rake (~> 10.0)
+      rubocop (>= 0.36.0)
       sysexits (~> 1.1)
     hashie (3.4.3)
     http-cookie (1.0.2)
@@ -436,7 +437,7 @@ DEPENDENCIES
   guard-rspec
   guard-rubocop (~> 1.2.0)
   haml
-  haml-lint
+  haml_lint (~> 0.16.0)
   jquery-rails (~> 3.1.0)
   jquery-turbolinks
   jquery-ui-rails

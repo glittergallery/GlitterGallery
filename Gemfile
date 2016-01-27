@@ -88,7 +88,7 @@ group :test do
   gem 'guard-rubocop', '~> 1.2.0'
   gem 'launchy'
   gem 'rubocop', require: false
-  gem 'haml-lint', require: false
+  gem 'haml_lint', '~> 0.16.0', require: false
   gem 'shoulda-matchers', '~> 2.8.0'
   gem 'coveralls', require: false
 end
