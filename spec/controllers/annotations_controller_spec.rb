@@ -7,10 +7,12 @@ describe AnnotationsController, type: :controller do
   let(:annotation) { create(:annotation, user: user) }
   let(:blob_oid) { 'fb82abfe99bb2be3b885b9cf72b7e05220dce165' }
   let(:annotation_param) do
-    "{\"src\":\"http://localhost:3000/some/path\"," +
-    "\"text\":\"flying monkeys\",\"shapes\":[{\"type\":\"rect\",\"geometry" +
-    "\":{\"x\":0.595,\"y\":0.278,\"width\":0.147,\"height\":0.193},\"style" +
-    "\":{}}],\"context\":\"http://localhost:3000/some/path\"}"
+    { src: 'http://localhost:3000/some/path',
+      text: 'flying monkeys',
+      shapes: [{ type: 'rect',
+                 geometry: { x: 0.595, y: 0.278, width: 0.147, height: 0.193 },
+                 style: {} }],
+      context: 'http://localhost:3000/some/path' }.to_json
   end
 
   context 'user is guest' do

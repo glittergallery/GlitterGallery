@@ -63,7 +63,7 @@ describe ApplicationHelper, type: :helper do
     end
 
     it 'escapes html tags' do
-      markdown = helper.markdown "<a href=\"test\" " +
+      markdown = helper.markdown '<a href=\"test\" ' +
                                  "onclick=\"alert('test')\">test;"
       assert_equal "<p>test;</p>\n", markdown
     end

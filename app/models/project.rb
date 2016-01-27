@@ -66,7 +66,7 @@ class Project < ActiveRecord::Base
   def urlbase
     File.join("/#{user.username}",
               name.gsub(' ', '%20'),
-              uniqueurl.to_s).gsub(/\/$/, '')
+              uniqueurl.to_s).gsub(%r{\/$}, '')
   end
 
   def barerepo
@@ -141,17 +141,14 @@ class Project < ActiveRecord::Base
   def branch_tree(id, destination = nil)
     res = branch_commit id
     return nil unless res
-    if destination
-      begin
-        item = res.tree.path(destination)
-      rescue
-        return nil
-      end
-      return nil if item[:type] != :tree
-      return barerepo.lookup(item[:oid])
-    else
-      return res.tree
+    return res.tree unless destination
+    begin
+      item = res.tree.path(destination)
+    rescue
+      return nil
     end
+    return nil if item[:type] != :tree
+    barerepo.lookup(item[:oid])
   end
 
 
