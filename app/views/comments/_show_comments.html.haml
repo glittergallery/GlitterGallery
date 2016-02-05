@@ -1,5 +1,5 @@
 %section.comments
-  %section.showcomments
+  %section.showcomments{ data: { url: "#{@project.name}/comments/#{type}/#{id}" } }
     = render partial: 'comments/comment', collection: @comments
   %section.newcomment
     - if can? :create, @comment

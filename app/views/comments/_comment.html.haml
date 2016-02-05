@@ -1,4 +1,4 @@
-= div_for comment do
+= div_for comment, data: { id: comment.id } do
   %header
     %h1
       = comment.user.username
