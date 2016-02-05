@@ -1,0 +1,12 @@
+%section#user_options
+  %header
+    = current_user.username.upcase
+  %ul
+    %li
+      %a{ href: '/users/edit' } Settings
+    %li
+      %a{ href: '/notifications' }
+        %span.count
+          - if @count && @count > 0
+            = @count
+        Notifications

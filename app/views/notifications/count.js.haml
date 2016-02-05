@@ -1,0 +1,2 @@
+var user_options = $("#{escape_javascript(render partial: 'layouts/user_options', locals: {:count => @count})}");
+NotificationPoller.updateCount(user_options);

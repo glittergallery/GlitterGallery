@@ -1,6 +1,13 @@
 class NotificationsController < ApplicationController
   before_filter :authenticate_user!
 
+  def count
+    @count = NotificationStatus.where(
+      victim: current_user,
+      seen: [false, nil]
+    ).count
+  end
+
   def index
     @unseennotifications = NotificationStatus.where(
       victim: current_user,

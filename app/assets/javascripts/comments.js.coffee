@@ -1,6 +1,6 @@
 @CommentPoller =
 	poll: ->
-		setTimeout @request, 5000
+		setTimeout @request, 30000
 
 	request: ->
 		$.get($('.showcomments').data('url'), after: $('.comment').last().data('id'));

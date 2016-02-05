@@ -39,14 +39,7 @@
       %aside.map#navigation
         .asidewrapper
           - if user_signed_in?
-            %section
-              %header
-                = current_user.username.upcase
-              %ul
-                %li
-                  %a{ href: '/users/edit' } Settings
-                %li
-                  %a{ href: '/notifications' } Notifications
+            = render partial: 'layouts/user_options'
             - unless @projects.empty? && current_user.followed_projects.empty?
               %section
                 %header PROJECTS
