@@ -68,7 +68,7 @@ Glitter::Application.routes.draw do
     end
     resources :projects, except: [:index], path: '/' do
       resources :comments, only: [:new, :create, :destroy]
-      get 'comments/:polycomment_type/:polycomment_id' => 'comments#index'
+      get 'comments/:polycomment_type/:polycomment_id' => 'comments#index', as: :fetch_comments
       resources :issues, except: [:show], path: "(:xid)/issues" do
         member do
           put 'close'
