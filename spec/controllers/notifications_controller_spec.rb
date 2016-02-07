@@ -8,6 +8,14 @@ describe NotificationsController, type: :controller do
   context 'user is signed in' do
     before { sign_in(user) }
 
+    describe 'GET #count' do
+      it 'renders count template' do
+        xhr :get, :count
+        expect(response.response_code).to eq(200)
+        expect(response).to render_template(:count)
+      end
+    end
+
     describe 'GET #index' do
       it 'lists all the notification for the user' do
         get :index
@@ -25,6 +33,14 @@ describe NotificationsController, type: :controller do
   end
 
   context 'user is guest' do
+    describe 'GET #count' do
+      it 'does not render count template and redirects to sign in page' do
+        xhr :get, :count
+        expect(response.response_code).to eq(401)
+        expect(response).not_to render_template(:count)
+      end
+    end
+
     describe 'GET #index' do
       it 'redirects to sign in page' do
         get :index
