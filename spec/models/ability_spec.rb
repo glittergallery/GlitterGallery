@@ -63,6 +63,7 @@ describe 'User' do
       it{ should be_able_to(:fork, project) }
       it{ should be_able_to(:new, Comment) }
       it{ should be_able_to(:create, Comment) }
+      it{ should be_able_to(:index, comment) }
       it{ should be_able_to(:create, Issue) }
       it{ should be_able_to(:create, Annotation) }
       it{ should_not be_able_to(:destroy, comment) }

@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_filter :authenticate_user!
   before_action :get_context
 
-  load_and_authorize_resource except: :index
+  load_and_authorize_resource
 
   def index
     @comments = Comment.where(

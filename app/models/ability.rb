@@ -54,7 +54,7 @@ class Ability
     end
 
     # TODO: allow comment only on public projects
-    can [:new, :create], Comment
+    can [:new, :create, :index], Comment
     can [:new, :create], Issue
     can [:new, :create], Annotation
   end
