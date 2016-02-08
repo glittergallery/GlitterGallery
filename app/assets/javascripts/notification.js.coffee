@@ -1,6 +1,6 @@
 @NotificationPoller =
 	poll: ->
-		setTimeout @request, 30000
+		setTimeout @request, $('#user_options').data('pollingTime');
 
 	request: ->
 		$.get('/notification/count');
