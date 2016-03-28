@@ -98,7 +98,7 @@ module ProjectsHelper
   # Following function finds all files (not dir) and finds
   # their type using extenstion
   def find_file_types(project)
-    formats = { '.svg' => 0, '.jpg' =>  0, '.png' => 0, 'other' => 0 }
+    formats = { '.svg' => 0, '.jpg' => 0, '.png' => 0, 'other' => 0 }
     path = File.join project.satellitedir, '/**/*'
     files = Dir[path]
     files.each do |f|

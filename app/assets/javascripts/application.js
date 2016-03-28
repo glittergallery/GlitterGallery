@@ -29,6 +29,8 @@
 //= require projects
 //= require relationship
 //= require jquery.swipebox.min
+//= require comments
+//= require notification
 
 $(document).on('ajax:error', function (e, xhr, data, settings) {
     if (xhr.status == 401) {

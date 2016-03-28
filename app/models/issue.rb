@@ -38,12 +38,12 @@ class Issue < ActiveRecord::Base
 
   # Closes the issue.
   def close
-    self.closed!
+    closed!
   end
 
   # Reopens the issue.
   def reopen
-    self.open!
+    open!
   end
 
   def friendly_text

@@ -22,6 +22,26 @@ describe CommentsController, type: :controller do
         expect(project.user.comments.first.body).to eq('heads are cool')
       end
 
+      context 'polling for new comments' do
+        render_views
+        before do
+          @comment1 = create(:comment, polycomment_type: 'project',
+                                       polycomment_id: project.id)
+          @comment2 = create(:comment, polycomment_type: 'project',
+                                       polycomment_id: project.id)
+        end
+        it 'fetches new comments' do
+          xhr :get, :index, project_id: project.name,
+                            user_id: project.user.username,
+                            polycomment_type: 'project',
+                            polycomment_id: project.id,
+                            after: @comment1.id
+
+          expect(response.response_code).to eq(200)
+          expect(response.body).to include(@comment2.body)
+        end
+      end
+
       context 'save fails' do
         before do
           allow_any_instance_of(Comment).to receive(:save).and_return(false)

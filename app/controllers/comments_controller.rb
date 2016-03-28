@@ -4,6 +4,15 @@ class CommentsController < ApplicationController
 
   load_and_authorize_resource
 
+  def index
+    @comments = Comment.where(
+      'polycomment_type = ? and polycomment_id = ? and id > ?',
+      params[:polycomment_type],
+      params[:polycomment_id],
+      params[:after].to_i
+    )
+  end
+
   def new
     @comment = Comment.new
   end

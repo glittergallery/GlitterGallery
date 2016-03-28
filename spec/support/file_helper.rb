@@ -9,6 +9,7 @@ module FileHelper
                        id: project.name,
                        file: file
   end
+
   # updates old_file with new_file
   def file_update(project, old_file, new_fie)
     file = ActionDispatch::Http::UploadedFile.new(

@@ -1,5 +1,8 @@
 %section.comments
-  %section.showcomments
+  %section.showcomments{ data: { url: user_project_fetch_comments_path(@project.user,
+    @project,
+    type,
+    id) } }
     = render partial: 'comments/comment', collection: @comments
   %section.newcomment
     - if can? :create, @comment

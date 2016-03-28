@@ -66,10 +66,10 @@ class ApplicationController < ActionController::Base
   # if url has master in it then replace it with repo head
   def notification_url
     params[:url] = "#{params[:url]}#comment_#{@comment.id}" if @comment
-    match_data = params[:url].match /((blob|tree)\/master)/
+    match_data = params[:url].match %r{((blob|tree)\/master)}
     return params[:url] unless match_data
     replace_str = "#{match_data[2]}/#{@project.barerepo.head.target.oid}"
-    params[:url].gsub /((blob|tree)\/master)/, replace_str
+    params[:url].gsub %r{((blob|tree)\/master)}, replace_str
   end
 
   # used to set user and projects obejcts from the params

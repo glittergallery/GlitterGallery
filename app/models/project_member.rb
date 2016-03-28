@@ -15,21 +15,15 @@ class ProjectMember < ActiveRecord::Base
   def self.write_acess(project, user)
     pm = find_by(member_id: user.id, gallery_id: project.id)
     return false if pm.nil?
-    if pm.role == 'collaborator' || pm.role == 'owner'
-      return true
-    else
-      return false
-    end
+    return false unless pm.role == 'collaborator' || pm.role == 'owner'
+    true
   end
 
   # returns true if relation between user and projects exists
   def self.member?(project, user)
     return false unless user
     pm = find_by(member_id: user.id, gallery_id: project.id)
-    if pm.nil?
-      return false
-    else
-      return true
-    end
+    return true unless pm.nil?
+    false
   end
 end

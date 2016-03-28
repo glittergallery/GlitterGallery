@@ -9,7 +9,7 @@ describe API::API, type: :request  do
 
   describe 'GET /internal/check', no_db: true do
     it do
-      get 'api/v1/internal/check', secret_token: secret_token
+      get '/api/v1/internal/check', secret_token: secret_token
       expect(response.status).to eq(200)
     end
   end
@@ -65,7 +65,7 @@ describe API::API, type: :request  do
 
   def pull(key, project)
     post(
-      'api/v1/internal/allowed',
+      '/api/v1/internal/allowed',
       key_id: key.id,
       project: "#{project.user.username}/#{project.name}",
       action: 'git-upload-pack',
@@ -75,7 +75,7 @@ describe API::API, type: :request  do
 
   def push(key, project)
     post(
-      'api/v1/internal/allowed',
+      '/api/v1/internal/allowed',
       changes: 'd14d6c0abdd253381df51a723d58691b2ee1ab08' +
         '570e7b2abdd848b95f2f578043fc23bd6f6fd24d refs/heads/master',
       key_id: key.id,

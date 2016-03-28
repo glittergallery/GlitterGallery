@@ -52,7 +52,7 @@ Glitter::Application.routes.draw do
   get '/:user_id/:id/pull/:pull_id/open' => 'projects#open'
   get '/:user_id/:id/pulls' => 'projects#pulls'
   get "#{Glitter::Application.config.repo_path}/:user_id/:id/*destination" => 'projects#render_image', as: :render_image, destination: /.+/
-
+  get '/notification/count' => 'notifications#count'
 
   resources :users, only: [:show], path: '/' do
     member do
@@ -68,6 +68,7 @@ Glitter::Application.routes.draw do
     end
     resources :projects, except: [:index], path: '/' do
       resources :comments, only: [:new, :create, :destroy]
+      get 'comments/:polycomment_type/:polycomment_id' => 'comments#index', as: :fetch_comments
       resources :issues, except: [:show], path: "(:xid)/issues" do
         member do
           put 'close'

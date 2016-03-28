@@ -1,0 +1,2 @@
+var new_comment = $("#{escape_javascript(render partial: 'comments/comment', collection: @comments, locals: {:project => @project})}");
+CommentPoller.addComment(new_comment);

@@ -11,6 +11,9 @@ Glitter::Application.config.thumbnail_geometry=[50,50]
 Glitter::Application.config.desktop_geometry=[230,130]
 Glitter::Application.config.mobile_geometry=[600,340]
 
+# time interval before client requests for new comments and notification
+Glitter::Application.config.polling_time = 30000
+
 # (gr)Avatar options
 ## path to default avatar - should start with slash
 if Rails.env.development?
