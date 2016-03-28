@@ -20,10 +20,10 @@ class Project < ActiveRecord::Base
 
   validates :name, presence: true,
                    uniqueness: { scope: :user,
-                                 conditions: -> { where(deleted_at: nil) },
-                                 message: 'is used by one of your projects.' },
+                                 message: 'is used by one of your projects(' +
+                                   'includes deleted projects)' },
                    format: { with: /\A[a-z0-9\-_]+\z/i, message: 'can only, ' +
-                      'have dash underscore and alphanumeric characters' }
+                      'have dash, underscore and alphanumeric characters' }
   validates :user, presence: true
 
   has_ancestry # Tree structure.
@@ -60,6 +60,7 @@ class Project < ActiveRecord::Base
 
   def deletefiles
     FileUtils.rm_rf data_path
+    FileUtils.rm_rf "#{data_path}.git"
   end
 
   # Project URL
@@ -194,22 +195,10 @@ class Project < ActiveRecord::Base
       .generate(image_for(commit_id, 'thumbnails'), 'thumbnail')
   end
 
-  # returns last rugged::diff image name of the repo's head
-  # branch is always master
+  # returns the name of file present in inspire dir
   def find_inspire_image
-    head = satelliterepo.head.target
-    parent = head.parents.first
-    diff = head.diff parent
-    # if this diff is null or diff is about creation of new
-    # dir then find diff in next parent
-    temp_path = diff.deltas.last.new_file[:path]
-    if temp_path.split('/').last == '.gitignore' || diff.nil?
-      head = parent
-      parent = head.parents.first
-      diff = head.diff parent
-    end
-    path = diff.deltas.last.new_file[:path]
-    path.split('/').last
+    path = Dir[image_for('', 'mobile_inspire') + '*']
+    path.first.split('/').last
   end
 
   # finds the last updated image's path on master
@@ -220,7 +209,7 @@ class Project < ActiveRecord::Base
     diff = head.diff parent
     # in some case diff is nil, which breaks image generation
     # with nilclass error <- TODO: Investivate this further
-    return unless diff
+    return if diff.nil? || diff.deltas.empty?
     path = diff.deltas.last.new_file[:path]
     generate_inspire_image path
   end
