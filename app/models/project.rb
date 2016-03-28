@@ -20,8 +20,8 @@ class Project < ActiveRecord::Base
 
   validates :name, presence: true,
                    uniqueness: { scope: :user,
-                                 message: 'is used by one of your projects(' +
-                                   'includes deleted projects)' },
+                                 conditions: -> { where(deleted_at: nil) },
+                                 message: 'is used by one of your projects.' },
                    format: { with: /\A[a-z0-9\-_]+\z/i, message: 'can only, ' +
                       'have dash, underscore and alphanumeric characters' }
   validates :user, presence: true
