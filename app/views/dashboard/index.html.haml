@@ -26,9 +26,3 @@
           %p Welcome aboard! Without wasting any further time, let's get you started!
           %form{ action: '/doodles/new' }
             %input{ type: 'submit', value: 'Create first doodle!' }
-    %section
-      -if current_user.glitterposts.empty?
-        .guide
-          %p Welcome aboard! Without wasting any further time, let's get you started!
-          %form{ action: '/glitterposts/new' }
-            %input{ type: 'submit', value: 'Write first Glitterpost!' }
